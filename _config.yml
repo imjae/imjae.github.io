@@ -15,14 +15,8 @@ collections:
     permalink: /project/:path/
 
 social:
-    - icon: fa-facebook
-      link: "#"
-    - icon: fa-twitter
-      link: "#"
-    - icon: fa-linkedin
-      link: "#"
-    - icon: fa-stack-exchange
-      link: "#"
+    - icon: fa-mail
+      link: "code@kakao.com"
     - icon: fa-github
       link: "https://github.com/imjae"
 
@@ -36,7 +30,7 @@ urls:
     - text: My Projects
       url: /projects/
     - text: 독서
-      url: /feed.xml
+      url: /reading/
 
 url: "https://imjae.github.io"
 baseurl: ""
