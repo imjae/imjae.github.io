@@ -4,4 +4,4 @@ title: 독서
 permalink: /reading/
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+여러 장르의 책들을 읽어보고 짧게나마 감상을 적어보자

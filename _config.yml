@@ -15,8 +15,6 @@ collections:
     permalink: /project/:path/
 
 social:
-    - icon: fa-mail
-      link: "code@kakao.com"
     - icon: fa-github
       link: "https://github.com/imjae"
 
