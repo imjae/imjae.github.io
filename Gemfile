@@ -1,7 +1,10 @@
-# frozen_string_literal: true
+source 'https://rubygems.org/'
 
-source "https://rubygems.org"
+gem 'jekyll', '>=3.8.6'
 
-# gem "rails"
-gem "jekyll"
-gem 'wdm', '~> 0.1.1', :install_if => Gem.win_platform?
+group :jekyll_plugins do
+  gem 'jekyll-paginate'
+  gem 'jekyll-sitemap'
+  gem 'jekyll-feed'
+  gem 'jekyll-seo-tag'
+end
