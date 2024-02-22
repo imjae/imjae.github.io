@@ -1,59 +1,76 @@
-highlighter: rouge
+title: imjae
+# description: The description of your site.
+email: code@kakao.com
 
-markdown: kramdown
+author: Imjae #  Default is your site title.
+theme: jekyll-theme-persephone
+# # Your social accounts.
+social:
+    github: imjae
+#   twitter: twitter_username
+#   facebook: facebook_username
+#   instagram: instagram_username
+#   linkedin: linkedin_username
+#   weibo: weibo_username
 
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-  syntax_highlighter_opts: # Rouge Options › https://github.com/jneen/rouge#full-options
-    css_class: 'highlight'
-  math_engine: mathjax
+# # Theme Settings
 
-plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-feed
+# # Your site's logo. Will be shown on the left top of your page.
+logo: /img/logo.svg
+# # If the images of our blog are stored in an external cloud. You can use the jekyll-img-prefix plugin and set your images' base URL here.
+# img_prefix: https://your-img-cdn.com
+# # The RSS link of your blog.
+# rss: "/feed.xml"
 
-paginate: 7
-paginate_path: "page:num"
-layout: post
-permalink: /:categories/:title
-excerpt_separator: "[-----]"
+# # The followings are settings for displays of your blog.
+# theme_setting:
+#   # The slides count in the slides layout. Default is 4.
+#   slides_count: 5
+#   # The ← back URL on the top of your post page. Default is your site's home page.
+#   blog_page: "blog/index.md"
+#   # The URL on your name on the bottom of your post and page. Default is your site's home page.
+#   about_page: "about.md"
+#   #  The URL of the menu icon(which has three black lines). Will be shown on the slides/book/chapter layouts It won't be shown if blank.
+#   archive_page: "archive.md"
+#   # The nav links on the top right of home/page/post/blog layout. You can set a local page(by setting a layout's path) or and external link ( both title and url are required) here.
+#   nav_pages:
+#     - "about.md"
+#     -
+#       title: "External Link Title"
+#       url: "https://your-external-link.com"
+#   # Every default value in the following settings is false. You can set them globally here or separately in a single post/page/chapter.
+#   code: true # Code highlight.
+#   math: true # Mathjax
+#   mermaid: true # Mermaid
+#   #  Locales of this theme.
+#   lang:
+#     category_all: All # The first tag in the categories bar on the blog layout page. By clicking it all of your posts will be shown. Default is 'All'.
+#     blog_title: Imjae # The text of ← back url on the top of the post layout.  Default is 'Home'.
+#     # The locales of the comment controls.
+#     comment:
+#       user: "昵称"
+#       email: "邮箱"
+#       url: "链接"
+#       message: "说点什么吧..."
+#       reply: "回复"
 
-url: # Required: replace this with your domain
-name: Imjae # Required: will be displayed on every page's header
-title: WOW # Required: site's default title
-shout: # Required: **TWO** lines, will be displayed on page's header.
-  - one liner one...
-  - one liner two...
-description: "Some short description on your site" # Required
+# head_code: |
+#   <!-- Extra codes in the head of your site pages. You can add your Google Analysis codes here! -->
 
-disqus:
-  comments: false # Global toggle on/off disqus comment
-  shortname:  # Required if you use disqus. Replace with your disqus shortname here
-
-gitalk:
-  comments: true # Global toggle on/off gitalk comment
-  # replace all of those below with your own
-  client_id: cef11d35027609555151
-  client_secret: 264b4d96bd25cf8a3183660c20e231ee6cbff735 
-  repo: imjae.github.io
-  owner: imjae
-  admin: imjae
-  distraction_free_mode: true
-
-
-google_analytics:
-  id: "" # Required if you use google analytics. Replace with your tracking id here
-
-collections: # Define post series here
-  demo_series:
-    output: true
-  demo_series_2:
-    output: true
-
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: "post"
+# # The settings of comments.
+# comment:
+#   # You should set it to enable comment
+#   enabled: true
+#   # Your comment provider
+#   provider: disqus # static/disqus
+#   # If provider == disqus
+#   disqus:
+#     name: website_name
+#   # Or provider == static
+#   static:
+#     # Your static comment url.
+#     postUrl:  https://api.staticman.net/v2/connect/GITHUB-USERNAME/GITHUB-REPOSITORY
+# # The settings of local smileys used in static comments. The jekyll-smiley plugin is required.
+# smiley:
+#   enabled: true
+#   dir: img/smileys

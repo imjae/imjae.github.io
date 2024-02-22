@@ -1,10 +1,5 @@
-source 'https://rubygems.org/'
+# frozen_string_literal: true
 
-gem 'jekyll', '>=3.8.6'
+source "https://rubygems.org"
 
-group :jekyll_plugins do
-  gem 'jekyll-paginate'
-  gem 'jekyll-sitemap'
-  gem 'jekyll-feed'
-  gem 'jekyll-seo-tag'
-end
+gem "jekyll-theme-persephone"

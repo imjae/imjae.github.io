@@ -1,126 +1,70 @@
-# Textalic
+# jekyll-theme-persephone
 
-[![feature_jt](https://img.shields.io/badge/featured%20on-JT-red.svg)](https://jekyll-themes.com)
+[![Gem Version](https://badge.fury.io/rb/jekyll-theme-persephone.svg)](https://rubygems.org/gems/jekyll-theme-persephone)
 
-![mockup](./assets/img/mockup.png)
+Welcome to your new Jekyll theme! In this directory, you'll find the files you need to be able to package up your theme into a gem. Put your layouts in `_layouts`, your includes in `_includes`, your sass files in `_sass` and any other assets in `assets`.
 
-**Textalic** is a simple, responsive jekyll theme focus on blogging. Here is
-a [live demo](https://unifreak.github.io/jekyll-theme-textalic/).
+To experiment with this code, add some sample content and run `bundle exec jekyll serve` – this directory is setup just like a Jekyll site!
 
-## Features
+[DEMO with full functions.](http://demo.erl.im)
 
-- Post category, tag and series
-- Github flavored markdown rendering
-- LaTeX and ascii math notation rendering
-- Disqus comment and Gitalk comment
-- Fulltext search (powered by [jekyll-simple-search plugin](https://github.com/christian-fei/Simple-Jekyll-Search))
-- Code highlighting
-- Autogenerate table of content
-- Google analytics
-- Atom feed
-- Sitemap
+[A simple blog demo](https://en.erl.im)
 
-## Install & Configuration
+## Demo
 
-### Set up jekyll
+| ![home layout](/screenshots/home.png) | ![blog layout](/screenshots/blog.png) |
+| -- | -- |
+| `layout: home` [Demo](https://en.erl.im/blog/) | `layout: blog` [Demo](https://en.erl.im/archive/) |
+| ![post layout](/screenshots/post.png) | ![page layout](/screenshots/page.png) |
+| `layout: post` [Demo](https://en.erl.im/blog/jekyll-theme-persephone.html) | `layout: page` [Demo](https://jekyll-theme-persephone.netlify.app/about.html) |
+| ![archive layout](/screenshots/archive.png)      | ![slides layout](/screenshots/slides.png) |
+| ![book layout](/screenshots/book.png) | ![chapter layout](/screenshots/chapter.png) |
+| <strong style="color: red">*</strong> `layout: book` [Demo](https://jekyll-theme-persephone.netlify.app/corner) | <strong style="color: red">*</strong> `layout: chapter` [Demo](https://jekyll-theme-persephone.netlify.app/corner/1.html) |
 
-Make sure you have set up jekyll correctly. See [the official jekyll doc](https://jekyllrb.com/docs/).
+The layout with red * relied on a jekyll books generator plugin: [`jekyll-books`](https://github.com/erlzhang/jekyll-books)
 
-### Clone this repo
+## Installation
 
-Clone this repo into to your local machine, then `cd` to the root directory of
-your local copy. Here is an overview of the project's file structure:
+Add this line to your Jekyll site's `Gemfile`:
 
-```console
-jekyll-theme-textalic
-├── 404.html                    # 404 page
-├── Gemfile
-├── LICENCE
-├── _config.yml                 # Main config
-├── _data
-│   └── me.yml                  # Personal info config
-├── _demo_series                # A demo series, add series into series folder
-│   └── demo_series_post_1.md
-├── _includes
-├── _layouts
-├── _posts
-│   └── 2019-12-25-Intro.md     # Add new post here
-├── _sass
-├── about                       # About page
-├── assets                      # images, fonts, css, js...
-│   ├── img
-│   │   ├── me.png              # Replace with your own, showed in /about page
-├── favicon.ico                 # Replace with your own
-├── feed.xml
-├── index.html
-├── resume
-│   └── index.md                # You may write your resume here. linked in /about page
-├── search.json
-├── series
-└── tag
+```ruby
+gem "jekyll-theme-persephone"
 ```
 
-### Install gems
+And add this line to your Jekyll site's `_config.yml`:
 
-Run the following command to install required gems defined in `Gemfile`:
-
-```
-$ bundle install
+```yaml
+theme: jekyll-theme-persephone
 ```
 
-### Customization
+And then execute:
 
-Edit `_config.yml` and `_data/me.yml` to tweek the site configuration to your
-need. See corresponding comments in these files for details.
+    $ bundle
 
-You also should replace the `/favicon.ico` and `/assets/img/me.png` file with
-your own.
+Or install it yourself as:
 
-### Run locally
+    $ gem install jekyll-theme-persephone
 
-Run `bundle exec jekyll serve --watch` to run it locally.
+## Usage
 
-## Blogging
+- [Settings](/_config.yml)
+- [Layouts](/docs/layouts.md)
+- [Comments](/docs/comments.md)
+- [`jekyll-books` generator](/docs/books.md)
 
-You can begin writting your posts under `/_posts` folder.
-See [Jekyll doc on posts](https://jekyllrb.com/docs/posts/).
+## Contributing
 
-Posts are automatically grouped under site's post/category and post/tag menu.
+Bug reports and pull requests are welcome on GitHub at https://github.com/erlzhang/jekyll-theme-persephone. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-You can define post's category and tags in the post's [front matter](https://jekyllrb.com/docs/front-matter/),
-using `category` and `tags` front matter block.
+## Development
 
-## Math Notation Support
+To set up your environment to develop this theme, run `bundle install`.
 
-You can enable latex math support or asciimath support by adding `usemath: latex`
-or `usemath: ascii` front matter accordingly. Latex math notation must be wrapped
-inside \$\$, and asciimath notation must be wrapped inside \\`.
+Your theme is setup just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
 
-For detail configuration and math rendering result, see <https://unifreak.github.io/jekyll-theme-textalic/demo/Blogging>
+When your theme is released, only the files in `_layouts`, `_includes`, `_sass` and `assets` tracked with Git will be bundled.
+To add a custom directory to your theme-gem, please edit the regexp in `jekyll-theme-persephone.gemspec` accordingly.
 
-### Series
+## License
 
-Series are implemented using [Jekyll's collections](https://jekyllrb.com/docs/collections/).
-To add new series, follow these steps:
-
-1. Define a new collection in `_config.yml`, under `collections` configuration block:
-
-    ```yaml
-    collections:
-      demo_series:
-        output: true
-    ```
-
-    Note that to make the change to `_config.yml` take effects, you **need to restart jekyll**.
-
-2. Create the series (aka collection) folder `/_demo_series`. Note that the **folder name begin with `_`**.
-
-3. By adding new post under the series folder, you add post under the corresponding series.
-
-## Deployment
-
-See [Jekyll doc on deployment](https://jekyllrb.com/docs/deployment/).
-
-## That's it
-
-Happy blogging!
+The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

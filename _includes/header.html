@@ -1,44 +1,24 @@
-<header id="l-header">
-    <div class="container">
-        <div class="row logo">
-            <div class="col-lg-7">
-                <h1>{{ site.name }}</h1>
-            </div>
-
-            <div class="col-lg-5">
-              {% for line in site.shout %}
-                <p>{{ line }}</p>
-              {% endfor %}
-            </div>
-        </div>
-
-        <div class="row navicon">
-            <a href=""><i class="fa fa-navicon"></i></a>
-        </div>
-
-        <div class="row navbar">
-            <nav class="col-lg-8 col-md-8 col-xs-12">
-                <ul class="row">
-                    <li class="col-lg-3"><a href="{{ '/' | relative_url }}">HOME</a></li>
-                    <li class="col-lg-3">
-                        <ul class="subnav">
-                            <a href="javascript:void(0)">POST</a>
-                            <li><a href="{{ '/category' | relative_url }}">CATEGORY</a></li>
-                            <li><a href="{{ '/tag' | relative_url }}">TAG</a></li>
-                        </ul>
-                    </li>
-                    <li class="col-lg-3"><a href="{{ '/series' | relative_url }}">SERIES</a></li>
-                    <li class="col-lg-3"><a href="{{ '/about' | relative_url }}">ABOUT</a></li>
-                </ul>
-            </nav>
-
-            <div class="search col-lg-4 col-md-4 col-xs-12">
-                <form>
-                    <label for="search"></label>
-                    <input id="search-input" name="serach" type="text" placeholder="Search Blog Posts...">
-                    <i class="fa fa-search"></i>
-                </form>
-            </div>
-        </div>
-    </div>
-</header>
+<a href="{{ "/" | relative_url }}" class="logo">
+  {%- if site.logo -%}
+  <img src="{{ site.logo | img_url_prefix }}" class="logo_img">
+  {%- endif -%}
+  <h1>{{ site.title }}</h1>
+</a>
+{%- if "slides,chapter,book" contains page.layout and site.theme_setting.archive_page -%}
+{%- assign archive_page = site.pages | where: "path", site.theme_setting.archive_page | first -%}
+<a href="{{ archive_page.url | relative_url }}" class="sidebar__toggler">
+  <span class="sidebar__toggler_top"></span>
+  <span class="sidebar__toggler_middle"></span>
+  <span class="sidebar__toggler_bottom"></span>
+</a>
+{%- endif %}
+{%- if page.layout == "chapter" -%}
+<div class="book-header" role="navigation">
+    <a href="#" id="summaryToggler" class="summary__toggler">
+      {% include icons/ellipsis.html%}
+    </a>
+  <h1>
+    {{ page.title }} - {{ page.book.title }}
+  </h1>
+</div>
+{%- endif -%}
