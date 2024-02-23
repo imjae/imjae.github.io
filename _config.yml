@@ -15,7 +15,7 @@ social:
 # # Theme Settings
 
 # # Your site's logo. Will be shown on the left top of your page.
-logo: /assets/img/home.png
+# logo: /assets/img/home.png
 # # If the images of our blog are stored in an external cloud. You can use the jekyll-img-prefix plugin and set your images' base URL here.
 # img_prefix: https://your-img-cdn.com
 # # The RSS link of your blog.
