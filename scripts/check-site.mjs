@@ -32,5 +32,8 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
 for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philosophy-The-Myth-Of-sisyphus.html']) {
   if (!(await exists(join(root,path)))) failures.push(`예전 글 주소의 실제 HTML 누락: ${path}`);
 }
+const editor = await readFile(join(root,'editor','index.html'),'utf8');
+if (!/name="robots" content="noindex, nofollow"/.test(editor)) failures.push('수정 모드의 검색 수집 제외 설정 누락');
+if (feeds.includes('/editor/')) failures.push('수정 모드가 RSS 또는 sitemap에 포함됨');
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }
 else console.log(`${htmlFiles.length}개 HTML의 로컬 링크, 글 공개 상태, 예전 주소를 확인했습니다.`);

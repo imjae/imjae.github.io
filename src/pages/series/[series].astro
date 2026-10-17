@@ -4,7 +4,7 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import { getArticles } from '../../lib/articles';
 import { seriesTitle } from '../../data/site';
 export async function getStaticPaths() {
-  return [...new Set((await getArticles()).map((article) => article.data.series).filter(Boolean))].map((series) => ({ params: { series }, props: { series: series! } }));
+  return [...new Set(['dcb', ...(await getArticles()).map((article) => article.data.series).filter(Boolean)])].map((series) => ({ params: { series }, props: { series: series! } }));
 }
 const { series } = Astro.props;
 const articles = (await getArticles()).filter((article) => article.data.series === series).sort((a,b) => (a.data.order ?? 99) - (b.data.order ?? 99));

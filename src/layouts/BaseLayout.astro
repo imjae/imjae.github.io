@@ -2,10 +2,12 @@
 import '../styles/global.css';
 import { site, topics } from '../data/site';
 import { getArticles } from '../lib/articles';
-interface Props { title?: string; description?: string; active?: string; noindex?: boolean; }
-const { title, description = site.description, active = '', noindex = false } = Astro.props;
+import ModeSwitch from '../components/ModeSwitch.astro';
+interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editSlug?: string; }
+const { title, description = site.description, active = '', noindex = false, editSlug } = Astro.props;
 const articles = await getArticles();
 const canonical = new URL(Astro.url.pathname, site.url);
+const editorUrl = editSlug ? `/editor/?post=${encodeURIComponent(editSlug)}` : '/editor/';
 ---
 <!doctype html>
 <html lang="ko">
@@ -39,6 +41,7 @@ const canonical = new URL(Astro.url.pathname, site.url);
         <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>글 모아보기</a>
         <a class="github-link" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
+      <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} />
     </header>
     <div class="workspace">
       <aside class="sidebar" aria-label="기록 탐색">

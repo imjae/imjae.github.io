@@ -1,0 +1,16 @@
+---
+interface Props { editing?: boolean; viewerUrl: string; editorUrl: string; }
+const { editing = false, viewerUrl, editorUrl } = Astro.props;
+---
+<nav class="mode-switch" aria-label="블로그 모드">
+  <a href={viewerUrl} data-view-mode aria-current={!editing ? 'page' : undefined}>뷰어 모드</a>
+  <a href={editorUrl} aria-current={editing ? 'page' : undefined}>수정 모드</a>
+</nav>
+<style>
+  .mode-switch{display:flex;align-items:center;border:1px solid var(--line);border-radius:5px;padding:3px;gap:2px;flex-shrink:0;font-size:10px}
+  .mode-switch a{padding:7px 10px;border-radius:3px;white-space:nowrap;color:var(--muted)}
+  .mode-switch a[aria-current]{color:var(--green);background:#e5ece1;font-weight:650}
+  .mode-switch a:hover{color:var(--green)}
+  @media(max-width:760px){.mode-switch{margin-left:auto;font-size:10px}.mode-switch a{padding:7px 9px}}
+  @media print{.mode-switch{display:none}}
+</style>

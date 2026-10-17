@@ -9,6 +9,10 @@
 
 ## 글 작성
 
+웹에서는 [수정 모드](https://imjae.github.io/editor/)에서 새 글을 만들거나 기존 글의 수정·삭제 화면을 엽니다. GitHub 로그인 후 **Commit changes**로 저장하며, `main`에 저장하면 검증·빌드 후 배포합니다. 초안은 GitHub의 파일 목록에서 관리합니다.
+
+로컬에서 작성하려면 다음 명령을 사용합니다.
+
 ```sh
 npm ci
 npm run new -- --title "물의 깊이와 지형 접점" --slug water-contact --topic graphics --kind case-study --project dcb --series dcb

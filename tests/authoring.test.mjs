@@ -38,8 +38,11 @@ test('Jekyll 원본을 보존하고 편집된 글의 작성 날짜와 주소를 
   for (const [source,slug,hash] of entries) {
     const original = (await readFile(join('legacy/jekyll/_posts',source),'utf8')).replaceAll('\r\n','\n');
     assert.equal(createHash('sha256').update(original).digest('hex'),hash);
-    const { data } = parseFrontmatter(await readFile(join('content/articles/notes',`${slug}.md`),'utf8'));
-    assert.equal(data.date,'2024-02-23');
-    assert.equal(data.slug,slug);
+    const published = await readFile(join('content/articles/notes',`${slug}.md`),'utf8').catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+    if (published !== null) {
+      const { data } = parseFrontmatter(published);
+      assert.equal(data.date,'2024-02-23');
+      assert.equal(data.slug,slug);
+    }
   }
 });

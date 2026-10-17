@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getArticles, articleUrl, formatDate } from '../lib/articles';
+import { topics, kinds, getTopic } from '../data/site';
+import { repository, branch, githubFileUrl } from '../lib/github-authoring.mjs';
+const articles = await getArticles(false);
+---
+<BaseLayout title="수정 모드" active="editor" noindex description="GitHub에서 블로그 글을 추가·수정·삭제합니다.">
+  <header class="page-intro"><h1>수정 모드</h1><p>글 추가·수정·삭제는 GitHub에서 저장합니다.<br/>저장소 쓰기 권한이 있는 계정으로 로그인해 주세요.</p></header>
+  <div class="editor-shortcuts">
+    <a href="#new-post" class="button button-dark">새 글 작성</a>
+    <a href={`${repository}/tree/${branch}/content/articles`} target="_blank" rel="noopener noreferrer">초안·전체 파일 ↗</a>
+    <a href={`${repository}/actions`} target="_blank" rel="noopener noreferrer">배포 확인 ↗</a>
+  </div>
+  <section class="editor-section" aria-labelledby="manage-title">
+    <div class="section-heading"><h2 id="manage-title">공개 글 관리 <span>{articles.length}</span></h2></div>
+    <label class="search-box"><span aria-hidden="true">⌕</span><input id="manage-search" type="search" aria-label="관리할 글 검색" placeholder="제목이나 주제로 검색" autocomplete="off" /></label>
+    <p id="manage-count" role="status" aria-live="polite">{articles.length}개의 글</p>
+    <div class="manage-list">{articles.map(article => <article class="manage-row" data-post={article.data.slug} data-title={`${article.data.title} ${getTopic(article.data.topic).title}`.toLocaleLowerCase()}>
+      <div><p class="manage-meta">{getTopic(article.data.topic).title} · {formatDate(article.data.date)}</p><h3>{article.data.title}</h3></div>
+      <div class="manage-actions">
+        <a href={articleUrl(article)} aria-label={`${article.data.title} 읽기`}>읽기</a>
+        <a href={githubFileUrl('edit', article.filePath)} aria-label={`${article.data.title} 수정`} target="_blank" rel="noopener noreferrer">수정 ↗</a>
+        <a class="delete-link" href={githubFileUrl('delete', article.filePath)} aria-label={`${article.data.title} 삭제 검토`} target="_blank" rel="noopener noreferrer">삭제 검토 ↗</a>
+      </div>
+    </article>)}</div>
+    <p id="manage-empty" hidden>검색 결과가 없습니다.</p>
+    <p class="editor-help">수정·삭제 링크는 GitHub의 파일 편집 화면을 엽니다. 대상과 변경 내용을 확인한 뒤 <strong>Commit changes</strong>로 저장합니다. 삭제도 이 단계에서 확정합니다.</p>
+  </section>
+  <section class="editor-section new-post-section" id="new-post" aria-labelledby="new-post-title">
+    <div class="section-heading"><h2 id="new-post-title">새 글 작성</h2></div>
+    <p class="editor-help">기본 정보를 입력하면 제목과 본문 틀이 채워진 GitHub 편집 화면을 엽니다. 새 글은 초안으로 시작합니다.</p>
+    <form id="new-post-form">
+      <div class="editor-fields">
+        <label class="wide">제목<input name="title" required maxlength="110" placeholder="예: Climb 손 접촉 오차 수정" /></label>
+        <label class="wide">요약<textarea name="description" required maxlength="220" rows="2" placeholder="글에서 다룰 내용을 한두 문장으로 적어 주세요."></textarea></label>
+        <label>글 주소<input name="slug" required maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="climb-hand-contact" /><small>영문 소문자·숫자·하이픈. 공개한 뒤에는 유지합니다.</small></label>
+        <label>작성 날짜<input name="date" type="date" required /></label>
+        <label>주제<select name="topic">{topics.map(topic => <option value={topic.id}>{topic.title}</option>)}</select></label>
+        <label>글 종류<select name="kind">{Object.entries(kinds).map(([id, title]) => <option value={id}>{title}</option>)}</select></label>
+        <label class="wide">태그<input name="tags" maxlength="200" placeholder="Unity, IK, Animation" /><small>쉼표로 구분합니다.</small></label>
+      </div>
+      <details class="editor-extra"><summary>프로젝트·시리즈 지정 (선택)</summary><div class="editor-fields"><label>프로젝트<input name="project" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="dcb" /></label><label>시리즈<input name="series" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="dcb" /></label></div></details>
+      <div class="editor-submit"><button class="button button-dark" type="submit">GitHub에서 새 글 작성 ↗</button><p id="new-post-status" role="status" aria-live="polite"></p></div>
+      <noscript><p>새 글 양식은 JavaScript가 필요합니다. <a href={`${repository}/new/${branch}/content/articles`}>GitHub에서 직접 새 파일을 만들 수 있습니다.</a></p></noscript>
+    </form>
+  </section>
+  <section class="editor-guide" aria-labelledby="publish-title"><h2 id="publish-title">저장과 공개</h2><ol><li>GitHub에서 본문을 작성하고 <strong>Commit changes</strong>로 저장합니다.</li><li>초안은 <code>draft: true</code>로 둡니다. 공개할 준비가 되면 <code>draft: false</code>로 바꿉니다.</li><li><code>main</code>에 저장한 뒤 검증과 배포가 끝나면 블로그에 반영됩니다.</li></ol><p><a href={`${repository}/blob/${branch}/docs/EDITORIAL.md`} target="_blank" rel="noopener noreferrer">문구 작성 지침 ↗</a><a href={`${repository}/blob/${branch}/docs/WRITING.md`} target="_blank" rel="noopener noreferrer">글쓰기 가이드 ↗</a></p></section>
+</BaseLayout>
+<script>
+  import { prepareNewPost, koreanDate } from '../lib/github-authoring.mjs';
+  const rows = [...document.querySelectorAll<HTMLElement>('.manage-row')];
+  const search = document.querySelector<HTMLInputElement>('#manage-search');
+  const count = document.querySelector('#manage-count');
+  const empty = document.querySelector<HTMLElement>('#manage-empty');
+  const selected = new URLSearchParams(location.search).get('post');
+  const selectedRow = rows.find(row => row.dataset.post === selected);
+  if (selectedRow) {
+    selectedRow.classList.add('selected-post');
+    const viewer = document.querySelector<HTMLAnchorElement>('[data-view-mode]');
+    if (viewer) viewer.href = `/writing/${selectedRow.dataset.post}/`;
+  }
+  function filterPosts() {
+    if (!search) return;
+    const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    let visible = 0;
+    for (const row of rows) { row.hidden = !words.every(word => row.dataset.title?.includes(word)); if (!row.hidden) visible++; }
+    if (count) count.textContent = `${visible}개의 글`;
+    if (empty) empty.hidden = visible > 0;
+  }
+  if (selectedRow && search) search.value = selectedRow.querySelector('h3')?.textContent ?? '';
+  search?.addEventListener('input', filterPosts);
+  filterPosts();
+  const form = document.querySelector<HTMLFormElement>('#new-post-form');
+  const date = form?.querySelector<HTMLInputElement>('[name="date"]');
+  if (date) date.value = koreanDate();
+  form?.addEventListener('input', () => { const status = document.querySelector('#new-post-status'); if (status) status.textContent = ''; });
+  form?.addEventListener('submit', event => {
+    event.preventDefault();
+    const status = document.querySelector('#new-post-status');
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      if (rows.some(row => row.dataset.post === data.slug)) throw new Error('이미 공개된 글 주소입니다. 다른 주소를 적어 주세요.');
+      const post = prepareNewPost(data);
+      if (status) status.textContent = 'GitHub 편집 화면으로 이동합니다.';
+      location.assign(post.url);
+    } catch (error) { if (status) status.textContent = error instanceof Error ? error.message : '입력한 내용을 확인해 주세요.'; }
+  });
+</script>
+<style>
+  .editor-shortcuts{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:0 0 35px;font-size:12px}.editor-shortcuts>a:not(.button){color:var(--green)}
+  .editor-section{margin-bottom:44px}.editor-section>.search-box{max-width:560px}#manage-count{font-size:11px;color:var(--muted);margin:15px 0}
+  .manage-list{border-top:1px solid var(--line)}.manage-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:21px 0;border-bottom:1px solid var(--line)}.manage-row[hidden]{display:none}.manage-meta{font-size:10px;color:var(--muted);margin:0 0 8px}.manage-row h3{font-size:16px;line-height:1.7;margin:0}.manage-actions{display:flex;gap:8px;flex-shrink:0;font-size:11px}.manage-actions a{border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:nowrap}.manage-actions a:hover{background:var(--soft)}.manage-actions .delete-link{color:#8a5347}.selected-post{background:#eaf0e5;padding-left:14px;padding-right:14px}
+  .editor-help{font-size:12px;line-height:2;color:var(--muted);max-width:750px;margin:20px 0}.editor-help strong{font-weight:600;color:var(--ink)}
+  .new-post-section{border-top:1px solid var(--line);padding-top:32px;scroll-margin-top:25px}.editor-fields{display:grid;grid-template-columns:1fr 1fr;gap:20px}.editor-fields label{display:flex;flex-direction:column;gap:9px;font-size:12px;min-width:0}.editor-fields .wide{grid-column:1/-1}.editor-fields input,.editor-fields textarea,.editor-fields select{width:100%;border:1px solid #ccd3c6;background:white;border-radius:4px;padding:12px;color:var(--ink);font:inherit;line-height:1.7}.editor-fields textarea{resize:vertical;font-family:var(--sans)}.editor-fields small{font-size:10px;color:var(--muted);line-height:1.8}.editor-fields textarea:focus-visible{outline:2px solid #3a8269;outline-offset:3px}.editor-extra{font-size:12px;margin-top:24px}.editor-extra summary{cursor:pointer;color:var(--green);padding:8px 0}.editor-extra .editor-fields{margin-top:15px}.editor-submit{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:27px}.editor-submit p{font-size:12px;line-height:1.8;color:#8a5347;margin:0}
+  .editor-guide{border:1px solid var(--line);background:#eef1e7;border-radius:5px;padding:24px;font-size:12px;line-height:2}.editor-guide h2{font-size:18px}.editor-guide ol{padding-left:20px}.editor-guide li{padding-left:3px;margin-bottom:9px}.editor-guide p{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:0}.editor-guide a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.editor-guide code{font-family:var(--mono);font-size:11px}
+  @media(max-width:1000px){.manage-row{align-items:flex-start;flex-direction:column;gap:14px}.manage-actions{align-self:flex-end}}
+  @media(max-width:760px){.editor-shortcuts{gap:16px;font-size:11px}.manage-row h3{font-size:15px}.editor-fields{grid-template-columns:1fr}.editor-fields .wide{grid-column:auto}.editor-guide{padding:18px}.editor-submit .button{width:100%}.manage-actions a{padding:9px 11px}}
+</style>

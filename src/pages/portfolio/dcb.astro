@@ -2,11 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SystemSketch from '../../components/SystemSketch.astro';
 import { cases } from '../../data/site';
+import { getArticles } from '../../lib/articles';
+const publishedSlugs = new Set((await getArticles()).map(article => article.data.slug));
+const availableCases = cases.filter(item => publishedSlugs.has(item.slug));
 ---
 <BaseLayout title="DCB — 게임플레이와 그래픽스" active="portfolio" description="지게 운반 액션 게임 DCB의 IK 트레버설, 몬스터 전투, 장비 파츠 조합, 물과 불 렌더링 개발 기록.">
   <div class="breadcrumb"><a href="/portfolio/">포트폴리오</a><span>/</span><span>DCB</span></div>
   <section class="portfolio-hero"><div><p class="eyebrow">개발 중</p><h1>DCB</h1><h2>지게로 짐을 운반하는 액션 게임</h2><p>조선을 배경으로 한 게임입니다. 지게 적재량에 따른 이동 부담, 트레버설, 몬스터 전투와 장비 조합을 개발하고 있습니다.</p><div class="stack-list"><span>Unity 6</span><span>C#</span><span>HDRP</span><span>Addressables</span><span>AI 협업</span></div></div><SystemSketch /></section>
   <div class="role-box"><strong>담당한 범위</strong><p>기획, 게임플레이·데이터 시스템, UI와 조립 도구, 셰이더와 이펙트, AI 협업을 통한 구현·검증을 담당했습니다. 3D 모델과 애니메이션 원본은 기존 자산을 활용했으며, 재사용한 텍스처 등은 개별 기록에서 구분합니다.</p></div>
-  <section><div class="section-heading"><div><h2>구현한 기능</h2></div><a class="text-link" href="/series/dcb/">DCB 글 목록 →</a></div><div class="case-list">{cases.map((item) => <a class="case-entry" href={`/writing/${item.slug}/`}><span>{item.number}</span><div><p class="eyebrow">{item.label}</p><h3>{item.title}</h3><p>{item.detail}</p></div><span aria-hidden="true">↗</span></a>)}</div></section>
+  <section><div class="section-heading"><div><h2>구현한 기능</h2></div><a class="text-link" href="/series/dcb/">DCB 글 목록 →</a></div><div class="case-list">{availableCases.map((item) => <a class="case-entry" href={`/writing/${item.slug}/`}><span>{item.number}</span><div><p class="eyebrow">{item.label}</p><h3>{item.title}</h3><p>{item.detail}</p></div><span aria-hidden="true">↗</span></a>)}</div></section>
   <p class="portfolio-note">소스 구조와 기존 검사 결과를 정리한 내용입니다. 플레이 영상과 성능 측정 자료는 아직 첨부하지 않았습니다.</p>
 </BaseLayout>

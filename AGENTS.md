@@ -8,6 +8,7 @@ This repository is imjae's public game development notebook at https://imjae.git
 - New posts start with `draft: true`. Publish only content the user authorized. Production routes, search, RSS and sitemap must exclude drafts.
 - Keep explicit slugs stable. Before changing an existing address, add a static redirect and verify its exact path.
 - Preserve the original files and complete bodies of both 2024 posts in `legacy/jekyll/`. Published copies may be edited at the user's request, but keep their original dates and slugs. Their old public URLs must continue to resolve.
+- `/editor/` is a public navigation page for GitHub's authenticated editor, not an authenticated admin session. Never collect or store GitHub tokens in the site. Include only published posts; link to GitHub for drafts. Keep deletion safe for portfolio, series and old-URL links.
 - Distinguish original assets, reused assets and AI assistance. Do not invent screenshots, results, benchmarks or completed gameplay verification.
 - DCB source is private. Publish only the requested explanations and approved media; do not copy whole source files, private logs, local paths or personal save data.
 - Use existing categories: `gameplay`, `graphics`, `tools`, `ai`, `notes`. Use `series` to connect posts instead of duplicating them.

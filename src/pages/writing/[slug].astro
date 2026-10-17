@@ -10,7 +10,7 @@ const { Content, headings } = await render(article);
 const topic = getTopic(article.data.topic);
 const series = article.data.series ? (await getArticles()).filter((entry) => entry.data.series === article.data.series).sort((a,b) => (a.data.order ?? 99) - (b.data.order ?? 99)) : [];
 ---
-<BaseLayout title={article.data.title} description={article.data.description} active={article.data.topic} noindex={article.data.draft}>
+<BaseLayout title={article.data.title} description={article.data.description} active={article.data.topic} noindex={article.data.draft} editSlug={article.data.slug}>
   {article.data.draft && <div class="draft-banner">로컬에서만 보는 초안입니다. 공개 빌드·검색·RSS에는 포함되지 않습니다.</div>}
   <header class="article-header" style={`--topic-color:${topic.color}`}>
     <div class="breadcrumb"><a href="/writing/">글 모아보기</a><span>/</span><a href={`/topics/${topic.id}/`}>{topic.title}</a></div>
