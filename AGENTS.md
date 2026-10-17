@@ -3,7 +3,7 @@
 This repository is imjae's public game development notebook at https://imjae.github.io.
 
 - Use Korean for prose and completion reports. Keep established code identifiers in English.
-- Use plain, factual prose. Describe the implementation, checked results and remaining work without slogans, metaphors or unsupported claims.
+- Before writing or editing any reader-facing copy, read and follow [docs/EDITORIAL.md](docs/EDITORIAL.md). Keep the user's wording preferences in that single source when they ask to add or revise them.
 - Author Markdown under `content/articles/<topic>/`. Metadata is validated by `src/content.config.ts`.
 - New posts start with `draft: true`. Publish only content the user authorized. Production routes, search, RSS and sitemap must exclude drafts.
 - Keep explicit slugs stable. Before changing an existing address, add a static redirect and verify its exact path.

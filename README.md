@@ -25,7 +25,7 @@ npm run dev
 | AI 협업 | `content/articles/ai/` | 요구사항·후보 비교·검증 |
 | 학습 메모 | `content/articles/notes/` | 학습·읽기·짧은 기록 |
 
-세부 작업 순서는 [글쓰기 가이드](docs/WRITING.md), 이전 구조와 배포 정보는 [이관 기록](docs/MIGRATION.md)을 참고합니다.
+문체와 표현 기준은 [문구 작성 지침](docs/EDITORIAL.md), 세부 작업 순서는 [글쓰기 가이드](docs/WRITING.md), 이전 구조와 배포 정보는 [이관 기록](docs/MIGRATION.md)을 참고합니다.
 
 ## 확인과 배포
 
