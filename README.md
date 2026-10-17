@@ -7,6 +7,8 @@
 - 구성: Astro 정적 사이트, Markdown 콘텐츠, GitHub Pages 자동 배포.
 - 요구 환경: Node.js 24 이상. Ruby와 Jekyll 설치는 필요하지 않습니다.
 
+Codex 프로젝트에서 작업을 이어갈 때는 [블로그 관리 인수인계](docs/HANDOFF.md)를 먼저 읽습니다. 현재 구성, 글 목록, 작성 지침과 남은 확인 사항을 정리했습니다.
+
 ## 글 작성
 
 웹에서는 [수정 모드](https://imjae.github.io/editor/)에서 새 글을 만들거나 기존 글의 수정·삭제 화면을 엽니다. GitHub 로그인 후 **Commit changes**로 저장하며, `main`에 저장하면 검증·빌드 후 배포합니다. 초안은 GitHub의 파일 목록에서 관리합니다.

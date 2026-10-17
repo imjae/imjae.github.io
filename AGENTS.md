@@ -2,6 +2,7 @@
 
 This repository is imjae's public game development notebook at https://imjae.github.io.
 
+- When continuing in a new chat, read [docs/HANDOFF.md](docs/HANDOFF.md) for the current structure, completed work and verification limits. Follow the dedicated editorial and writing documents it links to.
 - Use Korean for prose and completion reports. Keep established code identifiers in English.
 - Before writing or editing any reader-facing copy, read and follow [docs/EDITORIAL.md](docs/EDITORIAL.md). Keep the user's wording preferences in that single source when they ask to add or revise them.
 - Author Markdown under `content/articles/<topic>/`. Metadata is validated by `src/content.config.ts`.
