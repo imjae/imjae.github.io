@@ -6,12 +6,13 @@ interface Props { initialTopic?: string; }
 const { initialTopic = '' } = Astro.props;
 const articles = await getArticles();
 const tags = [...new Set(articles.flatMap((article) => article.data.tags))].sort((a,b) => a.localeCompare(b,'ko'));
+const initialTags = new Set(articles.filter((article) => !initialTopic || article.data.topic === initialTopic).flatMap((article) => article.data.tags));
 const index = articles.map((article) => ({ slug: article.data.slug, topic: article.data.topic, tags: article.data.tags, text: [article.data.title, article.data.description, article.body ?? '', ...article.data.tags].join(' ').toLocaleLowerCase() }));
 ---
 <div class="article-library" data-initial-topic={initialTopic}>
   <label class="search-box"><span aria-hidden="true">⌕</span><input id="article-search" type="search" placeholder="제목, 본문, 태그에서 검색" aria-label="글 검색" autocomplete="off" /><kbd>/</kbd></label>
   <div class="filter-row"><label for="topic-filter" class="sr-only">주제</label><select id="topic-filter"><option value="">모든 주제</option>{topics.map((topic) => <option value={topic.id} selected={topic.id === initialTopic}>{topic.title}</option>)}</select><button type="button" id="reset-filters">필터 초기화</button></div>
-  <div class="tag-filters" aria-label="태그 필터">{tags.map((tag) => <button type="button" data-tag={tag} aria-pressed="false">#{tag}</button>)}</div>
+  <div class="tag-filters" aria-label="태그 필터">{tags.map((tag) => <button type="button" data-tag={tag} aria-pressed="false" hidden={!initialTags.has(tag)}>#{tag}</button>)}</div>
   <div class="search-status"><span id="result-count" role="status" aria-live="polite">{articles.length}개의 기록</span><span>제목 · 본문 · 태그</span></div>
   <div class="article-list">{articles.map((article) => <ArticleCard article={article} />)}</div>
   <p class="empty-state" id="no-results" hidden>찾는 기록이 없습니다.<br/>다른 검색어를 입력하거나 필터를 초기화해 보세요.</p>
@@ -30,6 +31,8 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
   if (topic && params.has('topic')) topic.value = params.get('topic') ?? '';
   function update() {
     if (!search || !topic) return;
+    const availableTags = new Set(data.filter((entry) => !topic.value || entry.topic === topic.value).flatMap((entry) => entry.tags));
+    if (!availableTags.has(tag)) tag = '';
     const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
     let visible = 0;
     const cards = new Map([...document.querySelectorAll<HTMLElement>('[data-entry]')].map((card) => [card.dataset.entry, card]));
@@ -39,13 +42,16 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
       if (card) card.hidden = !matches;
       if (matches) visible++;
     });
-    document.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.tag === tag)));
+    document.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((button) => {
+      button.hidden = !availableTags.has(button.dataset.tag ?? '');
+      button.setAttribute('aria-pressed', String(button.dataset.tag === tag));
+    });
     if (count) count.textContent = `${visible}개의 기록`;
     if (empty) empty.hidden = visible > 0;
     const next = new URLSearchParams();
     if (search.value.trim()) next.set('q', search.value.trim());
     if (tag) next.set('tag', tag);
-    if (topic.value && topic.value !== library?.dataset.initialTopic) next.set('topic', topic.value);
+    if (topic.value !== (library?.dataset.initialTopic ?? '')) next.set('topic', topic.value);
     history.replaceState(null, '', location.pathname + (next.size ? `?${next}` : ''));
   }
   search?.addEventListener('input', update);
