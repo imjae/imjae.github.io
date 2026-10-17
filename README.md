@@ -1,6 +1,6 @@
 # imjae Dev Notes
 
-게임 개발을 중심으로 프로그래밍·그래픽스·도구를 공부하며 학습, 실험과 문제 해결 과정을 쌓아가는 기술 블로그입니다.
+게임 개발과 학습 내용을 정리하는 기술 블로그입니다.
 
 - 블로그: https://imjae.github.io/
 - 포트폴리오 입구: https://imjae.github.io/portfolio/dcb/
@@ -23,7 +23,7 @@ npm run dev
 | 그래픽스 | `content/articles/graphics/` | 셰이더·물·불·VFX·성능 |
 | 도구와 구조 | `content/articles/tools/` | 장비 조합·데이터·저작 도구 |
 | AI 협업 | `content/articles/ai/` | 요구사항·후보 비교·검증 |
-| 생각과 메모 | `content/articles/notes/` | 학습·읽기·짧은 기록 |
+| 학습 메모 | `content/articles/notes/` | 학습·읽기·짧은 기록 |
 
 세부 작업 순서는 [글쓰기 가이드](docs/WRITING.md), 이전 구조와 배포 정보는 [이관 기록](docs/MIGRATION.md)을 참고합니다.
 

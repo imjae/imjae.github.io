@@ -34,24 +34,24 @@ const canonical = new URL(Astro.url.pathname, site.url);
     <header class="site-header">
       <a class="brand" href="/" aria-label="imjae 홈">imjae<span>.</span><small>DEV NOTES</small></a>
       <nav class="header-nav" aria-label="주 메뉴">
+        <a href="/" aria-current={active === 'home' ? 'page' : undefined}>Home</a>
         <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>포트폴리오</a>
         <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>글 모아보기</a>
-        <a href="/profile/" aria-current={active === 'profile' ? 'page' : undefined}>Profile</a>
         <a class="github-link" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
     <div class="workspace">
       <aside class="sidebar" aria-label="기록 탐색">
-        <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> 시작 페이지</a>
-        <p class="nav-caption">EXPLORE BY TOPIC</p>
+        <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
+        <p class="nav-caption">주제</p>
         <nav class="topic-nav" aria-label="주제별 글">
           {topics.map((topic) => <a href={`/topics/${topic.id}/`} class:list={{ selected: active === topic.id }} style={`--topic-color:${topic.color}`}><span class="topic-mark"></span>{topic.title}<small>{articles.filter((article) => article.data.topic === topic.id).length.toString().padStart(2, '0')}</small></a>)}
         </nav>
-        <div class="sidebar-project"><p class="nav-caption">PROJECT JOURNAL</p><a href="/portfolio/dcb/"><span class="project-icon">D</span><span><strong>DCB</strong><small>지게를 지고 위험한 길을 걷다</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/">개발 기록 순서대로 읽기 <span aria-hidden="true">→</span></a></div>
-        <div class="sidebar-foot"><span class="live-dot"></span> 만들고, 확인하고, 기록하기.<br/><a href="/rss.xml">RSS 구독 ↗</a></div>
+        <div class="sidebar-project"><p class="nav-caption">프로젝트</p><a href="/portfolio/dcb/"><span class="project-icon">D</span><span><strong>DCB</strong><small>운반 액션 게임 · 개발 중</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/">DCB 글 목록 <span aria-hidden="true">→</span></a></div>
+        <div class="sidebar-foot"><a href="/rss.xml">RSS 구독 ↗</a></div>
       </aside>
       <main id="main-content"><slot /></main>
     </div>
-    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>배우고 만들며 남기는 기술 기록.</span><a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
+    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span><a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
   </body>
 </html>

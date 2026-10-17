@@ -3,10 +3,11 @@
 This repository is imjae's public game development notebook at https://imjae.github.io.
 
 - Use Korean for prose and completion reports. Keep established code identifiers in English.
+- Use plain, factual prose. Describe the implementation, checked results and remaining work without slogans, metaphors or unsupported claims.
 - Author Markdown under `content/articles/<topic>/`. Metadata is validated by `src/content.config.ts`.
 - New posts start with `draft: true`. Publish only content the user authorized. Production routes, search, RSS and sitemap must exclude drafts.
 - Keep explicit slugs stable. Before changing an existing address, add a static redirect and verify its exact path.
-- Preserve `legacy/jekyll/` and the complete bodies of both imported 2024 posts. Their old public URLs must continue to resolve.
+- Preserve the original files and complete bodies of both 2024 posts in `legacy/jekyll/`. Published copies may be edited at the user's request, but keep their original dates and slugs. Their old public URLs must continue to resolve.
 - Distinguish original assets, reused assets and AI assistance. Do not invent screenshots, results, benchmarks or completed gameplay verification.
 - DCB source is private. Publish only the requested explanations and approved media; do not copy whole source files, private logs, local paths or personal save data.
 - Use existing categories: `gameplay`, `graphics`, `tools`, `ai`, `notes`. Use `series` to connect posts instead of duplicating them.

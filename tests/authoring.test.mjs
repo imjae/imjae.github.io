@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -29,11 +30,16 @@ test('경로 탈출과 잘못된 분류는 파일 작성 전에 거절한다', a
   } finally { await rm(root,{recursive:true,force:true}); }
 });
 
-test('Jekyll에서 옮긴 두 글의 본문은 원문과 동일하다', async () => {
-  const entries = [['2024-02-23-test-post.md','welcome-to-jekyll.md'],['2024-02-23-philosophy-The-Myth-Of-sisyphus.md','the-myth-of-sisyphus.md']];
-  for (const [source,destination] of entries) {
-    const original = parseFrontmatter(await readFile(join('legacy/jekyll/_posts',source),'utf8')).content.replaceAll('\r\n','\n').trim();
-    const migrated = parseFrontmatter(await readFile(join('content/articles/notes',destination),'utf8')).content.replaceAll('\r\n','\n').trim();
-    assert.equal(migrated,original);
+test('Jekyll 원본을 보존하고 편집된 글의 작성 날짜와 주소를 유지한다', async () => {
+  const entries = [
+    ['2024-02-23-test-post.md','welcome-to-jekyll','d924e4c564ecf8626eb11f02d1ae551cc1bbb53e2156d14282be6b5e9ff26520'],
+    ['2024-02-23-philosophy-The-Myth-Of-sisyphus.md','the-myth-of-sisyphus','e731cc3cc01e1c717db8393bc3890d4cd95705a7f7dab52e1d75ff9676c3d60d'],
+  ];
+  for (const [source,slug,hash] of entries) {
+    const original = (await readFile(join('legacy/jekyll/_posts',source),'utf8')).replaceAll('\r\n','\n');
+    assert.equal(createHash('sha256').update(original).digest('hex'),hash);
+    const { data } = parseFrontmatter(await readFile(join('content/articles/notes',`${slug}.md`),'utf8'));
+    assert.equal(data.date,'2024-02-23');
+    assert.equal(data.slug,slug);
   }
 });

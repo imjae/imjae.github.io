@@ -9,4 +9,4 @@ export async function getStaticPaths() {
 const { series } = Astro.props;
 const articles = (await getArticles()).filter((article) => article.data.series === series).sort((a,b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
-<BaseLayout title={seriesTitle(series)} active={series === 'dcb' ? 'portfolio' : 'writing'}><header class="page-intro"><p class="eyebrow">SERIES / {series.toUpperCase()}</p><h1>{series === 'dcb' ? '하나의 게임을 만드는 과정.' : seriesTitle(series)}</h1><p>{series === 'dcb' ? '트레버설에서 전투, 장비와 환경 표현까지. DCB의 시스템을 순서대로 살펴보는 개발 기록입니다.' : '같은 질문과 작업을 순서대로 이어가는 기록입니다.'}</p></header><div class="article-list">{articles.map((article,index) => <ArticleCard article={article} number={String(index+1).padStart(2,'0')} />)}</div></BaseLayout>
+<BaseLayout title={seriesTitle(series)} active={series === 'dcb' ? 'portfolio' : 'writing'}><header class="page-intro"><p class="eyebrow">시리즈</p><h1>{seriesTitle(series)}</h1><p>{series === 'dcb' ? 'DCB의 기능별 구현 기록입니다.' : '같은 주제로 작성한 글 목록입니다.'}</p></header><div class="article-list">{articles.map((article,index) => <ArticleCard article={article} number={String(index+1).padStart(2,'0')} />)}</div></BaseLayout>

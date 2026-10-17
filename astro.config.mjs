@@ -15,7 +15,8 @@ export default defineConfig({
     }),
   },
   redirects: {
-    '/about': '/profile/',
+    '/about': '/',
+    '/profile': '/',
     '/blog': '/writing/',
     '/archive': '/writing/',
     '/book': '/topics/notes/',

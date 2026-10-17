@@ -3,7 +3,7 @@ interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 ---
 <div class:list={['system-sketch', { compact }]}>
-  <div class="sketch-label"><span class="live-dot"></span> FROM LOGIC TO EXPRESSION <span>RUNTIME / SYSTEM NOTES</span></div>
+  <div class="sketch-label">SYSTEM OVERVIEW <span>INPUT / STATE / RENDER</span></div>
   <svg viewBox="0 0 520 270" role="img" aria-label="입력과 데이터가 상태, 접촉, 시각 표현으로 연결되는 시스템 개념도">
     <defs>
       <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#4b6558" opacity=".3"/></pattern>
@@ -18,6 +18,6 @@ const { compact = false } = Astro.props;
     <g fill="#dfeddf"><circle cx="255" cy="118" r="7"/><circle cx="236" cy="157" r="4"/><circle cx="272" cy="155" r="4"/><circle cx="225" cy="192" r="4"/><circle cx="282" cy="190" r="4"/></g>
     <path d="m255 126-1 29m-18 2 18-21 18 19m-18 0-29 37m29-37 28 35" stroke="#dfeddf" stroke-width="3" fill="none" stroke-linecap="round"/>
     <circle cx="282" cy="190" r="12" fill="none" stroke="#c2aa75" stroke-width="1.5"/><path d="M297 190h34" stroke="#c2aa75"/><text x="336" y="194" font-family="monospace" font-size="10" fill="#c2aa75">CONTACT</text>
-    <text x="34" y="247" font-family="monospace" font-size="10" fill="#8fa89a">A SHARED CONTEXT. DIFFERENT SYSTEMS.</text>
+    <text x="34" y="247" font-family="monospace" font-size="10" fill="#8fa89a">GAMEPLAY / GRAPHICS</text>
   </svg>
 </div>

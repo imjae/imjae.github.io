@@ -27,8 +27,8 @@ export async function createPost(options, root = process.cwd()) {
     if (existing.slug === slug) throw new Error(`이미 사용하는 글 주소입니다: ${slug}`);
   }
   const date = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-  const data = { title: title.trim(), description: '글의 문제와 핵심 접근을 한두 문장으로 정리합니다.', slug, date, topic, kind, tags: [], ...(project ? { project } : {}), ...(series ? { series } : {}), draft: true };
-  const sections = kind === 'case-study' ? ['풀고 싶은 문제', '구조와 구현', '선택과 트레이드오프', '검증한 범위', '남은 일'] : kind === 'devlog' ? ['이번 작업의 목표', '구현과 관찰', '확인한 결과', '다음 작업'] : ['기록할 질문', '정리와 예시', '참고 자료'];
+  const data = { title: title.trim(), description: '글에서 다룬 내용을 한두 문장으로 적습니다.', slug, date, topic, kind, tags: [], ...(project ? { project } : {}), ...(series ? { series } : {}), draft: true };
+  const sections = kind === 'case-study' ? ['구현 목표', '구조와 구현', '선택한 방식과 이유', '검증한 범위', '남은 일'] : kind === 'devlog' ? ['이번 작업의 목표', '구현과 관찰', '확인한 결과', '다음 작업'] : ['주제', '정리와 예시', '참고 자료'];
   const body = sections.map((heading) => `## ${heading}\n\n<!-- 재현 조건, 본인 판단과 확인한 근거를 작성합니다. -->`).join('\n\n');
   const output = join(directory, topic, `${slug}.md`);
   await mkdir(join(directory, topic), { recursive: true });
