@@ -30,6 +30,7 @@ npm run dev
 | 도구와 구조 | `content/articles/tools/` | 장비 조합·데이터·저작 도구 |
 | AI 협업 | `content/articles/ai/` | 요구사항·후보 비교·검증 |
 | 학습 메모 | `content/articles/notes/` | 학습·읽기·짧은 기록 |
+| 수학 | `content/articles/math/` | 수·함수·벡터·행렬·회전과 수치 예제 |
 
 문체와 표현 기준은 [문구 작성 지침](docs/EDITORIAL.md), 세부 작업 순서는 [글쓰기 가이드](docs/WRITING.md), 이전 구조와 배포 정보는 [이관 기록](docs/MIGRATION.md)을 참고합니다.
 

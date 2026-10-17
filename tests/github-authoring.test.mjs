@@ -24,6 +24,16 @@ test('주소와 메타데이터를 검증해 경로 탈출·잘못된 날짜를 
   for (const change of [{slug:'../outside'},{topic:'unknown'},{kind:'unknown'},{date:'2026-02-30'},{series:'../series'},{project:'../../secret'},{title:''}]) assert.throws(() => prepareNewPost({...input,...change}));
 });
 
+test('GitHub 편집 양식도 수학 카테고리의 초안을 전달한다', () => {
+  const post = prepareNewPost({...input,topic:'math'});
+  const url = new URL(post.url);
+  assert.equal(url.searchParams.get('filename'),'content/articles/math/hand-contact.md');
+  const {data} = parseFrontmatter(url.searchParams.get('value'));
+  assert.equal(data.topic,'math');
+  assert.equal(data.draft,true);
+  assert.equal(new URL(githubFileUrl('edit',post.path)).pathname,'/imjae/imjae.github.io/edit/main/content/articles/math/hand-contact.md');
+});
+
 test('파일명과 slug가 달라도 실제 원본 경로의 수정·삭제 화면을 연다', () => {
   const file = 'D:\\dev\\blog\\content\\articles\\notes\\다른 파일명.md';
   assert.equal(articleSourcePath(file),'content/articles/notes/다른 파일명.md');

@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { parseFrontmatter } from './frontmatter.mjs';
 
-export const validTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes'];
+export const validTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math'];
 export const validKinds = ['case-study', 'devlog', 'note', 'reading'];
 export async function markdownFiles(directory) {
   let entries;

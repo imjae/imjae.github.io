@@ -30,6 +30,17 @@ test('경로 탈출과 잘못된 분류는 파일 작성 전에 거절한다', a
   } finally { await rm(root,{recursive:true,force:true}); }
 });
 
+test('수학 글을 전용 폴더의 초안으로 생성한다', async () => {
+  const root = await mkdtemp(join(tmpdir(),'imjae-math-'));
+  try {
+    const file = await createPost({title:'기저와 좌표',slug:'basis-study',topic:'math'},root);
+    assert.equal(file,join(root,'content/articles/math/basis-study.md'));
+    const { data } = parseFrontmatter(await readFile(file,'utf8'));
+    assert.equal(data.topic,'math');
+    assert.equal(data.draft,true);
+  } finally { await rm(root,{recursive:true,force:true}); }
+});
+
 test('Jekyll 원본을 보존하고 편집된 글의 작성 날짜와 주소를 유지한다', async () => {
   const entries = [
     ['2024-02-23-test-post.md','welcome-to-jekyll','d924e4c564ecf8626eb11f02d1ae551cc1bbb53e2156d14282be6b5e9ff26520'],

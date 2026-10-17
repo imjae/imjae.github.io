@@ -3,7 +3,7 @@ title: "카메라의 기준축과 LookAt 행렬 만들기"
 description: "카메라의 오른쪽·위·뒤 축을 외적으로 만들고 월드 점을 카메라 좌표로 옮긴다. 평행 벡터와 이동 역변환을 실습·풀이로 확인한다."
 slug: "camera-basis-lookat"
 date: "2026-10-17"
-topic: "graphics"
+topic: "math"
 kind: "note"
 tags: ["Math", "Camera", "OpenGL"]
 draft: false

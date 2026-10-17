@@ -10,7 +10,7 @@ const articles = defineCollection({
     slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     updated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    topic: z.enum(['gameplay', 'graphics', 'tools', 'ai', 'notes']),
+    topic: z.enum(['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math']),
     kind: z.enum(['case-study', 'devlog', 'note', 'reading']).default('note'),
     tags: z.array(z.string()).default([]),
     project: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),

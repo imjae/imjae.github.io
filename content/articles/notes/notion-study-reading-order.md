@@ -24,20 +24,20 @@ OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N0
 | 3 | [Unity CI에서 라이선스 메시지와 패키지 다운로드 실패를 구분한 과정](/writing/unity-ci-package-download-failure/) | 도구와 구조 |
 | 4 | [태그를 고정한 다중 저장소 checkout으로 빌드 입력 맞추기](/writing/tag-pinned-multi-repo-checkout/) | 도구와 구조 |
 | 5 | [오브젝트 풀의 생성·대여·반환과 중복 반환 방지](/writing/object-pool-lease-return/) | 도구와 구조 |
-| 6 | [벡터의 길이·정규화·내적·외적을 게임 판정에 쓰기](/writing/vector-length-dot-cross/) | 학습 메모 |
+| 6 | [벡터의 길이·정규화·내적·외적을 게임 판정에 쓰기](/writing/vector-length-dot-cross/) | 수학 |
 | 7 | [화면 좌표를 월드로, 월드 위치를 UI로 옮기기](/writing/unity-screen-world-ui-coordinates/) | 도구와 구조 |
 | 8 | [VBO·VAO·EBO와 정점 속성의 stride·offset](/writing/opengl-vertex-layout-stride-offset/) | 그래픽스 |
 | 9 | [GLSL 컴파일·링크 오류와 uniform 갱신](/writing/opengl-shader-errors-uniforms/) | 그래픽스 |
 | 10 | [텍스처 객체·텍스처 유닛·sampler와 이미지 포맷](/writing/opengl-texture-units-formats/) | 그래픽스 |
 | 11 | [텍스처 반복·필터링·mipmap을 같은 조건에서 비교하기](/writing/opengl-filtering-mipmaps/) | 그래픽스 |
-| 12 | [Local·World·View·Clip·NDC·Screen 좌표를 구분하기](/writing/local-world-clip-ndc-screen/) | 그래픽스 |
+| 12 | [Local·World·View·Clip·NDC·Screen 좌표를 구분하기](/writing/local-world-clip-ndc-screen/) | 수학 |
 | 13 | [직접 참조·Resources·AssetBundle·Addressables 선택하기](/writing/unity-asset-loading-choices/) | 도구와 구조 |
 | 14 | [GLFW·GLAD·컨텍스트와 첫 렌더 루프 만들기](/writing/opengl-context-render-loop/) | 그래픽스 |
-| 15 | [이동·회전·크기 행렬과 변환 순서 직접 계산하기](/writing/matrix-transform-order/) | 그래픽스 |
-| 16 | [카메라의 기준축과 LookAt 행렬 만들기](/writing/camera-basis-lookat/) | 그래픽스 |
+| 15 | [이동·회전·크기 행렬과 변환 순서 직접 계산하기](/writing/matrix-transform-order/) | 수학 |
+| 16 | [카메라의 기준축과 LookAt 행렬 만들기](/writing/camera-basis-lookat/) | 수학 |
 | 17 | [FSM의 Enter·Execute·Exit와 전이·중단 규칙](/writing/fsm-transition-interruption/) | 게임플레이 |
 | 18 | [Behavior Tree의 Sequence·Selector·Running과 중단](/writing/behavior-tree-running-abort/) | 게임플레이 |
-| 19 | [캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기](/writing/movement-facing-coordinate-space/) | 게임플레이 |
+| 19 | [캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기](/writing/movement-facing-coordinate-space/) | 수학 |
 | 20 | [Addressables 로드 핸들의 수명과 해제 책임](/writing/addressables-handle-lifetime/) | 도구와 구조 |
 | 21 | [AssetBundle 구조와 LZMA·LZ4의 로딩 비용 비교](/writing/assetbundle-compression-costs/) | 도구와 구조 |
 | 22 | [Addressables 카탈로그 옵션을 줄이기 전에 확인할 것](/writing/addressables-catalog-key-options/) | 도구와 구조 |
@@ -58,6 +58,8 @@ OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N0
 | 37 | [Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계](/writing/unity-cloud-auth-sdk-boundary/) | 도구와 구조 |
 
 ## 예제와 확인 범위를 읽는 방법
+
+수·함수·기저·회전 등 추가 수학 내용은 [수학 카테고리](/topics/math/)와 [게임 수학 읽기 순서](/writing/game-math-reading-order/)에서 이어서 읽을 수 있다. 이 목록의 기존 수학 글 주소는 그대로 유지했다.
 
 수치·콘솔 예제의 성공은 그 함수나 모델의 확인이다. Unity의 에셋·Animator·씬, GPU의 실제 셰이더·화면, Azure·AWS의 계정·서비스 실행과 같은 뜻으로 읽지 않는다. 미실행 항목은 각 글 끝에 적었다. 실습에서 제시한 예상 결과도 실제 캡처·측정값과 구분했다.
 

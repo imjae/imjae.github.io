@@ -1,6 +1,6 @@
 export const repository = 'https://github.com/imjae/imjae.github.io';
 export const branch = 'main';
-const topics = ['gameplay', 'graphics', 'tools', 'ai', 'notes'];
+const topics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math'];
 const kinds = ['case-study', 'devlog', 'note', 'reading'];
 const identifier = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
