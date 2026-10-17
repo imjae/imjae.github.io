@@ -1,70 +1,39 @@
-# jekyll-theme-persephone
+# imjae Game Dev Notes
 
-[![Gem Version](https://badge.fury.io/rb/jekyll-theme-persephone.svg)](https://rubygems.org/gems/jekyll-theme-persephone)
+게임플레이·그래픽스·도구·AI 협업 기록을 정리하는 개인 블로그입니다.
 
-Welcome to your new Jekyll theme! In this directory, you'll find the files you need to be able to package up your theme into a gem. Put your layouts in `_layouts`, your includes in `_includes`, your sass files in `_sass` and any other assets in `assets`.
+- 블로그: https://imjae.github.io/
+- 포트폴리오 입구: https://imjae.github.io/portfolio/dcb/
+- 구성: Astro 정적 사이트, Markdown 콘텐츠, GitHub Pages 자동 배포.
+- 요구 환경: Node.js 24 이상. Ruby와 Jekyll 설치는 필요하지 않습니다.
 
-To experiment with this code, add some sample content and run `bundle exec jekyll serve` – this directory is setup just like a Jekyll site!
+## 글 작성
 
-[DEMO with full functions.](http://demo.erl.im)
-
-[A simple blog demo](https://en.erl.im)
-
-## Demo
-
-| ![home layout](/screenshots/home.png) | ![blog layout](/screenshots/blog.png) |
-| -- | -- |
-| `layout: home` [Demo](https://en.erl.im/blog/) | `layout: blog` [Demo](https://en.erl.im/archive/) |
-| ![post layout](/screenshots/post.png) | ![page layout](/screenshots/page.png) |
-| `layout: post` [Demo](https://en.erl.im/blog/jekyll-theme-persephone.html) | `layout: page` [Demo](https://jekyll-theme-persephone.netlify.app/about.html) |
-| ![archive layout](/screenshots/archive.png)      | ![slides layout](/screenshots/slides.png) |
-| ![book layout](/screenshots/book.png) | ![chapter layout](/screenshots/chapter.png) |
-| <strong style="color: red">*</strong> `layout: book` [Demo](https://jekyll-theme-persephone.netlify.app/corner) | <strong style="color: red">*</strong> `layout: chapter` [Demo](https://jekyll-theme-persephone.netlify.app/corner/1.html) |
-
-The layout with red * relied on a jekyll books generator plugin: [`jekyll-books`](https://github.com/erlzhang/jekyll-books)
-
-## Installation
-
-Add this line to your Jekyll site's `Gemfile`:
-
-```ruby
-gem "jekyll-theme-persephone"
+```sh
+npm ci
+npm run new -- --title "물의 깊이와 지형 접점" --slug water-contact --topic graphics --kind case-study --project dcb --series dcb
+npm run dev
 ```
 
-And add this line to your Jekyll site's `_config.yml`:
+생성한 `content/articles/graphics/water-contact.md`를 편집합니다. 로컬 미리보기에는 초안도 표시됩니다. 본문·설명을 완성하고 `draft: false`로 바꾸면 공개 대상이 됩니다. `main`에 push하면 검증·빌드 후 배포합니다.
 
-```yaml
-theme: jekyll-theme-persephone
+| 분류 | 저장 폴더 | 내용 |
+| --- | --- | --- |
+| 게임플레이 | `content/articles/gameplay/` | 이동·IK·전투·상호작용 |
+| 그래픽스 | `content/articles/graphics/` | 셰이더·물·불·VFX·성능 |
+| 도구와 구조 | `content/articles/tools/` | 장비 조합·데이터·저작 도구 |
+| AI 협업 | `content/articles/ai/` | 요구사항·후보 비교·검증 |
+| 생각과 메모 | `content/articles/notes/` | 학습·읽기·짧은 기록 |
+
+세부 작업 순서는 [글쓰기 가이드](docs/WRITING.md), 이전 구조와 배포 정보는 [이관 기록](docs/MIGRATION.md)을 참고합니다.
+
+## 확인과 배포
+
+```sh
+npm run verify
+npm run preview
 ```
 
-And then execute:
+검증에는 글 생성·원문 보존 검사, 타입 검사, 실제 정적 빌드, 내부 링크·공개 상태·예전 URL 검사가 포함됩니다. GitHub Pages 설정의 Source는 **GitHub Actions**입니다. API 자격 증명 없이 `main` push로 배포합니다.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install jekyll-theme-persephone
-
-## Usage
-
-- [Settings](/_config.yml)
-- [Layouts](/docs/layouts.md)
-- [Comments](/docs/comments.md)
-- [`jekyll-books` generator](/docs/books.md)
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/erlzhang/jekyll-theme-persephone. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-## Development
-
-To set up your environment to develop this theme, run `bundle install`.
-
-Your theme is setup just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
-
-When your theme is released, only the files in `_layouts`, `_includes`, `_sass` and `assets` tracked with Git will be bundled.
-To add a custom directory to your theme-gem, please edit the regexp in `jekyll-theme-persephone.gemspec` accordingly.
-
-## License
-
-The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+원본 Jekyll 소스와 글은 `legacy/jekyll/`에 보존합니다. 기존 자산은 `public/assets/`로 옮겨 URL을 유지합니다. 원본 테마의 라이선스는 `LICENSE.txt`에 남아 있습니다.

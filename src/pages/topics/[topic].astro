@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleLibrary from '../../components/ArticleLibrary.astro';
+import { topics } from '../../data/site';
+export function getStaticPaths() { return topics.map((topic) => ({ params: { topic: topic.id }, props: { topic } })); }
+const { topic } = Astro.props;
+---
+<BaseLayout title={topic.title} description={topic.description} active={topic.id}><header class="page-intro"><p class="eyebrow">{topic.number} / {topic.english}</p><h1>{topic.title}</h1><p>{topic.description}</p></header><ArticleLibrary initialTopic={topic.id} /></BaseLayout>

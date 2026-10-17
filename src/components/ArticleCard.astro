@@ -1,0 +1,16 @@
+---
+import type { Article } from '../lib/articles';
+import { articleUrl, formatDate, readingTime } from '../lib/articles';
+import { getTopic, kinds } from '../data/site';
+interface Props { article: Article; number?: string; }
+const { article, number } = Astro.props;
+const topic = getTopic(article.data.topic);
+---
+<article class="article-card" data-entry={article.data.slug} style={`--topic-color:${topic.color}`}>
+  <a href={articleUrl(article)} class="article-card-link">
+    <div class="article-card-meta"><span class="topic-label">{topic.title}</span><span>{kinds[article.data.kind]}</span>{article.data.draft && <span class="draft-label">초안 · 로컬</span>}<time datetime={article.data.date}>{formatDate(article.data.date)}</time></div>
+    <div class="article-card-title"><h3>{article.data.title}</h3><span aria-hidden="true">↗</span></div>
+    <p>{article.data.description}</p>
+    <div class="article-card-bottom"><div class="tag-list">{article.data.tags.slice(0, 4).map((tag) => <span>#{tag}</span>)}</div><span class="read-time">{number && `${number} / `}{readingTime(article)}분 읽기</span></div>
+  </a>
+</article>

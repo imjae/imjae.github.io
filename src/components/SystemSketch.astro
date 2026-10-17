@@ -1,0 +1,23 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<div class:list={['system-sketch', { compact }]}>
+  <div class="sketch-label"><span class="live-dot"></span> FROM LOGIC TO EXPRESSION <span>DCB / SYSTEM NOTES</span></div>
+  <svg viewBox="0 0 520 270" role="img" aria-label="입력과 데이터가 상태, 접촉, 시각 표현으로 연결되는 시스템 개념도">
+    <defs>
+      <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#4b6558" opacity=".3"/></pattern>
+      <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2d6554" stop-opacity=".5"/><stop offset="1" stop-color="#1b332c" stop-opacity=".2"/></linearGradient>
+    </defs>
+    <rect width="520" height="270" fill="url(#dots)"/>
+    <path d="m150 160 125-65 135 65-125 68z" fill="url(#plane)" stroke="#71a38b" stroke-width="1"/>
+    <g stroke="#71a38b" opacity=".35" fill="none"><path d="m175 173 125-65m-100 78 125-65m-100 78 125-65m-100 78 125-65M175 147l135 65m-110-78 135 65m-110-78 135 65m-110-78 135 65"/></g>
+    <path d="M78 92h60l54 39m125 19 55-58h63M284 215v25h128" stroke="#a9c7b6" fill="none" stroke-dasharray="4 5"/>
+    <g fill="#182c25" stroke="#84b49c"><rect x="35" y="66" width="98" height="43" rx="4"/><rect x="366" y="66" width="119" height="43" rx="4"/><rect x="363" y="220" width="122" height="32" rx="4"/></g>
+    <g font-family="monospace" font-size="11" fill="#c0d4c8"><text x="52" y="92">INPUT / DATA</text><text x="381" y="92">STATE / RULES</text><text x="381" y="241">RENDER / VFX</text></g>
+    <g fill="#dfeddf"><circle cx="255" cy="118" r="7"/><circle cx="236" cy="157" r="4"/><circle cx="272" cy="155" r="4"/><circle cx="225" cy="192" r="4"/><circle cx="282" cy="190" r="4"/></g>
+    <path d="m255 126-1 29m-18 2 18-21 18 19m-18 0-29 37m29-37 28 35" stroke="#dfeddf" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="282" cy="190" r="12" fill="none" stroke="#c2aa75" stroke-width="1.5"/><path d="M297 190h34" stroke="#c2aa75"/><text x="336" y="194" font-family="monospace" font-size="10" fill="#c2aa75">CONTACT</text>
+    <text x="34" y="247" font-family="monospace" font-size="10" fill="#8fa89a">A SHARED CONTEXT. DIFFERENT SYSTEMS.</text>
+  </svg>
+</div>

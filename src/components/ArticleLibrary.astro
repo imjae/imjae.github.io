@@ -1,0 +1,57 @@
+---
+import ArticleCard from './ArticleCard.astro';
+import { getArticles } from '../lib/articles';
+import { topics } from '../data/site';
+interface Props { initialTopic?: string; }
+const { initialTopic = '' } = Astro.props;
+const articles = await getArticles();
+const tags = [...new Set(articles.flatMap((article) => article.data.tags))].sort((a,b) => a.localeCompare(b,'ko'));
+const index = articles.map((article) => ({ slug: article.data.slug, topic: article.data.topic, tags: article.data.tags, text: [article.data.title, article.data.description, article.body ?? '', ...article.data.tags].join(' ').toLocaleLowerCase() }));
+---
+<div class="article-library" data-initial-topic={initialTopic}>
+  <label class="search-box"><span aria-hidden="true">⌕</span><input id="article-search" type="search" placeholder="제목, 본문, 태그에서 검색" aria-label="글 검색" autocomplete="off" /><kbd>/</kbd></label>
+  <div class="filter-row"><label for="topic-filter" class="sr-only">주제</label><select id="topic-filter"><option value="">모든 주제</option>{topics.map((topic) => <option value={topic.id} selected={topic.id === initialTopic}>{topic.title}</option>)}</select><button type="button" id="reset-filters">필터 초기화</button></div>
+  <div class="tag-filters" aria-label="태그 필터">{tags.map((tag) => <button type="button" data-tag={tag} aria-pressed="false">#{tag}</button>)}</div>
+  <div class="search-status"><span id="result-count" role="status" aria-live="polite">{articles.length}개의 기록</span><span>제목 · 본문 · 태그</span></div>
+  <div class="article-list">{articles.map((article) => <ArticleCard article={article} />)}</div>
+  <p class="empty-state" id="no-results" hidden>찾는 기록이 없습니다.<br/>다른 검색어를 입력하거나 필터를 초기화해 보세요.</p>
+</div>
+<script type="application/json" id="article-index" set:html={JSON.stringify(index).replaceAll('<', '\u003c')} />
+<script>
+  const library = document.querySelector<HTMLElement>('.article-library');
+  const search = document.querySelector<HTMLInputElement>('#article-search');
+  const topic = document.querySelector<HTMLSelectElement>('#topic-filter');
+  const count = document.querySelector('#result-count');
+  const empty = document.querySelector<HTMLElement>('#no-results');
+  const data = JSON.parse(document.querySelector('#article-index')?.textContent ?? '[]') as { slug: string; topic: string; tags: string[]; text: string }[];
+  const params = new URLSearchParams(location.search);
+  let tag = params.get('tag') ?? '';
+  if (search) search.value = params.get('q') ?? '';
+  if (topic && params.has('topic')) topic.value = params.get('topic') ?? '';
+  function update() {
+    if (!search || !topic) return;
+    const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    let visible = 0;
+    const cards = new Map([...document.querySelectorAll<HTMLElement>('[data-entry]')].map((card) => [card.dataset.entry, card]));
+    data.forEach((entry) => {
+      const matches = (!topic.value || entry.topic === topic.value) && (!tag || entry.tags.includes(tag)) && words.every((word) => entry.text.includes(word));
+      const card = cards.get(entry.slug);
+      if (card) card.hidden = !matches;
+      if (matches) visible++;
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.tag === tag)));
+    if (count) count.textContent = `${visible}개의 기록`;
+    if (empty) empty.hidden = visible > 0;
+    const next = new URLSearchParams();
+    if (search.value.trim()) next.set('q', search.value.trim());
+    if (tag) next.set('tag', tag);
+    if (topic.value && topic.value !== library?.dataset.initialTopic) next.set('topic', topic.value);
+    history.replaceState(null, '', location.pathname + (next.size ? `?${next}` : ''));
+  }
+  search?.addEventListener('input', update);
+  topic?.addEventListener('change', update);
+  document.querySelectorAll<HTMLButtonElement>('[data-tag]').forEach((button) => button.addEventListener('click', () => { tag = button.dataset.tag === tag ? '' : button.dataset.tag ?? ''; update(); }));
+  document.querySelector('#reset-filters')?.addEventListener('click', () => { if (search) search.value = ''; if (topic) topic.value = library?.dataset.initialTopic ?? ''; tag = ''; update(); });
+  document.addEventListener('keydown', (event) => { if (event.key === '/' && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLTextAreaElement) && !(event.target instanceof HTMLElement && event.target.isContentEditable)) { event.preventDefault(); search?.focus(); } });
+  update();
+</script>

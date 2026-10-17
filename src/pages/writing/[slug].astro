@@ -1,0 +1,50 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticles, articleUrl, formatDate, readingTime, type Article } from '../../lib/articles';
+import { getTopic, kinds, seriesTitle } from '../../data/site';
+export async function getStaticPaths() { return (await getArticles()).map((article) => ({ params: { slug: article.data.slug }, props: { article } })); }
+interface Props { article: Article; }
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const topic = getTopic(article.data.topic);
+const series = article.data.series ? (await getArticles()).filter((entry) => entry.data.series === article.data.series).sort((a,b) => (a.data.order ?? 99) - (b.data.order ?? 99)) : [];
+---
+<BaseLayout title={article.data.title} description={article.data.description} active={article.data.topic} noindex={article.data.draft}>
+  {article.data.draft && <div class="draft-banner">로컬에서만 보는 초안입니다. 공개 빌드·검색·RSS에는 포함되지 않습니다.</div>}
+  <header class="article-header" style={`--topic-color:${topic.color}`}>
+    <div class="breadcrumb"><a href="/writing/">글 모아보기</a><span>/</span><a href={`/topics/${topic.id}/`}>{topic.title}</a></div>
+    <p class="eyebrow">{topic.english} / {kinds[article.data.kind]}{article.data.project ? ` / ${article.data.project.toUpperCase()}` : ''}</p>
+    <h1>{article.data.title}</h1><p class="article-description">{article.data.description}</p>
+    <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date}>{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
+    <div class="tag-list">{article.data.tags.map((tag) => <a href={`/writing/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
+  </header>
+  <div class="article-body-layout"><div><article class="prose"><Content /></article>
+    {series.length > 1 && article.data.series && <section class="series-panel" aria-label="같은 시리즈"><h2><a href={`/series/${article.data.series}/`}>{seriesTitle(article.data.series)}</a></h2><ol>{series.map((entry,index) => <li class:list={{ current: entry.id === article.id }}><span>{String(index+1).padStart(2,'0')}</span><a href={articleUrl(entry)} aria-current={entry.id === article.id ? 'page' : undefined}>{entry.data.title}</a></li>)}</ol></section>}
+    <a class="back-to-writing" href="/writing/">← 글 모아보기</a>
+  </div>{headings.some((heading) => heading.depth === 2) && <nav class="toc" aria-label="이 글의 목차"><p>ON THIS PAGE</p><ol>{headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => <li class={`depth-${heading.depth}`}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}</div>
+</BaseLayout>
+<script>
+  const diagrams: HTMLElement[] = [];
+  document.querySelectorAll<HTMLElement>('.prose pre code').forEach((code) => {
+    const pre = code.parentElement;
+    if (!pre) return;
+    if (code.classList.contains('language-mermaid') || pre.dataset.language === 'mermaid' || pre.dataset.lang === 'mermaid') {
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid-diagram';
+      diagram.textContent = code.textContent;
+      diagrams.push(diagram);
+      pre.replaceWith(diagram);
+      return;
+    }
+    const button = document.createElement('button');
+    button.className = 'code-copy'; button.type = 'button'; button.textContent = '복사'; button.setAttribute('aria-label','코드 복사');
+    button.addEventListener('click', async () => { try { await navigator.clipboard.writeText(code.textContent ?? ''); button.textContent = '복사됨'; } catch { button.textContent = '복사 실패'; } setTimeout(() => { button.textContent = '복사'; }, 1600); });
+    pre.append(button);
+  });
+  if (diagrams.length) {
+    const { default: mermaid } = await import('mermaid');
+    mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: 'base', themeVariables: { primaryColor: '#e4eddf', primaryTextColor: '#2a4933', primaryBorderColor: '#94ad89', lineColor: '#75936b', fontFamily: 'system-ui, sans-serif', fontSize: '13px' } });
+    try { await mermaid.run({ nodes: diagrams }); } catch { diagrams.forEach((diagram) => { if (!diagram.querySelector('svg')) diagram.style.whiteSpace = 'pre-wrap'; }); }
+  }
+</script>
