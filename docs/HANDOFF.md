@@ -38,7 +38,7 @@
 
 ## 현재 글 목록
 
-확인 시점에는 공개 글 8개와 초안 1개가 있다. 아래 파일의 `draft` 값과 본문을 기준으로 관리한다. 공개 주소는 `/writing/<slug>/` 형식이다.
+확인 시점에는 공개 글 11개와 초안 1개가 있다. 아래 파일의 `draft` 값과 본문을 기준으로 관리한다. 공개 주소는 `/writing/<slug>/` 형식이다.
 
 | 상태 | 글 | 원본 |
 | --- | --- | --- |
@@ -51,8 +51,23 @@
 | 공개 | 시지프 신화 독서 메모 | [the-myth-of-sisyphus.md](../content/articles/notes/the-myth-of-sisyphus.md) |
 | 공개 | Jekyll 블로그 게시 테스트 | [welcome-to-jekyll.md](../content/articles/notes/welcome-to-jekyll.md) |
 | 초안 | 물의 깊이와 지형 접점 확인 | [water-depth-study.md](../content/articles/graphics/water-depth-study.md) |
+| 공개 | 지게 운반의 이동 속도와 스태미너 계산 구조 | [jige-carry-burden.md](../content/articles/gameplay/jige-carry-burden.md) |
+| 공개 | Git 워크트리로 AI 작업을 병행하고 통합한 과정 | [parallel-ai-worktrees.md](../content/articles/ai/parallel-ai-worktrees.md) |
+| 공개 | API 호출을 Codex CLI로 바꾼 로컬 AI 하네스 | [cli-agent-harness.md](../content/articles/ai/cli-agent-harness.md) |
 
-DCB 관련 공개 글 6개는 `series: dcb`로 묶여 있다. 2024년 글 두 개는 작성 날짜와 `slug`를 유지하며, 원문은 별도로 보관한다.
+DCB 관련 공개 글 8개는 `series: dcb`로 묶여 있다. 하네스 글은 `project: imjaess`이며 DCB 시리즈에 포함하지 않는다. 2024년 글 두 개는 작성 날짜와 `slug`를 유지하며, 원문은 별도로 보관한다.
+
+## 10월 17일 추가 글 검토와 공개
+
+사용자 요청에 따라 지게 운반, 워크트리 병행 작업, CLI 하네스 초안의 문구를 다시 검토하고 공개 상태로 전환했다. 반복과 대화체 표현을 줄이고 CLI의 `unknown`이 작업 전체 상태가 아닌 명령 검증 항목임을 명확히 했다. 세 글의 날짜와 slug는 유지했다.
+
+지게 글은 계산 구조와 카탈로그 설정을 구분한다. 10월 17일 확인한 적재 속도·소모·회복 곡선은 모두 배율 1이다. 과거 문서의 기본 곡선을 현재 적용 결과로 사용하지 않는다. Unity 검사와 게임 플레이를 이번에 다시 실행한 것은 아니다.
+
+워크트리 글은 10월 1일 Deluge의 불·급류 포말·SideStep 작업 세션과 Git 통합 이력, StepUp 실험 기록을 대조했다. 과거 실행과 현재 DCB 운영 규칙을 구분하며, 16개는 과거 누적 워크트리 수다. 작업 시간 절감률은 측정하지 않았다.
+
+하네스 글은 5월 21일 API→CLI 전환 이력과 현재 소스를 대조했다. 최종 응답 파일 부재 시 표준출력 대체, 판정 키워드 해석, 넓은 sandbox 기본값과 실계정 CLI 미재검증 범위를 유지한다. 인증 정보, 로컬 DB와 원본 로그는 옮기지 않았다.
+
+게시 대상은 세 글과 인수인계 문서다. 별도로 작성 중인 `docs/DCB-WRITING-PLAN.md`는 로컬 변경으로 유지한다.
 
 ## 글을 쓸 때 유지할 기준
 
@@ -103,6 +118,8 @@ DCB 관련 공개 글 6개는 `series: dcb`로 묶여 있다. 2024년 글 두 �
 ## 검증 기록과 남은 작업
 
 기능 구현 기준 커밋은 `3815835`다. 이 커밋의 [GitHub Actions 배포](https://github.com/imjae/imjae.github.io/actions/runs/38999538778)는 성공했다. 해당 작업에서 테스트 6개, 타입 검사, 빌드와 27개 HTML의 링크·공개 상태 검사를 통과했다. 모바일 모드 전환·검색·새 글 양식과 글별 수정 연결을 확인했다.
+
+10월 17일 세 글의 공개 전환 후 `npm run verify`를 통과했다. 테스트 6개, Astro 검사, 빌드와 30개 HTML의 링크·공개 상태·예전 주소를 확인했다. 공개 빌드의 Home, 긴 하네스 글의 표·흐름도, 지게 글의 수식과 모바일 검색을 확인했다. 세 글이 검색에 나오고 남은 물 깊이 초안은 제외된다. 이 검증은 블로그 빌드에 관한 것이며 Unity나 하네스의 실행 검증을 추가한 것은 아니다.
 
 별도 복사본에서 공개 글 8개를 모두 제거한 뒤 빌드와 링크 검사를 실행했다. 포트폴리오·DCB 시리즈, 예전 주소의 학습 메모 목록 이동, 초안 제외를 확인했다. 실제 저장소의 글은 삭제하지 않았다.
 
