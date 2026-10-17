@@ -2,7 +2,9 @@
 title: "Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계"
 description: "로그인, 임시 AWS 자격 증명과 서버 권한을 구분한다. Unity SDK 통합 조건과 자체 권한 모델·실습·풀이를 정리하고 실계정 검증과 분리한다."
 slug: "unity-cloud-auth-sdk-boundary"
-date: "2026-10-17"
+date: "2021-12-17"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "AWS", "Authentication", "SDK"]

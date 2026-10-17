@@ -2,7 +2,9 @@
 title: "Addressables 카탈로그 옵션을 줄이기 전에 확인할 것"
 description: "주소·GUID·Label 사용 경로와 내부 이름·카탈로그 압축을 분리한다. 옵션 변경으로 로드가 깨지는 조건을 예제·실습·풀이로 확인한다."
 slug: "addressables-catalog-key-options"
-date: "2026-10-17"
+date: "2023-09-11"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "Addressables", "Catalog"]

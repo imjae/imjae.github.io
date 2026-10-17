@@ -2,7 +2,9 @@
 title: "Spine 마스크의 머티리얼 복제로 배칭이 나뉜 문제"
 description: "Spine 심볼의 마스크용 재질을 공유하도록 바꾼 노션 기록을 정리한다. 배칭·스텐실·재질 참조를 설명하고 교체 예제와 실습·풀이, 아직 재현하지 않은 항목을 구분한다."
 slug: "spine-mask-material-batching"
-date: "2026-10-17"
+date: "2024-05-02"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "case-study"
 tags: ["Unity", "Spine", "SpriteMask", "Material", "Batching"]

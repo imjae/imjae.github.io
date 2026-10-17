@@ -2,7 +2,9 @@
 title: "Azure DevOps로 Addressables 콘텐츠를 빌드·배포한 과정"
 description: "노션의 에이전트·태그 checkout·아티팩트·Blob 업로드 기록을 바탕으로 원인과 해결 과정을 정리한다. 공개용 빌드 예제와 파일 검증 실습·풀이, 아직 실행하지 않은 범위를 구분한다."
 slug: "azure-devops-content-build-deploy"
-date: "2026-10-17"
+date: "2023-12-12"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "case-study"
 tags: ["Unity", "Addressables", "Azure DevOps", "CI/CD", "Git", "PowerShell", "Verification"]

@@ -2,7 +2,9 @@
 title: "오브젝트 풀의 생성·대여·반환과 중복 반환 방지"
 description: "노션의 Dictionary·Queue와 OnDisable 반환 구조를 분석한다. 소속·대여 번호·초기화 계약을 새 예제로 설명하고, 콘솔 실습·풀이와 아직 실행하지 않은 Unity 검증을 구분한다."
 slug: "object-pool-lease-return"
-date: "2026-10-17"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "C#", "Object Pool", "Collections", "Verification"]

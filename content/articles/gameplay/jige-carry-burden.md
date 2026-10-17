@@ -2,7 +2,9 @@
 title: "지게 운반의 이동 속도와 스태미너 계산 구조"
 description: "지게 착용 상태와 적재율을 이동·행동 비용·회복에 연결한 구조, 고갈 처리와 현재 설정을 정리했다."
 slug: "jige-carry-burden"
-date: "2026-10-17"
+date: "2026-10-02"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "gameplay"
 kind: "case-study"
 tags: ["Unity", "Data"]

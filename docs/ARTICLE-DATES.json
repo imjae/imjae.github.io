@@ -1,0 +1,1913 @@
+{
+  "auditedAt": "2026-10-18",
+  "policy": {
+    "notion": "노션의 생성일 조건으로 확인한 중심 원문의 생성일",
+    "commit": "대표 관련 커밋의 AuthorDate를 Asia/Seoul 날짜로 변환",
+    "multipleSources": "본문의 중심 원문과 보조 참고 자료를 구분해 기록",
+    "newArticles": "새로 작성한 글은 블로그 초판 작성일 유지",
+    "legacy": "기존 Jekyll 원본의 작성일 유지",
+    "updated": "이번 메타데이터 수정일이며 본문의 과거 실행 검증 날짜는 유지"
+  },
+  "counts": {
+    "total": 63,
+    "changed": 56,
+    "byBasis": {
+      "notion": 46,
+      "commit": 10,
+      "authored": 5,
+      "legacy": 2
+    }
+  },
+  "articles": [
+    {
+      "slug": "cli-agent-harness",
+      "title": "API 호출을 Codex CLI로 바꾼 로컬 AI 하네스",
+      "file": "content/articles/ai/cli-agent-harness.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-05-21",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "API 호출을 CLI로 전환한 구현 커밋",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "imjaess",
+          "sha": "19fa42fa9594a87dbd50aaacbf75a78f11921418",
+          "authoredAt": "2026-05-21T14:33:26+09:00",
+          "committedAt": "2026-05-21T14:33:26+09:00",
+          "date": "2026-05-21",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "imjaess",
+          "sha": "e85ea6222c076ff36564f6eacdcc67f16f341dee",
+          "authoredAt": "2026-05-21T18:01:11+09:00",
+          "committedAt": "2026-05-21T18:01:11+09:00",
+          "date": "2026-05-21",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "parallel-ai-worktrees",
+      "title": "Git 워크트리로 AI 작업을 병행하고 통합한 과정",
+      "file": "content/articles/ai/parallel-ai-worktrees.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-02",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "본문의 병행 작업과 StepUp 실험 보존·통합을 마무리한 기록",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "894071607c45390b4c0e86b7063080761d7f14d2",
+          "authoredAt": "2026-10-01T12:04:46+09:00",
+          "committedAt": "2026-10-01T12:05:27+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "4d8926e7362d2aeb76a7f4e83c488f4eed2fe998",
+          "authoredAt": "2026-10-01T12:40:29+09:00",
+          "committedAt": "2026-10-01T12:40:43+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "80e8d7a138ccc221c46f902a4b0c5c5eb068db67",
+          "authoredAt": "2026-10-01T16:00:16+09:00",
+          "committedAt": "2026-10-01T16:00:25+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "20a7acfc4e536f7c13b87444989ba3ccff1fece7",
+          "authoredAt": "2026-10-02T13:18:49+09:00",
+          "committedAt": "2026-10-02T13:22:10+09:00",
+          "date": "2026-10-02",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "f638b2ae58663525a13ffe0c3bb615929436aba5",
+          "authoredAt": "2026-10-02T15:04:38+09:00",
+          "committedAt": "2026-10-02T15:04:38+09:00",
+          "date": "2026-10-02",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "working-with-ai",
+      "title": "AI를 사용한 구현과 검증 과정",
+      "file": "content/articles/ai/working-with-ai.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-02",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "채택·제외한 AI 구현 후보의 판단과 검증 기록을 보존한 커밋",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "20a7acfc4e536f7c13b87444989ba3ccff1fece7",
+          "authoredAt": "2026-10-02T13:18:49+09:00",
+          "committedAt": "2026-10-02T13:22:10+09:00",
+          "date": "2026-10-02",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "f638b2ae58663525a13ffe0c3bb615929436aba5",
+          "authoredAt": "2026-10-02T15:04:38+09:00",
+          "committedAt": "2026-10-02T15:04:38+09:00",
+          "date": "2026-10-02",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "behavior-tree-running-abort",
+      "title": "Behavior Tree의 Sequence·Selector·Running과 중단",
+      "file": "content/articles/gameplay/behavior-tree-running-abort.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-04-08",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "314d3083c419405287541604be499729",
+          "title": "Behavior Tree (행동 트리)",
+          "url": "https://app.notion.com/p/314d3083c419405287541604be499729",
+          "date": "2022-04-08",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "fsm-transition-interruption",
+      "title": "FSM의 Enter·Execute·Exit와 전이·중단 규칙",
+      "file": "content/articles/gameplay/fsm-transition-interruption.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-03-22",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "08e6af888c814d488d7692a7be55b8eb",
+          "title": "FSM (유한 상태 머신)",
+          "url": "https://app.notion.com/p/08e6af888c814d488d7692a7be55b8eb",
+          "date": "2022-03-22",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "3e4529998da646639846adc9947f3950",
+          "title": "FSM 03",
+          "url": "https://app.notion.com/p/3e4529998da646639846adc9947f3950",
+          "date": "2022-03-31",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "ik-traversal",
+      "title": "IK 트레버설 구현: StepUp, Climb, SideStep",
+      "file": "content/articles/gameplay/ik-traversal.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-02",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "본문의 접촉·보행 전환과 상체 모션 보완을 반영한 구현 커밋",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "80e8d7a138ccc221c46f902a4b0c5c5eb068db67",
+          "authoredAt": "2026-10-01T16:00:16+09:00",
+          "committedAt": "2026-10-01T16:00:25+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "d3de16d6fdcc3e90134a935d4f11f9efadf23fbd",
+          "authoredAt": "2026-10-01T21:01:06+09:00",
+          "committedAt": "2026-10-01T21:01:07+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "20a7acfc4e536f7c13b87444989ba3ccff1fece7",
+          "authoredAt": "2026-10-02T13:18:49+09:00",
+          "committedAt": "2026-10-02T13:22:10+09:00",
+          "date": "2026-10-02",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "jige-carry-burden",
+      "title": "지게 운반의 이동 속도와 스태미너 계산 구조",
+      "file": "content/articles/gameplay/jige-carry-burden.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-02",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "지게 부담 구현과 본문에 명시한 적재 곡선 중립 설정의 변경",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "0fe68c0b427c1fa8385e2dfa34318c272868c79c",
+          "authoredAt": "2026-10-01T16:22:43+09:00",
+          "committedAt": "2026-10-01T16:25:58+09:00",
+          "date": "2026-10-01",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "c2ea50f9633a4c29510093e9d37d035508eb5807",
+          "authoredAt": "2026-10-02T13:41:15+09:00",
+          "committedAt": "2026-10-02T13:41:15+09:00",
+          "date": "2026-10-02",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "monster-combat",
+      "title": "몬스터 행동 DSL과 그룹 전투 구현",
+      "file": "content/articles/gameplay/monster-combat.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-08-14",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "상태 전이·권한 배정과 슬롯 각도 갱신 문제를 다룬 마지막 중심 수정",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "afc213962680b06d89f58ab6b73d38e9a19c06ed",
+          "authoredAt": "2026-08-09T15:58:38+09:00",
+          "committedAt": "2026-08-10T17:35:06+09:00",
+          "date": "2026-08-09",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "963f35cbf1eac15c0c8e256b703be8726daaf9b7",
+          "authoredAt": "2026-08-10T13:20:04+09:00",
+          "committedAt": "2026-08-10T17:35:15+09:00",
+          "date": "2026-08-10",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "d6b97e1125ee0c4a8f7fbd00bc639bd7cf5d848d",
+          "authoredAt": "2026-08-10T13:55:07+09:00",
+          "committedAt": "2026-08-10T17:35:16+09:00",
+          "date": "2026-08-10",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "b7c32b18bf5b42f4aefa471bbc9743b22d7b1b42",
+          "authoredAt": "2026-08-14T00:02:10+09:00",
+          "committedAt": "2026-08-14T00:02:17+09:00",
+          "date": "2026-08-14",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "anti-aliasing-static-motion",
+      "title": "AA 방식과 움직일 때의 계단·흐림·잔상 비교",
+      "file": "content/articles/graphics/anti-aliasing-static-motion.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-05-05",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "1481dc86e8024d2eab5f23ebd7dfcb35",
+          "title": "Anti-aliasing",
+          "url": "https://app.notion.com/p/1481dc86e8024d2eab5f23ebd7dfcb35",
+          "date": "2024-05-05",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "3a43b61361d180718a2ee9da8190ffcd",
+          "title": "AA",
+          "url": "https://app.notion.com/p/3a43b61361d180718a2ee9da8190ffcd",
+          "date": "2026-07-21",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "bloom-exposure-emission",
+      "title": "Bloom과 노출을 분리해서 발광 조절하기",
+      "file": "content/articles/graphics/bloom-exposure-emission.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-05-05",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "3bc274ba4f974068b1e661f6eecac793",
+          "title": "Bloom",
+          "url": "https://app.notion.com/p/3bc274ba4f974068b1e661f6eecac793",
+          "date": "2024-05-05",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "dissolve-threshold-edge",
+      "title": "노이즈 임계값으로 Dissolve와 발광 경계 만들기",
+      "file": "content/articles/graphics/dissolve-threshold-edge.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-11-06",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "1363b61361d180ae960af8f2997b8266",
+          "title": "소환",
+          "url": "https://app.notion.com/p/1363b61361d180ae960af8f2997b8266",
+          "date": "2024-11-06",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "fire-vfx",
+      "title": "불 이펙트의 레이어와 품질 단계",
+      "file": "content/articles/graphics/fire-vfx.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-01",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "품질 단계와 화염 디테일·연기·재 레이어를 보완한 구현",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "db6ba162086f02c3ac603a9821582df2a7c0e99a",
+          "authoredAt": "2026-08-31T12:56:12+09:00",
+          "committedAt": "2026-09-04T13:08:17+09:00",
+          "date": "2026-08-31",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "4d8926e7362d2aeb76a7f4e83c488f4eed2fe998",
+          "authoredAt": "2026-10-01T12:40:29+09:00",
+          "committedAt": "2026-10-01T12:40:43+09:00",
+          "date": "2026-10-01",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-context-render-loop",
+      "title": "GLFW·GLAD·컨텍스트와 첫 렌더 루프 만들기",
+      "file": "content/articles/graphics/opengl-context-render-loop.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-06-14",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "053f9f0c4fc24fe98807fb8f7bddec11",
+          "title": "2-1, OpenGL",
+          "url": "https://app.notion.com/p/053f9f0c4fc24fe98807fb8f7bddec11",
+          "date": "2023-06-14",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "c73955f31a904b6dbf933438eedfc702",
+          "title": "2-2, Window 생성",
+          "url": "https://app.notion.com/p/c73955f31a904b6dbf933438eedfc702",
+          "date": "2023-06-14",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "f57cae548a8d433086bb02894e9e19c1",
+          "title": "2-3, Hello Window",
+          "url": "https://app.notion.com/p/f57cae548a8d433086bb02894e9e19c1",
+          "date": "2023-06-16",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-filtering-mipmaps",
+      "title": "텍스처 반복·필터링·mipmap을 같은 조건에서 비교하기",
+      "file": "content/articles/graphics/opengl-filtering-mipmaps.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-06-25",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "09cffc4abe964bc89989e30e866b84ae",
+          "title": "2-6, Textures",
+          "url": "https://app.notion.com/p/09cffc4abe964bc89989e30e866b84ae",
+          "date": "2023-06-25",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-shader-errors-uniforms",
+      "title": "GLSL 컴파일·링크 오류와 uniform 갱신",
+      "file": "content/articles/graphics/opengl-shader-errors-uniforms.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-06-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "361921119b954fb2ad51834ff987c002",
+          "title": "2-5, Shaders",
+          "url": "https://app.notion.com/p/361921119b954fb2ad51834ff987c002",
+          "date": "2023-06-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-texture-units-formats",
+      "title": "텍스처 객체·텍스처 유닛·sampler와 이미지 포맷",
+      "file": "content/articles/graphics/opengl-texture-units-formats.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-06-25",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "09cffc4abe964bc89989e30e866b84ae",
+          "title": "2-6, Textures",
+          "url": "https://app.notion.com/p/09cffc4abe964bc89989e30e866b84ae",
+          "date": "2023-06-25",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-vertex-layout-stride-offset",
+      "title": "VBO·VAO·EBO와 정점 속성의 stride·offset",
+      "file": "content/articles/graphics/opengl-vertex-layout-stride-offset.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-06-17",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "f2adc4fc52d14d0a92646d015dd1b2d2",
+          "title": "2-4, Hello Triangle (2)",
+          "url": "https://app.notion.com/p/f2adc4fc52d14d0a92646d015dd1b2d2",
+          "date": "2023-06-17",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "opengl-vertex-texture-pipeline",
+      "title": "OpenGL 학습 기록: 정점 버퍼에서 텍스처 혼합까지",
+      "file": "content/articles/graphics/opengl-vertex-texture-pipeline.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-03-11",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "본문에서 기준으로 삼은 uniform 텍스처 혼합 구현 커밋",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "LearnOpenGL",
+          "sha": "bc9d85f98433b87aa1392234b14f15172748599f",
+          "authoredAt": "2026-03-11T12:50:05+09:00",
+          "committedAt": "2026-03-11T12:50:05+09:00",
+          "date": "2026-03-11",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "screen-distortion-shockwave-uv",
+      "title": "화면 텍스처 왜곡과 충격파: UV 오프셋부터 계산하기",
+      "file": "content/articles/graphics/screen-distortion-shockwave-uv.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-11-06",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "1363b61361d18071a8fac0a1efe06f70",
+          "title": "왜곡",
+          "url": "https://app.notion.com/p/1363b61361d18071a8fac0a1efe06f70",
+          "date": "2024-11-06",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "1363b61361d180f4baabce9945942b26",
+          "title": "충격파",
+          "url": "https://app.notion.com/p/1363b61361d180f4baabce9945942b26",
+          "date": "2024-11-06",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "spine-alpha-color-space",
+      "title": "Spine 텍스처의 PMA·Straight Alpha·색 공간 맞추기",
+      "file": "content/articles/graphics/spine-alpha-color-space.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-07-05",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "03524cd5da6e474b985ca057f71420b4",
+          "title": "스파인 텍스처 알파값 설정",
+          "url": "https://app.notion.com/p/03524cd5da6e474b985ca057f71420b4",
+          "date": "2024-07-05",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "spine-mask-material-batching",
+      "title": "Spine 마스크의 머티리얼 복제로 배칭이 나뉜 문제",
+      "file": "content/articles/graphics/spine-mask-material-batching.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-05-02",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "5ee92b3fd3044af2b3d6fa6ad875a07f",
+          "title": "스파인 드로우콜 최적화",
+          "url": "https://app.notion.com/p/5ee92b3fd3044af2b3d6fa6ad875a07f",
+          "date": "2024-05-02",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "texture-blur-kernel-texel",
+      "title": "텍스처를 여러 번 샘플링해 블러 만들기",
+      "file": "content/articles/graphics/texture-blur-kernel-texel.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-11-06",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "1363b61361d18028bb07c5df82b4689d",
+          "title": "블러",
+          "url": "https://app.notion.com/p/1363b61361d18028bb07c5df82b4689d",
+          "date": "2024-11-06",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "water-depth-study",
+      "title": "물의 깊이와 지형 접점 확인",
+      "file": "content/articles/graphics/water-depth-study.md",
+      "draft": true,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-17",
+      "dateBasis": "authored",
+      "updated": null,
+      "reason": "아직 작업 결과가 없는 초안 템플릿이다. 실제 구현의 날짜를 붙일 근거가 없어 초안 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "blog-commit",
+          "sha": "a47810ec4a4030f60865f94653b4ef49b053a6ac",
+          "authoredAt": "2026-10-17T11:50:29+09:00",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "slug": "water-playback",
+      "title": "물 캐시 재생과 메시 업로드",
+      "file": "content/articles/graphics/water-playback.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-09-27",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "직접 메시 업로드·선행 읽기·분할 스트리밍·비대기 재생의 관련 수정",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "cd6b904a4de1262771e59c1f1afb8565ffb4ea39",
+          "authoredAt": "2026-09-10T11:06:22+09:00",
+          "committedAt": "2026-09-10T11:19:35+09:00",
+          "date": "2026-09-10",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "c1ce1030c650164e69ccda11d6ced7d76235bf71",
+          "authoredAt": "2026-09-24T16:13:48+09:00",
+          "committedAt": "2026-09-24T16:25:26+09:00",
+          "date": "2026-09-24",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "fd5397e1cf798b2497bcd4f32e45a864ffa30405",
+          "authoredAt": "2026-09-27T09:12:27+09:00",
+          "committedAt": "2026-09-27T09:12:35+09:00",
+          "date": "2026-09-27",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "camera-basis-lookat",
+      "title": "카메라의 기준축과 LookAt 행렬 만들기",
+      "file": "content/articles/math/camera-basis-lookat.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-07-05",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "196f7909977640da8373586d4b5f1bfa",
+          "title": "2-9, 카메라",
+          "url": "https://app.notion.com/p/196f7909977640da8373586d4b5f1bfa",
+          "date": "2023-07-05",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "functions-composition-inverse",
+      "title": "함수·합성·역함수와 되돌릴 수 없는 계산",
+      "file": "content/articles/math/functions-composition-inverse.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-10-02",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "2d95780ade1342629bb221766e365a2f",
+          "title": "2.2.1 함수의 개념과 종류",
+          "url": "https://app.notion.com/p/2d95780ade1342629bb221766e365a2f",
+          "date": "2022-10-02",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "b751eee4c9a34bc5924f7a34f392c1ed",
+          "title": "2.2.2 합성 함수",
+          "url": "https://app.notion.com/p/b751eee4c9a34bc5924f7a34f392c1ed",
+          "date": "2022-10-03",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "e34414cfddb1408189f498afb8aae802",
+          "title": "2.2.3 항등함수와 역함수",
+          "url": "https://app.notion.com/p/e34414cfddb1408189f498afb8aae802",
+          "date": "2022-10-03",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "1455e1a4ccc54c15aec71015119f7db8",
+          "title": "2.2.4 곱집합을 활용한 좌표 평면으로의 확장",
+          "url": "https://app.notion.com/p/1455e1a4ccc54c15aec71015119f7db8",
+          "date": "2022-10-04",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "game-math-reading-order",
+      "title": "게임 수학 읽기 순서: 수와 함수부터 좌표·회전까지",
+      "file": "content/articles/math/game-math-reading-order.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2026-10-18",
+      "dateBasis": "authored",
+      "updated": null,
+      "reason": "수학 카테고리에 새로 작성한 블로그 학습 목차다. 노션의 오래된 상위 폴더 생성일을 목차 작성일로 쓰지 않는다.",
+      "evidence": [
+        {
+          "type": "blog-commit",
+          "sha": "ac1ee74a88453384755e252294fba4b3aa194c4d",
+          "authoredAt": "2026-10-18T08:09:19+09:00",
+          "date": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "slug": "local-world-clip-ndc-screen",
+      "title": "Local·World·View·Clip·NDC·Screen 좌표를 구분하기",
+      "file": "content/articles/math/local-world-clip-ndc-screen.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-07-04",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "de3bfcadaeb84991918d744a9b1bd553",
+          "title": "2-8, 좌표 시스템",
+          "url": "https://app.notion.com/p/de3bfcadaeb84991918d744a9b1bd553",
+          "date": "2023-07-04",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "db1946199b2e42bc8916c3ed86314b1a",
+          "title": "물체의 수학 1 : 이동 변환의 구현 원리",
+          "url": "https://app.notion.com/p/db1946199b2e42bc8916c3ed86314b1a",
+          "date": "2022-01-20",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "matrix-transform-order",
+      "title": "이동·회전·크기 행렬과 변환 순서 직접 계산하기",
+      "file": "content/articles/math/matrix-transform-order.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-07-01",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "7cac09ec960344eba90c283a115cfbf7",
+          "title": "2-7, 변환(Transformations)",
+          "url": "https://app.notion.com/p/7cac09ec960344eba90c283a115cfbf7",
+          "date": "2023-07-01",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "db1946199b2e42bc8916c3ed86314b1a",
+          "title": "물체의 수학 1 : 이동 변환의 구현 원리",
+          "url": "https://app.notion.com/p/db1946199b2e42bc8916c3ed86314b1a",
+          "date": "2022-01-20",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "movement-facing-coordinate-space",
+      "title": "캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기",
+      "file": "content/articles/math/movement-facing-coordinate-space.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-12-12",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "2ff48514531147a7a34e83370aa3dca8",
+          "title": "오브젝트 회전",
+          "url": "https://app.notion.com/p/2ff48514531147a7a34e83370aa3dca8",
+          "date": "2023-12-12",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "2c83b61361d180bcab16f64a3676626a",
+          "title": "유니티 상식",
+          "url": "https://app.notion.com/p/2c83b61361d180bcab16f64a3676626a",
+          "date": "2025-12-13",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "number-line-floating-point",
+      "title": "수직선과 부동소수점: 이동·배율·오차",
+      "file": "content/articles/math/number-line-floating-point.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-10-02",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "2bf395fb8bbd40c99c99b08259348c83",
+          "title": "2.1.3 수의 표현",
+          "url": "https://app.notion.com/p/2bf395fb8bbd40c99c99b08259348c83",
+          "date": "2022-10-02",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "number-sets-operations-field",
+      "title": "수의 집합과 연산: 닫힘·항등원·역원·체",
+      "file": "content/articles/math/number-sets-operations-field.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-10-02",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "d0916a57c8954e04b6ad538dd92c38b4",
+          "title": "2.1.1 연산과 수의 구조",
+          "url": "https://app.notion.com/p/d0916a57c8954e04b6ad538dd92c38b4",
+          "date": "2022-10-02",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "10b303c4fef244bb9765e472b117bd4f",
+          "title": "2.1.2 수의 구조",
+          "url": "https://app.notion.com/p/10b303c4fef244bb9765e472b117bd4f",
+          "date": "2022-10-02",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "plane-equation-halfspaces",
+      "title": "평면 방정식과 반공간으로 앞뒤·거리·영역 판정하기",
+      "file": "content/articles/math/plane-equation-halfspaces.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "b03c7afde7414da1aa32aa7495570a70",
+          "title": "공간의 수학 : 게임수학의 개요",
+          "url": "https://app.notion.com/p/b03c7afde7414da1aa32aa7495570a70",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "projectile-parabola-time",
+      "title": "시간에 따른 포물선 운동과 일정 가속도",
+      "file": "content/articles/math/projectile-parabola-time.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "d6a79b1acc034bf28e8cee0e3e4b919f",
+          "title": "포물선 공식",
+          "url": "https://app.notion.com/p/d6a79b1acc034bf28e8cee0e3e4b919f",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "quaternion-rotation-composition",
+      "title": "쿼터니언의 축·각과 회전 합성 순서",
+      "file": "content/articles/math/quaternion-rotation-composition.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "3835c49926f740bd9e79034a7159c7a0",
+          "title": "벡터 수학",
+          "url": "https://app.notion.com/p/3835c49926f740bd9e79034a7159c7a0",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "triangle-barycentric-interpolation",
+      "title": "삼각형의 방향·넓이·무게중심 좌표와 보간",
+      "file": "content/articles/math/triangle-barycentric-interpolation.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "7441463202a1429db96c6dfd7b8c7bd8",
+          "title": "물체의 수학 2 : 삼각형과 정점",
+          "url": "https://app.notion.com/p/7441463202a1429db96c6dfd7b8c7bd8",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "trigonometry-radians-atan2",
+      "title": "삼각함수·라디안·Atan2로 방향과 각도 구하기",
+      "file": "content/articles/math/trigonometry-radians-atan2.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-05-23",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "0d0b5038df1d42739da82697eb1967d4",
+          "title": "float Atan2(float y, float x)",
+          "url": "https://app.notion.com/p/0d0b5038df1d42739da82697eb1967d4",
+          "date": "2022-05-23",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "vector-length-dot-cross",
+      "title": "벡터의 길이·정규화·내적·외적을 게임 판정에 쓰기",
+      "file": "content/articles/math/vector-length-dot-cross.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "3835c49926f740bd9e79034a7159c7a0",
+          "title": "벡터 수학",
+          "url": "https://app.notion.com/p/3835c49926f740bd9e79034a7159c7a0",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "cc2887ab622b4f378e2d09d8a6604bca",
+          "title": "벡터의 내적과 외적",
+          "url": "https://app.notion.com/p/cc2887ab622b4f378e2d09d8a6604bca",
+          "date": "2022-01-20",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "6eb70c7ac1964221b1271b9196b91e3d",
+          "title": "물체의 수학 3: 벡터의 내적과 외적",
+          "url": "https://app.notion.com/p/6eb70c7ac1964221b1271b9196b91e3d",
+          "date": "2022-01-20",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "vector-space-basis-coordinates",
+      "title": "벡터 공간·선형 결합·기저와 좌표의 의미",
+      "file": "content/articles/math/vector-space-basis-coordinates.md",
+      "draft": false,
+      "previousDate": "2026-10-18",
+      "date": "2022-10-10",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "c488dcc264164a06bca0f64667d1e1f7",
+          "title": "3장, 벡터: 가상 공간의 탄생",
+          "url": "https://app.notion.com/p/c488dcc264164a06bca0f64667d1e1f7",
+          "date": "2022-10-10",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "a13e9720265543a2bdc9a51e5e86da4e",
+          "title": "3.2.1 스칼라와 벡터",
+          "url": "https://app.notion.com/p/a13e9720265543a2bdc9a51e5e86da4e",
+          "date": "2022-10-10",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "1e7065060ef9429a845e321b45eec73a",
+          "title": "3.2.2 벡터 공간의 연산",
+          "url": "https://app.notion.com/p/1e7065060ef9429a845e321b45eec73a",
+          "date": "2022-10-10",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "data-structures-collections",
+      "title": "자료구조 선택하기: 배열, List, Dictionary, HashSet, Queue, Stack",
+      "file": "content/articles/notes/data-structures-collections.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-17",
+      "dateBasis": "authored",
+      "updated": null,
+      "reason": "프로젝트를 위한 신규 학습 글이며 특정 노션 원문을 옮긴 글은 아니다. 블로그 초판 커밋 날짜를 유지한다.",
+      "evidence": [
+        {
+          "type": "blog-commit",
+          "sha": "6e5d39f631c63ae280b645374d0f3e109e8fb36c",
+          "authoredAt": "2026-10-17T16:40:17+09:00",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "slug": "dynamic-array-list-growth-removal",
+      "title": "동적 배열과 List의 확장·삭제 구현",
+      "file": "content/articles/notes/dynamic-array-list-growth-removal.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-17",
+      "dateBasis": "authored",
+      "updated": null,
+      "reason": "직접 구성한 동적 배열 학습 글이다. 특정 과거 노트의 작성일로 대체하지 않고 블로그 초판 날짜를 유지한다.",
+      "evidence": [
+        {
+          "type": "blog-commit",
+          "sha": "14be2a0a3c9f591b7a7a73c2ef1e762a309b2171",
+          "authoredAt": "2026-10-17T18:19:09+09:00",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "slug": "dynamodb-keys-query-patterns",
+      "title": "DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계",
+      "file": "content/articles/notes/dynamodb-keys-query-patterns.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "71571eaafa394f82849288319a59d906",
+          "title": "DynamoDB 설계 예시",
+          "url": "https://app.notion.com/p/71571eaafa394f82849288319a59d906",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "bcbc3a319d334fe08e9a2dcae18a1ef9",
+          "title": "Partition Key, Sort Key C# 적용 테스트",
+          "url": "https://app.notion.com/p/bcbc3a319d334fe08e9a2dcae18a1ef9",
+          "date": "2021-12-28",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "http-response-failure-cancellation",
+      "title": "HTTP 요청·응답·실패·취소를 작업 API로 이해하기",
+      "file": "content/articles/notes/http-response-failure-cancellation.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-18",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "3427b0bc1ead41f8bb221b8868318552",
+          "title": "HTTP",
+          "url": "https://app.notion.com/p/3427b0bc1ead41f8bb221b8868318552",
+          "date": "2022-01-18",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "notion-study-reading-order",
+      "title": "노션 학습 기록에서 이어 읽는 게임 개발 글 37편",
+      "file": "content/articles/notes/notion-study-reading-order.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-10-17",
+      "dateBasis": "authored",
+      "updated": null,
+      "reason": "블로그로 옮긴 37편을 연결하기 위해 새로 작성한 목차다. 개별 원문의 날짜와 구분한다.",
+      "evidence": [
+        {
+          "type": "blog-commit",
+          "sha": "4e2731388e9a2f4dae53b38622f68885b5459895",
+          "authoredAt": "2026-10-17T18:35:57+09:00",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "slug": "react-effect-task-cleanup",
+      "title": "React useEffect로 작업 상태를 동기화하고 정리하기",
+      "file": "content/articles/notes/react-effect-task-cleanup.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-18",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "3801f85868094581b9dff3ed27f52826",
+          "title": "useEffect 완벽 가이드_1",
+          "url": "https://app.notion.com/p/3801f85868094581b9dff3ed27f52826",
+          "date": "2022-01-18",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "0f3fab6a743d4c2ea2510d7e51f65e2b",
+          "title": "UI 런타임으로서의 React_1",
+          "url": "https://app.notion.com/p/0f3fab6a743d4c2ea2510d7e51f65e2b",
+          "date": "2022-01-18",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "the-myth-of-sisyphus",
+      "title": "시지프 신화 독서 메모",
+      "file": "content/articles/notes/the-myth-of-sisyphus.md",
+      "draft": false,
+      "previousDate": "2024-02-23",
+      "date": "2024-02-23",
+      "dateBasis": "legacy",
+      "updated": "2026-10-17",
+      "reason": "2024년 Jekyll 원본의 작성일·slug를 보존한다.",
+      "evidence": [
+        {
+          "type": "legacy",
+          "date": "2024-02-23"
+        }
+      ]
+    },
+    {
+      "slug": "typescript-interface-runtime-validation",
+      "title": "TypeScript interface와 실행 중 데이터 검증을 구분하기",
+      "file": "content/articles/notes/typescript-interface-runtime-validation.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-18",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "b6213ce8acbb45958e96077a6fc2f8c4",
+          "title": "타입스크립트의 Interface 정리",
+          "url": "https://app.notion.com/p/b6213ce8acbb45958e96077a6fc2f8c4",
+          "date": "2022-01-18",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "welcome-to-jekyll",
+      "title": "Jekyll 블로그 게시 테스트",
+      "file": "content/articles/notes/welcome-to-jekyll.md",
+      "draft": false,
+      "previousDate": "2024-02-23",
+      "date": "2024-02-23",
+      "dateBasis": "legacy",
+      "updated": "2026-10-17",
+      "reason": "2024년 Jekyll 원본의 작성일·slug를 보존한다.",
+      "evidence": [
+        {
+          "type": "legacy",
+          "date": "2024-02-23"
+        }
+      ]
+    },
+    {
+      "slug": "addressables-catalog-key-options",
+      "title": "Addressables 카탈로그 옵션을 줄이기 전에 확인할 것",
+      "file": "content/articles/tools/addressables-catalog-key-options.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-09-11",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "eb44c410f42b451f95252113acb3cb4f",
+          "title": "어드레서블 관리 팁",
+          "url": "https://app.notion.com/p/eb44c410f42b451f95252113acb3cb4f",
+          "date": "2023-09-11",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "addressables-custom-build-stages",
+      "title": "Addressables 커스텀 빌드 스크립트의 호출 단계",
+      "file": "content/articles/tools/addressables-custom-build-stages.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-03-23",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "e1094b62f6c645f7898e95507eaac7d1",
+          "title": "빌드 커스텀 스크립트",
+          "url": "https://app.notion.com/p/e1094b62f6c645f7898e95507eaac7d1",
+          "date": "2024-03-23",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "d1bf4c1b4f8c482ab0afd98d03a400ca",
+          "title": "BuildScriptBase",
+          "url": "https://app.notion.com/p/d1bf4c1b4f8c482ab0afd98d03a400ca",
+          "date": "2024-03-29",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "d5ac17b636de41a8ba66176946312876",
+          "title": "DoBuild 단계",
+          "url": "https://app.notion.com/p/d5ac17b636de41a8ba66176946312876",
+          "date": "2024-03-24",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "addressables-handle-lifetime",
+      "title": "Addressables 로드 핸들의 수명과 해제 책임",
+      "file": "content/articles/tools/addressables-handle-lifetime.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-11-08",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "8196f0c10b5f4eeb87e032069ba1a1ea",
+          "title": "TIP",
+          "url": "https://app.notion.com/p/8196f0c10b5f4eeb87e032069ba1a1ea",
+          "date": "2023-11-08",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "57c308a328ea4ef19ec5650a2674fdde",
+          "title": "개발 고려 사항",
+          "url": "https://app.notion.com/p/57c308a328ea4ef19ec5650a2674fdde",
+          "date": "2023-08-12",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "addressables-player-content-compatibility",
+      "title": "스크립트와 Addressables 콘텐츠의 버전 호환성",
+      "file": "content/articles/tools/addressables-player-content-compatibility.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-09-11",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "eb44c410f42b451f95252113acb3cb4f",
+          "title": "어드레서블 관리 팁",
+          "url": "https://app.notion.com/p/eb44c410f42b451f95252113acb3cb4f",
+          "date": "2023-09-11",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "84031fd94b9a4f3bb071bba99b9b7e34",
+          "title": "어드레서블 빌드",
+          "url": "https://app.notion.com/p/84031fd94b9a4f3bb071bba99b9b7e34",
+          "date": "2023-12-15",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "8634dae5619e41bdaee2cc075f7be6c5",
+          "title": "빌드/배포 작업 순서",
+          "url": "https://app.notion.com/p/8634dae5619e41bdaee2cc075f7be6c5",
+          "date": "2024-01-09",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "assetbundle-compression-costs",
+      "title": "AssetBundle 구조와 LZMA·LZ4의 로딩 비용 비교",
+      "file": "content/articles/tools/assetbundle-compression-costs.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-08-24",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "c1c544d92c454f0a885da23da70dc918",
+          "title": "에셋 번들",
+          "url": "https://app.notion.com/p/c1c544d92c454f0a885da23da70dc918",
+          "date": "2023-08-24",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "azure-devops-content-build-deploy",
+      "title": "Azure DevOps로 Addressables 콘텐츠를 빌드·배포한 과정",
+      "file": "content/articles/tools/azure-devops-content-build-deploy.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-12-12",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "6b4009e0624e4162bb05136e0834261b",
+          "title": "Azure DevOps CI/CD 구현",
+          "url": "https://app.notion.com/p/6b4009e0624e4162bb05136e0834261b",
+          "date": "2023-12-12",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "49e52b6b0fcb40ae9f0b1819a7529636",
+          "title": "DevOps",
+          "url": "https://app.notion.com/p/49e52b6b0fcb40ae9f0b1819a7529636",
+          "date": "2023-09-19",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "e06c1f59bc814ee8ad82aadb813cd34b",
+          "title": "서브모듈 적용",
+          "url": "https://app.notion.com/p/e06c1f59bc814ee8ad82aadb813cd34b",
+          "date": "2024-04-29",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "49a3baf2d6c64db48bb2c54dc3615c0b",
+          "title": "빌드 시간 초과",
+          "url": "https://app.notion.com/p/49a3baf2d6c64db48bb2c54dc3615c0b",
+          "date": "2024-04-29",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "8634dae5619e41bdaee2cc075f7be6c5",
+          "title": "빌드/배포 작업 순서",
+          "url": "https://app.notion.com/p/8634dae5619e41bdaee2cc075f7be6c5",
+          "date": "2024-01-09",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "84031fd94b9a4f3bb071bba99b9b7e34",
+          "title": "어드레서블 빌드",
+          "url": "https://app.notion.com/p/84031fd94b9a4f3bb071bba99b9b7e34",
+          "date": "2023-12-15",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "css-grid-flex-overflow",
+      "title": "CSS Grid·Flex와 긴 코드·표의 가로 넘침 해결",
+      "file": "content/articles/tools/css-grid-flex-overflow.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-18",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "8dfcc5f9dfbc416793d07aafc3126f3a",
+          "title": "#2.XX GRID",
+          "url": "https://app.notion.com/p/8dfcc5f9dfbc416793d07aafc3126f3a",
+          "date": "2022-01-18",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "54552d8fd76e41e79f7377ed6ab3647c",
+          "title": "#1 FLEXBOX",
+          "url": "https://app.notion.com/p/54552d8fd76e41e79f7377ed6ab3647c",
+          "date": "2022-01-18",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "modular-equipment",
+      "title": "2D·3D 장비 파츠 조합 구현",
+      "file": "content/articles/tools/modular-equipment.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2026-08-11",
+      "dateBasis": "commit",
+      "updated": "2026-10-18",
+      "reason": "프리뷰·bounds 수정에 이어 3D 조합 스케일 보정을 제거한 구현",
+      "evidence": [
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "9a0e0988bfab2984beb7a1182c4d5e8e6137a703",
+          "authoredAt": "2026-08-03T17:53:43+09:00",
+          "committedAt": "2026-08-03T17:53:43+09:00",
+          "date": "2026-08-03",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "c30b18ecc4a391382fe49c042e2df2e1998a8e50",
+          "authoredAt": "2026-08-04T11:08:32+09:00",
+          "committedAt": "2026-08-07T15:42:53+09:00",
+          "date": "2026-08-04",
+          "selected": false
+        },
+        {
+          "type": "commit",
+          "repository": "DCB",
+          "sha": "c28411403a44c93fae6991a6c9d492ce022ffe11",
+          "authoredAt": "2026-08-11T11:14:40+09:00",
+          "committedAt": "2026-08-11T11:14:40+09:00",
+          "date": "2026-08-11",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "object-pool-lease-return",
+      "title": "오브젝트 풀의 생성·대여·반환과 중복 반환 방지",
+      "file": "content/articles/tools/object-pool-lease-return.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-01-20",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "b26c1a9fb20b49e8927453549cba2030",
+          "title": "Object Pool",
+          "url": "https://app.notion.com/p/b26c1a9fb20b49e8927453549cba2030",
+          "date": "2022-01-20",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "tag-pinned-multi-repo-checkout",
+      "title": "태그를 고정한 다중 저장소 checkout으로 빌드 입력 맞추기",
+      "file": "content/articles/tools/tag-pinned-multi-repo-checkout.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-04-29",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "e06c1f59bc814ee8ad82aadb813cd34b",
+          "title": "서브모듈 적용",
+          "url": "https://app.notion.com/p/e06c1f59bc814ee8ad82aadb813cd34b",
+          "date": "2024-04-29",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "6b4009e0624e4162bb05136e0834261b",
+          "title": "Azure DevOps CI/CD 구현",
+          "url": "https://app.notion.com/p/6b4009e0624e4162bb05136e0834261b",
+          "date": "2023-12-12",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "unity-asset-loading-choices",
+      "title": "직접 참조·Resources·AssetBundle·Addressables 선택하기",
+      "file": "content/articles/tools/unity-asset-loading-choices.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2023-08-29",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "a7922dd7d82444628d80f8575ce3a141",
+          "title": "에셋 관리",
+          "url": "https://app.notion.com/p/a7922dd7d82444628d80f8575ce3a141",
+          "date": "2023-08-29",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "736f59c4ec454b7eba591678cb9b27a8",
+          "title": "리소스 시스템",
+          "url": "https://app.notion.com/p/736f59c4ec454b7eba591678cb9b27a8",
+          "date": "2023-09-10",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "c1c544d92c454f0a885da23da70dc918",
+          "title": "에셋 번들",
+          "url": "https://app.notion.com/p/c1c544d92c454f0a885da23da70dc918",
+          "date": "2023-08-24",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        },
+        {
+          "type": "notion",
+          "id": "57c308a328ea4ef19ec5650a2674fdde",
+          "title": "개발 고려 사항",
+          "url": "https://app.notion.com/p/57c308a328ea4ef19ec5650a2674fdde",
+          "date": "2023-08-12",
+          "selected": false,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "unity-batch-exit-cold-build",
+      "title": "Unity 배치 빌드가 끝나지 않을 때: 종료 인수와 첫 빌드 비용",
+      "file": "content/articles/tools/unity-batch-exit-cold-build.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-04-29",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "49a3baf2d6c64db48bb2c54dc3615c0b",
+          "title": "빌드 시간 초과",
+          "url": "https://app.notion.com/p/49a3baf2d6c64db48bb2c54dc3615c0b",
+          "date": "2024-04-29",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "unity-ci-package-download-failure",
+      "title": "Unity CI에서 라이선스 메시지와 패키지 다운로드 실패를 구분한 과정",
+      "file": "content/articles/tools/unity-ci-package-download-failure.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2024-04-29",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "ab1b0ca0622b4514b3926b4a0fd82fe1",
+          "title": "어드레서블 버전",
+          "url": "https://app.notion.com/p/ab1b0ca0622b4514b3926b4a0fd82fe1",
+          "date": "2024-04-29",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "unity-cloud-auth-sdk-boundary",
+      "title": "Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계",
+      "file": "content/articles/tools/unity-cloud-auth-sdk-boundary.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2021-12-17",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "490a8b0a1d9f4859919f48fa9a6a36f0",
+          "title": "Amazon DynamoDB 연동 테스트",
+          "url": "https://app.notion.com/p/490a8b0a1d9f4859919f48fa9a6a36f0",
+          "date": "2021-12-17",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    },
+    {
+      "slug": "unity-screen-world-ui-coordinates",
+      "title": "화면 좌표를 월드로, 월드 위치를 UI로 옮기기",
+      "file": "content/articles/tools/unity-screen-world-ui-coordinates.md",
+      "draft": false,
+      "previousDate": "2026-10-17",
+      "date": "2022-03-17",
+      "dateBasis": "notion",
+      "updated": "2026-10-18",
+      "reason": "본문의 중심 원문으로 먼저 제시한 노션 페이지의 생성일을 사용한다. 추가 참고 자료의 날짜를 중심 원문의 날짜로 대체하지 않는다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "2dedcd0be37142609e6e076c6d6aef76",
+          "title": "UGUI",
+          "url": "https://app.notion.com/p/2dedcd0be37142609e6e076c6d6aef76",
+          "date": "2022-03-17",
+          "selected": true,
+          "method": "native-created-date-range",
+          "dayConfirmed": true
+        }
+      ]
+    }
+  ]
+}

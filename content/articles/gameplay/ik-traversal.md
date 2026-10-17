@@ -2,7 +2,9 @@
 title: "IK 트레버설 구현: StepUp, Climb, SideStep"
 description: "지형에 맞춘 손발 IK, 이동 제어와 보행 전환을 구현한 내용을 정리했다."
 slug: "ik-traversal"
-date: "2026-10-17"
+date: "2026-10-02"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "gameplay"
 kind: "case-study"
 tags: ["Unity", "IK", "Traversal", "Animation"]

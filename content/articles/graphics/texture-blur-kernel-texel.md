@@ -2,7 +2,9 @@
 title: "텍스처를 여러 번 샘플링해 블러 만들기"
 description: "샘플 위치·가중치·텍셀 크기·경계를 나눠 블러를 설계한다. 대각 다섯 점 평균과 분리형 커널의 차이를 수치 예제·실습·풀이로 설명한다."
 slug: "texture-blur-kernel-texel"
-date: "2026-10-17"
+date: "2024-11-06"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Shader", "Texture", "Filtering"]

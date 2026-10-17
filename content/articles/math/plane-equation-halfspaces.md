@@ -2,7 +2,9 @@
 title: "평면 방정식과 반공간으로 앞뒤·거리·영역 판정하기"
 description: "법선과 평면 방정식에서 부호 있는 거리를 유도한다. 법선 정규화와 여섯 반공간의 영역 판정을 예제·실습·풀이로 확인한다."
 slug: "plane-equation-halfspaces"
-date: "2026-10-18"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Vector", "Plane", "Coordinate"]

@@ -2,7 +2,9 @@
 title: "Spine 텍스처의 PMA·Straight Alpha·색 공간 맞추기"
 description: "내보낸 RGB·알파와 셰이더 블렌딩을 맞추고 Alpha Is Transparency·sRGB·mipmap의 역할을 구분한다. 수치 예제와 경계 실습·풀이를 담았다."
 slug: "spine-alpha-color-space"
-date: "2026-10-17"
+date: "2024-07-05"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Unity", "Spine", "Alpha", "Texture"]

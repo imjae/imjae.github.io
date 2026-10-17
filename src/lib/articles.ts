@@ -13,4 +13,5 @@ export async function getArticles(includeDrafts = import.meta.env.DEV) {
 
 export const articleUrl = (article: Article) => `/writing/${article.data.slug}/`;
 export const formatDate = (date: string) => date.replaceAll('-', '.');
+export const dateBasisLabel = (basis: Article['data']['dateBasis']) => ({ authored: '블로그 작성일', notion: '노션 원문 생성일', commit: '관련 작업의 커밋 작성일', legacy: '기존 블로그 작성일' })[basis];
 export const readingTime = (article: Article) => Math.max(1, Math.ceil((article.body?.length ?? 0) / 650));

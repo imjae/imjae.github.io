@@ -2,7 +2,9 @@
 title: "AssetBundle 구조와 LZMA·LZ4의 로딩 비용 비교"
 description: "다운로드 크기·캐시 파일·로드·에셋 추출·메모리를 나눠 압축 방식을 비교한다. 동일 프리팹의 세 가지 빌드 예제와 실습·풀이를 제공한다."
 slug: "assetbundle-compression-costs"
-date: "2026-10-17"
+date: "2023-08-24"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "AssetBundle", "Compression", "Profiling"]

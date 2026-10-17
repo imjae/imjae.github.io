@@ -2,7 +2,9 @@
 title: "캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기"
 description: "월드 이동을 캐릭터 로컬의 오른쪽·전방 성분으로 바꿔 Blend Tree 입력을 만든다. 0·90·180도 표와 역변환 실습으로 부호 문제를 확인한다."
 slug: "movement-facing-coordinate-space"
-date: "2026-10-17"
+date: "2023-12-12"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Unity", "Math", "Animation"]

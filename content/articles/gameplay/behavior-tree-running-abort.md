@@ -2,7 +2,9 @@
 title: "Behavior Tree의 Sequence·Selector·Running과 중단"
 description: "반환 상태 세 가지와 메모리형 Sequence를 구현하고, 상위 조건이 바뀔 때 실행 중 행동을 취소한다. 실행 추적 예제와 실습·풀이를 다룬다."
 slug: "behavior-tree-running-abort"
-date: "2026-10-17"
+date: "2022-04-08"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "gameplay"
 kind: "note"
 tags: ["AI", "Behavior Tree", "C#"]

@@ -2,7 +2,9 @@
 title: "노이즈 임계값으로 Dissolve와 발광 경계 만들기"
 description: "노이즈와 임계값의 부등호를 정하고 경계 폭·시작과 종료·투명도·깊이 쓰기를 구분한다. 수치 예제와 실습·풀이를 제공한다."
 slug: "dissolve-threshold-edge"
-date: "2026-10-17"
+date: "2024-11-06"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Shader", "VFX", "Dissolve"]

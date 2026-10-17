@@ -2,7 +2,9 @@
 title: "화면 텍스처 왜곡과 충격파: UV 오프셋부터 계산하기"
 description: "화면 색 복사와 UV 이동을 나누고 방사형 파형·종횡비·중심 예외를 계산한다. Built-in GrabPass와 SRP의 차이를 실습·풀이로 정리한다."
 slug: "screen-distortion-shockwave-uv"
-date: "2026-10-17"
+date: "2024-11-06"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Shader", "UV", "VFX", "Unity"]

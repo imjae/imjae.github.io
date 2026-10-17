@@ -2,7 +2,9 @@
 title: "삼각형의 방향·넓이·무게중심 좌표와 보간"
 description: "세 점에서 변·부호 있는 넓이·무게중심 좌표를 유도한다. 삼각형 내부 판정과 속성 보간, 퇴화·투영의 제한을 예제·실습·풀이로 확인한다."
 slug: "triangle-barycentric-interpolation"
-date: "2026-10-18"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Vector", "Triangle", "Interpolation"]

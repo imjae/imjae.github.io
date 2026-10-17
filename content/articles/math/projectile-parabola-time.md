@@ -2,7 +2,9 @@
 title: "시간에 따른 포물선 운동과 일정 가속도"
 description: "위치·속도·가속도에서 포물선 운동식을 유도한다. 최고점·비행시간과 이산 갱신 오차를 C# 예제·실습·풀이로 확인한다."
 slug: "projectile-parabola-time"
-date: "2026-10-18"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Motion", "Physics", "C#"]

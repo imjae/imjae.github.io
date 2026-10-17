@@ -2,7 +2,9 @@
 title: "Unity 배치 빌드가 끝나지 않을 때: 종료 인수와 첫 빌드 비용"
 description: "빌드는 끝났지만 프로세스가 남은 경우와 최초 플랫폼 전환이 오래 걸린 경우를 구분한다. 종료 코드·로그·콜드/웜 상태를 읽는 예제와 실습을 다룬다."
 slug: "unity-batch-exit-cold-build"
-date: "2026-10-17"
+date: "2024-04-29"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "CI", "Debugging", "Build"]

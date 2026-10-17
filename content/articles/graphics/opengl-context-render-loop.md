@@ -2,7 +2,9 @@
 title: "GLFW·GLAD·컨텍스트와 첫 렌더 루프 만들기"
 description: "창과 컨텍스트, 함수 로더의 역할을 구분하고 초기화 실패·framebuffer 크기·이벤트·버퍼 교환·종료를 처리하는 최소 프로그램을 구성한다."
 slug: "opengl-context-render-loop"
-date: "2026-10-17"
+date: "2023-06-14"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "GLFW", "C++"]

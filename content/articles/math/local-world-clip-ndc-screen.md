@@ -2,7 +2,9 @@
 title: "Local·World·View·Clip·NDC·Screen 좌표를 구분하기"
 description: "모델·뷰·투영과 원근 나눗셈·viewport의 순서를 수치로 계산한다. clip 좌표와 NDC를 구분하는 실행 예제와 실습·풀이를 제공한다."
 slug: "local-world-clip-ndc-screen"
-date: "2026-10-17"
+date: "2023-07-04"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "OpenGL", "Coordinate"]

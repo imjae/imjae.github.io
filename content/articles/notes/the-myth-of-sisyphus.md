@@ -3,6 +3,7 @@ title: "시지프 신화 독서 메모"
 description: "알베르 카뮈의 시지프 신화 중 부조리에 관한 논의를 읽고 정리한 메모다."
 slug: "the-myth-of-sisyphus"
 date: "2024-02-23"
+dateBasis: "legacy"
 topic: "notes"
 kind: "reading"
 tags: ["Reading", "Philosophy"]

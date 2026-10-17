@@ -2,7 +2,9 @@
 title: "삼각함수·라디안·Atan2로 방향과 각도 구하기"
 description: "단위원의 sin·cos, 도와 라디안 변환, Atan2의 사분면 처리를 연결한다. 영벡터와 각도 경계, 2D·XZ 평면의 축 규약을 예제·실습·풀이로 다룬다."
 slug: "trigonometry-radians-atan2"
-date: "2026-10-18"
+date: "2022-05-23"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Trigonometry", "Vector", "Unity"]

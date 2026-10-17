@@ -2,7 +2,9 @@
 title: "GLSL 컴파일·링크 오류와 uniform 갱신"
 description: "파일 읽기, 셰이더 단계 컴파일, 프로그램 링크, uniform 갱신을 나눠 실패를 찾는다. 생성자와 입출력 오류를 수정하는 실습과 풀이를 제공한다."
 slug: "opengl-shader-errors-uniforms"
-date: "2026-10-17"
+date: "2023-06-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "GLSL", "C++", "Debugging"]

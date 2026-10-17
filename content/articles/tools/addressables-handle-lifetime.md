@@ -2,7 +2,9 @@
 title: "Addressables 로드 핸들의 수명과 해제 책임"
 description: "로드 작업의 소유자를 정하고 성공·실패·중복 로드·늦은 완료를 구분한다. 핸들 복사와 Acquire, 일반 Instantiate의 차이를 실습과 풀이로 설명한다."
 slug: "addressables-handle-lifetime"
-date: "2026-10-17"
+date: "2023-11-08"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "Addressables", "Lifetime"]

@@ -2,7 +2,9 @@
 title: "FSM의 Enter·Execute·Exit와 전이·중단 규칙"
 description: "상태 전이를 프레임 경계에 반영하는 작은 FSM으로 재진입·실행 중 전이·죽음 우선순위를 확인한다. 완성 예제와 실습·풀이를 제공한다."
 slug: "fsm-transition-interruption"
-date: "2026-10-17"
+date: "2022-03-22"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "gameplay"
 kind: "note"
 tags: ["AI", "FSM", "C#"]

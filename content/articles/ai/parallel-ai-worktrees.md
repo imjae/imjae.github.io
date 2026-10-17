@@ -2,7 +2,9 @@
 title: "Git 워크트리로 AI 작업을 병행하고 통합한 과정"
 description: "Unity 프로젝트에서 불·급류·트레버설 작업을 별도 워크트리로 나누고, 검증한 변경과 실험 이력을 정리한 과정을 기록했다."
 slug: "parallel-ai-worktrees"
-date: "2026-10-17"
+date: "2026-10-02"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "ai"
 kind: "case-study"
 tags: ["AI", "Git", "Workflow", "Verification"]

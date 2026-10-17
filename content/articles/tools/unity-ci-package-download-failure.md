@@ -2,7 +2,9 @@
 title: "Unity CI에서 라이선스 메시지와 패키지 다운로드 실패를 구분한 과정"
 description: "노션의 Addressables 버전 변경·연결 시간 초과 기록을 분석한다. 로그와 의존성 비교 예제, 실습·풀이를 통해 복구 결과와 아직 확인하지 못한 원인을 구분한다."
 slug: "unity-ci-package-download-failure"
-date: "2026-10-17"
+date: "2024-04-29"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "case-study"
 tags: ["Unity", "Addressables", "Azure DevOps", "CI/CD", "PowerShell", "Verification"]

@@ -2,7 +2,9 @@
 title: "텍스처 객체·텍스처 유닛·sampler와 이미지 포맷"
 description: "객체 이름과 유닛 번호를 구분하고 RGBA 데이터, 행 정렬과 sampler 연결을 확인한다. 직접 만든 2×2 텍스처 예제와 실패 조건별 실습을 다룬다."
 slug: "opengl-texture-units-formats"
-date: "2026-10-17"
+date: "2023-06-25"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "GLSL", "Texture"]

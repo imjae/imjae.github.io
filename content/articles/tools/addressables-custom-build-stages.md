@@ -2,7 +2,9 @@
 title: "Addressables 커스텀 빌드 스크립트의 호출 단계"
 description: "빌드 진입점과 IDataBuilder·BuildDataImplementation의 역할을 구분한다. 기본 packed builder에 전후 처리를 추가하는 예제와 성공·실패 실습을 다룬다."
 slug: "addressables-custom-build-stages"
-date: "2026-10-17"
+date: "2024-03-23"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "Addressables", "Build", "CI"]

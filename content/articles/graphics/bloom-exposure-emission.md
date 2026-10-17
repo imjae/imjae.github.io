@@ -2,7 +2,9 @@
 title: "Bloom과 노출을 분리해서 발광 조절하기"
 description: "표면 발광·HDR 값·노출·Bloom의 역할을 나누고 같은 노출에서 효과를 비교한다. 밝은 값 추출 모델과 실습·풀이를 제공한다."
 slug: "bloom-exposure-emission"
-date: "2026-10-17"
+date: "2024-05-05"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Graphics", "Bloom", "Exposure", "VFX"]

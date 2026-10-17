@@ -2,7 +2,9 @@
 title: "태그를 고정한 다중 저장소 checkout으로 빌드 입력 맞추기"
 description: "노션의 Git 태그 fetch 권한 오류와 Azure 저장소 리소스로 전환한 과정을 정리한다. 태그·커밋·경로 개념, 로컬 Git 실습·풀이와 미실행 Azure 예제를 구분한다."
 slug: "tag-pinned-multi-repo-checkout"
-date: "2026-10-17"
+date: "2024-04-29"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "case-study"
 tags: ["Git", "Azure DevOps", "CI/CD", "Unity", "PowerShell", "Verification"]

@@ -2,7 +2,9 @@
 title: "API 호출을 Codex CLI로 바꾼 로컬 AI 하네스"
 description: "imjaess에서 API 키 기반 호출을 CLI 실행으로 대체하고, 입력·이벤트·최종 응답과 작업 판정을 연결한 과정을 정리했다."
 slug: "cli-agent-harness"
-date: "2026-10-17"
+date: "2026-05-21"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "ai"
 kind: "case-study"
 tags: ["AI", "Workflow", "Tools", "Verification"]

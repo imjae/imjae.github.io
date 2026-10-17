@@ -3,6 +3,7 @@ title: "Jekyll 블로그 게시 테스트"
 description: "2024년에 작성한 Jekyll 블로그 테스트 글이다."
 slug: "welcome-to-jekyll"
 date: "2024-02-23"
+dateBasis: "legacy"
 topic: "notes"
 kind: "note"
 tags: ["Archive"]

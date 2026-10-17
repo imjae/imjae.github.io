@@ -2,7 +2,9 @@
 title: "몬스터 행동 DSL과 그룹 전투 구현"
 description: "상태 전환의 이동 공백, 포위 대열의 회전과 공격 권한 배분 문제를 수정한 과정과 실행 검증 범위를 정리했다."
 slug: "monster-combat"
-date: "2026-10-17"
+date: "2026-08-14"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "gameplay"
 kind: "case-study"
 tags: ["Unity", "AI", "DSL", "Combat"]

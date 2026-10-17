@@ -2,7 +2,9 @@
 title: "AA 방식과 움직일 때의 계단·흐림·잔상 비교"
 description: "MSAA·FXAA·SMAA·TAA가 사용하는 정보를 구분하고 동일한 정지·이동 장면에서 비교할 조건을 정한다. 커버리지 계산과 실습·풀이를 담았다."
 slug: "anti-aliasing-static-motion"
-date: "2026-10-17"
+date: "2024-05-05"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["Graphics", "Anti-aliasing", "Rendering"]

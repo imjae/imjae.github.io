@@ -2,7 +2,9 @@
 title: "텍스처 반복·필터링·mipmap을 같은 조건에서 비교하기"
 description: "Repeat와 Clamp, Nearest와 Linear, mipmap 생성과 필터 선택을 구분한다. 축소와 경계 문제를 확인하는 실습과 풀이를 정리한다."
 slug: "opengl-filtering-mipmaps"
-date: "2026-10-17"
+date: "2023-06-25"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "Texture", "Sampling"]

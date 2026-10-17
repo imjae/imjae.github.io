@@ -2,7 +2,9 @@
 title: "VBO·VAO·EBO와 정점 속성의 stride·offset"
 description: "위치와 색을 섞은 정점의 바이트 주소를 계산하고, 인덱스와 VAO 상태를 연결한다. 잘못된 stride·offset·개수를 고치는 실습과 풀이를 다룬다."
 slug: "opengl-vertex-layout-stride-offset"
-date: "2026-10-17"
+date: "2023-06-17"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "C++", "Vertex", "Buffer"]

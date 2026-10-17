@@ -2,7 +2,9 @@
 title: "OpenGL 학습 기록: 정점 버퍼에서 텍스처 혼합까지"
 description: "LearnOpenGL 저장소의 정점 입력, 인덱스, 셰이더와 텍스처 유닛 연결을 추적했다. 현재 코드의 문제와 실행 전에 확인할 항목을 나눠 정리한다."
 slug: "opengl-vertex-texture-pipeline"
-date: "2026-10-17"
+date: "2026-03-11"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "note"
 tags: ["OpenGL", "GLSL", "Rendering", "Texture"]

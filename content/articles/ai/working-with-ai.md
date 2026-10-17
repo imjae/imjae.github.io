@@ -2,7 +2,9 @@
 title: "AI를 사용한 구현과 검증 과정"
 description: "코드 초안과 검증 도구 작성에 AI를 사용한 방법, 확인 항목과 작업 기록을 정리했다."
 slug: "working-with-ai"
-date: "2026-10-17"
+date: "2026-10-02"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "ai"
 kind: "note"
 tags: ["AI", "Workflow", "Verification"]

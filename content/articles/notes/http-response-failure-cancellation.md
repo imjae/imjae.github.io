@@ -2,7 +2,9 @@
 title: "HTTP 요청·응답·실패·취소를 작업 API로 이해하기"
 description: "상태 코드와 네트워크 실패, 요청 취소와 서버 작업 취소를 구분한다. 내장 Response를 사용하는 실행 예제와 재시도 실습·풀이를 제공한다."
 slug: "http-response-failure-cancellation"
-date: "2026-10-17"
+date: "2022-01-18"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "notes"
 kind: "note"
 tags: ["HTTP", "JavaScript", "API", "Async"]

@@ -2,7 +2,9 @@
 title: "벡터의 길이·정규화·내적·외적을 게임 판정에 쓰기"
 description: "위치 차이에서 이동 방향을 구하고, 내적으로 시야각을, 외적으로 법선과 좌우를 판단한다. 노션의 설명을 보완한 수식·좌표 그림·실행 예제·실습과 풀이를 담았다."
 slug: "vector-length-dot-cross"
-date: "2026-10-17"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Vector", "C#", "Unity", "Verification"]

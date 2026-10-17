@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getArticles, articleUrl, formatDate, readingTime, type Article } from '../../lib/articles';
+import { getArticles, articleUrl, formatDate, readingTime, dateBasisLabel, type Article } from '../../lib/articles';
 import { getTopic, kinds, seriesTitle } from '../../data/site';
 export async function getStaticPaths() { return (await getArticles()).map((article) => ({ params: { slug: article.data.slug }, props: { article } })); }
 interface Props { article: Article; }
@@ -16,7 +16,7 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
     <div class="breadcrumb"><a href="/writing/">글 모아보기</a><span>/</span><a href={`/topics/${topic.id}/`}>{topic.title}</a></div>
     <p class="eyebrow">{topic.english} / {kinds[article.data.kind]}{article.data.project ? ` / ${article.data.project.toUpperCase()}` : ''}</p>
     <h1>{article.data.title}</h1><p class="article-description">{article.data.description}</p>
-    <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date}>{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
+    <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date} title={dateBasisLabel(article.data.dateBasis)}>{article.data.dateBasis === 'notion' ? '노션 원문 ' : article.data.dateBasis === 'commit' ? '작업 기록 ' : ''}{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
     <div class="tag-list">{article.data.tags.map((tag) => <a href={`/writing/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
   </header>
   <div class="article-body-layout"><div class="article-main"><article class="prose"><Content /></article>

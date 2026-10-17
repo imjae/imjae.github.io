@@ -2,7 +2,9 @@
 title: "React useEffect로 작업 상태를 동기화하고 정리하기"
 description: "작업 ID 변경에 맞춰 요청을 시작하고 취소·늦은 응답·오류를 처리한다. 의존성과 StrictMode를 구분하는 컴포넌트 예제와 실습·풀이를 다룬다."
 slug: "react-effect-task-cleanup"
-date: "2026-10-17"
+date: "2022-01-18"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "notes"
 kind: "note"
 tags: ["React", "JavaScript", "Async"]

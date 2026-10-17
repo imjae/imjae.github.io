@@ -2,7 +2,9 @@
 title: "DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계"
 description: "가상의 퀘스트 데이터에서 키와 접두어 조회를 설계한다. Query와 Filter, 정렬·페이지네이션의 차이를 로컬 모델과 실습·풀이로 설명한다."
 slug: "dynamodb-keys-query-patterns"
-date: "2026-10-17"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "notes"
 kind: "note"
 tags: ["DynamoDB", "Database", "Query"]

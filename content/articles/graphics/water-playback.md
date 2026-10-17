@@ -2,7 +2,9 @@
 title: "물 캐시 재생과 메시 업로드"
 description: "오프라인 유체 데이터를 읽어 Unity 메시로 재생하는 구조와 검사 결과를 정리했다."
 slug: "water-playback"
-date: "2026-10-17"
+date: "2026-09-27"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "case-study"
 tags: ["Unity", "Water", "Rendering", "Performance"]

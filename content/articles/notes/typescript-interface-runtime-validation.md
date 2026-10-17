@@ -2,7 +2,9 @@
 title: "TypeScript interface와 실행 중 데이터 검증을 구분하기"
 description: "컴파일 시 타입과 외부 JSON 검증의 경계를 나누고 상태별 결과를 판별 유니온으로 표현한다. 잘못된 필드·누락·상태 조합의 실습과 풀이를 포함한다."
 slug: "typescript-interface-runtime-validation"
-date: "2026-10-17"
+date: "2022-01-18"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "notes"
 kind: "note"
 tags: ["TypeScript", "Validation", "JSON"]

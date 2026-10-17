@@ -2,7 +2,9 @@
 title: "직접 참조·Resources·AssetBundle·Addressables 선택하기"
 description: "참조, 로드, 인스턴스와 해제 책임을 나누고 네 가지 자원 접근 방식의 선택 조건을 비교한다. 같은 프리팹을 대상으로 한 예제·실습·풀이를 담았다."
 slug: "unity-asset-loading-choices"
-date: "2026-10-17"
+date: "2023-08-29"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "Addressables", "AssetBundle", "Resources"]

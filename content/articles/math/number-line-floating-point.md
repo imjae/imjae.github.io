@@ -2,7 +2,9 @@
 title: "수직선과 부동소수점: 이동·배율·오차"
 description: "수직선의 평행이동·배율·반사에서 출발해 float의 표현 간격과 반올림을 살펴본다. 절대·상대 오차 비교를 C# 예제와 실습·풀이로 확인한다."
 slug: "number-line-floating-point"
-date: "2026-10-18"
+date: "2022-10-02"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Number", "Precision", "C#"]

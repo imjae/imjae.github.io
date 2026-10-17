@@ -2,7 +2,9 @@
 title: "쿼터니언의 축·각과 회전 합성 순서"
 description: "단위 쿼터니언의 네 성분, 반각, 벡터 회전과 곱셈 순서를 연결한다. q와 -q, 역회전과 잘못된 입력을 C# 예제·실습·풀이로 확인한다."
 slug: "quaternion-rotation-composition"
-date: "2026-10-18"
+date: "2022-01-20"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Quaternion", "Transform", "C#", "Unity"]

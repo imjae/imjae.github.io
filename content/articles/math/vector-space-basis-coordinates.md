@@ -2,7 +2,9 @@
 title: "벡터 공간·선형 결합·기저와 좌표의 의미"
 description: "벡터 공간의 두 연산과 공리, 생성·독립·기저·차원을 연결한다. 같은 벡터를 다른 기저의 좌표로 표현하는 계산을 예제·실습·풀이로 확인한다."
 slug: "vector-space-basis-coordinates"
-date: "2026-10-18"
+date: "2022-10-10"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Vector", "Basis", "Coordinate"]

@@ -2,7 +2,9 @@
 title: "CSS Grid·Flex와 긴 코드·표의 가로 넘침 해결"
 description: "min-content와 자동 최소 크기를 바탕으로 긴 코드가 문서 폭을 넓히는 이유를 설명한다. min-width: 0·minmax(0,1fr)·내부 스크롤을 실습과 풀이로 비교한다."
 slug: "css-grid-flex-overflow"
-date: "2026-10-17"
+date: "2022-01-18"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["CSS", "Grid", "Flex", "Astro"]

@@ -2,7 +2,9 @@
 title: "화면 좌표를 월드로, 월드 위치를 UI로 옮기기"
 description: "클릭 위치의 Raycast와 머리 위 UI를 구현하며 화면 깊이, 카메라 뒤 대상, Canvas 모드와 RectTransform 좌표를 구분한다. 실습 세 개와 풀이를 포함한다."
 slug: "unity-screen-world-ui-coordinates"
-date: "2026-10-17"
+date: "2022-03-17"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "UI", "Math"]

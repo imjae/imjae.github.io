@@ -2,7 +2,9 @@
 title: "함수·합성·역함수와 되돌릴 수 없는 계산"
 description: "정의역·공역·치역, 단사·전사, 합성과 역함수를 게임 수치 변환으로 설명한다. 이동·배율의 역변환과 Clamp의 정보 손실을 예제·실습·풀이로 확인한다."
 slug: "functions-composition-inverse"
-date: "2026-10-18"
+date: "2022-10-02"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Function", "Transform"]

@@ -2,7 +2,9 @@
 title: "스크립트와 Addressables 콘텐츠의 버전 호환성"
 description: "Player 코드와 콘텐츠를 함께 식별하고 변경 종류에 따라 전체 빌드와 콘텐츠 업데이트를 나눈다. 상태 파일·이전 번들·롤백을 예제와 실습·풀이로 설명한다."
 slug: "addressables-player-content-compatibility"
-date: "2026-10-17"
+date: "2023-09-11"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "tools"
 kind: "note"
 tags: ["Unity", "Addressables", "CI", "Versioning"]

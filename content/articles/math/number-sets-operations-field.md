@@ -2,7 +2,9 @@
 title: "수의 집합과 연산: 닫힘·항등원·역원·체"
 description: "자연수·정수·유리수·실수의 차이를 연산으로 비교한다. 교환·결합·분배법칙의 조건과 체의 의미를 예제, 실습과 풀이로 확인한다."
 slug: "number-sets-operations-field"
-date: "2026-10-18"
+date: "2022-10-02"
+dateBasis: "notion"
+updated: "2026-10-18"
 topic: "math"
 kind: "note"
 tags: ["Math", "Set", "Algebra"]

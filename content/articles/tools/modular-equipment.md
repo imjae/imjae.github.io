@@ -2,7 +2,9 @@
 title: "2D·3D 장비 파츠 조합 구현"
 description: "파츠 트리를 2D·3D와 저장에 연결하고, 프리뷰가 사라진 문제와 스케일·풀 반환 경계를 수정한 과정을 정리했다."
 slug: "modular-equipment"
-date: "2026-10-17"
+date: "2026-08-11"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "tools"
 kind: "case-study"
 tags: ["Unity", "Equipment", "UI", "Data"]

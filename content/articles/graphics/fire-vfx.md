@@ -2,7 +2,9 @@
 title: "불 이펙트의 레이어와 품질 단계"
 description: "볼륨 화염, 연기·재, 화면 크기별 품질 단계와 애니메이션 이펙트 재생 구조를 정리했다."
 slug: "fire-vfx"
-date: "2026-10-17"
+date: "2026-10-01"
+dateBasis: "commit"
+updated: "2026-10-18"
 topic: "graphics"
 kind: "case-study"
 tags: ["Unity", "VFX", "Shader", "Tools"]
