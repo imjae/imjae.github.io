@@ -19,11 +19,14 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
     <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date}>{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
     <div class="tag-list">{article.data.tags.map((tag) => <a href={`/writing/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
   </header>
-  <div class="article-body-layout"><div><article class="prose"><Content /></article>
+  <div class="article-body-layout"><div class="article-main"><article class="prose"><Content /></article>
     {series.length > 1 && article.data.series && <section class="series-panel" aria-label="같은 시리즈"><h2><a href={`/series/${article.data.series}/`}>{seriesTitle(article.data.series)}</a></h2><ol>{series.map((entry,index) => <li class:list={{ current: entry.id === article.id }}><span>{String(index+1).padStart(2,'0')}</span><a href={articleUrl(entry)} aria-current={entry.id === article.id ? 'page' : undefined}>{entry.data.title}</a></li>)}</ol></section>}
     <a class="back-to-writing" href="/writing/">← 글 모아보기</a>
   </div>{headings.some((heading) => heading.depth === 2) && <nav class="toc" aria-label="이 글의 목차"><p>ON THIS PAGE</p><ol>{headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => <li class={`depth-${heading.depth}`}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}</div>
 </BaseLayout>
+<style>
+  .article-main { min-width: 0; }
+</style>
 <script>
   const diagrams: HTMLElement[] = [];
   document.querySelectorAll<HTMLElement>('.prose pre code').forEach((code) => {
