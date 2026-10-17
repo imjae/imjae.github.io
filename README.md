@@ -1,6 +1,6 @@
-# imjae Game Dev Notes
+# imjae Dev Notes
 
-게임플레이·그래픽스·도구·AI 협업 기록을 정리하는 개인 블로그입니다.
+게임 개발을 중심으로 프로그래밍·그래픽스·도구를 공부하며 학습, 실험과 문제 해결 과정을 쌓아가는 기술 블로그입니다.
 
 - 블로그: https://imjae.github.io/
 - 포트폴리오 입구: https://imjae.github.io/portfolio/dcb/

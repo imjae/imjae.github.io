@@ -1,13 +1,13 @@
 export const site = {
-  title: 'imjae · Game Dev Notes',
-  description: '게임플레이, 그래픽스, 개발 도구를 만들며 내린 판단과 구현 과정을 기록합니다.',
+  title: 'imjae · Dev Notes',
+  description: '게임 개발을 중심으로 프로그래밍과 컴퓨터 그래픽스를 공부하며, 학습한 개념과 실험, 구현 중 해결한 문제를 기록하는 기술 블로그입니다.',
   url: 'https://imjae.github.io',
   github: 'https://github.com/imjae',
 };
 
 export const topics = [
   { id: 'gameplay', title: '게임플레이', english: 'GAMEPLAY', description: '캐릭터가 움직이고, 전투하고, 상호작용하는 규칙.', number: '01', color: '#286350' },
-  { id: 'graphics', title: '그래픽스', english: 'GRAPHICS', description: '물과 불, 셰이더와 VFX. 표현을 런타임에 연결하기.', number: '02', color: '#416c91' },
+  { id: 'graphics', title: '그래픽스', english: 'GRAPHICS', description: '렌더링, 셰이더와 VFX. 시각 표현의 원리와 구현.', number: '02', color: '#416c91' },
   { id: 'tools', title: '도구와 구조', english: 'TOOLS & SYSTEMS', description: '반복 작업을 줄이고, 데이터를 일관되게 다루는 방법.', number: '03', color: '#92613e' },
   { id: 'ai', title: 'AI 협업', english: 'AI COLLABORATION', description: '요구사항, 구현 후보, 검증과 선택에 관한 기록.', number: '04', color: '#75618b' },
   { id: 'notes', title: '생각과 메모', english: 'FIELD NOTES', description: '개발을 둘러싼 공부와 읽기, 아직 열린 질문들.', number: '05', color: '#716d63' },
