@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "gameplay"
 kind: "case-study"
-tags: ["Unity", "IK", "Traversal", "Animation"]
+tags: ["인턴쉽", "Unity", "IK", "Traversal", "Animation"]
 project: "dcb"
 series: "dcb"
 order: 1

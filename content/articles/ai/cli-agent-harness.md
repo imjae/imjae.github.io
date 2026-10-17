@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "ai"
 kind: "case-study"
-tags: ["AI", "Workflow", "Tools", "Verification"]
+tags: ["인턴쉽", "AI", "Workflow", "Tools", "Verification"]
 project: "imjaess"
 draft: false
 ---

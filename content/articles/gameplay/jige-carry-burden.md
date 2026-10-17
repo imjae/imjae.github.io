@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "gameplay"
 kind: "case-study"
-tags: ["Unity", "Data"]
+tags: ["인턴쉽", "Unity", "Data"]
 project: "dcb"
 series: "dcb"
 order: 7

@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "ai"
 kind: "case-study"
-tags: ["AI", "Git", "Workflow", "Verification"]
+tags: ["인턴쉽", "AI", "Git", "Workflow", "Verification"]
 project: "dcb"
 series: "dcb"
 order: 8

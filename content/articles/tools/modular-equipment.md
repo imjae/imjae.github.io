@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "tools"
 kind: "case-study"
-tags: ["Unity", "Equipment", "UI", "Data"]
+tags: ["인턴쉽", "Unity", "Equipment", "UI", "Data"]
 project: "dcb"
 series: "dcb"
 order: 3

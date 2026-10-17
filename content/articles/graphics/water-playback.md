@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "graphics"
 kind: "case-study"
-tags: ["Unity", "Water", "Rendering", "Performance"]
+tags: ["인턴쉽", "Unity", "Water", "Rendering", "Performance"]
 project: "dcb"
 series: "dcb"
 order: 4

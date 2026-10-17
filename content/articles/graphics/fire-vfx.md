@@ -7,7 +7,7 @@ dateBasis: "commit"
 updated: "2026-10-18"
 topic: "graphics"
 kind: "case-study"
-tags: ["Unity", "VFX", "Shader", "Tools"]
+tags: ["인턴쉽", "Unity", "VFX", "Shader", "Tools"]
 project: "dcb"
 series: "dcb"
 order: 5
