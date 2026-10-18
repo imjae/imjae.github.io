@@ -4,6 +4,9 @@ import { markdownFiles } from './new-post.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
 import { selectPinnedArticles, applyPinSettings } from '../src/lib/pinned-articles.mjs';
 import { readPinSettings } from '../src/lib/pin-settings.server.mjs';
+import { readProjectVideoSettings } from '../src/lib/project-video.server.mjs';
+import { dcbFeatures } from '../src/data/dcb-features.mjs';
+import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 
 const root = resolve('dist');
 const failures = [];
@@ -45,6 +48,28 @@ for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philos
   if (!(await exists(join(root,path)))) failures.push(`예전 글 주소의 실제 HTML 누락: ${path}`);
 }
 const editor = await readFile(join(root,'editor','index.html'),'utf8');
+const projectVideo = await readProjectVideoSettings();
+const projectPage = await readFile(join(root,'portfolio/dcb/index.html'),'utf8');
+const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^>]*>/g)];
+if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
+for (const feature of dcbFeatures) {
+  const route = featureUrl(feature);
+  const linked = featureLinks.find(match => match[1] === feature.slug)?.[0];
+  if (linked?.match(/\bhref="([^"]*)"/)?.[1] !== route) failures.push(`기능 목록이 관련 글 화면으로 연결되지 않음: ${feature.slug}`);
+  const page = join(root,route,'index.html');
+  if (!(await exists(page))) { failures.push(`기능 상세 화면 누락: ${feature.slug}`); continue; }
+  const html = await readFile(page,'utf8');
+  const expected = selectFeatureArticles(feature, articles).map(article => article.data.slug);
+  const actual = [...html.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) failures.push(`기능별 공개 글 목록·순서가 다름: ${feature.slug}`);
+  if (!feeds.includes(route)) failures.push(`기능 상세 화면의 sitemap 경로 누락: ${feature.slug}`);
+}
+const videoLink = projectPage.match(/<a\b[^>]*class="[^"]*\bproject-video-link\b[^"]*"[^>]*>/)?.[0];
+if (projectVideo?.videoUrl) {
+  const href = videoLink?.match(/\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
+  if (href !== projectVideo.videoUrl || !videoLink?.includes('target="_blank"') || !videoLink?.includes('rel="noopener noreferrer"')) failures.push('DCB 소개의 게임 영상 링크와 저장 설정이 다름');
+} else if (videoLink) failures.push('영상 주소가 없는데 DCB 소개에 영상 버튼이 노출됨');
+if (!projectPage.includes('/editor/?project=dcb#project-video') || !editor.includes('id="project-video"')) failures.push('DCB 영상 링크의 수정 모드 연결 누락');
 if (!/name="robots" content="noindex, nofollow"/.test(editor)) failures.push('수정 모드의 검색 수집 제외 설정 누락');
 if (feeds.includes('/editor/')) failures.push('수정 모드가 RSS 또는 sitemap에 포함됨');
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }

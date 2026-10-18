@@ -1,0 +1,60 @@
+---
+import { readProjectVideoSettings } from '../lib/project-video.server.mjs';
+const settings = await readProjectVideoSettings();
+const videoUrl = settings?.videoUrl ?? '';
+---
+<section class="editor-section project-video-editor" id="project-video" aria-labelledby="project-video-title">
+  <div class="section-heading"><h2 id="project-video-title">DCB 게임 영상</h2></div>
+  <p class="video-help">프로젝트 소개 상단의 ‘게임 영상 보기’에 연결합니다.</p>
+  <label for="project-video-url">영상 주소</label>
+  <input id="project-video-url" type="url" value={videoUrl} maxlength="2048" placeholder="https://www.youtube.com/watch?v=…" aria-describedby="project-video-help" autocomplete="off" />
+  <p class="video-help" id="project-video-help">YouTube 등 HTTPS 영상 주소를 넣습니다. 비우고 저장하면 영상 버튼을 숨깁니다.</p>
+  <a id="project-video-preview" href={videoUrl || undefined} hidden={!videoUrl} target="_blank" rel="noopener noreferrer">입력한 영상 열기 ↗</a>
+  <div class="video-submit"><a id="project-video-save" class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 영상 설정 저장 ↗</a><button id="project-video-reset" type="button" disabled>변경 취소</button></div>
+  <p id="project-video-status" role="status" aria-live="polite">{videoUrl ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.'}</p>
+  <p class="video-help">GitHub에서 <strong>Commit changes</strong>로 저장하면 배포 후 프로젝트 소개에 반영됩니다. <a href="/portfolio/dcb/">프로젝트 소개 보기 →</a></p>
+  <noscript><p>영상 주소 편집에는 JavaScript가 필요합니다.</p></noscript>
+</section>
+<script>
+  import { normalizeVideoUrl } from '../lib/project-video.mjs';
+  import { prepareProjectVideoSettings } from '../lib/github-authoring.mjs';
+  const input = document.querySelector<HTMLInputElement>('#project-video-url')!;
+  const initial = input.value;
+  const save = document.querySelector<HTMLAnchorElement>('#project-video-save')!;
+  const preview = document.querySelector<HTMLAnchorElement>('#project-video-preview')!;
+  const reset = document.querySelector<HTMLButtonElement>('#project-video-reset')!;
+  const status = document.querySelector('#project-video-status')!;
+  function render() {
+    save.removeAttribute('href');
+    save.setAttribute('aria-disabled', 'true');
+    preview.removeAttribute('href');
+    preview.hidden = true;
+    reset.disabled = input.value === initial;
+    try {
+      const url = normalizeVideoUrl(input.value);
+      input.removeAttribute('aria-invalid');
+      if (url) { preview.href = url; preview.hidden = false; }
+      const dirty = url !== initial;
+      status.textContent = dirty ? (url ? '저장 전 변경 · 영상 주소를 저장해 주세요.' : '저장 전 변경 · 영상 버튼을 숨깁니다.') : (initial ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.');
+      if (dirty) {
+        save.href = prepareProjectVideoSettings(url).url;
+        save.setAttribute('aria-disabled', 'false');
+      }
+    } catch (error) {
+      input.setAttribute('aria-invalid', 'true');
+      status.textContent = error instanceof Error ? error.message : '영상 주소를 확인해 주세요.';
+    }
+  }
+  input.addEventListener('input', render);
+  reset.addEventListener('click', () => { input.value = initial; render(); });
+  save.addEventListener('click', event => { if (save.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+  if (new URLSearchParams(location.search).get('project') === 'dcb') {
+    const viewer = document.querySelector<HTMLAnchorElement>('[data-view-mode]');
+    if (viewer) viewer.href = '/portfolio/dcb/';
+  }
+  render();
+</script>
+<style>
+  .project-video-editor{border:1px solid var(--line);border-radius:5px;padding:24px;margin-bottom:38px;scroll-margin-top:24px}.project-video-editor label{display:block;font-size:12px;margin-bottom:10px}.project-video-editor input{width:100%;min-width:0;padding:13px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:13px}.project-video-editor input[aria-invalid=true]{border-color:#a9513d}.video-help{font-size:12px;color:var(--muted);line-height:1.9}.video-help a,#project-video-preview{color:var(--green);text-decoration:underline;text-underline-offset:3px}#project-video-preview{font-size:12px;overflow-wrap:anywhere}.video-submit{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:20px}.video-submit a[aria-disabled=true]{opacity:.45;cursor:default}.video-submit button{padding:10px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:11px}.video-submit button:disabled{opacity:.4;cursor:default}#project-video-status{font-size:12px;color:var(--green);line-height:1.8;margin:14px 0}
+  @media(max-width:760px){.project-video-editor{padding:18px}.video-submit .button{width:100%;white-space:normal;line-height:1.8}.video-submit button{min-height:42px}.project-video-editor input{font-size:16px}}
+</style>

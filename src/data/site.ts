@@ -16,12 +16,6 @@ export const topics = [
 
 export const kinds = { 'case-study': '구조 노트', devlog: '개발 기록', note: '기술 노트', reading: '읽기 노트' } as const;
 export const seriesTitle = (id: string) => id === 'dcb' ? 'DCB 개발 기록' : id.replaceAll('-', ' ');
-export const cases = [
-  { slug: 'ik-traversal', title: 'IK 트레버설', detail: 'StepUp · Climb · SideStep', topic: 'gameplay', number: '01', label: 'IK TRAVERSAL' },
-  { slug: 'monster-combat', title: '몬스터 패턴과 그룹 전투', detail: '행동 DSL · 공격 토큰 · 포위 슬롯', topic: 'gameplay', number: '02', label: 'COMBAT BEHAVIOR' },
-  { slug: 'modular-equipment', title: '2D·3D 장비 파츠 조합', detail: '파츠 데이터 · 피벗 정렬 · 저장과 복원', topic: 'tools', number: '03', label: 'MODULAR EQUIPMENT' },
-  { slug: 'water-playback', title: '물 캐시 재생', detail: '오프라인 캐시 · 선행 읽기 · 메시 업로드', topic: 'graphics', number: '04', label: 'WATER RENDERING' },
-  { slug: 'fire-vfx', title: '불 이펙트와 VFX 타임라인', detail: '볼륨 · 레이어 · 표현 단계', topic: 'graphics', number: '05', label: 'FIRE & VFX' },
-] as const;
+export { dcbFeatures as cases } from './dcb-features.mjs';
 
 export const getTopic = (id: string) => topics.find((topic) => topic.id === id) ?? topics[4];

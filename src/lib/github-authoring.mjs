@@ -1,4 +1,5 @@
 import { validatePinSettings } from './pinned-articles.mjs';
+import { validateProjectVideoSettings } from './project-video.mjs';
 export const repository = 'https://github.com/imjae/imjae.github.io';
 export const branch = 'main';
 const topics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math'];
@@ -33,6 +34,18 @@ export function preparePinSettings(pins, { now = new Date(), id = crypto.randomU
   url.searchParams.set('filename', path);
   url.searchParams.set('value', content);
   if (url.href.length > 8000) throw new Error('고정 글이 너무 많아 저장 화면을 열 수 없습니다. 고정할 글 수를 줄여 주세요.');
+  return { path, content, url: url.href };
+}
+
+export function prepareProjectVideoSettings(videoUrl, { now = new Date(), id = crypto.randomUUID() } = {}) {
+  if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('영상 설정의 저장 식별자를 확인해 주세요.');
+  const data = validateProjectVideoSettings({ version: 1, project: 'dcb', createdAt: now.toISOString(), videoUrl });
+  const content = `${JSON.stringify(data, null, 2)}\n`;
+  const path = `content/project-videos/${data.createdAt.replaceAll(':', '-').replace('.', '-')}-${id}.json`;
+  const url = new URL(`${repository}/new/${branch}`);
+  url.searchParams.set('filename', path);
+  url.searchParams.set('value', content);
+  if (url.href.length > 8000) throw new Error('영상 주소가 너무 깁니다. 공유용 주소로 줄여 주세요.');
   return { path, content, url: url.href };
 }
 

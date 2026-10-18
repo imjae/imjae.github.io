@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../../components/ArticleCard.astro';
+import { dcbFeatures } from '../../../../data/dcb-features.mjs';
+import { getArticles } from '../../../../lib/articles';
+import { selectFeatureArticles } from '../../../../lib/portfolio-features.mjs';
+export function getStaticPaths() {
+  return dcbFeatures.map(feature => ({ params: { feature: feature.slug }, props: { feature } }));
+}
+const { feature } = Astro.props;
+const articles = selectFeatureArticles(feature, await getArticles(), import.meta.env.DEV);
+---
+<BaseLayout title={`${feature.title} — DCB`} description={feature.description} active="portfolio">
+  <div class="breadcrumb"><a href="/portfolio/">포트폴리오</a><span>/</span><a href="/portfolio/dcb/">DCB</a><span>/</span><span>{feature.title}</span></div>
+  <header class="page-intro">
+    <p class="eyebrow">DCB / {feature.number} / {feature.label}</p>
+    <h1>{feature.title}</h1>
+    <p>{feature.description}</p>
+  </header>
+  <section aria-labelledby="feature-articles-title">
+    <div class="section-heading"><h2 id="feature-articles-title">관련 글 <span>{articles.length}</span></h2></div>
+    {articles.length > 0 ? <div class="article-list">{articles.map(article => <ArticleCard article={article} />)}</div> : <p class="empty-state">공개된 관련 글이 없습니다.</p>}
+  </section>
+  <a class="back-to-writing" href="/portfolio/dcb/#features">← DCB 기능 목록</a>
+</BaseLayout>
+<style>
+  .breadcrumb{flex-wrap:wrap;line-height:1.8;row-gap:7px}
+</style>

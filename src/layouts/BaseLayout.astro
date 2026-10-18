@@ -3,11 +3,11 @@ import '../styles/global.css';
 import { site, topics } from '../data/site';
 import { getArticles } from '../lib/articles';
 import ModeSwitch from '../components/ModeSwitch.astro';
-interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editSlug?: string; }
-const { title, description = site.description, active = '', noindex = false, editSlug } = Astro.props;
+interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editSlug?: string; editProject?: string; }
+const { title, description = site.description, active = '', noindex = false, editSlug, editProject } = Astro.props;
 const articles = await getArticles();
 const canonical = new URL(Astro.url.pathname, site.url);
-const editorUrl = editSlug ? `/editor/?post=${encodeURIComponent(editSlug)}` : '/editor/';
+const editorUrl = editSlug ? `/editor/?post=${encodeURIComponent(editSlug)}` : editProject === 'dcb' ? '/editor/?project=dcb#project-video' : '/editor/';
 ---
 <!doctype html>
 <html lang="ko">
