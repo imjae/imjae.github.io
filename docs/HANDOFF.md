@@ -362,3 +362,11 @@ cli-agent-harness의 제목·요약·본문을 API 제약에서의 CLI 선택, �
 Task 병행과 Task 내 역할 순서, fast/balanced, 조사·계획 질문 통합과 waiting_for_user, 구현 ref에서 생성한 tester 공간·verifier 재사용을 설명했다. 변경 요약은 전체 패치가 아닌 git diff stat/name-status이며 미추적 파일이 빠질 수 있는 한계를 적었다. 문자 예산은 하네스 입력/본문 대상이며 전체 모델 컨텍스트 상한으로 쓰지 않았다. 판정 하향과 명령 unknown·검토 대기를 분리했고 출력 파일 부재 fallback·키워드 판정·이벤트 수집/시간·프로세스 트리·sandbox 한계도 명시했다. 본인 요구와 방향 판단, AI 코드·테스트 작성 보조를 구분했다. 하네스 테스트·실계정 CLI·Unity 실행은 새로 수행하지 않았다. 테스트 코드는 조사만 했으며 mock 흐름을 실제 모델 호출 성공으로 쓰지 않았다.
 
 npm run verify의 18개 테스트·Astro 27개 파일 진단 0개·82개 HTML 검사가 통과했다. Home 고정 9편과 새 제목, 긴 글의 표 6개·흐름도 1개, 390px AI 카테고리의 EvidenceContract 본문 검색 1편·표/페이지 가로 넘침 없음을 확인했다. 게시 커밋 de07b06d24c624c782f1343150199caa89a3e623의 Actions 39087124369 빌드·배포가 성공했다. 공개 글에서 제목·15개 목차·표·흐름도·기존 날짜·미실행 안내를 확인했고 공개 Home 고정 9번과 제목을 대조했다. 화면은 .verification/cli-harness/article-live.jpg, 조사 요약은 같은 폴더 review.json에 보관했다. 커밋은 해당 글 한 파일만 포함한다. 기존 FSM 초안·계획 문서 3개·HANDOFF 로컬 변경을 유지했고 임시 4322 preview를 종료했다. 기존 4324 초안 dev 서버는 유지한다.
+
+## 2026-10-18 Behavior→FSM·DSL 글 문구 검토와 공개 설정
+
+먼저 origin/main의 fc912bb를 fast-forward로 반영해 IK 트레버설 보완을 보존했다. unity-behavior-to-code-fsm의 요약과 표현을 검토하고 draft를 false로 바꿨다. 전환 작업의 Deluge→DCB 계보, 당시 Update 비용 보고와 이후 성능 측정의 구분, 타입별 C# definition 원본, named primitive의 의미를 명확히 했다. 수정·검색·diff 검토·전이 규칙·시각화·프리셋의 구조상 이점을 설명하며 시간 절감률이나 성능 향상을 주장하지 않는다. slug·작성일 2026-06-02·수정일·태그·시리즈 순서는 유지한다.
+
+6월 2일 원 요청 두 세션과 도입·뷰어·프리셋·6월 17일 패키지 제거 커밋, 현재 DCB의 registry·runner·뷰어 적용·검사 코드와 Unity 공식 기능 소개를 대조했다. 기존 MonsterStateController 재사용, 초기 legacy fallback과 현재 미등록 경고, 일반 스폰에 preset이 자동 적용되지 않는 점을 유지했다. Unity 컴파일·EditMode·Play Mode·실제 전투·CPU/GC 측정은 새로 하지 않았다. DCB는 읽기 전용으로 사용했다.
+
+npm run verify의 테스트 18개·Astro 27개 파일 진단 0개·83개 HTML 검사를 통과했다. 공개 글은 63편, 게임플레이 6편이며 물 깊이 초안은 유지한다. Home 고정 9편의 순서, 긴 본문의 표 3개·흐름도 1개, 390px 게임플레이에서 preset 검색 결과 1편과 본문·표 가로 넘침 없음을 확인했다. 공개 경로는 /writing/unity-behavior-to-code-fsm/이며 별도로 Home 고정 목록에 추가하지 않았다.
