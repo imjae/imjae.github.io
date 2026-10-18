@@ -62,6 +62,13 @@ for (const feature of dcbFeatures) {
   const expected = selectFeatureArticles(feature, articles).map(article => article.data.slug);
   const actual = [...html.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
   if (JSON.stringify(actual) !== JSON.stringify(expected)) failures.push(`기능별 공개 글 목록·순서가 다름: ${feature.slug}`);
+  const overviewSection = html.match(/<section\b[^>]*data-feature-overview\b[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  const analysisSection = html.match(/<section\b[^>]*data-feature-analyses\b[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+  const overviewSlugs = [...overviewSection.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
+  const analysisSlugs = [...analysisSection.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
+  const expectedOverview = expected.filter(slug => slug === feature.overviewSlug);
+  const expectedAnalyses = expected.filter(slug => slug !== feature.overviewSlug);
+  if (JSON.stringify(overviewSlugs) !== JSON.stringify(expectedOverview) || JSON.stringify(analysisSlugs) !== JSON.stringify(expectedAnalyses)) failures.push(`기능 설명과 구현·분석 글의 구분이 다름: ${feature.slug}`);
   if (!feeds.includes(route)) failures.push(`기능 상세 화면의 sitemap 경로 누락: ${feature.slug}`);
 }
 const videoLink = projectPage.match(/<a\b[^>]*class="[^"]*\bproject-video-link\b[^"]*"[^>]*>/)?.[0];
