@@ -1,3 +1,4 @@
+import { validatePinSettings } from './pinned-articles.mjs';
 export const repository = 'https://github.com/imjae/imjae.github.io';
 export const branch = 'main';
 const topics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math'];
@@ -21,6 +22,18 @@ export function githubFileUrl(action, filePath) {
 
 export function koreanDate() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+}
+
+export function preparePinSettings(pins, { now = new Date(), id = crypto.randomUUID() } = {}) {
+  if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('고정 설정의 저장 식별자를 확인해 주세요.');
+  const data = validatePinSettings({ version: 1, createdAt: now.toISOString(), pins });
+  const content = `${JSON.stringify(data, null, 2)}\n`;
+  const path = `content/pins/${data.createdAt.replaceAll(':', '-').replace('.', '-')}-${id}.json`;
+  const url = new URL(`${repository}/new/${branch}`);
+  url.searchParams.set('filename', path);
+  url.searchParams.set('value', content);
+  if (url.href.length > 8000) throw new Error('고정 글이 너무 많아 저장 화면을 열 수 없습니다. 고정할 글 수를 줄여 주세요.');
+  return { path, content, url: url.href };
 }
 
 export function prepareNewPost(options) {

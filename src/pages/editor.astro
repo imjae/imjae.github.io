@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getArticles, articleUrl, formatDate } from '../lib/articles';
 import { topics, kinds, getTopic } from '../data/site';
 import { repository, branch, githubFileUrl } from '../lib/github-authoring.mjs';
+import PinnedEditor from '../components/PinnedEditor.astro';
 const articles = await getArticles(false);
 ---
 <BaseLayout title="수정 모드" active="editor" noindex description="GitHub에서 블로그 글을 추가·수정·삭제합니다.">
@@ -12,13 +13,15 @@ const articles = await getArticles(false);
     <a href={`${repository}/tree/${branch}/content/articles`} target="_blank" rel="noopener noreferrer">초안·전체 파일 ↗</a>
     <a href={`${repository}/actions`} target="_blank" rel="noopener noreferrer">배포 확인 ↗</a>
   </div>
+  <PinnedEditor articles={articles} />
   <section class="editor-section" aria-labelledby="manage-title">
     <div class="section-heading"><h2 id="manage-title">공개 글 관리 <span>{articles.length}</span></h2></div>
     <label class="search-box"><span aria-hidden="true">⌕</span><input id="manage-search" type="search" aria-label="관리할 글 검색" placeholder="제목이나 주제로 검색" autocomplete="off" /></label>
     <p id="manage-count" role="status" aria-live="polite">{articles.length}개의 글</p>
     <div class="manage-list">{articles.map(article => <article class="manage-row" data-post={article.data.slug} data-title={`${article.data.title} ${getTopic(article.data.topic).title}`.toLocaleLowerCase()}>
-      <div><p class="manage-meta">{getTopic(article.data.topic).title} · {formatDate(article.data.date)}{article.data.pinned && ' · Pinned'}</p><h3>{article.data.title}</h3></div>
+      <div><p class="manage-meta">{getTopic(article.data.topic).title} · {formatDate(article.data.date)}<span data-pin-badge hidden={!article.data.pinned}> · Pinned</span></p><h3>{article.data.title}</h3></div>
       <div class="manage-actions">
+        <button class="pin-toggle" type="button" data-pin-toggle={article.data.slug} aria-pressed={article.data.pinned} aria-label={`${article.data.title} ${article.data.pinned ? '고정 해제' : '고정'}`}>{article.data.pinned ? '고정 해제' : '고정'}</button>
         <a href={articleUrl(article)} aria-label={`${article.data.title} 읽기`}>읽기</a>
         <a href={githubFileUrl('edit', article.filePath)} aria-label={`${article.data.title} 수정`} target="_blank" rel="noopener noreferrer">수정 ↗</a>
         <a class="delete-link" href={githubFileUrl('delete', article.filePath)} aria-label={`${article.data.title} 삭제 검토`} target="_blank" rel="noopener noreferrer">삭제 검토 ↗</a>

@@ -1,0 +1,93 @@
+---
+import type { Article } from '../lib/articles';
+import { selectPinnedArticles } from '../lib/pinned-articles.mjs';
+interface Props { articles: Article[]; }
+const { articles } = Astro.props;
+const pins = selectPinnedArticles(articles).map(article => article.data.slug);
+const index = articles.map(article => ({ slug: article.data.slug, title: article.data.title }));
+---
+<section class="editor-section pinned-editor" aria-labelledby="pin-editor-title">
+  <div class="section-heading"><h2 id="pin-editor-title">홈 고정 글 <span id="pin-count">{pins.length}</span></h2></div>
+  <p class="pin-help">순서대로 홈에 표시합니다. 아래 공개 글 목록에서 고정·해제할 수 있습니다.</p>
+  <ol id="pin-list"></ol>
+  <p id="pin-empty" hidden>고정한 글이 없습니다.</p>
+  <div class="pin-submit"><a id="pin-save" class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 고정 설정 저장 ↗</a><button id="pin-reset" type="button" disabled>변경 취소</button></div>
+  <p id="pin-status" role="status" aria-live="polite">게시된 설정과 같습니다.</p>
+  <p class="pin-help">저장 화면에서 <strong>Commit changes</strong>로 확정하면 배포 후 홈에 반영됩니다.</p>
+  <noscript><p>고정 여부와 순서 편집에는 JavaScript가 필요합니다.</p></noscript>
+  <script type="application/json" id="pin-editor-data" set:html={JSON.stringify({ pins, articles: index }).replaceAll('<', '\\u003c')} />
+</section>
+<script>
+  import { preparePinSettings } from '../lib/github-authoring.mjs';
+  const data = JSON.parse(document.querySelector('#pin-editor-data')?.textContent ?? '{}') as { pins: string[]; articles: { slug: string; title: string }[] };
+  const initial = [...data.pins];
+  const titles = new Map(data.articles.map(article => [article.slug, article.title]));
+  const storageKey = `imjae:pin-editor:${JSON.stringify(initial)}`;
+  let pins = [...initial];
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null');
+    if (Array.isArray(saved) && saved.every(slug => titles.has(slug)) && new Set(saved).size === saved.length) pins = saved;
+  } catch { /* 세션 저장을 사용할 수 없어도 편집을 계속한다. */ }
+  const list = document.querySelector<HTMLOListElement>('#pin-list')!;
+  const count = document.querySelector('#pin-count')!;
+  const status = document.querySelector('#pin-status')!;
+  const empty = document.querySelector<HTMLElement>('#pin-empty')!;
+  const save = document.querySelector<HTMLAnchorElement>('#pin-save')!;
+  const reset = document.querySelector<HTMLButtonElement>('#pin-reset')!;
+  const toggles = [...document.querySelectorAll<HTMLButtonElement>('[data-pin-toggle]')];
+  function toggle(slug: string) {
+    pins = pins.includes(slug) ? pins.filter(value => value !== slug) : [...pins, slug];
+    render();
+  }
+  function button(text: string, label: string, action: () => void, disabled = false) {
+    const control = document.createElement('button');
+    control.type = 'button'; control.textContent = text; control.setAttribute('aria-label', label); control.disabled = disabled;
+    control.addEventListener('click', action);
+    return control;
+  }
+  function move(slug: string, offset: number) {
+    const from = pins.indexOf(slug), to = from + offset;
+    if (from < 0 || to < 0 || to >= pins.length) return;
+    [pins[from], pins[to]] = [pins[to], pins[from]];
+    render();
+    list.querySelector<HTMLButtonElement>(`[data-slug="${slug}"] button:not(:disabled)`)?.focus();
+  }
+  function render() {
+    list.replaceChildren();
+    pins.forEach((slug, index) => {
+      const title = titles.get(slug)!;
+      const item = document.createElement('li'); item.dataset.slug = slug;
+      const name = document.createElement('span'); name.textContent = `${index + 1}. ${title}`;
+      const actions = document.createElement('div'); actions.className = 'pin-actions';
+      actions.append(button('↑', `${title} 위로`, () => move(slug, -1), index === 0), button('↓', `${title} 아래로`, () => move(slug, 1), index === pins.length - 1), button('해제', `${title} 고정 해제`, () => toggle(slug)));
+      item.append(name, actions); list.append(item);
+    });
+    for (const control of toggles) {
+      const slug = control.dataset.pinToggle!, pinned = pins.includes(slug);
+      control.textContent = pinned ? '고정 해제' : '고정';
+      control.setAttribute('aria-pressed', String(pinned));
+      control.setAttribute('aria-label', `${titles.get(slug)} ${pinned ? '고정 해제' : '고정'}`);
+      const badge = control.closest('.manage-row')?.querySelector<HTMLElement>('[data-pin-badge]');
+      if (badge) badge.hidden = !pinned;
+    }
+    count.textContent = String(pins.length); empty.hidden = pins.length > 0;
+    const dirty = JSON.stringify(pins) !== JSON.stringify(initial);
+    reset.disabled = !dirty; save.setAttribute('aria-disabled', String(!dirty)); save.removeAttribute('href');
+    status.textContent = dirty ? `저장 전 변경 · 고정 글 ${pins.length}편` : '게시된 설정과 같습니다.';
+    if (dirty) {
+      try { save.href = preparePinSettings(pins).url; }
+      catch (error) { status.textContent = error instanceof Error ? error.message : '고정 설정을 확인해 주세요.'; save.setAttribute('aria-disabled', 'true'); }
+    }
+    try { if (dirty) sessionStorage.setItem(storageKey, JSON.stringify(pins)); else sessionStorage.removeItem(storageKey); } catch { /* 편집과 GitHub 저장은 계속 사용할 수 있다. */ }
+  }
+  toggles.forEach(control => control.addEventListener('click', () => toggle(control.dataset.pinToggle!)));
+  reset.addEventListener('click', () => { pins = [...initial]; render(); });
+  save.addEventListener('click', event => { if (save.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+  render();
+</script>
+<style is:global>
+  .pinned-editor{margin-bottom:38px}.pin-help{font-size:12px;color:var(--muted);line-height:1.9;max-width:740px}
+  #pin-list{padding:0;list-style:none;border-top:1px solid var(--line)}#pin-list li{display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:13px 0;font-size:13px;min-width:0}#pin-list li>span{overflow-wrap:anywhere}
+  .pin-actions{display:flex;gap:6px;flex-shrink:0}.pin-actions button,.pin-submit>button,.manage-actions .pin-toggle{font:inherit;font-size:11px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:8px 10px;cursor:pointer}.pin-actions button:hover,.manage-actions .pin-toggle:hover{background:var(--soft)}.pin-actions button:disabled,.pin-submit>button:disabled{opacity:.4;cursor:default}.pin-submit{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:20px}.pin-submit a[aria-disabled="true"]{opacity:.45;cursor:default}#pin-status{font-size:12px;color:var(--green);line-height:1.8}.manage-actions{flex-wrap:wrap}
+  @media(max-width:760px){#pin-list li{align-items:flex-start;flex-direction:column}.pin-actions{align-self:flex-end}.pin-actions button,.manage-actions .pin-toggle{min-height:42px;min-width:42px}.pin-submit .button{width:100%}}
+</style>

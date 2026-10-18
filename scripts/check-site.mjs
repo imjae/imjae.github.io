@@ -2,7 +2,8 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve, join, dirname, relative } from 'node:path';
 import { markdownFiles } from './new-post.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
-import { selectPinnedArticles } from '../src/lib/pinned-articles.mjs';
+import { selectPinnedArticles, applyPinSettings } from '../src/lib/pinned-articles.mjs';
+import { readPinSettings } from '../src/lib/pin-settings.server.mjs';
 
 const root = resolve('dist');
 const failures = [];
@@ -33,7 +34,8 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   if (data.draft && (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(data.slug))) failures.push(`검색 색인 또는 피드에 초안 노출: ${data.slug}`);
 }
 const home = await readFile(join(root,'index.html'),'utf8');
-const pinnedSlugs = selectPinnedArticles(articles).map(article => article.data.slug);
+const settings = await readPinSettings();
+const pinnedSlugs = selectPinnedArticles(applyPinSettings(articles, settings?.pins)).map(article => article.data.slug);
 const shownSlugs = [...home.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
 if (JSON.stringify(shownSlugs) !== JSON.stringify(pinnedSlugs)) failures.push('Home 고정 글 목록과 공개 글의 pinned·pinOrder 설정이 다름');
 if (pinnedSlugs.length > 0 && !home.includes('id="pinned-title"')) failures.push('Home Pinned 제목 누락');
