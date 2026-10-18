@@ -370,3 +370,9 @@ npm run verify의 18개 테스트·Astro 27개 파일 진단 0개·82개 HTML �
 6월 2일 원 요청 두 세션과 도입·뷰어·프리셋·6월 17일 패키지 제거 커밋, 현재 DCB의 registry·runner·뷰어 적용·검사 코드와 Unity 공식 기능 소개를 대조했다. 기존 MonsterStateController 재사용, 초기 legacy fallback과 현재 미등록 경고, 일반 스폰에 preset이 자동 적용되지 않는 점을 유지했다. Unity 컴파일·EditMode·Play Mode·실제 전투·CPU/GC 측정은 새로 하지 않았다. DCB는 읽기 전용으로 사용했다.
 
 npm run verify의 테스트 18개·Astro 27개 파일 진단 0개·83개 HTML 검사를 통과했다. 공개 글은 63편, 게임플레이 6편이며 물 깊이 초안은 유지한다. Home 고정 9편의 순서, 긴 본문의 표 3개·흐름도 1개, 390px 게임플레이에서 preset 검색 결과 1편과 본문·표 가로 넘침 없음을 확인했다. 공개 경로는 /writing/unity-behavior-to-code-fsm/이며 별도로 Home 고정 목록에 추가하지 않았다.
+
+## 2026-10-18 FSM·DSL 전환 글 Home 고정
+
+사용자 요청으로 unity-behavior-to-code-fsm을 monster-combat 바로 다음인 2번에 고정했다. 기존 9편의 상대 순서는 유지하며 고정 글은 10편이다. content/pins/에 첫 정식 JSON 설정을 추가했으므로 이후 고정 여부와 순서는 최신 createdAt 설정을 기준으로 한다. 수정 모드에서도 같은 목록을 읽는다. 글 본문·작성일·주소·공개 상태는 변경하지 않았다.
+
+npm run verify의 테스트 18개·Astro 진단 0개·83개 HTML 검사를 통과했다. 로컬 공개 빌드에서 Home과 수정 모드의 10편 순서 일치, 긴 본문의 표 3개·흐름도 1개, 390px 게임플레이 preset 검색 결과 1편과 Home·검색의 가로 넘침 없음을 확인했다.
