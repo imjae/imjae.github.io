@@ -440,3 +440,7 @@ npm run verify 테스트 24개·Astro 33개 파일 진단 0개·88개 HTML 검�
 이번 통합 대상은 새 이펙트 글과 CAP-13 촬영 계획, CLI 하네스의 경험 프로젝트 목적 명시, 프로젝트 영상 주소 관리, 기능별 관련 글 목록과 문서·테스트다. 실제 영상 주소는 아직 없어 content/project-videos에는 .gitkeep만 남으며 공개 영상 버튼을 표시하지 않는다. 장비 기능의 공개 글은 2편으로 늘어나 기능별 수는 1·2·2·1·1편이다.
 
 Node 24.15.0에서 npm run verify의 테스트 24개·Astro 33개 파일 진단 0개·89개 HTML 검사와 82개 경로 빌드가 통과했다. 공개 빌드의 Home 고정 10편 순서, 장비 관련 글 2편, 영상 버튼 미노출, 새 글의 표 4개·흐름도 1개·표시 수식 5개와 초안 표시 부재를 확인했다. 390px 그래픽스 검색에서 새 제목 1편이 나오며 검색·긴 본문에 페이지 가로 넘침이 없다. origin/main을 fetch해 기존 HEAD와 일치함을 확인했다. 로그는 .verification/ui-vfx-publish/verify.log에 보관한다. 배포 결과는 push할 커밋의 Actions와 공개 페이지에서 별도로 확인한다.
+
+## 2026-10-18 장비 UI 이펙트 Home 고정
+
+사용자 요청으로 새 고정 설정을 저장해 modular-equipment-ui-vfx를 modular-equipment 바로 다음에 추가했다. 전체 11편 중 장비 파츠 조합은 3번, UI 이펙트는 4번이며 기존 나머지 글의 상대 순서는 유지한다. 이전 고정 설정과 글 본문·날짜는 변경하지 않았다. npm run verify의 테스트 24개·Astro 진단 0개·89개 HTML 검사가 통과했다. 브라우저에서 Home 순서와 긴 이펙트 글의 표·흐름도, 390px 그래픽스 제목 검색 1편·가로 넘침 없음을 확인했다. 로그는 .verification/ui-vfx-pin/verify.log에 보관한다. 공개 홈 반영은 이 변경의 main push와 Actions 배포 후 별도로 확인한다.
