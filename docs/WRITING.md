@@ -66,6 +66,8 @@ Home의 Pinned 목록은 수정 모드에서 관리합니다. 저장 버튼은 �
 
 이미지는 `public/media/글주소/`에 넣고 `/media/글주소/이미지.webp`처럼 참조합니다. 큰 영상은 사용자 소유의 공개 영상 링크를 사용합니다. 실제 장면이 준비되지 않았으면 영상 버튼이나 가짜 썸네일을 만들지 않습니다.
 
+실제 플레이 영상은 [촬영·첨부 계획](DCB-CAPTURE-PLAN.md)을 따릅니다. 사용자 선택에 따라 YouTube 등에 업로드한 뒤 본문에 삽입합니다. 원본은 Git에서 제외한 `media-inbox/`에 보관하고, 별도로 쓸 실제 대표 이미지만 `public/media/<slug>/`에 넣습니다. [촬영 기록](templates/DCB-TAKE.md)에 커밋·실행 환경·타임코드·확인 범위를 남기고 [YouTube 양식](templates/youtube-figure.html)을 실제 영상 ID와 설명으로 채웁니다. `.article-video`는 16:9 비율과 최소 높이 200px로 영상·캡션을 표시하며, 자동 재생 없이 지연 로드·모바일 인라인 재생·전체 화면과 원본 링크를 제공합니다. 실제 YouTube 영상이 준비되기 전에는 양식을 공개 글에 붙이지 않습니다.
+
 ### 4 로컬에서 보기
 
 `npm run dev`의 주소를 엽니다. 이때 초안에는 로컬 표시가 붙습니다. 공개 상태를 확인하려면 `npm run verify` 후 `npm run preview`를 사용합니다. 초안은 정적 페이지·목록·본문 검색·RSS·sitemap에 포함되지 않습니다.
