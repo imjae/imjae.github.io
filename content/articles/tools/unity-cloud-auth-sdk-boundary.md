@@ -69,4 +69,4 @@ false
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/)
+[전체 글 목차](/writing/notion-study-reading-order/)

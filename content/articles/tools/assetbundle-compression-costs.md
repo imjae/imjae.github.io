@@ -75,4 +75,4 @@ public static class BundleStudy
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Addressables 카탈로그 옵션을 줄이기 전에 확인할 것](/writing/addressables-catalog-key-options/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Addressables 카탈로그 옵션을 줄이기 전에 확인할 것](/writing/addressables-catalog-key-options/)

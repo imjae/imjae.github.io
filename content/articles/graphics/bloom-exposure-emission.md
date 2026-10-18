@@ -62,4 +62,4 @@ console.log(scene.map((v,i) => v+spread[i]*intensity));
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [React useEffect로 작업 상태를 동기화하고 정리하기](/writing/react-effect-task-cleanup/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [React useEffect로 작업 상태를 동기화하고 정리하기](/writing/react-effect-task-cleanup/)

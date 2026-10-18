@@ -67,4 +67,4 @@ clip은 픽셀을 폐기한다. alpha blending은 남는 픽셀을 배경과 섞
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [AA 방식과 움직일 때의 계단·흐림·잔상 비교](/writing/anti-aliasing-static-motion/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [AA 방식과 움직일 때의 계단·흐림·잔상 비교](/writing/anti-aliasing-static-motion/)

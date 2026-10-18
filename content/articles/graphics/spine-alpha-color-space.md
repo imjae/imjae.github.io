@@ -15,7 +15,7 @@ draft: false
 
 [스파인 텍스처 알파값 설정](https://app.notion.com/p/03524cd5da6e474b985ca057f71420b4)에는 UI Spine의 mipmap 경고와 설정 조사 과정이 있다. Sprite에서 Default로 바꾸면서 기본 mipmap 설정이 달라진 관찰을 확인했다. 원문 이미지·일부 외부 블록은 확인하지 못했고 사내 경로와 캡처는 옮기지 않았다.
 
-이 글은 **노트의 설명을 바로잡은 학습 글**이다. 원문의 설정 변경이 모든 조합에서 올바른 해결이라는 뜻은 아니다. 특히 Alpha Is Transparency가 PMA 변환이라는 설명을 사용하지 않는다.
+이 글에서는 노트의 설명을 검토하고 알파 처리 조건을 구분한다. 원문의 설정 변경이 모든 조합에서 올바른 해결이라는 뜻은 아니다. 특히 Alpha Is Transparency가 PMA 변환이라는 설명을 사용하지 않는다.
 
 ## Straight와 PMA는 저장된 RGB가 다르다
 
@@ -76,4 +76,4 @@ console.log(doubleAlpha);
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [화면 텍스처 왜곡과 충격파: UV 오프셋부터 계산하기](/writing/screen-distortion-shockwave-uv/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [화면 텍스처 왜곡과 충격파: UV 오프셋부터 계산하기](/writing/screen-distortion-shockwave-uv/)

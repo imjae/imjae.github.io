@@ -69,4 +69,4 @@ for (const yaw of [0,90,180]) {
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Addressables 로드 핸들의 수명과 해제 책임](/writing/addressables-handle-lifetime/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Addressables 로드 핸들의 수명과 해제 책임](/writing/addressables-handle-lifetime/)

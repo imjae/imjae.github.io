@@ -100,4 +100,4 @@ DrawElements의 3은 인덱스 개수다. 버퍼 크기인 12바이트를 전달
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [GLSL 컴파일·링크 오류와 uniform 갱신](/writing/opengl-shader-errors-uniforms/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [GLSL 컴파일·링크 오류와 uniform 갱신](/writing/opengl-shader-errors-uniforms/)

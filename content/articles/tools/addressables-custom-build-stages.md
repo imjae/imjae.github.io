@@ -71,4 +71,4 @@ BuildData가 반환됐다는 사실, Error가 비었다는 사실, 카탈로그�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Unity 배치 빌드가 끝나지 않을 때: 종료 인수와 첫 빌드 비용](/writing/unity-batch-exit-cold-build/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Unity 배치 빌드가 끝나지 않을 때: 종료 인수와 첫 빌드 비용](/writing/unity-batch-exit-cold-build/)

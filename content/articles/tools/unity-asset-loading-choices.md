@@ -96,4 +96,4 @@ finally
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [GLFW·GLAD·컨텍스트와 첫 렌더 루프 만들기](/writing/opengl-context-render-loop/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [GLFW·GLAD·컨텍스트와 첫 렌더 루프 만들기](/writing/opengl-context-render-loop/)

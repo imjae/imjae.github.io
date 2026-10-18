@@ -114,4 +114,4 @@ location -1은 오타일 수도 있고 사용되지 않아 제거된 uniform일 
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [텍스처 객체·텍스처 유닛·sampler와 이미지 포맷](/writing/opengl-texture-units-formats/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [텍스처 객체·텍스처 유닛·sampler와 이미지 포맷](/writing/opengl-texture-units-formats/)

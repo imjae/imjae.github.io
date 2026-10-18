@@ -70,4 +70,4 @@ console.log(blur([1,1,1,1,1]));
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [노이즈 임계값으로 Dissolve와 발광 경계 만들기](/writing/dissolve-threshold-edge/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [노이즈 임계값으로 Dissolve와 발광 경계 만들기](/writing/dissolve-threshold-edge/)

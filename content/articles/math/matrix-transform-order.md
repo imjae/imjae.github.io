@@ -67,4 +67,4 @@ direction [ 1, 0, 0 ]
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [카메라의 기준축과 LookAt 행렬 만들기](/writing/camera-basis-lookat/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [카메라의 기준축과 LookAt 행렬 만들기](/writing/camera-basis-lookat/)

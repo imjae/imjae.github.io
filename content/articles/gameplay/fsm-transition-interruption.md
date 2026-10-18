@@ -99,4 +99,4 @@ Execute Dead
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Behavior Tree의 Sequence·Selector·Running과 중단](/writing/behavior-tree-running-abort/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Behavior Tree의 Sequence·Selector·Running과 중단](/writing/behavior-tree-running-abort/)

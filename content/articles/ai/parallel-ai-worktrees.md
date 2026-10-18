@@ -11,6 +11,8 @@ tags: ["인턴쉽", "AI", "Git", "Workflow", "Verification"]
 project: "dcb"
 series: "dcb"
 order: 8
+pinned: true
+pinOrder: 8
 draft: false
 ---
 

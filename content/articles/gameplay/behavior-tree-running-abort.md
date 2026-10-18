@@ -102,4 +102,4 @@ Selector는 위 Sequence 루프에서 ‘Success면 종료, Failure면 index 증
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기](/writing/movement-facing-coordinate-space/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [캐릭터 방향과 이동 벡터를 같은 좌표계로 맞추기](/writing/movement-facing-coordinate-space/)

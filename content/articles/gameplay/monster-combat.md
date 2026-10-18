@@ -11,6 +11,8 @@ tags: ["인턴쉽", "Unity", "AI", "DSL", "Combat"]
 project: "dcb"
 series: "dcb"
 order: 2
+pinned: true
+pinOrder: 1
 draft: false
 ---
 

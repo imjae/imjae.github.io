@@ -9,6 +9,8 @@ topic: "ai"
 kind: "case-study"
 tags: ["인턴쉽", "AI", "Workflow", "Tools", "Verification"]
 project: "imjaess"
+pinned: true
+pinOrder: 9
 draft: false
 ---
 

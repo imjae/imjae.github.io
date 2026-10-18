@@ -90,4 +90,4 @@ CPU의 이미지 버퍼와 GL 텍스처는 수명이 다르다. 일반적인 `gl
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [텍스처 반복·필터링·mipmap을 같은 조건에서 비교하기](/writing/opengl-filtering-mipmaps/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [텍스처 반복·필터링·mipmap을 같은 조건에서 비교하기](/writing/opengl-filtering-mipmaps/)

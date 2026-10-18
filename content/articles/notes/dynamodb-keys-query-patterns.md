@@ -76,4 +76,4 @@ Query는 파티션 키 동등 조건을 사용하고 선택적으로 정렬 키 
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](/writing/http-response-failure-cancellation/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](/writing/http-response-failure-cancellation/)

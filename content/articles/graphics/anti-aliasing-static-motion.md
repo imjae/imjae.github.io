@@ -54,4 +54,4 @@ TAA도 단순히 현재 값과 이전 값을 평균하는 것만으로는 충분
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Bloom과 노출을 분리해서 발광 조절하기](/writing/bloom-exposure-emission/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Bloom과 노출을 분리해서 발광 조절하기](/writing/bloom-exposure-emission/)

@@ -80,4 +80,4 @@ viewport 원점은 왼쪽 아래 (0,0), 기본 깊이 범위는 0~1로 계산했
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [직접 참조·Resources·AssetBundle·Addressables 선택하기](/writing/unity-asset-loading-choices/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [직접 참조·Resources·AssetBundle·Addressables 선택하기](/writing/unity-asset-loading-choices/)

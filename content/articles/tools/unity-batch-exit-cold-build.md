@@ -61,4 +61,4 @@ A는 종료 계약부터, B는 준비 단계와 제한·캐시부터, C는 최�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Spine 텍스처의 PMA·Straight Alpha·색 공간 맞추기](/writing/spine-alpha-color-space/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Spine 텍스처의 PMA·Straight Alpha·색 공간 맞추기](/writing/spine-alpha-color-space/)

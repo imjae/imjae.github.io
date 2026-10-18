@@ -70,4 +70,4 @@ AbortController는 클라이언트가 응답을 더 기다리지 않도록 할 �
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계](/writing/unity-cloud-auth-sdk-boundary/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계](/writing/unity-cloud-auth-sdk-boundary/)

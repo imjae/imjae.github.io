@@ -93,4 +93,4 @@ int main() {
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [이동·회전·크기 행렬과 변환 순서 직접 계산하기](/writing/matrix-transform-order/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [이동·회전·크기 행렬과 변환 순서 직접 계산하기](/writing/matrix-transform-order/)

@@ -59,8 +59,8 @@ Internal Asset Naming 변경은 번들 해시·CRC와 콘텐츠 상태 일관성
 
 ## 확인한 범위
 
-원문 옵션과 공식 문서를 대조해 학습 절차를 만들었다. Unity 컴파일·카탈로그 빌드·키 조회·크기·로드 시간은 미검증이다. 빈 카탈로그 노트들을 추가 성과로 세지 않았다. 글과 예제 구성에 AI를 사용했다.
+원문 옵션과 공식 문서를 대조해 확인 절차를 만들었다. Unity 컴파일·카탈로그 빌드·키 조회·크기·로드 시간은 미검증이다. 빈 카탈로그 노트들을 추가 성과로 세지 않았다. 글과 예제 구성에 AI를 사용했다.
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [스크립트와 Addressables 콘텐츠의 버전 호환성](/writing/addressables-player-content-compatibility/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [스크립트와 Addressables 콘텐츠의 버전 호환성](/writing/addressables-player-content-compatibility/)

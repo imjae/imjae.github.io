@@ -62,4 +62,4 @@ GL_LINEAR_MIPMAP_LINEAR는 한 레벨 내부의 선형 보간과 레벨 사이 �
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Local·World·View·Clip·NDC·Screen 좌표를 구분하기](/writing/local-world-clip-ndc-screen/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Local·World·View·Clip·NDC·Screen 좌표를 구분하기](/writing/local-world-clip-ndc-screen/)

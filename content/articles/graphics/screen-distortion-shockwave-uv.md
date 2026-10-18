@@ -60,4 +60,4 @@ float2 ShockOffset(float2 uv, float2 center, float aspect,
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [텍스처를 여러 번 샘플링해 블러 만들기](/writing/texture-blur-kernel-texel/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [텍스처를 여러 번 샘플링해 블러 만들기](/writing/texture-blur-kernel-texel/)

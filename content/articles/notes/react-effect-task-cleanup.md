@@ -13,7 +13,7 @@ draft: false
 
 ## 요청한 순서와 응답한 순서는 다를 수 있다
 
-[useEffect 노트](https://app.notion.com/p/3801f85868094581b9dff3ed27f52826)와 [UI 런타임 노트](https://app.notion.com/p/0f3fab6a743d4c2ea2510d7e51f65e2b)는 외부 가이드의 학습 정리다. 긴 번역문과 예제를 복제하지 않고 가상의 작업 조회 UI로 다시 구성했다. 원 출처는 [Dan Abramov의 useEffect 글](https://overreacted.io/a-complete-guide-to-useeffect/)이며 동작은 현재 [React useEffect 문서](https://react.dev/reference/react/useEffect)와 대조했다.
+[useEffect 노트](https://app.notion.com/p/3801f85868094581b9dff3ed27f52826)와 [UI 런타임 노트](https://app.notion.com/p/0f3fab6a743d4c2ea2510d7e51f65e2b)는 외부 가이드를 참고한 기록이다. 긴 번역문과 예제를 복제하지 않고 가상의 작업 조회 UI로 다시 구성했다. 원 출처는 [Dan Abramov의 useEffect 글](https://overreacted.io/a-complete-guide-to-useeffect/)이며 동작은 현재 [React useEffect 문서](https://react.dev/reference/react/useEffect)와 대조했다.
 
 렌더는 현재 props·state로 UI를 계산한다. Effect는 네트워크·구독 같은 외부 시스템과 동기화한다. 단순히 props를 가공해 화면에 보여 줄 값을 만들기 위해 매번 Effect와 추가 state를 사용할 필요는 없다.
 
@@ -74,4 +74,4 @@ AbortController는 전송·응답 읽기를 취소할 수 있지만 서버가 �
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [TypeScript interface와 실행 중 데이터 검증을 구분하기](/writing/typescript-interface-runtime-validation/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [TypeScript interface와 실행 중 데이터 검증을 구분하기](/writing/typescript-interface-runtime-validation/)

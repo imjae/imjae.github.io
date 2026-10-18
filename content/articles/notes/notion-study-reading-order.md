@@ -1,19 +1,18 @@
 ---
-title: "노션 학습 기록에서 이어 읽는 게임 개발 글 37편"
-description: "노션 이전 후보의 문제 해결·수학·OpenGL·Unity·웹·백엔드 글을 순서대로 연결한다. 독립 예제의 확인 범위와 실제 프로젝트 검증을 구분한다."
+title: "게임 개발 글 37편: 문제 해결부터 그래픽스와 웹까지"
+description: "게임 개발 문제 해결, 수학, OpenGL, Unity, 웹과 백엔드 글을 주제별로 연결한다."
 slug: "notion-study-reading-order"
 date: "2026-10-17"
+updated: "2026-10-18"
 topic: "notes"
 kind: "note"
-tags: ["Study", "Unity", "OpenGL", "Verification"]
+tags: ["Unity", "OpenGL", "Verification"]
 draft: false
 ---
 
-## 이 목록으로 공부하는 순서
+## 주제와 읽기 순서
 
-노션에 정리한 자료에서 고른 37개 주제를 블로그 글로 구성했다. 먼저 작성한 문제 해결 사례 다섯 편 뒤에 벡터·UI·OpenGL을 잇고 Unity 동작·자원 관리, 그래픽스 효과와 웹·백엔드로 이어진다. 각 글에는 개념, 새 예제, 실습과 풀이, 확인 범위를 적었다.
-
-이번 목록은 노션 이전 후보 37개를 다룬다. 프로젝트 전체의 189개 기술 학습 후보는 별도 목록에서 후속 주제로 관리한다. 각 글에서 실제 프로젝트 작업과 독립 학습 예제의 범위를 확인할 수 있다.
+문제 해결 사례 다섯 편에서 시작해 벡터·UI·OpenGL, Unity 동작·자원 관리, 그래픽스 효과와 웹·백엔드로 이어진다. 각 글은 개념과 예제, 실습·풀이, 확인 범위를 다룬다.
 
 OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N04로 돌아온다. 행렬이 낯설다면 N15를 N08보다 먼저 읽어도 된다. 자료구조는 [컬렉션 선택](/writing/data-structures-collections/) → [동적 배열·List의 확장과 삭제](/writing/dynamic-array-list-growth-removal/) 순으로 별도 연결했다.
 
@@ -50,11 +49,11 @@ OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N0
 | 29 | [노이즈 임계값으로 Dissolve와 발광 경계 만들기](/writing/dissolve-threshold-edge/) | 그래픽스 |
 | 30 | [AA 방식과 움직일 때의 계단·흐림·잔상 비교](/writing/anti-aliasing-static-motion/) | 그래픽스 |
 | 31 | [Bloom과 노출을 분리해서 발광 조절하기](/writing/bloom-exposure-emission/) | 그래픽스 |
-| 32 | [React useEffect로 작업 상태를 동기화하고 정리하기](/writing/react-effect-task-cleanup/) | 학습 메모 |
-| 33 | [TypeScript interface와 실행 중 데이터 검증을 구분하기](/writing/typescript-interface-runtime-validation/) | 학습 메모 |
+| 32 | [React useEffect로 작업 상태를 동기화하고 정리하기](/writing/react-effect-task-cleanup/) | 기술 메모 |
+| 33 | [TypeScript interface와 실행 중 데이터 검증을 구분하기](/writing/typescript-interface-runtime-validation/) | 기술 메모 |
 | 34 | [CSS Grid·Flex와 긴 코드·표의 가로 넘침 해결](/writing/css-grid-flex-overflow/) | 도구와 구조 |
-| 35 | [DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계](/writing/dynamodb-keys-query-patterns/) | 학습 메모 |
-| 36 | [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](/writing/http-response-failure-cancellation/) | 학습 메모 |
+| 35 | [DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계](/writing/dynamodb-keys-query-patterns/) | 기술 메모 |
+| 36 | [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](/writing/http-response-failure-cancellation/) | 기술 메모 |
 | 37 | [Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계](/writing/unity-cloud-auth-sdk-boundary/) | 도구와 구조 |
 
 ## 예제와 확인 범위를 읽는 방법

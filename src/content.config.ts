@@ -17,6 +17,8 @@ const articles = defineCollection({
     project: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     series: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     order: z.number().int().positive().optional(),
+    pinned: z.boolean().default(false),
+    pinOrder: z.number().int().positive().optional(),
     draft: z.boolean().default(true),
     legacy: z.boolean().default(false),
   }),

@@ -11,6 +11,8 @@ tags: ["인턴쉽", "Unity", "IK", "Traversal", "Animation"]
 project: "dcb"
 series: "dcb"
 order: 1
+pinned: true
+pinOrder: 3
 draft: false
 ---
 

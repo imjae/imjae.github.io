@@ -72,4 +72,4 @@ aside { overflow-wrap: anywhere; }
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계](/writing/dynamodb-keys-query-patterns/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [DynamoDB의 Partition Key·Sort Key와 조회 패턴 설계](/writing/dynamodb-keys-query-patterns/)

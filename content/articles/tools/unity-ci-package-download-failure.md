@@ -120,7 +120,7 @@ Editor 로그에서 의존성 해석 실패와 두 개의 `ETIMEDOUT` 신호를 
 
 복구는 서비스를 다시 진행할 수 있게 하는 작업이고, 원인 확정은 다른 후보를 통제해 설명을 검증하는 작업이다. 이번 기록으로는 **의도하지 않은 버전 변경을 되돌린 복구**와 **그 전 실행의 다운로드 시간 초과**까지 연결할 수 있다. 새 버전의 코드 결함, 일시적 레지스트리 장애, 프록시 제한, 캐시 차이 중 무엇이 결정적이었는지는 남는다.
 
-## 학습 예제: 네트워크 없이 로그 신호 찾기
+## 예제: 네트워크 없이 로그 신호 찾기
 
 PowerShell 7만 사용한다. Unity·Azure 계정·실제 패키지 다운로드는 필요 없다. 예제는 두 종류의 자료를 만든다.
 
@@ -182,10 +182,10 @@ foreach ($item in @(
         Set-Content -LiteralPath (Join-Path $sampleRoot $item.Name) `
             -Encoding utf8NoBOM
 }
-Write-Output '학습용 로그 6개와 manifest 2개 생성'
+Write-Output '예제용 로그 6개와 manifest 2개 생성'
 ~~~
 
-`pwsh -File ./Prepare-CiSample.ps1`로 실행한다. 두 JSON은 실제 프로젝트의 manifest가 아니라 비교에 필요한 필드만 가진 학습 데이터다. Scriptable Build Pipeline의 실제 선택 버전을 만들어 넣지 않았다.
+`pwsh -File ./Prepare-CiSample.ps1`로 실행한다. 두 JSON은 실제 프로젝트의 manifest가 아니라 비교에 필요한 필드만 가진 예제 데이터다. Scriptable Build Pipeline의 실제 선택 버전을 만들어 넣지 않았다.
 
 ### 예제 2 신호를 모으되 원인을 자동 판정하지 않기
 

@@ -76,4 +76,4 @@ try/finally는 성공·실패·사용 중 예외에서 같은 획득분을 정�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [AssetBundle 구조와 LZMA·LZ4의 로딩 비용 비교](/writing/assetbundle-compression-costs/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [AssetBundle 구조와 LZMA·LZ4의 로딩 비용 비교](/writing/assetbundle-compression-costs/)

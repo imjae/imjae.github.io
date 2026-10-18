@@ -29,7 +29,7 @@ C#의 클래스·메서드·Dictionary를 읽을 수 있다고 가정한다. Dic
 | 마스크 | Unity `SpriteMask` |
 | 재현 장면 | 한 페이지 아틀라스, 같은 블렌드 모드의 작은 스켈레톤 여러 개 |
 | Unity 예제의 API 기준 | spine-unity 4.2 공개 소스 |
-| 파이프라인 기준 | Built-in과 이에 맞는 Spine 셰이더를 사용하는 학습 장면 |
+| 파이프라인 기준 | Built-in과 이에 맞는 Spine 셰이더를 사용하는 예제 장면 |
 | 별도 확인할 환경 | URP·HDRP, 여러 아틀라스 페이지, 다른 블렌드 모드와 렌더 분리 |
 
 여기서 다루는 `SpriteMask`와 Canvas UI의 `Mask`·`RectMask2D`는 적용 경로가 다르다. `SkeletonGraphic`은 `CanvasRenderer`를 사용하는 UI 컴포넌트이므로 아래의 `MeshRenderer`용 재질과 코드를 그대로 적용하지 않는다. [Spine 4.2 컴포넌트 문서](https://esotericsoftware.com/spine-unity-main-components-4.2#SkeletonGraphic-Component)
@@ -167,7 +167,7 @@ flowchart TD
 
 ## 예제 1 원본 하나를 공유 재질 하나로 연결하기
 
-아래는 학습을 위해 새로 작성한 컴포넌트다. 노션에 나온 `SpineOverrideMaterials`의 원본 구현은 아니다. **Spine 4.2 API와 대조했지만 Unity에서 컴파일·실행하지 않은 예제**다.
+아래는 별도로 작성한 예제 컴포넌트다. 노션에 나온 `SpineOverrideMaterials`의 원본 구현은 아니다. **Spine 4.2 API와 대조했지만 Unity에서 컴파일·실행하지 않은 예제**다.
 
 파일 이름은 `SharedSpineMaskMaterial.cs`로 한다. 한 컴포넌트가 한 쌍의 교체를 맡는다.
 
@@ -532,7 +532,7 @@ A만 교체해도 B가 필요한 그리기 구간은 남는다. A의 공유 참�
 | 당시 원본 컴포넌트·정확한 버전·성능 수치 | 확보하지 못함 |
 | 마스크 재질 생성·교체 API | 공개 Spine 4.2 소스와 대조 |
 | 콘솔 참조 모델 | .NET SDK 10.0.301 컴파일·실행, 출력 확인 |
-| Unity 컴포넌트 두 개 | 학습용으로 새로 작성, Unity 컴파일 미실행 |
+| Unity 컴포넌트 두 개 | 독립 예제로 새로 작성, Unity 컴파일 미실행 |
 | SpriteMask 시각 결과와 Frame Debugger | 재현 절차 작성, 실행 미확인 |
 | 활성화·해제 충돌·반복 재사용 | 코드의 의도 설명, Unity 실행 미확인 |
 | URP·HDRP·4.3·여러 아틀라스·실제 기기 성능 | 이 예제에서 미검증 |

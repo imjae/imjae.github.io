@@ -78,4 +78,4 @@ node out/result.js
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [CSS Grid·Flex와 긴 코드·표의 가로 넘침 해결](/writing/css-grid-flex-overflow/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [CSS Grid·Flex와 긴 코드·표의 가로 넘침 해결](/writing/css-grid-flex-overflow/)

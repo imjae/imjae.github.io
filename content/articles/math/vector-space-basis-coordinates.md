@@ -76,7 +76,7 @@ $$
 
 ## 실행 예제
 
-`basis.mjs`에 저장하고 `node basis.mjs`로 실행한다. 유한한 보통 크기의 좌표를 사용하는 학습용 계산이다.
+`basis.mjs`에 저장하고 `node basis.mjs`로 실행한다. 유한한 보통 크기의 좌표를 사용하는 예제용 계산이다.
 
 ```js
 import assert from 'node:assert/strict';

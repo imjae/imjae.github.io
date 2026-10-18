@@ -11,6 +11,8 @@ tags: ["인턴쉽", "Unity", "Water", "Rendering", "Performance"]
 project: "dcb"
 series: "dcb"
 order: 4
+pinned: true
+pinOrder: 4
 draft: false
 ---
 

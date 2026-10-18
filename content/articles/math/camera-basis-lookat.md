@@ -71,4 +71,4 @@ target이 view의 음수 z에 놓이는 것을 확인한다. `upHint`는 완성�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [FSM의 Enter·Execute·Exit와 전이·중단 규칙](/writing/fsm-transition-interruption/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [FSM의 Enter·Execute·Exit와 전이·중단 규칙](/writing/fsm-transition-interruption/)

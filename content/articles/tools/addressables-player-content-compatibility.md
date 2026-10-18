@@ -63,4 +63,4 @@ AssetBundle은 새 C# 실행 코드를 Player에 설치하는 수단이 아니�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [Addressables 커스텀 빌드 스크립트의 호출 단계](/writing/addressables-custom-build-stages/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [Addressables 커스텀 빌드 스크립트의 호출 단계](/writing/addressables-custom-build-stages/)

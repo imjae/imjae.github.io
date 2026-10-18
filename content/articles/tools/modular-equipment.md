@@ -11,6 +11,8 @@ tags: ["인턴쉽", "Unity", "Equipment", "UI", "Data"]
 project: "dcb"
 series: "dcb"
 order: 3
+pinned: true
+pinOrder: 2
 draft: false
 ---
 

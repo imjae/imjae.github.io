@@ -11,6 +11,8 @@ tags: ["인턴쉽", "Unity", "VFX", "Shader", "Tools"]
 project: "dcb"
 series: "dcb"
 order: 5
+pinned: true
+pinOrder: 5
 draft: false
 ---
 

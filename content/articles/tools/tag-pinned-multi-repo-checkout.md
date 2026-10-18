@@ -19,7 +19,7 @@ draft: false
 
 노트 제목은 서브모듈 적용이지만, 기록에 나온 CI 해결 방식은 **저장소 리소스를 선언한 다중 저장소 checkout**이다. `git submodule update` 명령 자체를 수정한 내역은 없다. 원래 빌더 저장소에서 `.gitmodules`나 gitlink를 제거했는지도 이 노트로 확인할 수 없다.
 
-당시 빌더는 `master`의 HEAD, 콘텐츠는 입력한 태그의 커밋을 사용했다고 적혀 있다. 따라서 콘텐츠 선택은 명확해졌지만, 두 저장소의 입력 전체가 영구히 고정된 것은 아니다. 이 글에서는 그 차이를 설명한 뒤, **예상 커밋과 실제 checkout 결과를 비교하는 검사**를 새 학습 예제로 추가한다.
+당시 빌더는 `master`의 HEAD, 콘텐츠는 입력한 태그의 커밋을 사용했다고 적혀 있다. 따라서 콘텐츠 선택은 명확해졌지만, 두 저장소의 입력 전체가 영구히 고정된 것은 아니다. 이 글에서는 그 차이를 설명한 뒤, **예상 커밋과 실제 checkout 결과를 비교하는 검사**를 새 예제로 추가한다.
 
 전체 콘텐츠 빌드·아티팩트·Blob 업로드 흐름은 [Azure DevOps 콘텐츠 빌드·배포 글](/writing/azure-devops-content-build-deploy/)에서 다뤘다. 이번 글은 그 앞의 입력 준비에 집중한다. 원본 조직명·저장소명·연결명·머신 경로·전체 YAML은 옮기지 않았다.
 
@@ -136,7 +136,7 @@ foreach ($name in @('seeds', 'remotes', 's', 'evidence')) {
 }
 function Git-Checked([string[]]$CommandArgs) {
     $result = & git @CommandArgs
-    if ($LASTEXITCODE -ne 0) { throw '학습 저장소 Git 명령 실패' }
+    if ($LASTEXITCODE -ne 0) { throw '예제 저장소 Git 명령 실패' }
     return $result
 }
 $commits = @{}
@@ -183,7 +183,7 @@ foreach ($name in @('builder', 'content')) {
 Write-Output '로컬 Git 실습 준비 완료'
 ~~~
 
-위 스크립트의 마지막 출력은 학습 폴더 생성 안내다. 커밋 ID는 실행 시 생성되므로 글에 고정된 가짜 해시를 넣지 않는다. `release-input.json`에는 처음 커밋 둘을 예상값으로 저장했다. 각 저장소의 main은 두 번째 커밋으로 진행되어 있지만 작업 복사본의 HEAD는 첫 커밋에 놓인다.
+위 스크립트의 마지막 출력은 예제 폴더 생성 안내다. 커밋 ID는 실행 시 생성되므로 글에 고정된 가짜 해시를 넣지 않는다. `release-input.json`에는 처음 커밋 둘을 예상값으로 저장했다. 각 저장소의 main은 두 번째 커밋으로 진행되어 있지만 작업 복사본의 HEAD는 첫 커밋에 놓인다.
 
 콘텐츠에는 같은 첫 커밋을 가리키는 가벼운 태그 `v1.0.2.7`과 주석 태그 `v1.0.2.8`이 있다. 두 번째 커밋을 가리키는 같은 이름의 브랜치도 준비한다. 태그·브랜치·HEAD를 구분하는 실습용 구성이다. `.gitmodules`나 gitlink는 만들지 않으며 서브모듈 다운로드 실습은 아니다.
 
@@ -281,7 +281,7 @@ $checkArgs = @{
 입력 일치: builder·content·tag
 ~~~
 
-검사한 두 HEAD와 태그의 대상 커밋이 예상값과 일치한다는 출력이다. README만 가진 학습 저장소이므로 실제 콘텐츠나 Unity 빌드를 검사한 것이 아니다.
+검사한 두 HEAD와 태그의 대상 커밋이 예상값과 일치한다는 출력이다. README만 가진 예제 저장소이므로 실제 콘텐츠나 Unity 빌드를 검사한 것이 아니다.
 
 실습에서 다른 `Root`에 저장소를 만들었다면 실행 스크립트의 `$labRoot`도 그 폴더로 바꾼다. 태그·경로·출력 이름을 바꾸는 실습은 이 파일의 `$checkArgs`를 수정한 뒤 다시 실행하면 된다. 새 출력 이름은 `evidence/annotated.json`, `evidence/missing-tag.json`처럼 구분한다.
 
@@ -370,7 +370,7 @@ steps:
 
 ## 실습 1 같은 이름의 태그와 브랜치 구분하기
 
-학습 폴더의 `s/content`에서 `refs/tags/v1.0.2.7^{commit}`과 `refs/heads/main^{commit}`을 각각 `git rev-parse --verify`로 읽는다. 같은 이름의 브랜치는 clone에 원격 추적 ref로 준비되므로 `refs/remotes/origin/v1.0.2.7^{commit}`도 읽어 본다.
+예제 폴더의 `s/content`에서 `refs/tags/v1.0.2.7^{commit}`과 `refs/heads/main^{commit}`을 각각 `git rev-parse --verify`로 읽는다. 같은 이름의 브랜치는 clone에 원격 추적 ref로 준비되므로 `refs/remotes/origin/v1.0.2.7^{commit}`도 읽어 본다.
 
 1. 어느 값이 release-input의 콘텐츠 예상 커밋과 같은가?
 2. 현재 HEAD와 main은 왜 달라도 되는가?
@@ -378,7 +378,7 @@ steps:
 
 ### 풀이
 
-태그와 현재 HEAD가 첫 커밋이고 main·원격 브랜치는 두 번째 커밋이다. 학습용 checkout은 detached HEAD로 첫 커밋을 선택했으므로 main의 최신 상태와 달라도 의도한 입력이다.
+태그와 현재 HEAD가 첫 커밋이고 main·원격 브랜치는 두 번째 커밋이다. 예제용 checkout은 detached HEAD로 첫 커밋을 선택했으므로 main의 최신 상태와 달라도 의도한 입력이다.
 
 짧은 이름에는 브랜치·태그의 구분이 드러나지 않는다. 어떤 ref를 뜻하는지 명확하게 적고 예상 커밋과 대조한다. 이 실습은 충돌 가능성을 설명하기 위한 것이며 원래 사건이 같은 이름의 브랜치 때문에 발생했다는 뜻은 아니다.
 
@@ -394,7 +394,7 @@ steps:
 
 ## 실습 3 태그 누락·HEAD 불일치·태그 이동 찾기
 
-변경을 섞지 말고 예제 1을 서로 다른 새 Root에 실행해 각 실험을 진행한다. 학습용 복사본만 변경하며 공개 저장소에 push하지 않는다.
+변경을 섞지 말고 예제 1을 서로 다른 새 Root에 실행해 각 실험을 진행한다. 예제용 복사본만 변경하며 공개 저장소에 push하지 않는다.
 
 | 바꿀 조건 | 예상 결과 | 찾는 문제 |
 | --- | --- | --- |

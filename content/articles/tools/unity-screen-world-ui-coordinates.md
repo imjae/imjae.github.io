@@ -108,4 +108,4 @@ Overlay의 변환 카메라는 null이다. Camera 모드에서는 해당 Canvas�
 
 ## 이어 읽기
 
-[전체 학습 순서](/writing/notion-study-reading-order/) · 다음 글: [VBO·VAO·EBO와 정점 속성의 stride·offset](/writing/opengl-vertex-layout-stride-offset/)
+[전체 글 목차](/writing/notion-study-reading-order/) · 다음 글: [VBO·VAO·EBO와 정점 속성의 stride·offset](/writing/opengl-vertex-layout-stride-offset/)

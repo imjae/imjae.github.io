@@ -17,7 +17,7 @@ const articles = await getArticles(false);
     <label class="search-box"><span aria-hidden="true">⌕</span><input id="manage-search" type="search" aria-label="관리할 글 검색" placeholder="제목이나 주제로 검색" autocomplete="off" /></label>
     <p id="manage-count" role="status" aria-live="polite">{articles.length}개의 글</p>
     <div class="manage-list">{articles.map(article => <article class="manage-row" data-post={article.data.slug} data-title={`${article.data.title} ${getTopic(article.data.topic).title}`.toLocaleLowerCase()}>
-      <div><p class="manage-meta">{getTopic(article.data.topic).title} · {formatDate(article.data.date)}</p><h3>{article.data.title}</h3></div>
+      <div><p class="manage-meta">{getTopic(article.data.topic).title} · {formatDate(article.data.date)}{article.data.pinned && ' · Pinned'}</p><h3>{article.data.title}</h3></div>
       <div class="manage-actions">
         <a href={articleUrl(article)} aria-label={`${article.data.title} 읽기`}>읽기</a>
         <a href={githubFileUrl('edit', article.filePath)} aria-label={`${article.data.title} 수정`} target="_blank" rel="noopener noreferrer">수정 ↗</a>

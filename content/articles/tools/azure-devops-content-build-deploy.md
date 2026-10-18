@@ -17,7 +17,7 @@ draft: false
 
 처음에는 명령줄 빌드 뒤 파일을 Storage에 복사하는 흐름을 생각했다. 실제로 구성하면서 업로드 작업의 OS 제약, 서로 다른 실행 머신 사이의 파일 경로, Git 태그 조회 권한, Unity 프로세스 종료 문제를 만났다. 해결 방향은 빌드 입력과 실행 머신을 정하고, 결과를 아티팩트로 전달한 뒤 업로드하는 것이었다.
 
-이 글은 당시 기록을 설명한 뒤 작은 학습 예제로 다시 구성한다. 원본 프로젝트명·조직·서비스 연결·머신 경로·접속정보와 전체 YAML은 옮기지 않았다. 현재 DCB의 CI를 구현하거나 검증한 글도 아니다.
+이 글은 당시 기록을 설명한 뒤 작은 예제로 다시 구성한다. 원본 프로젝트명·조직·서비스 연결·머신 경로·접속정보와 전체 YAML은 옮기지 않았다. 현재 DCB의 CI를 구현하거나 검증한 글도 아니다.
 
 기록의 목표에는 CDN 배포가 나오고 수행 내용에는 Azure Blob Storage 업로드가 적혀 있다. Blob 업로드와 CDN 캐시 갱신, 클라이언트의 실제 콘텐츠 로딩까지 같은 완료 상태로 취급하지 않는다. 이 글을 쓰면서 Azure와 Unity를 새로 실행한 것은 아니다.
 
@@ -97,7 +97,7 @@ CI는 변경을 통합하고 검사·빌드하는 흐름이고, CD는 검사한 
 | 빌드 명령에 `-quit` 누락 | 종료 인수 추가 | 콘텐츠 생성과 프로세스 종료는 다른 결과 |
 | 첫 플랫폼 전환과 첫 빌드가 합쳐져 제한 시간 초과 | 전환 정보가 남은 상태에서 재시도 후 통과 | 캐시가 없는 상태의 비용이 해결됐다는 뜻은 아님 |
 
-“한 시간 넘으면 종료 옵션 문제”라고 단정하지 않는다. 로그가 계속 진행되는지, 프로세스가 종료됐는지, 콜드 상태의 가져오기·플랫폼 전환 비용이 얼마인지 나눠 본다. 예제의 시간 제한도 정답 수치가 아니라 학습용 값이다.
+“한 시간 넘으면 종료 옵션 문제”라고 단정하지 않는다. 로그가 계속 진행되는지, 프로세스가 종료됐는지, 콜드 상태의 가져오기·플랫폼 전환 비용이 얼마인지 나눠 본다. 예제의 시간 제한도 정답 수치가 아니라 예제용 값이다.
 
 ### 5 스크립트 버전과 리소스 버전을 나눴다
 
@@ -113,7 +113,7 @@ CI는 변경을 통합하고 검사·빌드하는 흐름이고, CD는 검사한 
 
 [Addressables 빌드 메모](https://app.notion.com/p/84031fd94b9a4f3bb071bba99b9b7e34)는 이전 카탈로그가 참조하는 번들도 남겨야 한다고 적었다. 이전 카탈로그만 보관하고 번들을 삭제하면 복원할 수 없다. 변경 자산만의 배포와 아래 예제의 전체 콘텐츠 빌드도 구분한다. 정식 콘텐츠 업데이트 빌드에는 이전 `addressables_content_state.bin` 등 해당 워크플로의 입력을 함께 관리해야 한다. [Addressables 콘텐츠 업데이트 개요](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/content-update-builds-overview.html)
 
-## 학습 예제의 준비 조건
+## 예제의 준비 조건
 
 코드는 원본 업무 파이프라인을 복사한 것이 아니다. **Unity C#과 Azure YAML은 실제 컴파일·클라우드 실행을 아직 하지 않았다.** PowerShell의 실행 범위는 뒤의 가상 파일 실습으로 구분한다.
 
@@ -217,7 +217,7 @@ public static class ContentBuildEntry
 
 `BuildPlayerContent`라는 이름에 Player가 들어 있지만 여기서는 Addressables 콘텐츠를 빌드한다. 실행 파일을 만드는 `BuildPipeline.BuildPlayer` 호출은 없다. 프로필·활성 빌더와 결과의 `Error` 확인은 [스크립트 빌드 문서](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/build-scripting-start-build.html)를 기준으로 했다. 프로필 변수 설정은 [SetValue API](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/api/UnityEditor.AddressableAssets.Settings.AddressableAssetProfileSettings.SetValue.html)와 대조했다.
 
-출력 폴더를 자동 삭제하는 대신 비어 있지 않으면 중단한다. 지난 결과가 섞인 상태를 정상 결과로 넘기지 않기 위한 학습 규칙이다. 실제 프로젝트는 그룹이 프로필 변수를 참조하는지, 로컬·원격 번들과 카탈로그의 출력 위치가 어디인지 확인해야 한다.
+출력 폴더를 자동 삭제하는 대신 비어 있지 않으면 중단한다. 지난 결과가 섞인 상태를 정상 결과로 넘기지 않기 위한 예제의 규칙이다. 실제 프로젝트는 그룹이 프로필 변수를 참조하는지, 로컬·원격 번들과 카탈로그의 출력 위치가 어디인지 확인해야 한다.
 
 함수 정상 반환은 첫 관문이다. 다음 검사에서 기대한 카탈로그와 번들을 확인하고, 그다음 원격 클라이언트 로딩을 확인한다.
 
@@ -488,7 +488,7 @@ stages:
 
 ### Unity 종료와 실패 전달
 
-`-batchmode`는 배치 실행, `-projectPath`는 프로젝트 선택, `-buildTarget`은 학습의 Windows 64비트 대상, `-executeMethod`는 Editor 폴더의 static 진입점, `-quit`는 작업 후 종료를 위한 인수다. C#은 오류 시 0이 아닌 종료 코드를 요청하고 호출 스크립트도 확인한다. [Unity CLI 문서](https://docs.unity3d.com/6000.0/Documentation/Manual/EditorCommandLineArguments.html)와 대조했지만 이 조합을 Unity에서 실행하지 않았다.
+`-batchmode`는 배치 실행, `-projectPath`는 프로젝트 선택, `-buildTarget`은 예제의 Windows 64비트 대상, `-executeMethod`는 Editor 폴더의 static 진입점, `-quit`는 작업 후 종료를 위한 인수다. C#은 오류 시 0이 아닌 종료 코드를 요청하고 호출 스크립트도 확인한다. [Unity CLI 문서](https://docs.unity3d.com/6000.0/Documentation/Manual/EditorCommandLineArguments.html)와 대조했지만 이 조합을 Unity에서 실행하지 않았다.
 
 `-logFile -`는 로그를 작업 출력으로 보낸다. 원본 업무 로그를 공개 글에 붙인 것은 아니다. 실제 운용에서는 접근 가능한 빌드 로그와 실패 당시 환경 정보의 보존 범위를 따로 정한다.
 
@@ -555,7 +555,7 @@ $checker = Join-Path $PSScriptRoot 'ContentArtifact.ps1'
 & $checker -Mode Verify @inputArgs
 ~~~
 
-PowerShell 7에서 `pwsh -File ./Prepare-Sample.ps1`로 실행한다. 확장자만 카탈로그·번들과 같은 **가상 텍스트 파일** 두 개를 만든다. Unity가 읽을 수 있는 데이터가 아니다. 반복 문자열 커밋도 학습용 값이며 실제 이력을 가리키지 않는다.
+PowerShell 7에서 `pwsh -File ./Prepare-Sample.ps1`로 실행한다. 확장자만 카탈로그·번들과 같은 **가상 텍스트 파일** 두 개를 만든다. Unity가 읽을 수 있는 데이터가 아니다. 반복 문자열 커밋도 예제용 값이며 실제 이력을 가리키지 않는다.
 
 ### 풀이와 확인한 출력
 
