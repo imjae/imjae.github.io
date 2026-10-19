@@ -516,3 +516,13 @@ DCB HEAD 37fa37df2에서 JigeCarryBurdenTunerWindow, GameBalanceCatalog/Runtime/
 DCB에 기존 씬·설정·기획/지원 문서 WIP가 있었으며 건드리지 않았다. 새 Unity 컴파일·EditMode·GUI·Play Mode·도구 캡처·시트 변경·작업 시간/밸런스 비교를 실행하지 않았다. 검사 소스 확인과 실제 실행을 구분했으며 private 원본 소스·로그·개인 데이터·미디어를 옮기지 않았다.
 
 npm run verify 테스트 25개·Astro 33개 파일 진단 0개·103개 HTML 검사·96개 경로 빌드를 통과했다. 브라우저에서 Home 고정 12편 전체 순서, 밸런싱 안내→운반 분석→도구 분석 순서, 새 본문 표 3개·흐름도 1개·수식 오류 없음과 가로 넘침 없음을 확인했다. 390px 도구와 구조의 '밸런싱 도구' 검색은 새 글 1편을 반환하고 긴 본문에 가로 넘침이 없다. 공개 글은 74편이다. 로그는 .verification/player-balance-tool/에 보관한다. main push 후 Actions와 공개 페이지를 별도로 확인한다.
+
+## 2026-10-19 걷기·달리기·질주와 고갈 후 재입력 분석
+
+사용자 요청으로 gameplay/locomotion-stamina-reinput.md를 초안 작성·근거 검토 후 게시 대상으로 전환했다. 대표 커밋 0fe68c0b4 AuthorDate로 date 2026-10-01/commit, updated 2026-10-19, DCB order 21을 썼다. gameplay-balancing의 세 번째 분석으로 도구 글 다음에 연결하고, 밸런싱 안내·운반 분석·후속 계획에 링크와 상태를 반영했다. 기존 주소·작성일·Home 고정 12편과 순서를 유지했다.
+
+DCB HEAD 488dc55af에서 GameInputSystem/InputActions, Player.Input/Carry/CarryBurden/Attribute/FixedUpdate, PlayerBehaviourStateMachine/StateMachine, PlayerController.BareLocomotion, 카탈로그·부담 계산, 관련 검사 소스와 8e60b380b·0fe68c0b4·54b5b2857 커밋을 읽기 전용으로 대조했다. 대상 코드·카탈로그에는 로컬 diff가 없었다. 맨몸 기본 Run/Shift Sprint와 지게 기본 Walk/Shift Run, 소모 0/10과 0/5, 현재 기준 속도, 착용 전환 때 동일 상태 속도 갱신, 고갈 시 래치 해제→상태 재선택, 고정 스텝 소모로의 변경을 설명했다. DCB의 별도 씬·설정·기획 문서 WIP는 건드리지 않았다.
+
+Ctrl/Shift의 상호 래치 해제로 단순한 물리 키 동시 유지와 걷기 플래그 우선순위가 다름을 구분했다. 패드 L3 토글·스틱 중립, 보따리/무기 전환 예외, 자원 >0 진입 판정과 최소 회복 문턱 없음, 자원 0에서 재입력 시 래치가 남는 경계, 걷기 비용을 켰을 때의 바닥 상태, 실제 변위가 아닌 입력 기준 소모를 적었다. 코드의 오래된 속도 주석 대신 현재 카탈로그를 사용했다. 9월 29일 과거 통과 기록은 당시 범위로 한정하고 원본 보고서를 확보하지 못했음을 밝혔다. 검사 코드의 존재와 이번 통과 결과를 분리했으며, 새 Unity 컴파일·EditMode·Play Mode·키보드/패드 재현·프레임 제한별 비교·체감 평가를 실행하지 않았다. 관련 커밋의 Claude 공동 작성과 기여 범위도 적었다. private 원본 코드·로그·로컬 경로·개인 데이터·미디어를 복사하지 않았다.
+
+npm run verify는 테스트 25개, Astro 33개 파일 진단 0개, 97개 경로 빌드와 104개 HTML 검사를 통과했다. 로컬 브라우저에서 Home 고정 12편과 전체 순서, 밸런싱 안내→운반→도구→재입력 분석 순서를 확인했다. 새 본문의 표 3개·흐름도 1개와 가로 넘침 없음, 390px 게임플레이 Balancing+재입력 검색의 관련 3편 및 모바일 본문 가로 넘침 없음을 확인했다. 공개 글은 75편이다. 로그는 .verification/locomotion-stamina/에 둔다. main push 후 Actions와 공개 경로를 별도로 확인한다.
