@@ -43,10 +43,10 @@ export const dcbFeatures = [
   },
   {
     slug: 'jige-cargo-motion', title: '지게 짐의 출렁임', detail: '받침 가속도 · 피벗 사슬 · 끈 스키닝',
-    description: '지게틀과 짐이 서로 늦게 따라오는 운동, 적재 충격과 끈 변형을 설명하고 운반 규칙 분석을 연결합니다.',
+    description: '지게틀과 짐이 서로 늦게 따라오는 운동, 적재 충격과 끈 변형을 다룹니다.',
     topic: 'gameplay', number: '07', label: 'CARGO SECONDARY MOTION',
     overviewSlug: 'jige-cargo-secondary-motion',
-    articleSlugs: ['jige-carry-burden'],
+    articleSlugs: [],
   },
   {
     slug: 'rope-bridge', title: '밧줄 다리의 물리 흔들림', detail: '발 접지와 바람 · 충돌면 추종 · 표면 속도',
@@ -54,5 +54,12 @@ export const dcbFeatures = [
     topic: 'gameplay', number: '08', label: 'ROPE BRIDGE SWAY',
     overviewSlug: 'rope-bridge-physical-sway',
     articleSlugs: [],
+  },
+  {
+    slug: 'gameplay-balancing', title: '게임플레이 밸런싱과 제어', detail: '이동 속도 · 스태미너 · 행동과 입력',
+    description: '상태별 이동·행동 비용·회복·입력 제약의 규칙과 조정 근거, 비교 검증을 묶습니다.',
+    topic: 'gameplay', number: '09', label: 'GAMEPLAY BALANCING',
+    overviewSlug: 'dcb-gameplay-balance-overview',
+    articleSlugs: ['jige-carry-burden'],
   },
 ];

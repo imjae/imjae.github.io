@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "createdAt": "2026-10-19T01:37:05.000Z",
+  "pins": [
+    "monster-combat",
+    "unity-behavior-to-code-fsm",
+    "modular-equipment",
+    "modular-equipment-ui-vfx",
+    "ik-traversal",
+    "water-playback",
+    "fire-vfx",
+    "jige-cargo-secondary-motion",
+    "rope-bridge-physical-sway",
+    "working-with-ai",
+    "parallel-ai-worktrees",
+    "cli-agent-harness"
+  ]
+}

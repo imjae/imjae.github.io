@@ -494,3 +494,13 @@ npm run verify 테스트 25개·Astro 33개 파일 진단 0개·100개 HTML 검�
 제목·slug·작성일·분류·공개 설정·Home 고정 순서와 기존 구현 설명은 유지하고 updated를 2026-10-19로 바꿨다. 구현 설명은 10월 17~18일의 조사 기준임을 적었고 이번에는 imjaess 소스 재조사·하네스 테스트·실계정 CLI 호출·성능 비교를 하지 않았다고 구분했다. 다른 저장소는 변경하지 않았다.
 
 npm run verify 테스트 25개·Astro 33개 파일 진단 0개·100개 HTML 검사·93개 경로 빌드가 통과했다. 최종 문구 정리 후 build/check:site도 통과했다. Home 고정 11편의 새 요약, 긴 본문의 표 6개와 마지막 회고, 390px AI 카테고리 'CLI 지연' 검색 1편과 본문·검색 가로 넘침 없음을 확인했다. 로그는 .verification/cli-harness-retrospective/에 보관한다. main push 후 Actions와 공개 주소에서 반영을 별도로 확인한다.
+
+## 2026-10-19 Home 고정 교체와 밸런싱 글 구조
+
+사용자 요청으로 새 content/pins 설정(2026-10-19T01:37:05.000Z)을 저장했다. 기존 jige-carry-burden의 Home 자리에 jige-cargo-secondary-motion을 넣고 rope-bridge-physical-sway를 바로 뒤에 추가했다. 총 12편 중 각각 8·9번이며 나머지 10편의 상대 순서는 유지한다. 이전 고정 JSON은 보존하고 최신 설정으로 덮는다. 글의 pinned 메타데이터는 최신 JSON보다 우선하지 않으므로 본문 메타데이터에 중복 고정 설정을 추가하지 않았다.
+
+이동 속도·스태미너·회복·행동/입력 제약을 별도 기능 gameplay-balancing(09, 게임플레이 밸런싱과 제어)으로 묶었다. dcb-gameplay-balance-overview를 초안으로 작성·검토한 뒤 공개 대상으로 전환해 overviewSlug로 연결했다(date 2026-10-19/authored, DCB order 19). 기존 jige-carry-burden을 짐 출렁임 기능의 articleSlugs에서 새 밸런싱 기능의 분석으로 옮겼다. 기존 글의 URL·작성일·공개 설정은 유지하고 Balancing 태그와 밸런싱 목록 링크를 추가했다. 짐/다리의 물리 표현과 이동/자원/입력 규칙의 차이와 관련 링크는 유지한다.
+
+공개 안내는 기존 운반 글이 10월 17일 확인한 규칙·중립 적재 곡선을 연결하고 후속 범위와 비교 기준을 제시한다. DCB 소스를 새로 조사하거나 밸런스 값을 바꾸고 Unity를 실행한 작업은 아니다. 블로그의 docs/DCB-BALANCING-PLAN.md에 후속 6단계와 근거·기록 기준을, docs/templates/DCB-BALANCE-CASE.md에 초안 작성 양식을 준비했다. 미작성 글의 빈 공개 주소·대량 초안은 만들지 않았다. EDITORIAL과 WRITING에 분류/구성/작성 방법을 적었다.
+
+npm run verify 테스트 25개·Astro 33개 파일 진단 0개·102개 HTML 검사·95개 경로 빌드가 통과했다. 실제 설정 로더와 assert로 고정 12편·새 글 8/9번·기존 운반 제외, 기능 목록 이동을 확인했다. 브라우저에서 Home의 전체 고정 순서, 아홉 기능 글 수 2·3·3·2·2·1·1·1·2, 밸런싱 안내→운반 분석 순서를 확인했다. 새 본문 표 3개와 390px 게임플레이 Balancing 태그+스태미너 검색의 두 글, 본문/검색 가로 넘침 없음을 확인했다. 공개 글은 73편이다. 로그는 .verification/gameplay-balance-pins/에 보관한다. main push 후 Actions와 공개 페이지를 별도로 확인한다.
