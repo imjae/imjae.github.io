@@ -38,4 +38,21 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { articles };
+const readingList = defineCollection({
+  loader: glob({ pattern: '*.json', base: './content/reading-list' }),
+  schema: z.object({
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    title: z.string().min(1).max(160),
+    author: z.string().min(1).max(120).optional(),
+    date: z.string().refine(isCalendarDate),
+    sources: z.array(z.object({
+      title: z.string().min(1),
+      url: z.string().regex(/^https:\/\/app\.notion\.com\/p\/[a-f0-9]{32}$/),
+      date: z.string().refine(isCalendarDate),
+    })).min(1),
+    rating: z.number().int().min(1).max(5).optional(),
+    draft: z.boolean().default(true),
+  }),
+});
+
+export const collections = { articles, readingList };

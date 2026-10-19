@@ -9,14 +9,15 @@
     "updated": "이번 메타데이터 수정일이며 본문의 과거 실행 검증 날짜는 유지"
   },
   "counts": {
-    "total": 63,
+    "total": 70,
     "changed": 56,
     "byBasis": {
-      "notion": 46,
       "commit": 10,
+      "notion": 53,
       "authored": 5,
       "legacy": 2
-    }
+    },
+    "addedReadingNotes": 7
   },
   "articles": [
     {
@@ -1348,12 +1349,22 @@
       "previousDate": "2024-02-23",
       "date": "2024-02-23",
       "dateBasis": "legacy",
-      "updated": "2026-10-17",
+      "updated": "2026-10-20",
       "reason": "2024년 Jekyll 원본의 작성일·slug를 보존한다.",
       "evidence": [
         {
           "type": "legacy",
           "date": "2024-02-23"
+        },
+        {
+          "type": "notion",
+          "id": "557923c1a4d04d05b3a09102179997ec",
+          "title": "시지프 신화",
+          "url": "https://app.notion.com/p/557923c1a4d04d05b3a09102179997ec",
+          "date": "2023-09-22",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
         }
       ]
     },
@@ -1908,6 +1919,268 @@
           "dayConfirmed": true
         }
       ]
+    },
+    {
+      "slug": "the-birth-of-tragedy",
+      "title": "비극의 탄생: 꿈과 도취를 읽으며",
+      "file": "content/articles/reading/the-birth-of-tragedy.md",
+      "draft": false,
+      "previousDate": "2024-01-09",
+      "date": "2024-01-09",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "082802271ded4a0396c48ceeb119abad",
+          "title": "1",
+          "url": "https://app.notion.com/p/082802271ded4a0396c48ceeb119abad",
+          "date": "2024-01-09",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "50c47601d09b43f294b536e94531d77e",
+          "title": "비극의 탄생",
+          "url": "https://app.notion.com/p/50c47601d09b43f294b536e94531d77e",
+          "date": "2023-03-10",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "519ead712e2a42938f24d30ea523317f",
+          "title": "아폴론",
+          "url": "https://app.notion.com/p/519ead712e2a42938f24d30ea523317f",
+          "date": "2024-01-21",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "trilogy",
+      "title": "욘 포세의 3부작: 잠 못드는 밤의 사랑과 떠남",
+      "file": "content/articles/reading/trilogy.md",
+      "draft": false,
+      "previousDate": "2023-10-26",
+      "date": "2023-10-26",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "17dcb642c04547848a78d3908704cf70",
+          "title": "3부작",
+          "url": "https://app.notion.com/p/17dcb642c04547848a78d3908704cf70",
+          "date": "2023-10-26",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "waiting-for-godot",
+      "title": "고도를 기다리며: 기다림과 답을 바라는 마음",
+      "file": "content/articles/reading/waiting-for-godot.md",
+      "draft": false,
+      "previousDate": "2023-12-24",
+      "date": "2023-12-24",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "12cd11bff47b423f9314e358588eff6d",
+          "title": "고도를 기다리며(연극)",
+          "url": "https://app.notion.com/p/12cd11bff47b423f9314e358588eff6d",
+          "date": "2023-12-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "kafka-short-stories",
+      "title": "변신, 시골의사: 짧은 독서 메모",
+      "file": "content/articles/reading/kafka-short-stories.md",
+      "draft": false,
+      "previousDate": "2024-08-01",
+      "date": "2024-08-01",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "f2e764bc2ed84d2d98809e2c5c1700df",
+          "title": "변신, 시골의사",
+          "url": "https://app.notion.com/p/f2e764bc2ed84d2d98809e2c5c1700df",
+          "date": "2024-08-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "agamemnon",
+      "title": "아가멤논: 남겨진 사람들의 기다림과 불안",
+      "file": "content/articles/reading/agamemnon.md",
+      "draft": false,
+      "previousDate": "2023-03-23",
+      "date": "2023-03-23",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "848a867fd07e43d5893513992ae9f594",
+          "title": "서막",
+          "url": "https://app.notion.com/p/848a867fd07e43d5893513992ae9f594",
+          "date": "2023-03-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "cf931e37895d4693b0cce59e9a797512",
+          "title": "등장가",
+          "url": "https://app.notion.com/p/cf931e37895d4693b0cce59e9a797512",
+          "date": "2023-03-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "b62d309a1bac4621beca50ea90c89108",
+          "title": "TOPIC",
+          "url": "https://app.notion.com/p/b62d309a1bac4621beca50ea90c89108",
+          "date": "2023-03-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "clean-code",
+      "title": "Clean Code: 함수·주석·자료와 객체를 읽은 기록",
+      "file": "content/articles/reading/clean-code.md",
+      "draft": false,
+      "previousDate": "2022-10-17",
+      "date": "2022-10-17",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "b20567cbac9f41c8b845c91df28e7696",
+          "title": "3장, 함수",
+          "url": "https://app.notion.com/p/b20567cbac9f41c8b845c91df28e7696",
+          "date": "2022-10-17",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "1c756b90c21c42258afbedadc9f8c3d1",
+          "title": "4장, 주석",
+          "url": "https://app.notion.com/p/1c756b90c21c42258afbedadc9f8c3d1",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "6925dbbc6b984e0badaab3809d00e839",
+          "title": "5장, 형식 맞추기",
+          "url": "https://app.notion.com/p/6925dbbc6b984e0badaab3809d00e839",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "24c36c6af38f42e8989d01e1596c73e3",
+          "title": "6장, 객체와 자료 구조",
+          "url": "https://app.notion.com/p/24c36c6af38f42e8989d01e1596c73e3",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "051a5261ed344e5189cd886ebace17d0",
+          "title": "7장, 오류 처리",
+          "url": "https://app.notion.com/p/051a5261ed344e5189cd886ebace17d0",
+          "date": "2022-10-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "1b9ee7918c924524a056b42d90cf0c60",
+          "title": "8장, 경계",
+          "url": "https://app.notion.com/p/1b9ee7918c924524a056b42d90cf0c60",
+          "date": "2022-10-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "the-bird-that-drinks-tears",
+      "title": "눈물을 마시는 새: 눈물과 왕의 역할을 떠올리며",
+      "file": "content/articles/reading/the-bird-that-drinks-tears.md",
+      "draft": false,
+      "previousDate": "2023-12-24",
+      "date": "2023-12-24",
+      "dateBasis": "notion",
+      "updated": "2026-10-20",
+      "reason": "독서 이관: 중심 노션 메모의 생성일을 유지한다.",
+      "evidence": [
+        {
+          "type": "notion",
+          "id": "12cd11bff47b423f9314e358588eff6d",
+          "title": "고도를 기다리며(연극)",
+          "url": "https://app.notion.com/p/12cd11bff47b423f9314e358588eff6d",
+          "date": "2023-12-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "218dd02079c5499cb6b5d429fc9fac18",
+          "title": "[판타지]눈물을 마시는 새 1~4",
+          "url": "https://app.notion.com/p/218dd02079c5499cb6b5d429fc9fac18",
+          "date": "2023-11-06",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
     }
-  ]
+  ],
+  "readingMigrationAuditedAt": "2026-10-20"
 }

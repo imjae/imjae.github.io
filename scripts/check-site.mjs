@@ -8,6 +8,7 @@ import { readProjectVideoSettings } from '../src/lib/project-video.server.mjs';
 import { dcbFeatures } from '../src/data/dcb-features.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
+import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
 
 const root = resolve('dist');
 const failures = [];
@@ -45,6 +46,16 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   if (data.draft && (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(data.slug))) failures.push(`검색 색인 또는 피드에 초안 노출: ${data.slug}`);
 }
 const home = await readFile(join(root,'index.html'),'utf8');
+const readingListings = [];
+for (const name of await readdir(resolve('content/reading-list'))) {
+  if (!name.endsWith('.json')) continue;
+  const data = JSON.parse(await readFile(resolve('content/reading-list', name), 'utf8'));
+  if (!data.draft) readingListings.push({ data });
+}
+const readingPage = await readFile(join(root,'topics/reading/index.html'), 'utf8');
+const expectedBooks = mergeReadingItems(articles.filter(article => !article.data.draft), readingListings).map(item => item.slug);
+const shownBooks = [...readingPage.matchAll(/\bdata-book="([^"]+)"/g)].map(match => match[1]);
+if (JSON.stringify(expectedBooks) !== JSON.stringify(shownBooks)) failures.push('Reading 목록에 중복·누락된 책이나 비공개 기록이 있음');
 const settings = await readPinSettings();
 const pinnedSlugs = selectPinnedArticles(applyPinSettings(articles, settings?.pins)).map(article => article.data.slug);
 const shownSlugs = [...home.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);

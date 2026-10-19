@@ -1,0 +1,784 @@
+{
+  "auditedAt": "2026-10-20",
+  "scope": [
+    "독서/철학",
+    "독서/문학",
+    "독서노트/독서 데이터베이스",
+    "개발/Design Pattern/Technic/Clean Code",
+    "C#을 다루는 기술",
+    "수학/게임 수학"
+  ],
+  "counts": {
+    "books": 30,
+    "notes": 8,
+    "newNotes": 7,
+    "listedWithoutReview": 22
+  },
+  "policies": {
+    "date": "중심 원문의 생성일. 페이지 생성일과 최종 수정일·관람일·완독일을 구분한다.",
+    "nativeTimestamp": "데이터베이스 createdTime이 있는 경우 Asia/Seoul 날짜로 변환한다. 다른 페이지는 created_date_range의 같은 날짜 조회로 확인한다.",
+    "legacy": "기존 시지프 신화 글은 원래 2024-02-23 날짜와 slug를 유지하고 노션 생성일 2023-09-22를 별도 출처로 남긴다.",
+    "empty": "제목이나 저자만 있는 페이지는 목록만 이관하고 감상·완독 사실을 추가하지 않는다.",
+    "duplicate": "시지프 신화는 기존 글에 보완하고 죄와벌 2/죄와벌(1~3)은 하나의 목록 항목으로 합친다.",
+    "crossReferences": "눈물을 마시는 새의 실제 감상은 고도를 기다리며 관람기에 있어 이 부분을 해당 책 메모로 모으고 서로 연결한다.",
+    "technicalBooks": "C#·게임수학은 책 목록과 원문 연결을 이관한다. 장별 기술 개념을 별도 독후감으로 복제하지 않으며 기존 수학·자료구조 글의 주제와 본문은 유지한다."
+  },
+  "books": [
+    {
+      "slug": "the-myth-of-sisyphus",
+      "title": "시지프 신화",
+      "action": "merge-existing",
+      "file": "content/articles/reading/the-myth-of-sisyphus.md",
+      "date": "2024-02-23",
+      "dateBasis": "legacy",
+      "primarySource": "557923c1a4d04d05b3a09102179997ec",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "557923c1a4d04d05b3a09102179997ec",
+          "title": "시지프 신화",
+          "url": "https://app.notion.com/p/557923c1a4d04d05b3a09102179997ec",
+          "date": "2023-09-22",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-birth-of-tragedy",
+      "title": "비극의 탄생",
+      "action": "new-note",
+      "file": "content/articles/reading/the-birth-of-tragedy.md",
+      "date": "2024-01-09",
+      "dateBasis": "notion",
+      "primarySource": "082802271ded4a0396c48ceeb119abad",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "082802271ded4a0396c48ceeb119abad",
+          "title": "1",
+          "url": "https://app.notion.com/p/082802271ded4a0396c48ceeb119abad",
+          "date": "2024-01-09",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "50c47601d09b43f294b536e94531d77e",
+          "title": "비극의 탄생",
+          "url": "https://app.notion.com/p/50c47601d09b43f294b536e94531d77e",
+          "date": "2023-03-10",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "519ead712e2a42938f24d30ea523317f",
+          "title": "아폴론",
+          "url": "https://app.notion.com/p/519ead712e2a42938f24d30ea523317f",
+          "date": "2024-01-21",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "trilogy",
+      "title": "3부작",
+      "action": "new-note",
+      "file": "content/articles/reading/trilogy.md",
+      "date": "2023-10-26",
+      "dateBasis": "notion",
+      "primarySource": "17dcb642c04547848a78d3908704cf70",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "17dcb642c04547848a78d3908704cf70",
+          "title": "3부작",
+          "url": "https://app.notion.com/p/17dcb642c04547848a78d3908704cf70",
+          "date": "2023-10-26",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "waiting-for-godot",
+      "title": "고도를 기다리며 (연극 관람)",
+      "action": "new-note",
+      "file": "content/articles/reading/waiting-for-godot.md",
+      "date": "2023-12-24",
+      "dateBasis": "notion",
+      "primarySource": "12cd11bff47b423f9314e358588eff6d",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "12cd11bff47b423f9314e358588eff6d",
+          "title": "고도를 기다리며(연극)",
+          "url": "https://app.notion.com/p/12cd11bff47b423f9314e358588eff6d",
+          "date": "2023-12-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "kafka-short-stories",
+      "title": "변신, 시골의사",
+      "action": "new-note",
+      "file": "content/articles/reading/kafka-short-stories.md",
+      "date": "2024-08-01",
+      "dateBasis": "notion",
+      "primarySource": "f2e764bc2ed84d2d98809e2c5c1700df",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "f2e764bc2ed84d2d98809e2c5c1700df",
+          "title": "변신, 시골의사",
+          "url": "https://app.notion.com/p/f2e764bc2ed84d2d98809e2c5c1700df",
+          "date": "2024-08-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "agamemnon",
+      "title": "아가멤논",
+      "action": "new-note",
+      "file": "content/articles/reading/agamemnon.md",
+      "date": "2023-03-23",
+      "dateBasis": "notion",
+      "primarySource": "848a867fd07e43d5893513992ae9f594",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "848a867fd07e43d5893513992ae9f594",
+          "title": "서막",
+          "url": "https://app.notion.com/p/848a867fd07e43d5893513992ae9f594",
+          "date": "2023-03-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "cf931e37895d4693b0cce59e9a797512",
+          "title": "등장가",
+          "url": "https://app.notion.com/p/cf931e37895d4693b0cce59e9a797512",
+          "date": "2023-03-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "b62d309a1bac4621beca50ea90c89108",
+          "title": "TOPIC",
+          "url": "https://app.notion.com/p/b62d309a1bac4621beca50ea90c89108",
+          "date": "2023-03-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "clean-code",
+      "title": "Clean Code",
+      "action": "new-note",
+      "file": "content/articles/reading/clean-code.md",
+      "date": "2022-10-17",
+      "dateBasis": "notion",
+      "primarySource": "b20567cbac9f41c8b845c91df28e7696",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "b20567cbac9f41c8b845c91df28e7696",
+          "title": "3장, 함수",
+          "url": "https://app.notion.com/p/b20567cbac9f41c8b845c91df28e7696",
+          "date": "2022-10-17",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "1c756b90c21c42258afbedadc9f8c3d1",
+          "title": "4장, 주석",
+          "url": "https://app.notion.com/p/1c756b90c21c42258afbedadc9f8c3d1",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "6925dbbc6b984e0badaab3809d00e839",
+          "title": "5장, 형식 맞추기",
+          "url": "https://app.notion.com/p/6925dbbc6b984e0badaab3809d00e839",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "24c36c6af38f42e8989d01e1596c73e3",
+          "title": "6장, 객체와 자료 구조",
+          "url": "https://app.notion.com/p/24c36c6af38f42e8989d01e1596c73e3",
+          "date": "2022-10-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "051a5261ed344e5189cd886ebace17d0",
+          "title": "7장, 오류 처리",
+          "url": "https://app.notion.com/p/051a5261ed344e5189cd886ebace17d0",
+          "date": "2022-10-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        },
+        {
+          "type": "notion",
+          "id": "1b9ee7918c924524a056b42d90cf0c60",
+          "title": "8장, 경계",
+          "url": "https://app.notion.com/p/1b9ee7918c924524a056b42d90cf0c60",
+          "date": "2022-10-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "the-bird-that-drinks-tears",
+      "title": "눈물을 마시는 새 1~4",
+      "action": "new-note",
+      "file": "content/articles/reading/the-bird-that-drinks-tears.md",
+      "date": "2023-12-24",
+      "dateBasis": "notion",
+      "primarySource": "12cd11bff47b423f9314e358588eff6d",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "12cd11bff47b423f9314e358588eff6d",
+          "title": "고도를 기다리며(연극)",
+          "url": "https://app.notion.com/p/12cd11bff47b423f9314e358588eff6d",
+          "date": "2023-12-24",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "218dd02079c5499cb6b5d429fc9fac18",
+          "title": "[판타지]눈물을 마시는 새 1~4",
+          "url": "https://app.notion.com/p/218dd02079c5499cb6b5d429fc9fac18",
+          "date": "2023-11-06",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "ecce-homo",
+      "title": "이 사람을 보라",
+      "action": "list-only",
+      "file": "content/reading-list/ecce-homo.json",
+      "date": "2023-02-23",
+      "dateBasis": "notion",
+      "primarySource": "7154614b63434f828ad9e2914afc5475",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "7154614b63434f828ad9e2914afc5475",
+          "title": "이 사람을 보라",
+          "url": "https://app.notion.com/p/7154614b63434f828ad9e2914afc5475",
+          "date": "2023-02-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "beyond-good-and-evil",
+      "title": "선악의 저편",
+      "action": "list-only",
+      "file": "content/reading-list/beyond-good-and-evil.json",
+      "date": "2023-06-01",
+      "dateBasis": "notion",
+      "primarySource": "bfb9816321534f3da66edffb140c6e7f",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "bfb9816321534f3da66edffb140c6e7f",
+          "title": "선악의 저편",
+          "url": "https://app.notion.com/p/bfb9816321534f3da66edffb140c6e7f",
+          "date": "2023-06-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-catcher-in-the-rye",
+      "title": "호밀밭의 파수꾼",
+      "action": "list-only",
+      "file": "content/reading-list/the-catcher-in-the-rye.json",
+      "date": "2023-09-14",
+      "dateBasis": "notion",
+      "primarySource": "9b3fd90e2d1840ff8a8e2f6e7503c5b8",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "9b3fd90e2d1840ff8a8e2f6e7503c5b8",
+          "title": "호밀밭의 파수꾼",
+          "url": "https://app.notion.com/p/9b3fd90e2d1840ff8a8e2f6e7503c5b8",
+          "date": "2023-09-14",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-stranger",
+      "title": "이방인",
+      "action": "list-only",
+      "file": "content/reading-list/the-stranger.json",
+      "date": "2023-09-14",
+      "dateBasis": "notion",
+      "primarySource": "71d538adae6a4ce59c51c9467d2f8fa8",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "71d538adae6a4ce59c51c9467d2f8fa8",
+          "title": "이방인",
+          "url": "https://app.notion.com/p/71d538adae6a4ce59c51c9467d2f8fa8",
+          "date": "2023-09-14",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "crime-and-punishment",
+      "title": "죄와 벌",
+      "action": "list-only",
+      "file": "content/reading-list/crime-and-punishment.json",
+      "date": "2021-03-25",
+      "dateBasis": "notion",
+      "primarySource": "26120e1481b8453ebd668bbbc6589664",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "26120e1481b8453ebd668bbbc6589664",
+          "title": "죄와벌 2",
+          "url": "https://app.notion.com/p/26120e1481b8453ebd668bbbc6589664",
+          "date": "2021-03-25",
+          "method": "native-created-time",
+          "createdTime": "2021-03-24T23:39:05Z",
+          "timezone": "Asia/Seoul",
+          "selected": true
+        },
+        {
+          "type": "notion",
+          "id": "d1051e86052845c1ae9fe4a5e56826d6",
+          "title": "죄와벌(1~3)",
+          "url": "https://app.notion.com/p/d1051e86052845c1ae9fe4a5e56826d6",
+          "date": "2024-08-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "slug": "the-brothers-karamazov",
+      "title": "카라마조프가의 형제들",
+      "action": "list-only",
+      "file": "content/reading-list/the-brothers-karamazov.json",
+      "date": "2024-08-01",
+      "dateBasis": "notion",
+      "primarySource": "52bb625acb854deba5068f8936b42b66",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "52bb625acb854deba5068f8936b42b66",
+          "title": "카라마조프가의 형제들(1~3)",
+          "url": "https://app.notion.com/p/52bb625acb854deba5068f8936b42b66",
+          "date": "2024-08-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "poor-folk",
+      "title": "가난한 사람들",
+      "action": "list-only",
+      "file": "content/reading-list/poor-folk.json",
+      "date": "2024-11-22",
+      "dateBasis": "notion",
+      "primarySource": "1463b61361d180359282c06478b201d5",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "1463b61361d180359282c06478b201d5",
+          "title": "가난한 사람들",
+          "url": "https://app.notion.com/p/1463b61361d180359282c06478b201d5",
+          "date": "2024-11-22",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-old-man-and-the-sea",
+      "title": "노인과 바다",
+      "action": "list-only",
+      "file": "content/reading-list/the-old-man-and-the-sea.json",
+      "date": "2024-11-22",
+      "dateBasis": "notion",
+      "primarySource": "1463b61361d180e88362e23169d391e0",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "1463b61361d180e88362e23169d391e0",
+          "title": "노인과바다",
+          "url": "https://app.notion.com/p/1463b61361d180e88362e23169d391e0",
+          "date": "2024-11-22",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "in-this-beautiful-world",
+      "title": "이토록 아름다운 세상에서",
+      "action": "list-only",
+      "file": "content/reading-list/in-this-beautiful-world.json",
+      "date": "2023-05-01",
+      "dateBasis": "notion",
+      "primarySource": "b7e8dcd1e5ef476f9d7dd9b94e03718c",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "b7e8dcd1e5ef476f9d7dd9b94e03718c",
+          "title": "[SF] 이토록 아름다운 세상에서",
+          "url": "https://app.notion.com/p/b7e8dcd1e5ef476f9d7dd9b94e03718c",
+          "date": "2023-05-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-flamingos-place",
+      "title": "홍학의 자리",
+      "action": "list-only",
+      "file": "content/reading-list/the-flamingos-place.json",
+      "date": "2023-05-01",
+      "dateBasis": "notion",
+      "primarySource": "78344905ed9441c2a18a2738d8f1f96d",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "78344905ed9441c2a18a2738d8f1f96d",
+          "title": "[공포/스릴러]홍학의 자리",
+          "url": "https://app.notion.com/p/78344905ed9441c2a18a2738d8f1f96d",
+          "date": "2023-05-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-three-body-problem",
+      "title": "삼체 1~3부",
+      "action": "list-only",
+      "file": "content/reading-list/the-three-body-problem.json",
+      "date": "2026-04-10",
+      "dateBasis": "notion",
+      "primarySource": "33e3b61361d18052bb65ee2c91b7a213",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "33e3b61361d18052bb65ee2c91b7a213",
+          "title": "삼체1~3부",
+          "url": "https://app.notion.com/p/33e3b61361d18052bb65ee2c91b7a213",
+          "date": "2026-04-10",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "project-hail-mary",
+      "title": "프로젝트 헤일메리",
+      "action": "list-only",
+      "file": "content/reading-list/project-hail-mary.json",
+      "date": "2026-04-10",
+      "dateBasis": "notion",
+      "primarySource": "33e3b61361d180df9ee8d8e5534977e0",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "33e3b61361d180df9ee8d8e5534977e0",
+          "title": "프로젝트 헤일메리",
+          "url": "https://app.notion.com/p/33e3b61361d180df9ee8d8e5534977e0",
+          "date": "2026-04-10",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "portrait-of-young-days",
+      "title": "젊은 날의 초상",
+      "action": "list-only",
+      "file": "content/reading-list/portrait-of-young-days.json",
+      "date": "2026-04-10",
+      "dateBasis": "notion",
+      "primarySource": "33e3b61361d1807786faea4205a78ea6",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "33e3b61361d1807786faea4205a78ea6",
+          "title": "젊은날의초상",
+          "url": "https://app.notion.com/p/33e3b61361d1807786faea4205a78ea6",
+          "date": "2026-04-10",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-libation-bearers",
+      "title": "제주를 바치는 여인들",
+      "action": "list-only",
+      "file": "content/reading-list/the-libation-bearers.json",
+      "date": "2023-03-23",
+      "dateBasis": "notion",
+      "primarySource": "e5cbba0c84964c649efa15d8a4a81772",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "e5cbba0c84964c649efa15d8a4a81772",
+          "title": "제주를 바치는 여인들",
+          "url": "https://app.notion.com/p/e5cbba0c84964c649efa15d8a4a81772",
+          "date": "2023-03-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "eumenides",
+      "title": "에우메니데스",
+      "action": "list-only",
+      "file": "content/reading-list/eumenides.json",
+      "date": "2023-03-23",
+      "dateBasis": "notion",
+      "primarySource": "694cafb3687e4041a29c842599dd542d",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "694cafb3687e4041a29c842599dd542d",
+          "title": "아우메니데스",
+          "url": "https://app.notion.com/p/694cafb3687e4041a29c842599dd542d",
+          "date": "2023-03-23",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-suppliants",
+      "title": "탄원하는 여인들",
+      "action": "list-only",
+      "file": "content/reading-list/the-suppliants.json",
+      "date": "2023-04-26",
+      "dateBasis": "notion",
+      "primarySource": "3bc0928d3a9f4f93a24a40c169a00273",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "3bc0928d3a9f4f93a24a40c169a00273",
+          "title": "탄원하는 여인들",
+          "url": "https://app.notion.com/p/3bc0928d3a9f4f93a24a40c169a00273",
+          "date": "2023-04-26",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "prometheus-bound",
+      "title": "사슬에 묶인 프로메테우스",
+      "action": "list-only",
+      "file": "content/reading-list/prometheus-bound.json",
+      "date": "2023-04-26",
+      "dateBasis": "notion",
+      "primarySource": "4b4cd807484e473693d801034b8af6d3",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "4b4cd807484e473693d801034b8af6d3",
+          "title": "사슬에 묶인 프로메테우스",
+          "url": "https://app.notion.com/p/4b4cd807484e473693d801034b8af6d3",
+          "date": "2023-04-26",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "the-persians",
+      "title": "페르시아 사람들",
+      "action": "list-only",
+      "file": "content/reading-list/the-persians.json",
+      "date": "2023-06-14",
+      "dateBasis": "notion",
+      "primarySource": "ae7abea9c5ae4df7a37a2f19c9a71474",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "ae7abea9c5ae4df7a37a2f19c9a71474",
+          "title": "페르시아 사람들",
+          "url": "https://app.notion.com/p/ae7abea9c5ae4df7a37a2f19c9a71474",
+          "date": "2023-06-14",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "seven-against-thebes",
+      "title": "테베 공격 일곱 장군",
+      "action": "list-only",
+      "file": "content/reading-list/seven-against-thebes.json",
+      "date": "2023-09-14",
+      "dateBasis": "notion",
+      "primarySource": "32793a132d0a45d78c7d595a86daba4d",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "32793a132d0a45d78c7d595a86daba4d",
+          "title": "테베 공격 일곱장군",
+          "url": "https://app.notion.com/p/32793a132d0a45d78c7d595a86daba4d",
+          "date": "2023-09-14",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "how-to-stop-worrying-and-start-living",
+      "title": "자기관리론",
+      "action": "list-only",
+      "file": "content/reading-list/how-to-stop-worrying-and-start-living.json",
+      "date": "2021-02-15",
+      "dateBasis": "notion",
+      "primarySource": "810cd170b6ef42258dd2fd0bb2829ace",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "810cd170b6ef42258dd2fd0bb2829ace",
+          "title": "자기관리론",
+          "url": "https://app.notion.com/p/810cd170b6ef42258dd2fd0bb2829ace",
+          "date": "2021-02-15",
+          "method": "native-created-time",
+          "createdTime": "2021-02-15T08:34:00Z",
+          "timezone": "Asia/Seoul",
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "csharp-in-depth",
+      "title": "C#을 다루는 기술",
+      "action": "list-only",
+      "file": "content/reading-list/csharp-in-depth.json",
+      "date": "2022-01-18",
+      "dateBasis": "notion",
+      "primarySource": "950d1cfc2b0e4b01a32046412cb1d902",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "950d1cfc2b0e4b01a32046412cb1d902",
+          "title": "C#을 다루는 기술",
+          "url": "https://app.notion.com/p/950d1cfc2b0e4b01a32046412cb1d902",
+          "date": "2022-01-18",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    },
+    {
+      "slug": "lee-deukwoo-game-math",
+      "title": "이득우의 게임수학",
+      "action": "list-only",
+      "file": "content/reading-list/lee-deukwoo-game-math.json",
+      "date": "2022-10-01",
+      "dateBasis": "notion",
+      "primarySource": "a251bf4881484e3ab054b49a2babcf03",
+      "sources": [
+        {
+          "type": "notion",
+          "id": "a251bf4881484e3ab054b49a2babcf03",
+          "title": "게임 수학",
+          "url": "https://app.notion.com/p/a251bf4881484e3ab054b49a2babcf03",
+          "date": "2022-10-01",
+          "method": "native-created-date-range",
+          "dayConfirmed": true,
+          "selected": true
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "title": "책 제목",
+      "reason": "작가·날짜·페이지 수가 예시로 채워진 템플릿"
+    },
+    {
+      "title": "Untitled",
+      "reason": "내용 없는 데이터베이스 항목"
+    },
+    {
+      "title": "독서노트 (책 제목 입력)",
+      "reason": "새 기록 작성용 템플릿"
+    }
+  ]
+}
