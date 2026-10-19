@@ -1,0 +1,17 @@
+---
+import type { PortfolioMedia } from '../../data/krafton-2027';
+import { resolvePortfolioMedia } from '../../lib/recruitment-media.mjs';
+interface Props { media?: PortfolioMedia; }
+const resolved = resolvePortfolioMedia(Astro.props.media);
+---
+{resolved && <figure class="rp-media">
+  {resolved.embedUrl && <div class="rp-video-frame"><iframe
+    src={resolved.embedUrl} title={resolved.title} loading="lazy"
+    allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe></div>}
+  <figcaption>
+    <strong>{resolved.title}</strong><span>{resolved.caption}</span>
+    <a href={resolved.url} target="_blank" rel="noopener noreferrer">영상 원본 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>
+  </figcaption>
+</figure>}

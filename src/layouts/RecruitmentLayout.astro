@@ -1,0 +1,50 @@
+---
+import '../styles/recruitment.css';
+import { site } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const canonical = new URL('/portfolio/krafton-2027/', site.url);
+const sections = [
+  ['project', '프로젝트'], ['client', '핵심 구현'], ['graphics', '그래픽스'],
+  ['ai', 'AI 협업'], ['scope', '기여·검증'],
+];
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="imjae" />
+    <meta name="theme-color" content="#f7f7f2" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site.url}/social-card.png`} />
+  </head>
+  <body class="recruitment-page">
+    <a class="rp-skip" href="#main-content">본문으로 이동</a>
+    <header class="rp-header">
+      <div class="rp-header-inner">
+        <a class="rp-brand" href="#main-content" aria-label="포트폴리오 처음으로">imjae<span>.</span><small>PORTFOLIO / 2027</small></a>
+        <nav class="rp-nav" aria-label="포트폴리오 목차">
+          {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+        </nav>
+        <a class="rp-blog-link" href="/">블로그 <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+    <main id="main-content" class="rp-main" tabindex="-1"><slot /></main>
+    <footer class="rp-footer">
+      <span>imjae · Game programming</span>
+      <a href="/">개발 블로그</a>
+      <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="rp-sr-only"> (새 탭)</span></a>
+      <a href="#main-content">맨 위로 ↑</a>
+    </footer>
+  </body>
+</html>

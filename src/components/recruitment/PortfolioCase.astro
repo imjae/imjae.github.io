@@ -1,0 +1,34 @@
+---
+import type { PortfolioCase } from '../../data/krafton-2027';
+import PortfolioMedia from './PortfolioMedia.astro';
+interface Props {
+  item: PortfolioCase;
+  links: { href: string; title: string; label: string }[];
+  compact?: boolean;
+}
+const { item, links, compact = false } = Astro.props;
+---
+<article id={item.id} class:list={['rp-case', { 'rp-case-compact': compact }]} aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id}>
+  <header class="rp-case-heading">
+    <span class="rp-case-number" aria-hidden="true">{item.number}</span>
+    <div>
+      <p class="rp-eyebrow">{item.category}</p>
+      <h3 id={`${item.id}-title`}>{item.title}</h3>
+      <p class="rp-case-summary">{item.summary}</p>
+      <ul class="rp-tags" aria-label="사용 기술">{item.tags.map(tag => <li>{tag}</li>)}</ul>
+    </div>
+  </header>
+  <div class="rp-case-body">
+    <PortfolioMedia media={item.media} />
+    <dl class="rp-case-facts">
+      <div><dt>문제</dt><dd>{item.problem}</dd></div>
+      <div><dt>선택</dt><dd>{item.approach}</dd></div>
+      <div><dt>내 기여</dt><dd>{item.contribution}</dd></div>
+      <div><dt>확인한 내용</dt><dd>{item.evidence}</dd></div>
+    </dl>
+    <p class="rp-limit"><span>남은 확인</span>{item.limitation}</p>
+    <div class="rp-case-links" aria-label={`${item.title} 관련 글`}>
+      {links.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}
+    </div>
+  </div>
+</article>
