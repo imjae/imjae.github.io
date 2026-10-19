@@ -504,3 +504,15 @@ npm run verify 테스트 25개·Astro 33개 파일 진단 0개·100개 HTML 검�
 공개 안내는 기존 운반 글이 10월 17일 확인한 규칙·중립 적재 곡선을 연결하고 후속 범위와 비교 기준을 제시한다. DCB 소스를 새로 조사하거나 밸런스 값을 바꾸고 Unity를 실행한 작업은 아니다. 블로그의 docs/DCB-BALANCING-PLAN.md에 후속 6단계와 근거·기록 기준을, docs/templates/DCB-BALANCE-CASE.md에 초안 작성 양식을 준비했다. 미작성 글의 빈 공개 주소·대량 초안은 만들지 않았다. EDITORIAL과 WRITING에 분류/구성/작성 방법을 적었다.
 
 npm run verify 테스트 25개·Astro 33개 파일 진단 0개·102개 HTML 검사·95개 경로 빌드가 통과했다. 실제 설정 로더와 assert로 고정 12편·새 글 8/9번·기존 운반 제외, 기능 목록 이동을 확인했다. 브라우저에서 Home의 전체 고정 순서, 아홉 기능 글 수 2·3·3·2·2·1·1·1·2, 밸런싱 안내→운반 분석 순서를 확인했다. 새 본문 표 3개와 390px 게임플레이 Balancing 태그+스태미너 검색의 두 글, 본문/검색 가로 넘침 없음을 확인했다. 공개 글은 73편이다. 로그는 .verification/gameplay-balance-pins/에 보관한다. main push 후 Actions와 공개 페이지를 별도로 확인한다.
+
+## 2026-10-19 플레이어 밸런싱 도구 제작 글
+
+사용자 요청으로 tools/player-balance-tuning-tool.md를 초안으로 작성·검토한 뒤 게시 대상으로 전환했다. 대표 커밋 0d4515e04의 AuthorDate로 date 2026-10-02/commit, updated 2026-10-19, DCB order 20을 썼다. 도구 제작 경험이므로 tools에 두고 Balancing 태그와 gameplay-balancing의 두 번째 분석으로 연결했다. 기존 운반 계산 분석과 밸런싱 안내에 관련 링크를 추가했다. 후속 목록에 도구 제작을 2번으로 넣고 규칙 분석(gameplay)과 도구 제작(tools)의 연결 기준을 WRITING과 계획 문서에 적었다. 기존 URL·작성일·Home 고정 12편과 순서는 유지한다.
+
+DCB HEAD 37fa37df2에서 JigeCarryBurdenTunerWindow, GameBalanceCatalog/Runtime/Builder, ReapplyBalanceCatalog, PlayerController의 속도 계측, PlayerNeedSystemBase, 저장 카탈로그와 속성 경로 검사, 10월 1~2일 커밋을 읽기 전용으로 대조했다. 여섯 편집/예측/실측 영역, 맨몸·지게 비교와 단위, 곡선·프리셋·결과 표, 자원 단계 재현 버튼, 같은 에셋/별도 인스턴스/미로드 처리, 시트 B0 임시 변경·재계산·클립보드 복사, 저장·Undo를 설명했다. 0fe68c0b4·7c81a0e9a·0d4515e04의 AI 공동 작성과 담당 범위를 구분한다.
+
+프리셋과 실제 ×1 적재 곡선을 구분했다. 계산 표는 환경/회복 패널티 등 제외 조건이 있고 실측 표시는 차분·평활값이다. 지게 부담 끄기는 스태미너 모드·적재 곡선만 대상으로 하며 모든 기준 속도를 초기화하지 않는다. 'Play 시작' 비교값은 패널이 처음 값을 읽을 때 캡처하고, 카탈로그 검증 메시지가 모든 잘못된 편집의 런타임 적용을 차단하지 않는다는 한계도 적었다. 원본 시트 자동 저장·실험 이력 관리·모든 임시 값 Undo·전체 밸런스 확정 도구로 확대하지 않는다. ApplyModifiedProperties와 SaveAssetIfDirty는 Unity 6.3 공식 문서와 대조했다.
+
+DCB에 기존 씬·설정·기획/지원 문서 WIP가 있었으며 건드리지 않았다. 새 Unity 컴파일·EditMode·GUI·Play Mode·도구 캡처·시트 변경·작업 시간/밸런스 비교를 실행하지 않았다. 검사 소스 확인과 실제 실행을 구분했으며 private 원본 소스·로그·개인 데이터·미디어를 옮기지 않았다.
+
+npm run verify 테스트 25개·Astro 33개 파일 진단 0개·103개 HTML 검사·96개 경로 빌드를 통과했다. 브라우저에서 Home 고정 12편 전체 순서, 밸런싱 안내→운반 분석→도구 분석 순서, 새 본문 표 3개·흐름도 1개·수식 오류 없음과 가로 넘침 없음을 확인했다. 390px 도구와 구조의 '밸런싱 도구' 검색은 새 글 1편을 반환하고 긴 본문에 가로 넘침이 없다. 공개 글은 74편이다. 로그는 .verification/player-balance-tool/에 보관한다. main push 후 Actions와 공개 페이지를 별도로 확인한다.
