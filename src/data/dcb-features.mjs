@@ -60,6 +60,6 @@ export const dcbFeatures = [
     description: '상태별 이동·행동 비용·회복·입력 제약의 규칙과 조정 근거, 비교 검증을 묶습니다.',
     topic: 'gameplay', number: '09', label: 'GAMEPLAY BALANCING',
     overviewSlug: 'dcb-gameplay-balance-overview',
-    articleSlugs: ['jige-carry-burden', 'player-balance-tuning-tool', 'locomotion-stamina-reinput', 'action-stamina-cost-and-recovery'],
+    articleSlugs: ['jige-carry-burden', 'player-balance-tuning-tool', 'locomotion-stamina-reinput', 'action-stamina-cost-and-recovery', 'movement-speed-modifier-stacking'],
   },
 ];
