@@ -78,6 +78,8 @@ $$
 
 이 표는 인벤토리 무게·갈증·물속 감속, 배고픔·갈증의 회복 패널티 등을 제외한다. 환경과 상태 이상으로 더해지는 감소도 별도다. 따라서 표의 거리는 충돌·경사·공격 중단을 포함해 실제로 달린 거리가 아니다. 기본 설정의 관계를 먼저 보고 실제 상태에서 차이를 확인하는 용도다.
 
+현재 배고픔·갈증이 적용하는 문턱과 회복 시간·운반 한도·이동·체력의 실제 보정 경로는 [행동 비용과 회복 분석](/writing/action-stamina-cost-and-recovery/)에 추가했다. 도구의 단순 예상 표와 두 자원의 회복 패널티까지 반영한 계산을 구분해 볼 수 있다.
+
 ## 편집한 값이 플레이어에 도달하는 경로
 
 창은 `SerializedObject.Update()`로 값을 읽고, `SerializedProperty`를 편집한 뒤 `ApplyModifiedProperties()`로 반영한다. 변경이 적용된 경우 런타임 전달 경로를 호출한다. 속성 반영과 Undo 기록의 의미는 [Unity의 ApplyModifiedProperties 문서](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/SerializedObject.ApplyModifiedProperties.html)와 대조했다.
