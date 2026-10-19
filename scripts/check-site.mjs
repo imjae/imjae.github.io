@@ -7,6 +7,7 @@ import { readPinSettings } from '../src/lib/pin-settings.server.mjs';
 import { readProjectVideoSettings } from '../src/lib/project-video.server.mjs';
 import { dcbFeatures } from '../src/data/dcb-features.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
+import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 
 const root = resolve('dist');
 const failures = [];
@@ -33,6 +34,13 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   const output = join(root,'writing',data.slug,'index.html');
   if (data.draft && await exists(output)) failures.push(`비공개 초안이 배포에 포함됨: ${data.slug}`);
   if (!data.draft && !(await exists(output))) failures.push(`공개 글 페이지 누락: ${data.slug}`);
+  if (!data.draft && await exists(output)) {
+    const html = await readFile(output, 'utf8');
+    const modes = html.match(/<nav\b[^>]*class="mode-switch"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
+    const editLink = [...modes.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(match => match[0]).find(link => />Edit(?:<|\s)/.test(link));
+    const expected = githubFileUrl('edit', file);
+    if (editLink?.match(/\bhref="([^"]*)"/)?.[1] !== expected || !editLink?.includes('target="_blank"') || !editLink?.includes('rel="noopener noreferrer"')) failures.push(`글의 Edit가 실제 원본의 GitHub 편집 화면으로 연결되지 않음: ${data.slug}`);
+  }
   if (data.draft && siteText.includes(`/writing/${data.slug}/`)) failures.push(`초안 링크 노출: ${data.slug}`);
   if (data.draft && (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(data.slug))) failures.push(`검색 색인 또는 피드에 초안 노출: ${data.slug}`);
 }

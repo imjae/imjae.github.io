@@ -65,7 +65,7 @@
 | [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](../content/articles/notes/http-response-failure-cancellation.md) | 2026-10-17 | 2022-01-18 | 노션 생성일 | [HTTP](https://app.notion.com/p/3427b0bc1ead41f8bb221b8868318552) |
 | [노션 학습 기록에서 이어 읽는 게임 개발 글 37편](../content/articles/notes/notion-study-reading-order.md) | 2026-10-17 | 2026-10-17 | 새 글 작성일 | 블로그 `4e27313` |
 | [React useEffect로 작업 상태를 동기화하고 정리하기](../content/articles/notes/react-effect-task-cleanup.md) | 2026-10-17 | 2022-01-18 | 노션 생성일 | [useEffect 완벽 가이드_1](https://app.notion.com/p/3801f85868094581b9dff3ed27f52826) |
-| [시지프 신화 독서 메모](../content/articles/notes/the-myth-of-sisyphus.md) | 2024-02-23 | 2024-02-23 | 기존 작성일 | 보관한 Jekyll 원본 |
+| [시지프 신화 독서 메모](../content/articles/reading/the-myth-of-sisyphus.md) | 2024-02-23 | 2024-02-23 | 기존 작성일 | 보관한 Jekyll 원본 |
 | [TypeScript interface와 실행 중 데이터 검증을 구분하기](../content/articles/notes/typescript-interface-runtime-validation.md) | 2026-10-17 | 2022-01-18 | 노션 생성일 | [타입스크립트의 Interface 정리](https://app.notion.com/p/b6213ce8acbb45958e96077a6fc2f8c4) |
 | [Jekyll 블로그 게시 테스트](../content/articles/notes/welcome-to-jekyll.md) | 2024-02-23 | 2024-02-23 | 기존 작성일 | 보관한 Jekyll 원본 |
 | [Addressables 카탈로그 옵션을 줄이기 전에 확인할 것](../content/articles/tools/addressables-catalog-key-options.md) | 2026-10-17 | 2023-09-11 | 노션 생성일 | [어드레서블 관리 팁](https://app.notion.com/p/eb44c410f42b451f95252113acb3cb4f) |

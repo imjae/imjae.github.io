@@ -12,7 +12,7 @@ This repository is imjae's public game development notebook at https://imjae.git
 - `/editor/` is a public navigation page for GitHub's authenticated editor, not an authenticated admin session. Never collect or store GitHub tokens in the site. Include only published posts; link to GitHub for drafts. Keep deletion safe for portfolio, series and old-URL links.
 - Distinguish original assets, reused assets and AI assistance. Do not invent screenshots, results, benchmarks or completed gameplay verification.
 - DCB source is private. Publish only the requested explanations and approved media; do not copy whole source files, private logs, local paths or personal save data.
-- Use existing categories: `gameplay`, `graphics`, `tools`, `ai`, `notes`, `math`. Use `series` to connect posts instead of duplicating them.
+- Use existing categories: `gameplay`, `graphics`, `tools`, `ai`, `notes`, `math`, `reading`. Use `series` to connect posts instead of duplicating them.
 - Validate with `npm run verify`, then inspect home, a long article and mobile search in the browser for site changes.
 - Only `main` deploys. GitHub Pages uses Actions. No API tokens or credentials belong in files, command arguments or output.
 - Do not change DCB, Deluge or another repository as part of blog maintenance unless the user asks.

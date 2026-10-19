@@ -2,12 +2,13 @@
 import '../styles/global.css';
 import { site, topics } from '../data/site';
 import { getArticles } from '../lib/articles';
+import { githubFileUrl } from '../lib/github-authoring.mjs';
 import ModeSwitch from '../components/ModeSwitch.astro';
-interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editSlug?: string; editProject?: string; }
-const { title, description = site.description, active = '', noindex = false, editSlug, editProject } = Astro.props;
+interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; editProject?: string; }
+const { title, description = site.description, active = '', noindex = false, editFile, editProject } = Astro.props;
 const articles = await getArticles();
 const canonical = new URL(Astro.url.pathname, site.url);
-const editorUrl = editSlug ? `/editor/?post=${encodeURIComponent(editSlug)}` : editProject === 'dcb' ? '/editor/?project=dcb#project-video' : '/editor/';
+const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === 'dcb' ? '/editor/?project=dcb#project-video' : '/editor/';
 ---
 <!doctype html>
 <html lang="ko">
@@ -34,24 +35,24 @@ const editorUrl = editSlug ? `/editor/?post=${encodeURIComponent(editSlug)}` : e
   <body>
     <a class="skip-link" href="#main-content">본문으로 이동</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="imjae 홈">imjae<span>.</span><small>DEV NOTES</small></a>
-      <nav class="header-nav" aria-label="주 메뉴">
+      <a class="brand" href="/" aria-label="imjae home">imjae<span>.</span><small>DEV NOTES</small></a>
+      <nav class="header-nav" aria-label="Main navigation">
         <a href="/" aria-current={active === 'home' ? 'page' : undefined}>Home</a>
-        <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>포트폴리오</a>
-        <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>글 모아보기</a>
+        <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>Portfolio</a>
+        <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>Writing</a>
         <a class="github-link" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
-      <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} />
+      <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} />
     </header>
     <div class="workspace">
-      <aside class="sidebar" aria-label="기록 탐색">
+      <aside class="sidebar" aria-label="Browse notes">
         <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
-        <p class="nav-caption">주제</p>
-        <nav class="topic-nav" aria-label="주제별 글">
+        <p class="nav-caption">Topics</p>
+        <nav class="topic-nav" aria-label="Topics">
           {topics.map((topic) => <a href={`/topics/${topic.id}/`} class:list={{ selected: active === topic.id }} style={`--topic-color:${topic.color}`}><span class="topic-mark"></span>{topic.title}<small>{articles.filter((article) => article.data.topic === topic.id).length.toString().padStart(2, '0')}</small></a>)}
         </nav>
-        <div class="sidebar-project"><p class="nav-caption">프로젝트</p><a href="/portfolio/dcb/"><span class="project-icon">D</span><span><strong>DCB</strong><small>운반 액션 게임 · 개발 중</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/">DCB 글 목록 <span aria-hidden="true">→</span></a></div>
-        <div class="sidebar-foot"><a href="/rss.xml">RSS 구독 ↗</a></div>
+        <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/portfolio/dcb/"><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/">DCB articles <span aria-hidden="true">→</span></a></div>
+        <div class="sidebar-foot"><a href="/rss.xml">RSS feed ↗</a></div>
       </aside>
       <main id="main-content"><slot /></main>
     </div>

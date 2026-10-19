@@ -6,8 +6,8 @@ interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
 const canonical = new URL('/portfolio/krafton-2027/', site.url);
 const sections = [
-  ['project', '프로젝트'], ['client', '핵심 구현'], ['graphics', '그래픽스'],
-  ['ai', 'AI 협업'], ['scope', '기여·검증'],
+  ['project', 'Project'], ['client', 'Implementation'], ['graphics', 'Graphics'],
+  ['ai', 'AI Collaboration'], ['scope', 'Scope & Evidence'],
 ];
 ---
 <!doctype html>
@@ -32,11 +32,11 @@ const sections = [
     <a class="rp-skip" href="#main-content">본문으로 이동</a>
     <header class="rp-header">
       <div class="rp-header-inner">
-        <a class="rp-brand" href="#main-content" aria-label="포트폴리오 처음으로">imjae<span>.</span><small>PORTFOLIO / 2027</small></a>
-        <nav class="rp-nav" aria-label="포트폴리오 목차">
+        <a class="rp-brand" href="#main-content" aria-label="Portfolio home">imjae<span>.</span><small>PORTFOLIO / 2027</small></a>
+        <nav class="rp-nav" aria-label="Portfolio navigation">
           {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
         </nav>
-        <a class="rp-blog-link" href="/">블로그 <span aria-hidden="true">↗</span></a>
+        <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
       </div>
     </header>
     <main id="main-content" class="rp-main" tabindex="-1"><slot /></main>

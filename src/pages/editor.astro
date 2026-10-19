@@ -11,6 +11,7 @@ const articles = await getArticles(false);
   <header class="page-intro"><h1>수정 모드</h1><p>글 추가·수정·삭제는 GitHub에서 저장합니다.<br/>저장소 쓰기 권한이 있는 계정으로 로그인해 주세요.</p></header>
   <div class="editor-shortcuts">
     <a href="#new-post" class="button button-dark">새 글 작성</a>
+    <a href="/editor/?topic=reading#new-post">독서 기록 추가</a>
     <a href="#project-video">DCB 영상 링크</a>
     <a href={`${repository}/tree/${branch}/content/articles`} target="_blank" rel="noopener noreferrer">초안·전체 파일 ↗</a>
     <a href={`${repository}/actions`} target="_blank" rel="noopener noreferrer">배포 확인 ↗</a>
@@ -42,10 +43,20 @@ const articles = await getArticles(false);
         <label class="wide">요약<textarea name="description" required maxlength="220" rows="2" placeholder="글에서 다룰 내용을 한두 문장으로 적어 주세요."></textarea></label>
         <label>글 주소<input name="slug" required maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="climb-hand-contact" /><small>영문 소문자·숫자·하이픈. 공개한 뒤에는 유지합니다.</small></label>
         <label>작성 날짜<input name="date" type="date" required /></label>
-        <label>주제<select name="topic">{topics.map(topic => <option value={topic.id}>{topic.title}</option>)}</select></label>
+        <label>Topic<select name="topic">{topics.map(topic => <option value={topic.id}>{topic.title}</option>)}</select></label>
         <label>글 종류<select name="kind">{Object.entries(kinds).map(([id, title]) => <option value={id}>{title}</option>)}</select></label>
         <label class="wide">태그<input name="tags" maxlength="200" placeholder="Unity, IK, Animation" /><small>쉼표로 구분합니다.</small></label>
       </div>
+      <fieldset id="book-fields" class="book-fields" hidden disabled>
+        <legend>책과 짧은 감상</legend>
+        <p class="editor-help">책 한 권마다 기록을 남깁니다. 짧은 감상은 Reading 목록에도 표시되고, 긴 독후감은 GitHub에서 본문에 이어 쓸 수 있습니다.</p>
+        <div class="editor-fields">
+          <label>책 제목<input name="bookTitle" maxlength="160" placeholder="시지프 신화" /></label>
+          <label>저자 (선택)<input name="bookAuthor" maxlength="120" placeholder="알베르 카뮈" /></label>
+          <label>완독일 (선택)<input name="bookFinished" type="date" /><small>일부만 읽었거나 날짜가 불확실하면 비워 둡니다.</small></label>
+          <label class="wide">짧은 감상 (선택)<textarea name="bookNote" maxlength="280" rows="4" placeholder="기억에 남은 내용과 내 생각을 짧게 적어 주세요."></textarea><small>최대 280자. 목록과 글 상단에 표시합니다.</small></label>
+        </div>
+      </fieldset>
       <details class="editor-extra"><summary>프로젝트·시리즈 지정 (선택)</summary><div class="editor-fields"><label>프로젝트<input name="project" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="dcb" /></label><label>시리즈<input name="series" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="dcb" /></label></div></details>
       <div class="editor-submit"><button class="button button-dark" type="submit">GitHub에서 새 글 작성 ↗</button><p id="new-post-status" role="status" aria-live="polite"></p></div>
       <noscript><p>새 글 양식은 JavaScript가 필요합니다. <a href={`${repository}/new/${branch}/content/articles`}>GitHub에서 직접 새 파일을 만들 수 있습니다.</a></p></noscript>
@@ -80,6 +91,24 @@ const articles = await getArticles(false);
   const form = document.querySelector<HTMLFormElement>('#new-post-form');
   const date = form?.querySelector<HTMLInputElement>('[name="date"]');
   if (date) date.value = koreanDate();
+  const topic = form?.querySelector<HTMLSelectElement>('[name="topic"]');
+  const kind = form?.querySelector<HTMLSelectElement>('[name="kind"]');
+  const bookFields = form?.querySelector<HTMLFieldSetElement>('#book-fields');
+  const bookTitle = form?.querySelector<HTMLInputElement>('[name="bookTitle"]');
+  let previousKind = kind?.value ?? 'case-study';
+  function updateBookFields() {
+    const reading = topic?.value === 'reading';
+    if (bookFields) { bookFields.hidden = !reading; bookFields.disabled = !reading; }
+    if (bookTitle) bookTitle.required = reading;
+    if (kind) {
+      if (reading) { if (!kind.disabled) previousKind = kind.value; kind.value = 'reading'; }
+      else if (kind.disabled) kind.value = previousKind;
+      kind.disabled = reading;
+    }
+  }
+  if (topic && new URLSearchParams(location.search).get('topic') === 'reading') topic.value = 'reading';
+  topic?.addEventListener('change', updateBookFields);
+  updateBookFields();
   form?.addEventListener('input', () => { const status = document.querySelector('#new-post-status'); if (status) status.textContent = ''; });
   form?.addEventListener('submit', event => {
     event.preventDefault();
@@ -94,6 +123,7 @@ const articles = await getArticles(false);
   });
 </script>
 <style>
+  .book-fields{border:1px solid var(--line);border-radius:5px;padding:22px;margin:25px 0 0;min-width:0}.book-fields legend{padding:0 8px;font-size:13px;color:var(--green)}.book-fields .editor-help{margin:0 0 20px}
   .editor-shortcuts{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:0 0 35px;font-size:12px}.editor-shortcuts>a:not(.button){color:var(--green)}
   .editor-section{margin-bottom:44px}.editor-section>.search-box{max-width:560px}#manage-count{font-size:11px;color:var(--muted);margin:15px 0}
   .manage-list{border-top:1px solid var(--line)}.manage-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:21px 0;border-bottom:1px solid var(--line)}.manage-row[hidden]{display:none}.manage-meta{font-size:10px;color:var(--muted);margin:0 0 8px}.manage-row h3{font-size:16px;line-height:1.7;margin:0}.manage-actions{display:flex;gap:8px;flex-shrink:0;font-size:11px}.manage-actions a{border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:nowrap}.manage-actions a:hover{background:var(--soft)}.manage-actions .delete-link{color:#8a5347}.selected-post{background:#eaf0e5;padding-left:14px;padding-right:14px}

@@ -48,7 +48,7 @@
 | 공개 | 물 캐시 재생과 메시 업로드 | [water-playback.md](../content/articles/graphics/water-playback.md) |
 | 공개 | 불 이펙트의 레이어와 품질 단계 | [fire-vfx.md](../content/articles/graphics/fire-vfx.md) |
 | 공개 | AI를 사용한 구현과 검증 과정 | [working-with-ai.md](../content/articles/ai/working-with-ai.md) |
-| 공개 | 시지프 신화 독서 메모 | [the-myth-of-sisyphus.md](../content/articles/notes/the-myth-of-sisyphus.md) |
+| 공개 | 시지프 신화 독서 메모 | [the-myth-of-sisyphus.md](../content/articles/reading/the-myth-of-sisyphus.md) |
 | 공개 | Jekyll 블로그 게시 테스트 | [welcome-to-jekyll.md](../content/articles/notes/welcome-to-jekyll.md) |
 | 초안 | 물의 깊이와 지형 접점 확인 | [water-depth-study.md](../content/articles/graphics/water-depth-study.md) |
 | 공개 | 자료구조 선택하기: 배열, List, Dictionary, HashSet, Queue, Stack | [data-structures-collections.md](../content/articles/notes/data-structures-collections.md) |
@@ -558,3 +558,19 @@ DCB HEAD 488dc55af에서 PlayerInventoryInfo의 두 목록·조합 파츠 무게
 새 Unity 컴파일·EditMode·Play Mode·최신 다중 보정 속도/해제/소음/발 접지·씬 수역 검증을 실행하지 않았다. 기존 물 검사와 당시 통과 기록은 현재 전체 중첩 검증으로 확대하지 않았다. 물·운반의 AI 공동 작성과 기여 범위를 구분했고 private 전체 코드·로그·로컬 경로·개인 데이터·미디어를 복사하지 않았다.
 
 npm run verify 테스트 25개·Astro 33개 파일 진단 0개·99개 경로 빌드·106개 HTML 검사를 통과했다. 브라우저에서 Home 고정 순서와 기능 설명→운반→도구→이동→행동→중첩 분석 순서를 확인했다. 새 본문 표5개·도식1개·가로 넘침 없음, 390px 게임플레이 Balancing+0.71855 본문 검색의 새 글1편과 모바일 표/페이지 폭을 확인했다. 공개 글은 77편이다. 기록은 .verification/movement-speed-stacking/에 둔다. main push 후 Actions와 공개 글·목록을 별도로 확인한다.
+
+## 2026-10-19 영어 메뉴와 Reading 목록
+
+사용자 요청으로 공통 상단 메뉴를 Home·Portfolio·Writing·GitHub, 모드 전환을 View·Edit로 바꿨다. 주제 이름은 Gameplay·Graphics·Tools & Systems·AI Collaboration·Notes·Mathematics·Reading으로 표시한다. 지원용 포트폴리오 상단 메뉴도 영어로 맞췄고 본문은 한국어를 유지한다. 기존 페이지 구성과 Home 고정 순서는 유지했다.
+
+새 Reading 주제(`/topics/reading/`)는 책 제목·저자·완독일(선택)·짧은 감상을 목록으로 보여주고 개별 독서 메모로 연결한다. 책 제목·저자·감상·본문 검색과 URL 검색어 유지를 지원한다. 완독일이 없으면 작성일을 ‘기록’으로, 감상이 없으면 기존 description을 ‘기록 요약’으로 표시한다. 공개된 시지프 신화 글만 reading 폴더/주제로 옮기고 책 제목·저자 메타데이터를 추가했다. 날짜·slug·본문·보관 원본은 유지하며 새 감상이나 완독 사실을 만들지 않았다. 날짜 조사/이관 문서의 파일 경로를 함께 갱신했다. 예전 `/book/`은 Reading으로 연결한다.
+
+Edit의 ‘독서 기록 추가’ 또는 Topic Reading 선택으로 책 입력란을 연다. book.title은 필수이고 author·finished·note는 선택이며 note는 최대 280자다. 짧은 감상은 목록과 본문 상단에 표시한다. GitHub 작성과 CLI 모두 같은 필드를 받아 kind reading·draft true로 생성하며, 본문에는 추가 독후감용 절을 둔다. 잘못된 완독 날짜·빈 책 제목·길이 제한을 검사하고 실제 저장은 기존 GitHub 인증 편집 흐름을 사용한다. 사이트에서 인증 정보는 수집하지 않는다.
+
+npm run verify의 테스트 35개·Astro 42개 파일 진단 0개·102개 경로 빌드·108개 HTML 검사를 통과했다. 이후 /book 연결 변경의 재빌드에서 한 차례 .astro 임시 파일 rename EPERM이 발생했으며 재시도한 build와 check:site는 통과했다. 브라우저에서 Home, 긴 하네스 본문, Reading 목록/저자 검색/검색 결과 없음, Edit의 독서 필드 및 주제 전환, 일반 검색의 Reading 태그 범위, 390px 모바일 목록·검색·양식·긴 글·지원용 상단 메뉴의 가로 넘침 없음을 확인했다. /book/의 실제 Reading 이동도 확인했다. 화면은 `.verification/reading-navigation/reading-desktop.png`에 보관한다. 커밋·push·배포는 하지 않았다.
+
+## 2026-10-20 영어 메뉴·Reading 게시 검토와 현재 글 편집
+
+사용자 요청으로 영어 메뉴와 Reading 문구·동작을 다시 검토하고 게시 대상으로 정했다. 글 본문 상단의 Edit는 실제 article.filePath로 만든 GitHub /edit/main 경로를 새 탭으로 연다. slug에서 파일명을 추정하지 않으므로 Reading으로 옮긴 글과 파일명·slug가 다른 글도 같은 경로 검증을 사용한다. Home·글 목록의 Edit는 기존 관리 화면, DCB 소개의 Edit는 영상 설정을 유지한다. GitHub 로그인·쓰기 권한·Commit changes로 저장하며 사이트는 인증 정보를 수집하지 않는다.
+
+빌드 검사는 공개 글 모두의 Edit가 실제 원본 경로·새 탭·noopener noreferrer를 사용하는지 확인한다. 작업 트리의 npm run verify에서 테스트 35개·Astro 42개 파일 진단 0개·102개 경로 빌드·108개 HTML 검사를 통과했다. 게시할 파일만 분리한 빌드와 브라우저 확인 후 main에 push하고 같은 커밋의 Actions·공개 페이지를 확인한다. 별도 소개 페이지·기여 표·촬영 계획·포트폴리오 계획의 로컬 작업은 이번 게시에 포함하지 않는다.

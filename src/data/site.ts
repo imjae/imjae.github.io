@@ -6,12 +6,13 @@ export const site = {
 };
 
 export const topics = [
-  { id: 'gameplay', title: '게임플레이', english: 'GAMEPLAY', description: '캐릭터 이동, 전투와 상호작용 구현.', number: '01', color: '#286350' },
-  { id: 'graphics', title: '그래픽스', english: 'GRAPHICS', description: '렌더링, 셰이더와 VFX 구현.', number: '02', color: '#416c91' },
-  { id: 'tools', title: '도구와 구조', english: 'TOOLS & SYSTEMS', description: 'UI, 데이터 처리와 개발 도구.', number: '03', color: '#92613e' },
-  { id: 'ai', title: 'AI 협업', english: 'AI COLLABORATION', description: 'AI를 사용한 구현과 검증 과정.', number: '04', color: '#75618b' },
-  { id: 'notes', title: '기술 메모', english: 'NOTES', description: '자료구조, 웹 기술과 독서 메모.', number: '05', color: '#716d63' },
-  { id: 'math', title: '수학', english: 'MATHEMATICS', description: '수와 함수, 벡터·행렬·회전의 원리와 계산.', number: '06', color: '#427872' },
+  { id: 'gameplay', title: 'Gameplay', english: 'GAMEPLAY', description: '캐릭터 이동, 전투와 상호작용 구현.', number: '01', color: '#286350' },
+  { id: 'graphics', title: 'Graphics', english: 'GRAPHICS', description: '렌더링, 셰이더와 VFX 구현.', number: '02', color: '#416c91' },
+  { id: 'tools', title: 'Tools & Systems', english: 'TOOLS & SYSTEMS', description: 'UI, 데이터 처리와 개발 도구.', number: '03', color: '#92613e' },
+  { id: 'ai', title: 'AI Collaboration', english: 'AI COLLABORATION', description: 'AI를 사용한 구현과 검증 과정.', number: '04', color: '#75618b' },
+  { id: 'notes', title: 'Notes', english: 'NOTES', description: '자료구조와 웹 기술에 관한 메모.', number: '05', color: '#716d63' },
+  { id: 'math', title: 'Mathematics', english: 'MATHEMATICS', description: '수와 함수, 벡터·행렬·회전의 원리와 계산.', number: '06', color: '#427872' },
+  { id: 'reading', title: 'Reading', english: 'READING', description: '읽은 책과 짧은 감상, 책을 읽으며 남긴 메모.', number: '07', color: '#8a685e' },
 ] as const;
 
 export const kinds = { 'case-study': '구조 노트', devlog: '개발 기록', note: '기술 노트', reading: '읽기 노트' } as const;

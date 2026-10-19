@@ -19,6 +19,6 @@ export default defineConfig({
     '/profile': '/',
     '/blog': '/writing/',
     '/archive': '/writing/',
-    '/book': '/topics/notes/',
+    '/book': '/topics/reading/',
   },
 });

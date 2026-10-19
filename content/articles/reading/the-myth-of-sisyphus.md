@@ -4,8 +4,11 @@ description: "알베르 카뮈의 시지프 신화 중 부조리에 관한 논�
 slug: "the-myth-of-sisyphus"
 date: "2024-02-23"
 dateBasis: "legacy"
-topic: "notes"
+topic: "reading"
 kind: "reading"
+book:
+  title: "시지프 신화"
+  author: "알베르 카뮈"
 tags: ["Reading", "Philosophy"]
 draft: false
 legacy: true

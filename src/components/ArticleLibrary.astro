@@ -7,11 +7,11 @@ const { initialTopic = '' } = Astro.props;
 const articles = await getArticles();
 const tags = [...new Set(articles.flatMap((article) => article.data.tags))].sort((a,b) => a.localeCompare(b,'ko'));
 const initialTags = new Set(articles.filter((article) => !initialTopic || article.data.topic === initialTopic).flatMap((article) => article.data.tags));
-const index = articles.map((article) => ({ slug: article.data.slug, topic: article.data.topic, tags: article.data.tags, text: [article.data.title, article.data.description, article.body ?? '', ...article.data.tags].join(' ').toLocaleLowerCase() }));
+const index = articles.map((article) => ({ slug: article.data.slug, topic: article.data.topic, tags: article.data.tags, text: [article.data.title, article.data.description, article.data.book?.title ?? '', article.data.book?.author ?? '', article.data.book?.note ?? '', article.body ?? '', ...article.data.tags].join(' ').toLocaleLowerCase() }));
 ---
 <div class="article-library" data-initial-topic={initialTopic}>
   <label class="search-box"><span aria-hidden="true">⌕</span><input id="article-search" type="search" placeholder="제목, 본문, 태그에서 검색" aria-label="글 검색" autocomplete="off" /><kbd>/</kbd></label>
-  <div class="filter-row"><label for="topic-filter" class="sr-only">주제</label><select id="topic-filter"><option value="">모든 주제</option>{topics.map((topic) => <option value={topic.id} selected={topic.id === initialTopic}>{topic.title}</option>)}</select><button type="button" id="reset-filters">필터 초기화</button></div>
+  <div class="filter-row"><label for="topic-filter" class="sr-only">Topics</label><select id="topic-filter"><option value="">All topics</option>{topics.map((topic) => <option value={topic.id} selected={topic.id === initialTopic}>{topic.title}</option>)}</select><button type="button" id="reset-filters">필터 초기화</button></div>
   <div class="tag-filters" aria-label="태그 필터">{tags.map((tag) => <button type="button" data-tag={tag} aria-pressed="false" hidden={!initialTags.has(tag)}>#{tag}</button>)}</div>
   <div class="search-status"><span id="result-count" role="status" aria-live="polite">{articles.length}개의 기록</span><span>제목 · 본문 · 태그</span></div>
   <div class="article-list">{articles.map((article) => <ArticleCard article={article} />)}</div>
