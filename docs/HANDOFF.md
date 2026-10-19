@@ -464,3 +464,13 @@ DCB HEAD 37fa37df2를 읽기 전용으로 대조했다. 트레버설 진입·이
 기능 설정에 overviewSlug를 추가하고 articleSlugs를 분석 목록으로 사용한다. 상세 페이지는 기능 설명 한 편과 구현·분석 글을 별도 영역으로 표시한다. 중복 지정한 설명 글은 분석에 재노출하지 않으며 설명이 초안·삭제돼도 나머지 분석은 유지한다. 전체 글 수는 두 영역을 합산한다. 공개 수는 기능 순서대로 2·3·3·2·2편이다. EDITORIAL에 사용자 구성 기준, WRITING에 필드와 날짜·관리 방법을 적었다. 새 설명 네 편과 분리 분석 한 편이 추가돼 공개 글은 69편이다.
 
 npm run verify 테스트 25개·Astro 33개 파일 진단 0개·94개 HTML 검사와 87개 경로 빌드가 통과했다. 영역 사이 여백을 보완한 후 build와 check:site도 다시 통과했다. 브라우저에서 다섯 기능의 첫 글/분석 순서, 새 다섯 글의 표·흐름도, Home 고정 11편을 확인했다. 390px 장비 목록·긴 화염 본문·그래픽스 검색에 가로 넘침이 없다. 'DCB의 급류' 검색은 기능 설명과 이를 연결한 기존 분석 두 편을 반환한다. 로그는 .verification/dcb-feature-overviews/에 보관한다. origin/main fetch 시 로컬 HEAD와 일치했다. 이번 게시 범위에 이전 로컬 Samurai 보완을 포함하며, 배포 결과는 이 변경의 main push 후 Actions와 공개 페이지에서 별도로 확인한다.
+
+## 2026-10-19 시네마틱 기능 설명 추가
+
+사용자 요청으로 gameplay/dcb-cinematic-overview.md를 작성했다. 현재 VideoClip을 전체 화면 UI로 재생하고 영상 이후의 월드 상태를 맞추는 흐름부터 설명한다. 새 기능 안내이므로 date 2026-10-19/dateBasis authored, DCB 시리즈 order 16을 썼다. 초안으로 생성해 문구·근거를 검토한 뒤 요청한 글 추가의 게시 대상으로 전환했다. 기능 설정에 cinematic/06을 추가하고 overviewSlug로 연결했으며 분석 목록은 아직 비어 있다. 기존 URL·날짜·Home 고정 11편은 유지한다.
+
+DCB HEAD 37fa37df2의 CinematicRegionFeature, CinematicOverlay, PlayerRegion/Driver, GameTimer, GameInputSystem, 카메라 정지 경로, LoseJige와 매복·산성 입구 두 프리팹을 읽기 전용으로 대조했다. 매복은 장애물 묶음 교체·플레이어 재배치·지게 상실·레벨 1 Samurai 2명 생성이며, 산성 입구는 영상만 지정돼 있다. 두 프리팹의 playOnce ON·페이드 0.3초·미등록 대체 3초와 영상 참조를 확인했다. 10월 2일 b7505ca80·7fffb1efd·da504a8a5 이력과 AI 공동 작성, 막대를 손에 남기는 요구를 구분했다. 당시 결과 로그·영상 성공으로 확대하지 않는다.
+
+게임을 멈춘 동안의 unscaled 페이드와 DSP/Unscaled 영상 시계, 입력 차단·버퍼 정리, RenderTexture 표시·해제, 영상 실패 시에도 결과 적용으로 진행하는 정책을 설명했다. 실제 복구는 오브젝트 교체 후·플레이어 재배치 전이므로 페이드가 끝날 때까지 입력을 잠근다고 쓰지 않는다. playOnce는 메모리 상태이고 세이브 연계가 없다. 입력은 Player/Game 활성만 기록하고 Global/UI의 개별 이전 상태를 모두 보존하지 않는다. OnDisable에 StopCoroutine이 없으며 GameObject 비활성화와 컴포넌트 enabled=false를 동일하게 취급할 수 없다는 한계를 Unity 6.3 공식 문서와 대조해 적었다. 이미 적용한 결과의 롤백·전체 결과 트랜잭션·수동 스킵을 구현했다고 설명하지 않는다.
+
+DCB에 기존 씬·설정·기획 WIP가 있었으며 건드리지 않았다. 새 Unity 컴파일·EditMode·Play Mode·영상 디코딩/오디오 동기·실기 화면·성능 측정은 하지 않았다. 원본 영상·모델·애니메이션 제작을 본인 성과로 포함하지 않으며 미디어 파일은 복사하지 않았다. npm run verify 테스트 25개·Astro 33개 파일 진단 0개·96개 HTML 검사와 89개 경로 빌드가 통과했다. 브라우저에서 Home 고정 순서, 여섯 번째 기능과 공개 글 1편/분석 0편, 본문 표 2개·흐름도 1개, 390px 게임플레이 '시네마틱' 검색 1편과 페이지 가로 넘침 없음을 확인했다. 공개 글은 70편이다. 로그는 .verification/dcb-cinematic/에 보관한다. 배포는 이 변경의 main push 후 Actions와 공개 주소에서 별도로 확인한다.

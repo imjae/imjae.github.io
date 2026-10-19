@@ -34,4 +34,11 @@ export const dcbFeatures = [
     overviewSlug: 'dcb-fire-overview',
     articleSlugs: ['fire-vfx'],
   },
+  {
+    slug: 'cinematic', title: '시네마틱과 전투 전환', detail: '구간 진입 · 영상 재생 · 월드 상태 전환',
+    description: '구간에서 영상을 재생하고 플레이어·오브젝트·몬스터를 사건 이후의 상태로 연결하는 흐름을 다룹니다.',
+    topic: 'gameplay', number: '06', label: 'CINEMATIC FLOW',
+    overviewSlug: 'dcb-cinematic-overview',
+    articleSlugs: [],
+  },
 ];
