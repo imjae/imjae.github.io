@@ -41,4 +41,18 @@ export const dcbFeatures = [
     overviewSlug: 'dcb-cinematic-overview',
     articleSlugs: [],
   },
+  {
+    slug: 'jige-cargo-motion', title: '지게 짐의 출렁임', detail: '받침 가속도 · 피벗 사슬 · 끈 스키닝',
+    description: '지게틀과 짐이 서로 늦게 따라오는 운동, 적재 충격과 끈 변형을 설명하고 운반 규칙 분석을 연결합니다.',
+    topic: 'gameplay', number: '07', label: 'CARGO SECONDARY MOTION',
+    overviewSlug: 'jige-cargo-secondary-motion',
+    articleSlugs: ['jige-carry-burden'],
+  },
+  {
+    slug: 'rope-bridge', title: '밧줄 다리의 물리 흔들림', detail: '발 접지와 바람 · 충돌면 추종 · 표면 속도',
+    description: '하중·발걸음·바람에 반응하는 다리 변형과 플레이어가 바닥의 움직임을 따라가는 구조를 다룹니다.',
+    topic: 'gameplay', number: '08', label: 'ROPE BRIDGE SWAY',
+    overviewSlug: 'rope-bridge-physical-sway',
+    articleSlugs: [],
+  },
 ];

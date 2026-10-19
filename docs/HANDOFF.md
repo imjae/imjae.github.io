@@ -474,3 +474,15 @@ DCB HEAD 37fa37df2의 CinematicRegionFeature, CinematicOverlay, PlayerRegion/Dri
 게임을 멈춘 동안의 unscaled 페이드와 DSP/Unscaled 영상 시계, 입력 차단·버퍼 정리, RenderTexture 표시·해제, 영상 실패 시에도 결과 적용으로 진행하는 정책을 설명했다. 실제 복구는 오브젝트 교체 후·플레이어 재배치 전이므로 페이드가 끝날 때까지 입력을 잠근다고 쓰지 않는다. playOnce는 메모리 상태이고 세이브 연계가 없다. 입력은 Player/Game 활성만 기록하고 Global/UI의 개별 이전 상태를 모두 보존하지 않는다. OnDisable에 StopCoroutine이 없으며 GameObject 비활성화와 컴포넌트 enabled=false를 동일하게 취급할 수 없다는 한계를 Unity 6.3 공식 문서와 대조해 적었다. 이미 적용한 결과의 롤백·전체 결과 트랜잭션·수동 스킵을 구현했다고 설명하지 않는다.
 
 DCB에 기존 씬·설정·기획 WIP가 있었으며 건드리지 않았다. 새 Unity 컴파일·EditMode·Play Mode·영상 디코딩/오디오 동기·실기 화면·성능 측정은 하지 않았다. 원본 영상·모델·애니메이션 제작을 본인 성과로 포함하지 않으며 미디어 파일은 복사하지 않았다. npm run verify 테스트 25개·Astro 33개 파일 진단 0개·96개 HTML 검사와 89개 경로 빌드가 통과했다. 브라우저에서 Home 고정 순서, 여섯 번째 기능과 공개 글 1편/분석 0편, 본문 표 2개·흐름도 1개, 390px 게임플레이 '시네마틱' 검색 1편과 페이지 가로 넘침 없음을 확인했다. 공개 글은 70편이다. 로그는 .verification/dcb-cinematic/에 보관한다. 배포는 이 변경의 main push 후 Actions와 공개 주소에서 별도로 확인한다.
+
+## 2026-10-19 지게 짐의 출렁임과 밧줄 다리 글
+
+사용자가 운반 속도·스태미너보다 짐의 출렁임과 다리의 물리 흔들림 구현을 중심으로 요청했다. gameplay에 jige-cargo-secondary-motion과 rope-bridge-physical-sway 두 글을 초안으로 작성하고 코드·문구를 대조한 뒤 게시 대상으로 전환했다. 작업 기록 중심의 구조 노트이므로 대표 AuthorDate 기준으로 각각 2026-09-22(bd4b806c6), 2026-09-21(ce5cc0dd4)을 쓰고 dateBasis commit·updated 2026-10-19를 지정했다. DCB 시리즈 order 17·18이다. 기능 목록에 07 지게 짐의 출렁임과 08 밧줄 다리의 물리 흔들림을 추가했다. 지게 기능은 새 글을 먼저 두고 기존 jige-carry-burden을 분석으로 연결했다. 기존 운반 글에도 새 글 링크를 넣었다. 기존 URL·작성일·Home 고정 11편과 순서는 유지했다.
+
+DCB HEAD 37fa37df2에서 SecondaryMotionChain, JigeCarrierAttachment/Cargo, Player.Carry/CarryBundle, 피벗·끈 도구와 검사, Carrier_Package/Carrier_Bone1, Model_Wanderer/Wanderer를 읽기 전용으로 대조했다. Bottom·Middle 병렬/Top은 Middle 아래 구조, 틀 다음 짐 Tick, 스프링·부드러운 한계·적재율 결합, 실제 적재율과 애니메이터 강제 0.6의 차이, 적재 충격과 바닥 지게의 시간 기반 복원을 설명했다. 끈 가중치는 초기 기획의 상자 거리 설명을 복사하지 않고 현재 삼각형 표면 거리 코드를 기준으로 썼다. 120Hz·8회 적분의 히치 시간 버림과 별도 틀 적분의 미검증 범위를 구분했다.
+
+다리는 RopeBridgeSway, PlayerController/IGroundCarrier, FootstepAudioPlayer, Bridge_00/05_Shrine, 편집·플레이 검증 도구와 9월 19~21일·10월 2일 이력을 대조했다. 하중·접지·바람 → 네 모드 → 정점/충돌면/표면 속도 연결, 공중 부양·횡이동·끝단 걸림의 원인과 수정 과정을 설명했다. 현재 저장값은 loadSag 0.5m·수직 1Hz·수직 제한 0.35m·걷기 충격 0.8×1.6이며, 이름 기준 판자 26개·난간 52개다. 과거 튜닝 문서와 커밋의 68·80개 검사 결과를 현재 실행 결과로 재사용하지 않는다. 하중 자동 지게 무게 연동·모든 몬스터 자동 등록·Rigidbody/Joint 구조 해석·잡의 완전 비동기 처리로 확대하지 않는다. 다리는 긴 프레임에 제한된 서브스텝으로 전체 시간을 나누므로 짐의 시간 버림과 다르다.
+
+DCB의 기존 씬·설정·기획 WIP는 변경하지 않았다. 새 Unity 컴파일·EditMode·Play Mode·Player·물리 재현·시각/음향 캡처·성능 측정을 실행하지 않았고 과거 원본 로그·영상도 이번에 재확인하지 않았다. 검사 소스·과거 기록·현재 설정을 구분했다. AI 공동 작성과 재사용 모델/애니메이션 범위를 적고 원본 소스·로그·미디어는 옮기지 않았다.
+
+npm run verify 테스트 25개·Astro 33개 파일 진단 0개·100개 HTML 검사·93개 경로 빌드를 통과했다. Home 고정 11편, 여덟 기능의 글 수 2·3·3·2·2·1·2·1, 새 글마다 표 2개·흐름도 1개·수식 오류 없음, 지게의 설명→운반 분석 순서와 다리 설명 1편/분석 0편을 확인했다. 390px 게임플레이 '출렁임' 검색은 새 짐 글과 이를 연결한 기존 운반 글 두 편을 반환하며, 두 새 본문·검색·다리 기능 목록에 가로 넘침이 없다. 공개 글은 72편이다. 로그는 .verification/dcb-secondary-motion/verify.log에 보관한다. main push 후 Actions와 공개 주소를 별도로 확인한다.
