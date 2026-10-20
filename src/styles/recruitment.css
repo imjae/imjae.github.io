@@ -114,8 +114,7 @@ main:focus { outline: none; }
 .rp-step-number { color: #6e8364; font: 10px var(--rp-mono); }
 .rp-workflow h3 { font-size: 16px; margin: 13px 0 10px; letter-spacing: -.4px; }
 .rp-workflow p { font-size: 12px; color: var(--rp-muted); line-height: 1.9; }
-.rp-decision { padding: 26px; border: 1px solid #c8d5c1; background: #edf2e8; }
-.rp-decision-heading { margin-bottom: 22px; }
+.rp-decision { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: 42px; padding: 30px; border: 1px solid #c8d5c1; background: #edf2e8; }
 .rp-decision-heading .rp-eyebrow { margin-bottom: 12px; }
 .rp-decision-heading h3 { font-size: 22px; margin-bottom: 14px; }
 .rp-decision-heading > p:last-child { font-size: 13px; color: var(--rp-muted); line-height: 1.9; }

@@ -171,7 +171,6 @@ export const aiUsageCase: {
   evidence: string;
   limitation: string;
   links: PortfolioLink[];
-  media?: PortfolioMedia;
 } = {
   title: '병렬 세션 지침과 통합 방식',
   context: '여러 AI 세션에 같은 작업 기준을 적용하도록 공통 지침을 구성하고, Git 워크트리로 구현·검증 공간을 분리했습니다.',

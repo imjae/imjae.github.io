@@ -104,13 +104,10 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
 
   <section id="ai" class="rp-section" aria-labelledby="ai-title" data-dcb-feature={aiFeature.slug}>
     <div class="rp-section-title"><div><p class="rp-kicker">02 / {aiFeature.label}</p><h2 id="ai-title">{aiFeature.title}</h2></div><p>공통 지침과 Git 워크트리로 작업을 나누고,<br class="rp-desktop-break" /> 검증 결과를 통합·인계한 방식을 소개합니다.</p></div>
-    <div class="rp-showcase rp-ai-showcase">
-    <PortfolioMedia media={aiUsageCase.media} slotId="ai" placeholderTitle="AI 활용 과정 상세 영상" label="AI USAGE VIDEO" />
     <article class="rp-decision" aria-labelledby="decision-title">
       <div class="rp-decision-heading"><p class="rp-eyebrow">활용 사례</p><h3 id="decision-title">{aiUsageCase.title}</h3><p>{aiUsageCase.context}</p></div>
       <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd>{aiUsageCase.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiUsageCase.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiUsageCase.limitation}</p><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
     </article>
-    </div>
     <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
     <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
   </section>
