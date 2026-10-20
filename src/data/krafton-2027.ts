@@ -32,7 +32,7 @@ export const profile = {
   name: 'imjae',
   headline: 'Unity와 C#으로 게임의 동작과 제작 도구를 만듭니다.',
   intro: 'DCB의 이동·전투·장비 조합을 중심으로, 데이터와 애니메이션을 연결한 구현 및 런타임·그래픽스 작업을 소개합니다.',
-  stack: ['Unity 6', 'C#', 'HDRP', 'Addressables'],
+  stack: ['Unity 6', 'C#', 'HDRP', 'Addressables', 'ShaderLab / HLSL'],
   contact: '',
   period: '',
   team: '',
