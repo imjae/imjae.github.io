@@ -5,8 +5,9 @@ import PortfolioMedia from '../../../components/recruitment/PortfolioMedia.astro
 import {
   profile, project, clientCases, graphicsCases, aiSteps, aiDecision,
   contributionRows, verificationRows, additionalLinks, aiLinks,
-  type PortfolioLink,
+  type PortfolioLink, type PortfolioCase as PortfolioCaseData,
 } from '../../../data/krafton-2027';
+import { dcbFeatures } from '../../../data/dcb-features.mjs';
 import { getArticles, articleUrl } from '../../../lib/articles';
 import { site } from '../../../data/site';
 import { readProjectVideoSettings } from '../../../lib/project-video.server.mjs';
@@ -24,10 +25,29 @@ function linkedArticles(links: PortfolioLink[], required = false) {
     return [{ href: articleUrl(article), title: article.data.title, label: link.label }];
   });
 }
-const clients = clientCases.map(item => ({ item, links: linkedArticles(item.links, true) }));
-const graphics = graphicsCases.map(item => ({ item, links: linkedArticles(item.links, true) }));
+function orderedCases(items: PortfolioCaseData[]) {
+  return items.map(item => {
+    const order = dcbFeatures.findIndex(feature => feature.slug === item.featureSlug);
+    if (order < 0) throw new Error(`지원용 포트폴리오의 기능 설정 누락: ${item.featureSlug}`);
+    return {
+      item: { ...item, number: dcbFeatures[order].number },
+      links: linkedArticles(item.links, true),
+      order,
+    };
+  }).sort((a, b) => a.order - b.order);
+}
+function articleFeatureOrder(slug: string) {
+  const order = dcbFeatures.findIndex(feature =>
+    feature.overviewSlug === slug || feature.articleSlugs.includes(slug));
+  return order < 0 ? dcbFeatures.length : order;
+}
+const aiFeature = dcbFeatures.find(feature => feature.slug === 'ai-collaboration');
+if (!aiFeature) throw new Error('지원용 포트폴리오의 AI 협업 기능 설정 누락');
+const clients = orderedCases(clientCases);
+const graphics = orderedCases(graphicsCases);
 const decisionLinks = linkedArticles(aiDecision.links, true);
-const extraArticles = linkedArticles(additionalLinks);
+const extraArticles = linkedArticles([...additionalLinks]
+  .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
 const savedVideo = await readProjectVideoSettings();
 const projectMedia = resolvePortfolioMedia(project.media);
@@ -44,7 +64,7 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
       <p class="rp-intro">{profile.intro}</p>
       <ul class="rp-stack" aria-label="주요 기술">{profile.stack.map(item => <li>{item}</li>)}</ul>
       <div class="rp-actions">
-        <a class="rp-button rp-button-primary" href="#client">핵심 구현 살펴보기 <span aria-hidden="true">↓</span></a>
+        <a class="rp-button rp-button-primary" href="#ai">AI 협업 사례 살펴보기 <span aria-hidden="true">↓</span></a>
         {videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
       </div>
     </div>
@@ -53,9 +73,10 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
       <p class="rp-selection-name" id="selected-work-title">DCB</p>
       <p class="rp-selection-sub">지게로 짐을 운반하는 액션 게임</p>
       <ol>
-        {clientCases.map(item => <li><a href={`#${item.id}`}><span>{item.number}</span><strong>{item.title}</strong><span aria-hidden="true">↘</span></a></li>)}
+        <li><a href="#ai"><span>{aiFeature.number}</span><strong>{aiFeature.title}</strong><span aria-hidden="true">↘</span></a></li>
+        {clients.map(({ item }) => <li><a href={`#${item.id}`}><span>{item.number}</span><strong>{item.title}</strong><span aria-hidden="true">↘</span></a></li>)}
       </ol>
-      <a class="rp-selection-foot" href="#graphics">런타임·그래픽스와 AI 협업 <span aria-hidden="true">↓</span></a>
+      <a class="rp-selection-foot" href="#graphics">런타임·그래픽스 살펴보기 <span aria-hidden="true">↓</span></a>
     </aside>
   </section>
 
@@ -73,24 +94,24 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
     </div>
   </section>
 
+  <section id="ai" class="rp-section" aria-labelledby="ai-title" data-dcb-feature={aiFeature.slug}>
+    <div class="rp-section-title"><div><p class="rp-kicker">02 / AI COLLABORATION</p><h2 id="ai-title">{aiFeature.title}</h2></div><p>AI와 작업을 나누고 구현·검증한 과정을<br class="rp-desktop-break" /> 요구 조건과 확인 범위에 맞춰 설명합니다.</p></div>
+    <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
+    <article class="rp-decision" aria-labelledby="decision-title">
+      <div class="rp-decision-heading"><p class="rp-eyebrow">협업 사례</p><h3 id="decision-title">{aiDecision.title}</h3><p>{aiDecision.context}</p></div>
+      <div><dl class="rp-case-facts"><div><dt>요구·진행</dt><dd>{aiDecision.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiDecision.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiDecision.limitation}</p><div class="rp-case-links">{decisionLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
+    </article>
+    <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
+  </section>
+
   <section id="client" class="rp-section" aria-labelledby="client-title">
-    <div class="rp-section-title"><div><p class="rp-kicker">02 / CLIENT SYSTEMS</p><h2 id="client-title">게임플레이를 만드는 세 가지 구현</h2></div><p>캐릭터의 접촉, 적의 판단, 장비 데이터가<br class="rp-desktop-break" /> 실제 동작으로 이어지는 구조를 다룹니다.</p></div>
+    <div class="rp-section-title"><div><p class="rp-kicker">03 / CLIENT SYSTEMS</p><h2 id="client-title">게임플레이를 만드는 세 가지 구현</h2></div><p>캐릭터의 접촉, 적의 판단, 장비 데이터가<br class="rp-desktop-break" /> 실제 동작으로 이어지는 구조를 다룹니다.</p></div>
     <div class="rp-client-cases">{clients.map(({ item, links }) => <PortfolioCase item={item} links={links} />)}</div>
   </section>
 
   <section id="graphics" class="rp-section" aria-labelledby="graphics-title">
-    <div class="rp-section-title"><div><p class="rp-kicker">03 / RUNTIME & GRAPHICS</p><h2 id="graphics-title">재생 비용과 표현을 다룬 작업</h2></div><p>Unity 런타임에서의 데이터 읽기, 버퍼 관리,<br class="rp-desktop-break" /> 메시 갱신과 이펙트 저작 경험입니다.</p></div>
+    <div class="rp-section-title"><div><p class="rp-kicker">04 / RUNTIME & GRAPHICS</p><h2 id="graphics-title">재생 비용과 표현을 다룬 작업</h2></div><p>Unity 런타임에서의 데이터 읽기, 버퍼 관리,<br class="rp-desktop-break" /> 메시 갱신과 이펙트 저작 경험입니다.</p></div>
     <div class="rp-graphics-grid">{graphics.map(({ item, links }) => <PortfolioCase item={item} links={links} compact />)}</div>
-  </section>
-
-  <section id="ai" class="rp-section" aria-labelledby="ai-title">
-    <div class="rp-section-title"><div><p class="rp-kicker">04 / WORKING WITH AI</p><h2 id="ai-title">작업을 나누고, 결과를 판단하는 방식</h2></div><p>AI의 조사·구현·검사 결과를<br class="rp-desktop-break" /> 요구 조건과 확인 범위에 맞춰 검토합니다.</p></div>
-    <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
-    <article class="rp-decision" aria-labelledby="decision-title">
-      <div class="rp-decision-heading"><p class="rp-eyebrow">판단 사례</p><h3 id="decision-title">{aiDecision.title}</h3><p>{aiDecision.context}</p></div>
-      <div><dl class="rp-case-facts"><div><dt>판단·요청</dt><dd>{aiDecision.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiDecision.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiDecision.limitation}</p><div class="rp-case-links">{decisionLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
-    </article>
-    <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
   </section>
 
   <section id="scope" class="rp-section" aria-labelledby="scope-title">
@@ -103,7 +124,7 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
 
   <section id="more" class="rp-section rp-more" aria-labelledby="more-title">
     <div><p class="rp-kicker">06 / FURTHER READING</p><h2 id="more-title">다른 구현도 살펴보기</h2><p>물리 반응, 플레이어 제어와 도구에 관한<br class="rp-desktop-break" /> 추가 기록을 연결했습니다.</p></div>
-    <ul class="rp-more-links">{extraArticles.map(link => <li><a href={link.href}><span>{link.label}</span><span aria-hidden="true">↗</span></a></li>)}</ul>
+    <ul class="rp-more-links">{extraArticles.map(link => <li><a href={link.href} data-portfolio-extra={link.href}><span>{link.label}</span><span aria-hidden="true">↗</span></a></li>)}</ul>
   </section>
   <section class="rp-contact" aria-labelledby="contact-title"><div><p class="rp-kicker">CONTACT & LINKS</p><h2 id="contact-title">imjae</h2></div><div><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗<span class="rp-sr-only"> (새 탭)</span></a><a href="/">개발 블로그 ↗</a>{profile.contact && <a href={`mailto:${profile.contact}`}>{profile.contact} ↗</a>}</div></section>
 </RecruitmentLayout>

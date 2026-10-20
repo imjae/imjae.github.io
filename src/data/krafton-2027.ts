@@ -13,7 +13,7 @@ export interface PortfolioLink {
 
 export interface PortfolioCase {
   id: string;
-  number: string;
+  featureSlug: string;
   title: string;
   category: string;
   summary: string;
@@ -55,7 +55,7 @@ export const project: {
 export const clientCases: PortfolioCase[] = [
   {
     id: 'traversal',
-    number: '01',
+    featureSlug: 'ik-traversal',
     title: '지형과 손발 접촉을 잇는 IK 트레버설',
     category: '캐릭터 제어 · 애니메이션',
     summary: 'StepUp·Climb·SideStep의 진입부터 손발 지지와 일반 보행 복귀까지 연결했습니다.',
@@ -72,7 +72,7 @@ export const clientCases: PortfolioCase[] = [
   },
   {
     id: 'combat',
-    number: '02',
+    featureSlug: 'monster-combat',
     title: '개별 패턴과 그룹 전투의 권한 분리',
     category: '상태·전이 · 공유 자원',
     summary: 'Samurai의 접근·공격·블러프를 구성하고, 패턴의 원본을 Unity Behavior 그래프에서 C# FSM·DSL로 옮겼습니다.',
@@ -90,7 +90,7 @@ export const clientCases: PortfolioCase[] = [
   },
   {
     id: 'equipment',
-    number: '03',
+    featureSlug: 'modular-equipment',
     title: '하나의 파츠 트리로 연결한 장비 조합',
     category: '데이터 · UI · 오브젝트 수명',
     summary: '같은 조합 데이터를 인벤토리 이미지, 3D 장착·드랍, 작업대 프리뷰와 저장·복원에 사용합니다.',
@@ -111,7 +111,7 @@ export const clientCases: PortfolioCase[] = [
 export const graphicsCases: PortfolioCase[] = [
   {
     id: 'water',
-    number: '04',
+    featureSlug: 'water-playback',
     title: '물 캐시의 읽기·변환·메시 업로드',
     category: '비동기 I/O · 버퍼 · Unity 렌더링 API',
     summary: '오프라인 유체 계산 결과를 직접 업로드용 캐시로 바꾸고, 선행 읽기와 Unity 메시 갱신의 경계를 나눴습니다.',
@@ -128,7 +128,7 @@ export const graphicsCases: PortfolioCase[] = [
   },
   {
     id: 'fire',
-    number: '05',
+    featureSlug: 'fire-vfx',
     title: '화염 레이어와 화면 크기별 표현 제어',
     category: '셰이더 · VFX · 저작 도구',
     summary: '볼륨 화염·불혀·연기·재를 함께 제어하고, 애니메이션 효과는 발생 프레임과 부착점에 연결합니다.',

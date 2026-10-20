@@ -2,13 +2,13 @@
 import type { PortfolioCase } from '../../data/krafton-2027';
 import PortfolioMedia from './PortfolioMedia.astro';
 interface Props {
-  item: PortfolioCase;
+  item: PortfolioCase & { number: string };
   links: { href: string; title: string; label: string }[];
   compact?: boolean;
 }
 const { item, links, compact = false } = Astro.props;
 ---
-<article id={item.id} class:list={['rp-case', { 'rp-case-compact': compact }]} aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id}>
+<article id={item.id} class:list={['rp-case', { 'rp-case-compact': compact }]} aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id} data-dcb-feature={item.featureSlug}>
   <header class="rp-case-heading">
     <span class="rp-case-number" aria-hidden="true">{item.number}</span>
     <div>

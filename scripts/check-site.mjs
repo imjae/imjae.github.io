@@ -71,6 +71,19 @@ const projectVideo = await readProjectVideoSettings();
 const projectPage = await readFile(join(root,'portfolio/dcb/index.html'),'utf8');
 const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^>]*>/g)];
 if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
+const recruitmentPage = await readFile(join(root,'portfolio/krafton-2027/index.html'),'utf8');
+const primaryFeatures = new Set(['ai-collaboration', 'monster-combat', 'ik-traversal', 'modular-equipment', 'water-playback', 'fire-vfx']);
+const recruitmentFeatures = [...recruitmentPage.matchAll(/\bdata-dcb-feature="([^"]+)"/g)].map(match => match[1]);
+const expectedRecruitmentFeatures = dcbFeatures.filter(feature => primaryFeatures.has(feature.slug)).map(feature => feature.slug);
+if (JSON.stringify(recruitmentFeatures) !== JSON.stringify(expectedRecruitmentFeatures)) failures.push('지원용 포트폴리오의 AI 협업·대표 사례 순서가 DCB 기능 설정과 다름');
+const recruitmentNav = recruitmentPage.match(/<nav\b[^>]*class="rp-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
+const recruitmentAnchors = [...recruitmentNav.matchAll(/\bhref="([^"]+)"/g)].map(match => match[1]);
+if (JSON.stringify(recruitmentAnchors) !== JSON.stringify(['#project', '#ai', '#client', '#graphics', '#scope'])) failures.push('지원용 포트폴리오 메뉴에서 AI 협업이 대표 구현보다 뒤에 있음');
+const extraFeatureOrder = [...recruitmentPage.matchAll(/\bdata-portfolio-extra="\/writing\/([^/]+)\/"/g)].map(match => {
+  const index = dcbFeatures.findIndex(feature => feature.overviewSlug === match[1] || feature.articleSlugs.includes(match[1]));
+  return index < 0 ? dcbFeatures.length : index;
+});
+if (extraFeatureOrder.some((order, index) => index > 0 && order < extraFeatureOrder[index - 1])) failures.push('지원용 포트폴리오의 추가 구현 글 순서가 DCB 기능 설정과 다름');
 for (const feature of dcbFeatures) {
   const route = featureUrl(feature);
   const linked = featureLinks.find(match => match[1] === feature.slug)?.[0];
