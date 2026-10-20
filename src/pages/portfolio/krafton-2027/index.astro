@@ -11,7 +11,7 @@ import { dcbFeatures } from '../../../data/dcb-features.mjs';
 import { getArticles, articleUrl } from '../../../lib/articles';
 import { site } from '../../../data/site';
 import { readProjectVideoSettings } from '../../../lib/project-video.server.mjs';
-import { resolvePortfolioMedia } from '../../../lib/recruitment-media.mjs';
+import { resolvePortfolioMedia, selectProjectPortfolioMedia } from '../../../lib/recruitment-media.mjs';
 
 const articles = await getArticles(false);
 const bySlug = new Map(articles.map(article => [article.data.slug, article]));
@@ -50,14 +50,18 @@ const extraArticles = linkedArticles([...additionalLinks]
   .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
 const savedVideo = await readProjectVideoSettings();
-const projectMedia = resolvePortfolioMedia(project.media);
-const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
+const heroMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
+  title: `${project.title} 게임 영상`, caption: project.subtitle,
+});
+const projectMedia = resolvePortfolioMedia(heroMedia);
+const videoUrl = projectMedia?.url;
+const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
 ---
 <RecruitmentLayout
   title="imjae — 게임 프로그래밍 포트폴리오"
   description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 활용 경험을 소개합니다."
 >
-  <section class="rp-hero" aria-labelledby="portfolio-title">
+  <section class:list={['rp-hero', { 'rp-hero-has-video': inlineVideo }]} aria-labelledby="portfolio-title">
     <div class="rp-hero-copy">
       <p class="rp-eyebrow">KRAFTON INTERNSHIP 2027 <span>/</span> GAME DEVELOPMENT – PROGRAMMING</p>
       <h1 id="portfolio-title">{profile.name}<span>{profile.headline}</span></h1>
@@ -65,10 +69,14 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
       <ul class="rp-stack" aria-label="주요 기술">{profile.stack.map(item => <li>{item}</li>)}</ul>
       <div class="rp-actions">
         <a class="rp-button rp-button-primary" href="#ai">AI 활용 살펴보기 <span aria-hidden="true">↓</span></a>
-        {videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
+        {inlineVideo
+          ? <a class="rp-button" href="#project-video">게임 영상 보기 <span aria-hidden="true">↓</span></a>
+          : videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
       </div>
     </div>
-    <aside class="rp-selection" aria-labelledby="selected-work-title">
+    <div class="rp-hero-work">
+      {inlineVideo && <div class="rp-hero-video" id="project-video"><PortfolioMedia media={heroMedia} loading="eager" /></div>}
+    <aside class:list={['rp-selection', { 'rp-selection-with-video': inlineVideo }]} aria-labelledby="selected-work-title">
       <div class="rp-selection-top"><span>SELECTED WORK</span><span>UNITY / C#</span></div>
       <p class="rp-selection-name" id="selected-work-title">DCB</p>
       <p class="rp-selection-sub">지게로 짐을 운반하는 액션 게임</p>
@@ -78,13 +86,13 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
       </ol>
       <a class="rp-selection-foot" href="#graphics">런타임·그래픽스 살펴보기 <span aria-hidden="true">↓</span></a>
     </aside>
+    </div>
   </section>
 
   <section id="project" class="rp-project rp-section" aria-labelledby="project-title">
     <div class="rp-section-label"><span class="rp-kicker">01 / PROJECT</span><p>개발 중인 게임</p></div>
     <div class="rp-project-content">
       <div class="rp-project-intro"><h2 id="project-title">{project.title}</h2><p class="rp-project-subtitle">{project.subtitle}</p><p>{project.description}</p></div>
-      <PortfolioMedia media={project.media} />
       <dl class="rp-project-facts">
         <div><dt>담당 범위</dt><dd>{project.role}</dd></div>
         {profile.period && <div><dt>개발 기간</dt><dd>{profile.period}</dd></div>}

@@ -1,15 +1,19 @@
 ---
 import type { PortfolioMedia } from '../../data/krafton-2027';
 import { resolvePortfolioMedia } from '../../lib/recruitment-media.mjs';
-interface Props { media?: PortfolioMedia; }
+interface Props { media?: PortfolioMedia; loading?: 'eager' | 'lazy'; }
 const resolved = resolvePortfolioMedia(Astro.props.media);
+const { loading = 'lazy' } = Astro.props;
 ---
 {resolved && <figure class="rp-media">
   {resolved.embedUrl && <div class="rp-video-frame"><iframe
-    src={resolved.embedUrl} title={resolved.title} loading="lazy"
+    src={resolved.embedUrl} title={resolved.title} loading={loading}
     allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen
     referrerpolicy="strict-origin-when-cross-origin"
   ></iframe></div>}
+  {resolved.videoSrc && <div class="rp-video-frame"><video
+    src={resolved.videoSrc} aria-label={resolved.title} controls playsinline preload="metadata"
+  ></video></div>}
   <figcaption>
     <strong>{resolved.title}</strong><span>{resolved.caption}</span>
     <a href={resolved.url} target="_blank" rel="noopener noreferrer">영상 원본 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>

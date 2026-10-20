@@ -1,10 +1,42 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { resolvePortfolioMedia } from '../src/lib/recruitment-media.mjs';
+import { resolvePortfolioMedia, selectProjectPortfolioMedia } from '../src/lib/recruitment-media.mjs';
 
 const id = 'aB_12-cD345';
 const video = (url, fields = {}) => ({ url, title: '게임 시연', caption: '장비 조합과 전투 장면', ...fields });
 const validUrl = `https://www.youtube.com/watch?v=${id}`;
+
+test('등록한 주소를 프로젝트 소개 정보와 함께 첫 화면의 재생 가능한 미디어로 연결한다', () => {
+  const defaults = { title: 'DCB 게임 영상', caption: '지게로 짐을 운반하는 액션 게임' };
+  const selected = selectProjectPortfolioMedia({ videoUrl: validUrl }, undefined, defaults);
+  assert.deepEqual(selected, { ...defaults, url: validUrl });
+  assert.equal(resolvePortfolioMedia(selected).embedUrl, `https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1`);
+});
+
+test('등록 설정이 없을 때만 기존 미디어를 사용하고 주소 변경·제거는 이전 미디어보다 우선한다', () => {
+  const defaults = { title: '게임 영상', caption: '프로젝트 소개' };
+  const oldMedia = video(validUrl, { startSeconds: 12, endSeconds: 30 });
+  assert.equal(selectProjectPortfolioMedia(undefined, oldMedia, defaults), oldMedia);
+  assert.deepEqual(selectProjectPortfolioMedia({ videoUrl: validUrl }, oldMedia, defaults), oldMedia);
+  const nextUrl = 'https://youtu.be/12345678901';
+  const selected = selectProjectPortfolioMedia({ videoUrl: nextUrl }, oldMedia, defaults);
+  assert.deepEqual(selected, { ...defaults, url: nextUrl });
+  assert.equal(new URL(resolvePortfolioMedia(selected).embedUrl).searchParams.get('start'), null);
+  assert.equal(selectProjectPortfolioMedia({ videoUrl: '' }, oldMedia, defaults), undefined);
+});
+
+test('직접 제공하는 MP4·WebM 파일은 네이티브 플레이어에 연결하고 다른 주소는 원본 링크로 둔다', () => {
+  for (const path of ['demo.mp4', 'demo.WEBM?version=2']) {
+    const url = `https://example.com/${path}`;
+    const resolved = resolvePortfolioMedia(video(url));
+    assert.equal(resolved.videoSrc, url);
+    assert.equal(resolved.embedUrl, undefined);
+  }
+  for (const url of ['https://example.com/demo.mp4.html', 'https://example.com/watch?file=demo.mp4']) {
+    assert.equal(resolvePortfolioMedia(video(url)).videoSrc, undefined);
+  }
+  assert.equal(resolvePortfolioMedia(video('https://localhost/demo.mp4')), undefined);
+});
 
 test('주소·제목·캡션이 모두 준비된 영상만 반환하고 공백을 정리한다', () => {
   for (const value of [undefined, null, {}, video(''), video('  '), video(validUrl, { title: ' ' }), video(validUrl, { caption: null }), video(validUrl, { title: 12 }), video(12)]) {

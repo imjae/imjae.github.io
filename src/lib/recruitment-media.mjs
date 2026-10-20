@@ -38,8 +38,20 @@ function readYoutubeId(url) {
 }
 
 /**
+ * @param {{ videoUrl: string } | undefined} savedVideo
+ * @param {{ url: string, title: string, caption: string, startSeconds?: number, endSeconds?: number } | undefined} media
+ * @param {{ title: string, caption: string }} defaults
+ */
+export function selectProjectPortfolioMedia(savedVideo, media, defaults) {
+  if (!savedVideo) return media;
+  if (!savedVideo.videoUrl) return undefined;
+  const details = media?.url.trim() === savedVideo.videoUrl ? media : defaults;
+  return { ...details, url: savedVideo.videoUrl };
+}
+
+/**
  * @param {{ url?: unknown, title?: unknown, caption?: unknown, startSeconds?: unknown, endSeconds?: unknown } | null | undefined} media
- * @returns {{ url: string, title: string, caption: string, embedUrl?: string } | undefined}
+ * @returns {{ url: string, title: string, caption: string, embedUrl?: string, videoSrc?: string } | undefined}
  */
 export function resolvePortfolioMedia(media) {
   if (!media || typeof media.url !== 'string' || typeof media.title !== 'string' || typeof media.caption !== 'string') return undefined;
@@ -55,7 +67,7 @@ export function resolvePortfolioMedia(media) {
 
   const result = { url: url.href, title, caption };
   const isYoutube = youtubeHosts.has(url.hostname) || privateEmbedHosts.has(url.hostname) || url.hostname === 'youtu.be';
-  if (!isYoutube) return result;
+  if (!isYoutube) return /\.(?:mp4|webm)$/i.test(url.pathname) ? { ...result, videoSrc: url.href } : result;
   const id = readYoutubeId(url);
   if (!id || url.port) return undefined;
 
