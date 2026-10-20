@@ -12,7 +12,7 @@ const { item, links } = Astro.props;
     <span class="rp-case-number" aria-hidden="true">{item.number}</span>
     <div>
       <p class="rp-eyebrow">{item.category}</p>
-      <h3 id={`${item.id}-title`}>{item.title}</h3>
+      <h4 class="rp-case-title" id={`${item.id}-title`}>{item.title}</h4>
       <p class="rp-case-summary">{item.summary}</p>
       <ul class="rp-tags" aria-label="사용 기술">{item.tags.map(tag => <li>{tag}</li>)}</ul>
     </div>
