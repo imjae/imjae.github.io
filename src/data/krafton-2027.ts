@@ -38,7 +38,7 @@ export const profile = {
   team: '',
 };
 
-// 승인된 영상 URL·캡션을 확보하면 media를 추가합니다.
+// 전체 플레이 영상은 등록 화면의 주소를 사용합니다. 기능별 상세 영상은 각 사례의 media에 따로 연결합니다.
 export const project: {
   title: string;
   subtitle: string;
@@ -171,6 +171,7 @@ export const aiUsageCase: {
   evidence: string;
   limitation: string;
   links: PortfolioLink[];
+  media?: PortfolioMedia;
 } = {
   title: '병렬 세션 지침과 통합 방식',
   context: '여러 AI 세션에 같은 작업 기준을 적용하도록 공통 지침을 구성하고, Git 워크트리로 구현·검증 공간을 분리했습니다.',

@@ -50,10 +50,10 @@ const extraArticles = linkedArticles([...additionalLinks]
   .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
 const savedVideo = await readProjectVideoSettings();
-const heroMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
-  title: `${project.title} 게임 영상`, caption: project.subtitle,
+const overviewMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
+  title: `${project.title} 전체 플레이 영상`, caption: project.subtitle,
 });
-const projectMedia = resolvePortfolioMedia(heroMedia);
+const projectMedia = resolvePortfolioMedia(overviewMedia);
 const videoUrl = projectMedia?.url;
 const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
 ---
@@ -61,7 +61,7 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
   title="imjae — 게임 프로그래밍 포트폴리오"
   description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 활용 경험을 소개합니다."
 >
-  <section class:list={['rp-hero', { 'rp-hero-has-video': inlineVideo }]} aria-labelledby="portfolio-title">
+  <section class="rp-hero" aria-labelledby="portfolio-title">
     <div class="rp-hero-copy">
       <p class="rp-eyebrow">KRAFTON INTERNSHIP 2027 <span>/</span> GAME DEVELOPMENT – PROGRAMMING</p>
       <h1 id="portfolio-title">{profile.name}<span>{profile.headline}</span></h1>
@@ -70,13 +70,11 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
       <div class="rp-actions">
         <a class="rp-button rp-button-primary" href="#ai">AI 활용 살펴보기 <span aria-hidden="true">↓</span></a>
         {inlineVideo
-          ? <a class="rp-button" href="#project-video">게임 영상 보기 <span aria-hidden="true">↓</span></a>
+          ? <a class="rp-button" href="#project-video">전체 플레이 영상 보기 <span aria-hidden="true">↓</span></a>
           : videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
       </div>
     </div>
-    <div class="rp-hero-work">
-      {inlineVideo && <div class="rp-hero-video" id="project-video"><PortfolioMedia media={heroMedia} loading="eager" /></div>}
-    <aside class:list={['rp-selection', { 'rp-selection-with-video': inlineVideo }]} aria-labelledby="selected-work-title">
+    <aside class="rp-selection" aria-labelledby="selected-work-title">
       <div class="rp-selection-top"><span>SELECTED WORK</span><span>UNITY / C#</span></div>
       <p class="rp-selection-name" id="selected-work-title">DCB</p>
       <p class="rp-selection-sub">지게로 짐을 운반하는 액션 게임</p>
@@ -86,13 +84,14 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
       </ol>
       <a class="rp-selection-foot" href="#graphics">런타임·그래픽스 살펴보기 <span aria-hidden="true">↓</span></a>
     </aside>
-    </div>
   </section>
 
   <section id="project" class="rp-project rp-section" aria-labelledby="project-title">
-    <div class="rp-section-label"><span class="rp-kicker">01 / PROJECT</span><p>개발 중인 게임</p></div>
+    <div class="rp-section-title"><div><p class="rp-kicker">01 / PROJECT</p><h2 id="project-title">{project.title}</h2></div><p>{project.subtitle}</p></div>
+    <div class="rp-showcase rp-project-showcase">
+      <div id="project-video"><PortfolioMedia media={overviewMedia} slotId="project" placeholderTitle="DCB 전체 플레이 영상" label="GAMEPLAY OVERVIEW" loading="eager" /></div>
     <div class="rp-project-content">
-      <div class="rp-project-intro"><h2 id="project-title">{project.title}</h2><p class="rp-project-subtitle">{project.subtitle}</p><p>{project.description}</p></div>
+      <p class="rp-project-description">{project.description}</p>
       <dl class="rp-project-facts">
         <div><dt>담당 범위</dt><dd>{project.role}</dd></div>
         {profile.period && <div><dt>개발 기간</dt><dd>{profile.period}</dd></div>}
@@ -100,15 +99,19 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
       </dl>
       <div class="rp-project-links"><a class="rp-inline-link" href="/portfolio/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a><a class="rp-inline-link" href="#scope">기여와 확인 범위 <span aria-hidden="true">↓</span></a></div>
     </div>
+    </div>
   </section>
 
   <section id="ai" class="rp-section" aria-labelledby="ai-title" data-dcb-feature={aiFeature.slug}>
     <div class="rp-section-title"><div><p class="rp-kicker">02 / {aiFeature.label}</p><h2 id="ai-title">{aiFeature.title}</h2></div><p>공통 지침과 Git 워크트리로 작업을 나누고,<br class="rp-desktop-break" /> 검증 결과를 통합·인계한 방식을 소개합니다.</p></div>
-    <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
+    <div class="rp-showcase rp-ai-showcase">
+    <PortfolioMedia media={aiUsageCase.media} slotId="ai" placeholderTitle="AI 활용 과정 상세 영상" label="AI USAGE VIDEO" />
     <article class="rp-decision" aria-labelledby="decision-title">
       <div class="rp-decision-heading"><p class="rp-eyebrow">활용 사례</p><h3 id="decision-title">{aiUsageCase.title}</h3><p>{aiUsageCase.context}</p></div>
       <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd>{aiUsageCase.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiUsageCase.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiUsageCase.limitation}</p><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
     </article>
+    </div>
+    <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
     <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
   </section>
 
@@ -119,7 +122,7 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
 
   <section id="graphics" class="rp-section" aria-labelledby="graphics-title">
     <div class="rp-section-title"><div><p class="rp-kicker">04 / RUNTIME & GRAPHICS</p><h2 id="graphics-title">재생 비용과 표현을 다룬 작업</h2></div><p>Unity 런타임에서의 데이터 읽기, 버퍼 관리,<br class="rp-desktop-break" /> 메시 갱신과 이펙트 저작 경험입니다.</p></div>
-    <div class="rp-graphics-grid">{graphics.map(({ item, links }) => <PortfolioCase item={item} links={links} compact />)}</div>
+    <div class="rp-graphics-grid">{graphics.map(({ item, links }) => <PortfolioCase item={item} links={links} />)}</div>
   </section>
 
   <section id="scope" class="rp-section" aria-labelledby="scope-title">

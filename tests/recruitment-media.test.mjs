@@ -6,7 +6,7 @@ const id = 'aB_12-cD345';
 const video = (url, fields = {}) => ({ url, title: '게임 시연', caption: '장비 조합과 전투 장면', ...fields });
 const validUrl = `https://www.youtube.com/watch?v=${id}`;
 
-test('등록한 주소를 프로젝트 소개 정보와 함께 첫 화면의 재생 가능한 미디어로 연결한다', () => {
+test('등록한 주소를 프로젝트 소개 정보와 함께 전체 플레이 영상에 연결한다', () => {
   const defaults = { title: 'DCB 게임 영상', caption: '지게로 짐을 운반하는 액션 게임' };
   const selected = selectProjectPortfolioMedia({ videoUrl: validUrl }, undefined, defaults);
   assert.deepEqual(selected, { ...defaults, url: validUrl });

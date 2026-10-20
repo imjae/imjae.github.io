@@ -4,11 +4,10 @@ import PortfolioMedia from './PortfolioMedia.astro';
 interface Props {
   item: PortfolioCase & { number: string };
   links: { href: string; title: string; label: string }[];
-  compact?: boolean;
 }
-const { item, links, compact = false } = Astro.props;
+const { item, links } = Astro.props;
 ---
-<article id={item.id} class:list={['rp-case', { 'rp-case-compact': compact }]} aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id} data-dcb-feature={item.featureSlug}>
+<article id={item.id} class="rp-case" aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id} data-dcb-feature={item.featureSlug}>
   <header class="rp-case-heading">
     <span class="rp-case-number" aria-hidden="true">{item.number}</span>
     <div>
@@ -18,8 +17,9 @@ const { item, links, compact = false } = Astro.props;
       <ul class="rp-tags" aria-label="사용 기술">{item.tags.map(tag => <li>{tag}</li>)}</ul>
     </div>
   </header>
-  <div class="rp-case-body">
-    <PortfolioMedia media={item.media} />
+  <div class="rp-showcase rp-case-content">
+    <PortfolioMedia media={item.media} slotId={item.id} placeholderTitle={`${item.title} 상세 영상`} />
+    <div class="rp-case-body">
     <dl class="rp-case-facts">
       <div><dt>문제</dt><dd>{item.problem}</dd></div>
       <div><dt>선택</dt><dd>{item.approach}</dd></div>
@@ -29,6 +29,7 @@ const { item, links, compact = false } = Astro.props;
     <p class="rp-limit"><span>남은 확인</span>{item.limitation}</p>
     <div class="rp-case-links" aria-label={`${item.title} 관련 글`}>
       {links.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}
+    </div>
     </div>
   </div>
 </article>
