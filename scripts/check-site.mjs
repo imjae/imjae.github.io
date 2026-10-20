@@ -4,7 +4,8 @@ import { markdownFiles } from './new-post.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
 import { selectPinnedArticles, applyPinSettings } from '../src/lib/pinned-articles.mjs';
 import { readPinSettings } from '../src/lib/pin-settings.server.mjs';
-import { readProjectVideoSettings } from '../src/lib/project-video.server.mjs';
+import { readProjectVideoSettingsBySlot } from '../src/lib/project-video.server.mjs';
+import { projectVideoSlots } from '../src/lib/project-video.mjs';
 import { dcbFeatures } from '../src/data/dcb-features.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
@@ -67,11 +68,29 @@ for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philos
   if (!(await exists(join(root,path)))) failures.push(`예전 글 주소의 실제 HTML 누락: ${path}`);
 }
 const editor = await readFile(join(root,'editor','index.html'),'utf8');
-const projectVideo = await readProjectVideoSettings();
+const videoSettings = await readProjectVideoSettingsBySlot();
+const projectVideo = videoSettings.project;
 const projectPage = await readFile(join(root,'portfolio/dcb/index.html'),'utf8');
 const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^>]*>/g)];
 if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
 const recruitmentPage = await readFile(join(root,'portfolio/krafton-2027/index.html'),'utf8');
+const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
+if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
+for (const { id } of projectVideoSlots) {
+  const figure = recruitmentPage.match(new RegExp(`<figure\\b[^>]*data-video-slot="${id}"[^>]*>[\\s\\S]*?</figure>`))?.[0];
+  if (!figure) { failures.push(`포트폴리오 영상 칸 누락: ${id}`); continue; }
+  const saved = videoSettings[id];
+  if (!saved) continue;
+  const field = editor.match(new RegExp(`<fieldset\\b[^>]*data-video-editor="${id}"[^>]*>[\\s\\S]*?</fieldset>`))?.[0] ?? '';
+  const inputValue = field.match(/<input\b[^>]*\bvalue="([^"]*)"/)?.[1].replaceAll('&amp;', '&') ?? '';
+  if (inputValue !== saved.videoUrl) failures.push(`영상 수정 모드의 게시된 주소가 다름: ${id}`);
+  if (!saved.videoUrl) {
+    if (/<(?:img|iframe|video)\b/.test(figure)) failures.push(`제거한 영상이 다시 표시됨: ${id}`);
+  } else {
+    const originalUrl = figure.match(/<a\b[^>]*\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
+    if (originalUrl !== saved.videoUrl) failures.push(`등록한 주소가 다른 영상 칸에 연결됨: ${id}`);
+  }
+}
 const primaryFeatures = new Set(['ai-collaboration', 'monster-combat', 'ik-traversal', 'modular-equipment', 'water-playback', 'fire-vfx']);
 const recruitmentFeatures = [...recruitmentPage.matchAll(/\bdata-dcb-feature="([^"]+)"/g)].map(match => match[1]);
 const expectedRecruitmentFeatures = dcbFeatures.filter(feature => primaryFeatures.has(feature.slug)).map(feature => feature.slug);

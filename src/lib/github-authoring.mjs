@@ -38,11 +38,11 @@ export function preparePinSettings(pins, { now = new Date(), id = crypto.randomU
   return { path, content, url: url.href };
 }
 
-export function prepareProjectVideoSettings(videoUrl, { now = new Date(), id = crypto.randomUUID() } = {}) {
+export function prepareProjectVideoSettings(videoUrl, { now = new Date(), id = crypto.randomUUID(), slot = 'project' } = {}) {
   if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('영상 설정의 저장 식별자를 확인해 주세요.');
-  const data = validateProjectVideoSettings({ version: 1, project: 'dcb', createdAt: now.toISOString(), videoUrl });
+  const data = validateProjectVideoSettings({ version: 1, project: 'dcb', createdAt: now.toISOString(), videoUrl, slot });
   const content = `${JSON.stringify(data, null, 2)}\n`;
-  const path = `content/project-videos/${data.createdAt.replaceAll(':', '-').replace('.', '-')}-${id}.json`;
+  const path = `content/project-videos/${data.createdAt.replaceAll(':', '-').replace('.', '-')}${data.slot ? `-${data.slot}` : ''}-${id}.json`;
   const url = new URL(`${repository}/new/${branch}`);
   url.searchParams.set('filename', path);
   url.searchParams.set('value', content);

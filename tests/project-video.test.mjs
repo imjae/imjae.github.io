@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeVideoUrl, validateProjectVideoSettings, selectProjectVideoSettings } from '../src/lib/project-video.mjs';
+import { projectVideoSlots, normalizeVideoUrl, validateProjectVideoSettings, selectProjectVideoSettings } from '../src/lib/project-video.mjs';
 import { prepareProjectVideoSettings } from '../src/lib/github-authoring.mjs';
 
 const now = new Date('2026-10-18T06:30:00.000Z');
@@ -30,6 +30,26 @@ test('저장소 GIF 경로를 정리하며 다른 상대 경로와 외부 호스
   }
 });
 
+test('기능 영상의 변경·제거는 전체 플레이와 다른 기능의 최신 설정을 바꾸지 않는다', () => {
+  const project = record('2026-10-17T00:00:00.000Z', 'https://example.com/overview.mp4');
+  const combat = { ...record('2026-10-18T00:00:00.000Z', '/assets/combat.gif'), slot: 'combat' };
+  const water = { ...record('2026-10-19T00:00:00.000Z', 'https://example.com/water.webm'), slot: 'water' };
+  const removedCombat = { ...record('2026-10-20T00:00:00.000Z', ''), slot: 'combat' };
+  const settings = [water, combat, removedCombat, project];
+  assert.deepEqual(selectProjectVideoSettings(settings), project);
+  assert.deepEqual(selectProjectVideoSettings(settings, 'combat'), removedCombat);
+  assert.deepEqual(selectProjectVideoSettings(settings, 'water'), water);
+  assert.equal(selectProjectVideoSettings(settings, 'fire'), undefined);
+  assert.deepEqual(validateProjectVideoSettings({ ...project, slot: 'project' }), project);
+});
+
+test('지원하지 않는 영상 항목은 조회와 저장 모두 거절한다', () => {
+  for (const slot of ['ai', 'unknown', '../outside', '', null]) {
+    assert.throws(() => selectProjectVideoSettings([], slot));
+    assert.throws(() => prepareProjectVideoSettings('/assets/demo.gif', { now, id, slot }));
+  }
+});
+
 test('잘못된 프로젝트·저장 시각·버전과 경로 탈출 식별자를 거절한다', () => {
   for (const change of [{ project: '../outside' }, { version: 2 }, { createdAt: '2026-02-30T00:00:00.000Z' }, { createdAt: 'bad-date' }, { videoUrl: 'javascript:alert(1)' }]) assert.throws(() => validateProjectVideoSettings({ ...record(now.toISOString(), ''), ...change }));
   assert.throws(() => prepareProjectVideoSettings('', { now, id: '../outside' }));
@@ -45,5 +65,23 @@ test('영상 추가와 제거를 GitHub 새 JSON 편집 화면으로 정확히 �
     assert.equal(url.searchParams.get('filename'), result.path);
     assert.equal(url.searchParams.get('value'), result.content);
     assert.deepEqual(JSON.parse(result.content), record(now.toISOString(), videoUrl));
+  }
+});
+
+test('각 기능의 영상·GIF 추가와 제거를 해당 항목만 담은 GitHub 설정으로 전달한다', () => {
+  for (const slot of projectVideoSlots) {
+    for (const videoUrl of ['https://youtu.be/abcdefghijk', 'https://example.com/demo.mp4', '/assets/demo.gif', '']) {
+      const result = prepareProjectVideoSettings(videoUrl, { now, id, slot: slot.id });
+      const url = new URL(result.url);
+      const saved = JSON.parse(url.searchParams.get('value'));
+      assert.equal(saved.slot ?? 'project', slot.id);
+      assert.equal(saved.videoUrl, videoUrl);
+      assert.deepEqual(selectProjectVideoSettings([saved], slot.id), saved);
+      assert.equal(url.searchParams.get('filename'), result.path);
+      if (slot.id !== 'project') {
+        assert.ok(result.path.includes(`-${slot.id}-${id}.json`));
+        assert.equal(selectProjectVideoSettings([saved]), undefined);
+      }
+    }
   }
 });

@@ -10,10 +10,11 @@ import {
 import { dcbFeatures } from '../../../data/dcb-features.mjs';
 import { getArticles, articleUrl } from '../../../lib/articles';
 import { site } from '../../../data/site';
-import { readProjectVideoSettings } from '../../../lib/project-video.server.mjs';
+import { readProjectVideoSettingsBySlot } from '../../../lib/project-video.server.mjs';
 import { resolvePortfolioMedia, selectProjectPortfolioMedia } from '../../../lib/recruitment-media.mjs';
 
 const articles = await getArticles(false);
+const videoSettings = await readProjectVideoSettingsBySlot();
 const bySlug = new Map(articles.map(article => [article.data.slug, article]));
 function linkedArticles(links: PortfolioLink[], required = false) {
   return links.flatMap(link => {
@@ -30,7 +31,12 @@ function orderedCases(items: PortfolioCaseData[]) {
     const order = dcbFeatures.findIndex(feature => feature.slug === item.featureSlug);
     if (order < 0) throw new Error(`지원용 포트폴리오의 기능 설정 누락: ${item.featureSlug}`);
     return {
-      item: { ...item, number: dcbFeatures[order].number },
+      item: {
+        ...item, number: dcbFeatures[order].number,
+        media: selectProjectPortfolioMedia(videoSettings[item.id], item.media, {
+          title: `${item.title} 상세 영상`, caption: item.summary,
+        }),
+      },
       links: linkedArticles(item.links, true),
       order,
     };
@@ -49,7 +55,7 @@ const usageLinks = linkedArticles(aiUsageCase.links, true);
 const extraArticles = linkedArticles([...additionalLinks]
   .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
-const savedVideo = await readProjectVideoSettings();
+const savedVideo = videoSettings.project;
 const overviewMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
   title: `${project.title} 전체 플레이 영상`, caption: project.subtitle,
 });

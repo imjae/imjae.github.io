@@ -1,60 +1,94 @@
 ---
-import { readProjectVideoSettings } from '../lib/project-video.server.mjs';
-const settings = await readProjectVideoSettings();
-const videoUrl = settings?.videoUrl ?? '';
+import { readProjectVideoSettingsBySlot } from '../lib/project-video.server.mjs';
+import { projectVideoSlots } from '../lib/project-video.mjs';
+import { project, clientCases, graphicsCases } from '../data/krafton-2027';
+const settings = await readProjectVideoSettingsBySlot();
+const existingMedia = Object.fromEntries([
+  ['project', project.media],
+  ...[...clientCases, ...graphicsCases].map(item => [item.id, item.media]),
+]);
+const slots = projectVideoSlots.map(slot => ({
+  ...slot,
+  prefix: slot.id === 'project' ? 'project-video' : `feature-video-${slot.id}`,
+  url: settings[slot.id]?.videoUrl ?? existingMedia[slot.id]?.url ?? '',
+}));
 ---
 <section class="editor-section project-video-editor" id="project-video" aria-labelledby="project-video-title">
-  <div class="section-heading"><h2 id="project-video-title">DCB 게임 영상</h2></div>
-  <p class="video-help">등록한 주소는 지원용 포트폴리오의 DCB 전체 플레이 영상에 연결합니다. 기능별 상세 영상은 각각 별도로 연결합니다.</p>
-  <label for="project-video-url">영상·GIF 주소</label>
-  <input id="project-video-url" type="text" inputmode="url" value={videoUrl} maxlength="2048" placeholder="https://… 또는 /assets/demo.gif" aria-describedby="project-video-help" autocomplete="off" autocapitalize="off" spellcheck="false" />
+  <div class="section-heading"><h2 id="project-video-title">DCB 영상·GIF</h2></div>
+  <p class="video-help">전체 플레이와 각 기능의 주소를 따로 등록합니다. 각 항목의 저장 버튼으로 해당 주소만 반영합니다.</p>
   <p class="video-help" id="project-video-help">YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 영상 자리는 준비 상태로 표시합니다.</p>
-  <a id="project-video-preview" href={videoUrl || undefined} hidden={!videoUrl} target="_blank" rel="noopener noreferrer">입력한 영상·GIF 열기 ↗</a>
-  <div class="video-submit"><a id="project-video-save" class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 영상 설정 저장 ↗</a><button id="project-video-reset" type="button" disabled>변경 취소</button></div>
-  <p id="project-video-status" role="status" aria-live="polite">{videoUrl ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.'}</p>
+  <div class="video-slot-grid">
+    {slots.map(slot => <fieldset class="video-slot" data-video-editor={slot.id}>
+      <legend>{slot.label}</legend>
+      <label for={`${slot.prefix}-url`}>영상·GIF 주소</label>
+      <input id={`${slot.prefix}-url`} data-video-url type="text" inputmode="url" value={slot.url} maxlength="2048" placeholder="https://… 또는 /assets/demo.gif" aria-describedby="project-video-help" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      <a id={`${slot.prefix}-preview`} data-video-preview class="video-preview" href={slot.url || undefined} hidden={!slot.url} target="_blank" rel="noopener noreferrer">입력한 영상·GIF 열기 ↗</a>
+      <div class="video-submit"><a id={`${slot.prefix}-save`} data-video-save class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 저장 ↗</a><button id={`${slot.prefix}-reset`} data-video-reset type="button" disabled>변경 취소</button></div>
+      <p id={`${slot.prefix}-status`} data-video-status class="video-status" role="status" aria-live="polite">{slot.url ? '게시된 설정과 같습니다.' : '등록된 주소가 없습니다.'}</p>
+    </fieldset>)}
+  </div>
   <p class="video-help">GitHub에서 <strong>Commit changes</strong>로 저장하면 배포 후 반영됩니다. <a href="/portfolio/krafton-2027/">지원용 포트폴리오 보기 →</a> · <a href="/portfolio/dcb/">DCB 프로젝트 소개 보기 →</a></p>
   <noscript><p>영상 주소 편집에는 JavaScript가 필요합니다.</p></noscript>
 </section>
 <script>
   import { normalizeVideoUrl } from '../lib/project-video.mjs';
   import { prepareProjectVideoSettings } from '../lib/github-authoring.mjs';
-  const input = document.querySelector<HTMLInputElement>('#project-video-url')!;
-  const initial = input.value;
-  const save = document.querySelector<HTMLAnchorElement>('#project-video-save')!;
-  const preview = document.querySelector<HTMLAnchorElement>('#project-video-preview')!;
-  const reset = document.querySelector<HTMLButtonElement>('#project-video-reset')!;
-  const status = document.querySelector('#project-video-status')!;
-  function render() {
-    save.removeAttribute('href');
-    save.setAttribute('aria-disabled', 'true');
-    preview.removeAttribute('href');
-    preview.hidden = true;
-    reset.disabled = input.value === initial;
-    try {
-      const url = normalizeVideoUrl(input.value);
-      input.removeAttribute('aria-invalid');
-      if (url) { preview.href = url; preview.hidden = false; }
-      const dirty = url !== initial;
-      status.textContent = dirty ? (url ? '저장 전 변경 · 영상·GIF 주소를 저장해 주세요.' : '저장 전 변경 · 영상과 버튼을 숨깁니다.') : (initial ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.');
-      if (dirty) {
-        save.href = prepareProjectVideoSettings(url).url;
-        save.setAttribute('aria-disabled', 'false');
+  document.querySelectorAll<HTMLFieldSetElement>('[data-video-editor]').forEach(editor => {
+    const slot = editor.dataset.videoEditor!;
+    const input = editor.querySelector<HTMLInputElement>('[data-video-url]')!;
+    const initial = input.value;
+    const save = editor.querySelector<HTMLAnchorElement>('[data-video-save]')!;
+    const preview = editor.querySelector<HTMLAnchorElement>('[data-video-preview]')!;
+    const reset = editor.querySelector<HTMLButtonElement>('[data-video-reset]')!;
+    const status = editor.querySelector('[data-video-status]')!;
+    function render() {
+      save.removeAttribute('href');
+      save.setAttribute('aria-disabled', 'true');
+      preview.removeAttribute('href');
+      preview.hidden = true;
+      reset.disabled = input.value === initial;
+      try {
+        const url = normalizeVideoUrl(input.value);
+        input.removeAttribute('aria-invalid');
+        if (url) { preview.href = url; preview.hidden = false; }
+        const dirty = url !== initial;
+        status.textContent = dirty ? (url ? '저장 전 변경 · 새 주소를 저장해 주세요.' : '저장 전 변경 · 이 항목을 비웁니다.') : (initial ? '게시된 설정과 같습니다.' : '등록된 주소가 없습니다.');
+        if (dirty) {
+          save.href = prepareProjectVideoSettings(url, { slot }).url;
+          save.setAttribute('aria-disabled', 'false');
+        }
+      } catch (error) {
+        input.setAttribute('aria-invalid', 'true');
+        status.textContent = error instanceof Error ? error.message : '영상·GIF 주소를 확인해 주세요.';
       }
-    } catch (error) {
-      input.setAttribute('aria-invalid', 'true');
-      status.textContent = error instanceof Error ? error.message : '영상 주소를 확인해 주세요.';
     }
-  }
-  input.addEventListener('input', render);
-  reset.addEventListener('click', () => { input.value = initial; render(); });
-  save.addEventListener('click', event => { if (save.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+    input.addEventListener('input', render);
+    reset.addEventListener('click', () => { input.value = initial; render(); });
+    save.addEventListener('click', event => { if (save.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+    render();
+  });
   if (new URLSearchParams(location.search).get('project') === 'dcb') {
     const viewer = document.querySelector<HTMLAnchorElement>('[data-view-mode]');
     if (viewer) viewer.href = '/portfolio/dcb/';
   }
-  render();
 </script>
 <style>
-  .project-video-editor{border:1px solid var(--line);border-radius:5px;padding:24px;margin-bottom:38px;scroll-margin-top:24px}.project-video-editor label{display:block;font-size:12px;margin-bottom:10px}.project-video-editor input{width:100%;min-width:0;padding:13px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:13px}.project-video-editor input[aria-invalid=true]{border-color:#a9513d}.video-help{font-size:12px;color:var(--muted);line-height:1.9}.video-help a,#project-video-preview{color:var(--green);text-decoration:underline;text-underline-offset:3px}#project-video-preview{font-size:12px;overflow-wrap:anywhere}.video-submit{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:20px}.video-submit a[aria-disabled=true]{opacity:.45;cursor:default}.video-submit button{padding:10px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:11px}.video-submit button:disabled{opacity:.4;cursor:default}#project-video-status{font-size:12px;color:var(--green);line-height:1.8;margin:14px 0}
-  @media(max-width:760px){.project-video-editor{padding:18px}.video-submit .button{width:100%;white-space:normal;line-height:1.8}.video-submit button{min-height:42px}.project-video-editor input{font-size:16px}}
+  .project-video-editor{border:1px solid var(--line);border-radius:5px;padding:24px;margin-bottom:38px;scroll-margin-top:24px}
+  .video-help{font-size:12px;color:var(--muted);line-height:1.9}
+  .video-help a,.video-preview{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+  .video-slot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:24px 0}
+  .video-slot{min-width:0;margin:0;border:1px solid var(--line);border-radius:3px;padding:16px}
+  .video-slot legend{padding:0 7px;font-size:14px;font-weight:600}
+  .video-slot label{display:block;font-size:12px;margin-bottom:10px}
+  .video-slot input{width:100%;min-width:0;padding:12px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:13px}
+  .video-slot input[aria-invalid=true]{border-color:#a9513d}
+  .video-preview{display:block;font-size:12px;overflow-wrap:anywhere;margin-top:12px}
+  .video-preview[hidden]{display:none}
+  .video-submit{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+  .video-submit a{padding:10px 12px;font-size:11px}
+  .video-submit a[aria-disabled=true]{opacity:.45;cursor:default}
+  .video-submit button{padding:10px;border:1px solid var(--line);border-radius:3px;background:var(--paper);font-size:11px}
+  .video-submit button:disabled{opacity:.4;cursor:default}
+  .video-status{font-size:12px;color:var(--green);line-height:1.8;margin:14px 0 0}
+  @media(max-width:760px){.project-video-editor{padding:18px}.video-slot-grid{grid-template-columns:minmax(0,1fr)}.video-slot{padding:14px}.video-submit .button{white-space:normal;line-height:1.8}.video-submit button{min-height:42px}.video-slot input{font-size:16px}}
 </style>
