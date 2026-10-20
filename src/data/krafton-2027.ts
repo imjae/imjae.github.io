@@ -164,7 +164,7 @@ export const aiSteps: Array<{ title: string; description: string }> = [
   },
 ];
 
-export const aiDecision: {
+export const aiUsageCase: {
   title: string;
   context: string;
   choice: string;
@@ -172,12 +172,12 @@ export const aiDecision: {
   limitation: string;
   links: PortfolioLink[];
 } = {
-  title: '부드러운 영상과 실제 프레임 드롭을 따로 판단했습니다.',
-  context: '2026년 9월 10일 전달받은 물 영상은 부드러웠지만, 실제 Editor 플레이에는 심한 프레임 드롭이 있어 수정을 요청했습니다.',
-  choice: '고정 30fps로 저장한 영상을 성능 근거로 삼지 않고, 물의 형상을 유지하며 재생의 읽기·변환·업로드·대기를 조사하는 방향으로 진행했습니다.',
-  evidence: 'AI가 작성한 RMC 로더·변환·검사 도구와 자동 측정 기록을 바탕으로, 원본 데이터 동등성과 CPU 평가 구간을 나눠 확인했습니다.',
-  limitation: '당시 자동 측정은 초기 캐시의 CPU 평가에 한정되며, 현재 게임의 GPU 비용·전체 FPS나 새 영상 촬영을 대신하지 않습니다.',
-  links: [{ slug: 'water-playback', label: '요청·구현·측정의 상세 근거' }],
+  title: '병렬 세션 지침과 통합 방식',
+  context: '여러 AI 세션에 같은 작업 기준을 적용하도록 공통 지침을 구성하고, Git 워크트리로 구현·검증 공간을 분리했습니다.',
+  choice: '작업마다 수정·보존 범위와 완료 조건을 정하고, 슬롯 소유 기록으로 중복 사용을 관리했습니다. 결과는 작업별 커밋과 검증 기록으로 받아 의존 순서대로 통합하도록 했습니다.',
+  evidence: '2026년 10월 1~2일 Deluge의 병행 작업·통합 이력과 현재 DCB의 공통 지침·슬롯 운영 절차를 대조했습니다.',
+  limitation: '시간 절감률·처리량은 미측정이며, 선점 경쟁과 비정상 종료 복구의 재현 검증은 남아 있습니다.',
+  links: [{ slug: 'parallel-ai-worktrees', label: '병렬 세션 지침과 통합 방식 자세히 보기' }],
 };
 
 export const contributionRows: Array<{ label: string; description: string }> = [
@@ -233,7 +233,6 @@ export const additionalLinks: PortfolioLink[] = [
 ];
 
 export const aiLinks: PortfolioLink[] = [
-  { slug: 'parallel-ai-worktrees', label: '병렬 세션 지침과 통합 방식' },
   { slug: 'working-with-ai', label: 'AI 사용과 검증 기준' },
   { slug: 'cli-agent-harness', label: '별도 CLI 하네스 제작·사용 중단 경험' },
 ];

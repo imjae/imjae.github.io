@@ -3,7 +3,7 @@ import RecruitmentLayout from '../../../layouts/RecruitmentLayout.astro';
 import PortfolioCase from '../../../components/recruitment/PortfolioCase.astro';
 import PortfolioMedia from '../../../components/recruitment/PortfolioMedia.astro';
 import {
-  profile, project, clientCases, graphicsCases, aiSteps, aiDecision,
+  profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase,
   contributionRows, verificationRows, additionalLinks, aiLinks,
   type PortfolioLink, type PortfolioCase as PortfolioCaseData,
 } from '../../../data/krafton-2027';
@@ -42,10 +42,10 @@ function articleFeatureOrder(slug: string) {
   return order < 0 ? dcbFeatures.length : order;
 }
 const aiFeature = dcbFeatures.find(feature => feature.slug === 'ai-collaboration');
-if (!aiFeature) throw new Error('지원용 포트폴리오의 AI 협업 기능 설정 누락');
+if (!aiFeature) throw new Error('지원용 포트폴리오의 AI 활용 기능 설정 누락');
 const clients = orderedCases(clientCases);
 const graphics = orderedCases(graphicsCases);
-const decisionLinks = linkedArticles(aiDecision.links, true);
+const usageLinks = linkedArticles(aiUsageCase.links, true);
 const extraArticles = linkedArticles([...additionalLinks]
   .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
@@ -55,7 +55,7 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
 ---
 <RecruitmentLayout
   title="imjae — 게임 프로그래밍 포트폴리오"
-  description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 협업 경험을 소개합니다."
+  description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 활용 경험을 소개합니다."
 >
   <section class="rp-hero" aria-labelledby="portfolio-title">
     <div class="rp-hero-copy">
@@ -64,7 +64,7 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
       <p class="rp-intro">{profile.intro}</p>
       <ul class="rp-stack" aria-label="주요 기술">{profile.stack.map(item => <li>{item}</li>)}</ul>
       <div class="rp-actions">
-        <a class="rp-button rp-button-primary" href="#ai">AI 협업 사례 살펴보기 <span aria-hidden="true">↓</span></a>
+        <a class="rp-button rp-button-primary" href="#ai">AI 활용 살펴보기 <span aria-hidden="true">↓</span></a>
         {videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
       </div>
     </div>
@@ -95,11 +95,11 @@ const videoUrl = projectMedia?.url || savedVideo?.videoUrl;
   </section>
 
   <section id="ai" class="rp-section" aria-labelledby="ai-title" data-dcb-feature={aiFeature.slug}>
-    <div class="rp-section-title"><div><p class="rp-kicker">02 / AI COLLABORATION</p><h2 id="ai-title">{aiFeature.title}</h2></div><p>AI와 작업을 나누고 구현·검증한 과정을<br class="rp-desktop-break" /> 요구 조건과 확인 범위에 맞춰 설명합니다.</p></div>
+    <div class="rp-section-title"><div><p class="rp-kicker">02 / {aiFeature.label}</p><h2 id="ai-title">{aiFeature.title}</h2></div><p>공통 지침과 Git 워크트리로 작업을 나누고,<br class="rp-desktop-break" /> 검증 결과를 통합·인계한 방식을 소개합니다.</p></div>
     <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
     <article class="rp-decision" aria-labelledby="decision-title">
-      <div class="rp-decision-heading"><p class="rp-eyebrow">협업 사례</p><h3 id="decision-title">{aiDecision.title}</h3><p>{aiDecision.context}</p></div>
-      <div><dl class="rp-case-facts"><div><dt>요구·진행</dt><dd>{aiDecision.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiDecision.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiDecision.limitation}</p><div class="rp-case-links">{decisionLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
+      <div class="rp-decision-heading"><p class="rp-eyebrow">활용 사례</p><h3 id="decision-title">{aiUsageCase.title}</h3><p>{aiUsageCase.context}</p></div>
+      <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd>{aiUsageCase.choice}</dd></div><div><dt>확인 근거</dt><dd>{aiUsageCase.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span>{aiUsageCase.limitation}</p><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
     </article>
     <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
   </section>

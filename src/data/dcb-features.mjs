@@ -1,10 +1,10 @@
 export const dcbFeatures = [
   {
-    slug: 'ai-collaboration', title: 'AI 협업 사례', detail: '작업 분해 · 병렬 세션 · 검증과 통합',
-    description: 'DCB 개발에서 AI와 작업을 나누고 결과를 검토·통합한 사례를 다룹니다.',
-    topic: 'ai', number: '01', label: 'AI COLLABORATION',
-    overviewSlug: 'working-with-ai',
-    articleSlugs: ['parallel-ai-worktrees'],
+    slug: 'ai-collaboration', title: 'AI 활용', detail: '작업 분해 · 병렬 세션 · 검증과 통합',
+    description: '공통 지침과 Git 워크트리로 AI 작업을 나누고 결과를 검증·통합하는 방식을 다룹니다.',
+    topic: 'ai', number: '01', label: 'AI USAGE',
+    overviewSlug: 'parallel-ai-worktrees',
+    articleSlugs: ['working-with-ai'],
   },
   {
     slug: 'monster-combat', title: '몬스터 패턴과 그룹 전투', detail: '대치 · 공격과 블러프 · 그룹 반응',
