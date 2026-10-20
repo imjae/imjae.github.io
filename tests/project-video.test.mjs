@@ -23,13 +23,20 @@ test('최신 영상 변경·제거 설정을 선택해 이전 주소가 다시 �
   assert.equal(first.videoUrl, 'https://example.com/first');
 });
 
+test('저장소 GIF 경로를 정리하며 다른 상대 경로와 외부 호스트 우회는 거절한다', () => {
+  assert.equal(normalizeVideoUrl(' /assets/clips/../demo.GIF?v=2 '), '/assets/demo.GIF?v=2');
+  for (const path of ['assets/demo.gif', '/assets/demo.mp4', '//example.com/demo.gif', '/\\example.com/demo.gif']) {
+    assert.throws(() => normalizeVideoUrl(path), path);
+  }
+});
+
 test('잘못된 프로젝트·저장 시각·버전과 경로 탈출 식별자를 거절한다', () => {
   for (const change of [{ project: '../outside' }, { version: 2 }, { createdAt: '2026-02-30T00:00:00.000Z' }, { createdAt: 'bad-date' }, { videoUrl: 'javascript:alert(1)' }]) assert.throws(() => validateProjectVideoSettings({ ...record(now.toISOString(), ''), ...change }));
   assert.throws(() => prepareProjectVideoSettings('', { now, id: '../outside' }));
 });
 
 test('영상 추가와 제거를 GitHub 새 JSON 편집 화면으로 정확히 전달한다', () => {
-  for (const videoUrl of ['https://www.youtube.com/watch?v=abcdefghijk&t=12', '']) {
+  for (const videoUrl of ['https://www.youtube.com/watch?v=abcdefghijk&t=12', 'https://example.com/demo.gif?v=2', '/assets/demo.gif', '']) {
     const result = prepareProjectVideoSettings(videoUrl, { now, id });
     const url = new URL(result.url);
     assert.equal(url.origin, 'https://github.com');

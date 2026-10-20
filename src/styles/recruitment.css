@@ -149,8 +149,8 @@ main:focus { outline: none; }
 .rp-footer > span { margin-right: auto; }
 .rp-media { margin: 25px 0; }
 .rp-video-frame { width: 100%; aspect-ratio: 16/9; min-height: 202px; background: #213b31; }
-.rp-video-frame iframe, .rp-video-frame video { display: block; width: 100%; height: 100%; border: none; }
-.rp-video-frame video { object-fit: contain; }
+.rp-video-frame iframe, .rp-video-frame video, .rp-video-frame img { display: block; width: 100%; height: 100%; border: none; }
+.rp-video-frame video, .rp-video-frame img { object-fit: contain; }
 .rp-media figcaption { display: flex; flex-direction: column; gap: 5px; margin-top: 12px; font-size: 12px; line-height: 1.85; color: var(--rp-muted); }
 .rp-media figcaption strong { color: var(--rp-ink); }
 .rp-media figcaption a { text-decoration: underline; text-underline-offset: 4px; width: fit-content; }

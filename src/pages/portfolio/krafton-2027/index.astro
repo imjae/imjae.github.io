@@ -55,7 +55,7 @@ const overviewMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
 });
 const projectMedia = resolvePortfolioMedia(overviewMedia);
 const videoUrl = projectMedia?.url;
-const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
+const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || projectMedia?.gifSrc);
 ---
 <RecruitmentLayout
   title="imjae — 게임 프로그래밍 포트폴리오"
@@ -69,8 +69,8 @@ const inlineVideo = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc);
       <ul class="rp-stack" aria-label="주요 기술">{profile.stack.map(item => <li>{item}</li>)}</ul>
       <div class="rp-actions">
         <a class="rp-button rp-button-primary" href="#ai">AI 활용 살펴보기 <span aria-hidden="true">↓</span></a>
-        {inlineVideo
-          ? <a class="rp-button" href="#project-video">전체 플레이 영상 보기 <span aria-hidden="true">↓</span></a>
+        {inlineMedia
+          ? <a class="rp-button" href="#project-video">{projectMedia?.gifSrc ? '전체 플레이 GIF 보기' : '전체 플레이 영상 보기'} <span aria-hidden="true">↓</span></a>
           : videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
       </div>
     </div>

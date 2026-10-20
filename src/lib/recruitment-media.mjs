@@ -1,3 +1,5 @@
+import { normalizeVideoUrl } from './project-video.mjs';
+
 const youtubeHosts = new Set(['youtube.com', 'www.youtube.com', 'm.youtube.com']);
 const privateEmbedHosts = new Set(['youtube-nocookie.com', 'www.youtube-nocookie.com']);
 const videoIdPattern = /^[A-Za-z0-9_-]{11}$/;
@@ -51,7 +53,7 @@ export function selectProjectPortfolioMedia(savedVideo, media, defaults) {
 
 /**
  * @param {{ url?: unknown, title?: unknown, caption?: unknown, startSeconds?: unknown, endSeconds?: unknown } | null | undefined} media
- * @returns {{ url: string, title: string, caption: string, embedUrl?: string, videoSrc?: string } | undefined}
+ * @returns {{ url: string, title: string, caption: string, embedUrl?: string, videoSrc?: string, gifSrc?: string } | undefined}
  */
 export function resolvePortfolioMedia(media) {
   if (!media || typeof media.url !== 'string' || typeof media.title !== 'string' || typeof media.caption !== 'string') return undefined;
@@ -60,14 +62,21 @@ export function resolvePortfolioMedia(media) {
   const caption = media.caption.trim();
   if (!text || text.length > 2048 || !title || !caption) return undefined;
 
+  let normalized;
   let url;
-  try { url = new URL(text); }
+  try {
+    normalized = normalizeVideoUrl(text);
+    url = new URL(normalized, 'https://imjae.github.io');
+  }
   catch { return undefined; }
-  if (url.protocol !== 'https:' || url.username || url.password || isLocalHost(url.hostname)) return undefined;
+  if (isLocalHost(url.hostname)) return undefined;
 
-  const result = { url: url.href, title, caption };
+  const result = { url: normalized, title, caption };
   const isYoutube = youtubeHosts.has(url.hostname) || privateEmbedHosts.has(url.hostname) || url.hostname === 'youtu.be';
-  if (!isYoutube) return /\.(?:mp4|webm)$/i.test(url.pathname) ? { ...result, videoSrc: url.href } : result;
+  if (!isYoutube) {
+    if (/\.gif$/i.test(url.pathname)) return { ...result, gifSrc: normalized };
+    return /\.(?:mp4|webm)$/i.test(url.pathname) ? { ...result, videoSrc: normalized } : result;
+  }
   const id = readYoutubeId(url);
   if (!id || url.port) return undefined;
 

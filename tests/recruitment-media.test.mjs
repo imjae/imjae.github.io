@@ -38,6 +38,21 @@ test('직접 제공하는 MP4·WebM 파일은 네이티브 플레이어에 연�
   assert.equal(resolvePortfolioMedia(video('https://localhost/demo.mp4')), undefined);
 });
 
+test('GIF는 HTTPS 주소와 저장소 경로에서 자동 재생 이미지로 연결한다', () => {
+  const urls = ['https://example.com/demo.gif', 'https://example.com/demo.GIF?v=2#preview', '/assets/demo.gif', '/assets/demo.GIF?v=2'];
+  for (const url of urls) {
+    const selected = selectProjectPortfolioMedia({ videoUrl: url }, undefined, { title: '짧은 시연', caption: 'GIF 반복 재생' });
+    const resolved = resolvePortfolioMedia(selected);
+    assert.equal(resolved.url, url);
+    assert.equal(resolved.gifSrc, url);
+    assert.equal(resolved.videoSrc, undefined);
+    assert.equal(resolved.embedUrl, undefined);
+  }
+  for (const url of ['https://example.com/demo.gif.html', 'https://example.com/view?file=demo.gif']) {
+    assert.equal(resolvePortfolioMedia(video(url)).gifSrc, undefined);
+  }
+});
+
 test('주소·제목·캡션이 모두 준비된 영상만 반환하고 공백을 정리한다', () => {
   for (const value of [undefined, null, {}, video(''), video('  '), video(validUrl, { title: ' ' }), video(validUrl, { caption: null }), video(validUrl, { title: 12 }), video(12)]) {
     assert.equal(resolvePortfolioMedia(value), undefined);

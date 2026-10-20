@@ -6,10 +6,10 @@ const videoUrl = settings?.videoUrl ?? '';
 <section class="editor-section project-video-editor" id="project-video" aria-labelledby="project-video-title">
   <div class="section-heading"><h2 id="project-video-title">DCB 게임 영상</h2></div>
   <p class="video-help">등록한 주소는 지원용 포트폴리오의 DCB 전체 플레이 영상에 연결합니다. 기능별 상세 영상은 각각 별도로 연결합니다.</p>
-  <label for="project-video-url">영상 주소</label>
-  <input id="project-video-url" type="url" value={videoUrl} maxlength="2048" placeholder="https://www.youtube.com/watch?v=…" aria-describedby="project-video-help" autocomplete="off" />
-  <p class="video-help" id="project-video-help">YouTube 주소 또는 HTTPS MP4·WebM 파일 주소는 화면 안에서 재생합니다. 다른 HTTPS 주소는 원본 링크로 연결합니다. 비우고 저장하면 재생 화면과 버튼을 숨기고 영상 자리는 준비 상태로 표시합니다.</p>
-  <a id="project-video-preview" href={videoUrl || undefined} hidden={!videoUrl} target="_blank" rel="noopener noreferrer">입력한 영상 열기 ↗</a>
+  <label for="project-video-url">영상·GIF 주소</label>
+  <input id="project-video-url" type="text" inputmode="url" value={videoUrl} maxlength="2048" placeholder="https://… 또는 /assets/demo.gif" aria-describedby="project-video-help" autocomplete="off" autocapitalize="off" spellcheck="false" />
+  <p class="video-help" id="project-video-help">YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 영상 자리는 준비 상태로 표시합니다.</p>
+  <a id="project-video-preview" href={videoUrl || undefined} hidden={!videoUrl} target="_blank" rel="noopener noreferrer">입력한 영상·GIF 열기 ↗</a>
   <div class="video-submit"><a id="project-video-save" class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 영상 설정 저장 ↗</a><button id="project-video-reset" type="button" disabled>변경 취소</button></div>
   <p id="project-video-status" role="status" aria-live="polite">{videoUrl ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.'}</p>
   <p class="video-help">GitHub에서 <strong>Commit changes</strong>로 저장하면 배포 후 반영됩니다. <a href="/portfolio/krafton-2027/">지원용 포트폴리오 보기 →</a> · <a href="/portfolio/dcb/">DCB 프로젝트 소개 보기 →</a></p>
@@ -35,7 +35,7 @@ const videoUrl = settings?.videoUrl ?? '';
       input.removeAttribute('aria-invalid');
       if (url) { preview.href = url; preview.hidden = false; }
       const dirty = url !== initial;
-      status.textContent = dirty ? (url ? '저장 전 변경 · 영상 주소를 저장해 주세요.' : '저장 전 변경 · 영상과 버튼을 숨깁니다.') : (initial ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.');
+      status.textContent = dirty ? (url ? '저장 전 변경 · 영상·GIF 주소를 저장해 주세요.' : '저장 전 변경 · 영상과 버튼을 숨깁니다.') : (initial ? '게시된 설정과 같습니다.' : '등록된 영상이 없습니다.');
       if (dirty) {
         save.href = prepareProjectVideoSettings(url).url;
         save.setAttribute('aria-disabled', 'false');
