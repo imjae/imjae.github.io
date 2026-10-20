@@ -72,6 +72,7 @@ main:focus { outline: none; }
 .rp-section-title .rp-kicker { margin-bottom: 12px; }
 .rp-section-title > p { font-size: 13px; color: var(--rp-muted); line-height: 1.9; flex-shrink: 0; }
 .rp-project { padding: 44px 0 52px; }
+.rp-project .rp-section-title { align-items: flex-start; flex-direction: column; gap: 12px; }
 .rp-project .rp-section-title h2 { font-size: 44px; }
 .rp-project .rp-section-title > p { font-size: 20px; font-weight: 600; color: var(--rp-ink); }
 .rp-showcase { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 36px; align-items: start; }
