@@ -1,6 +1,8 @@
 ---
 import '../styles/recruitment.css';
 import { site } from '../data/site';
+import ModeSwitch from '../components/ModeSwitch.astro';
+import { portfolioCopyEditorUrl } from '../lib/github-authoring.mjs';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -36,13 +38,17 @@ const sections = [
         <nav class="rp-nav" aria-label="Portfolio navigation">
           {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
         </nav>
-        <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
+        <div class="rp-header-actions">
+          <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
+          <ModeSwitch viewerUrl="#main-content" editorUrl={portfolioCopyEditorUrl} editorExternal editorTitle="Edit portfolio copy on GitHub (new tab)" label="Portfolio mode" />
+        </div>
       </div>
     </header>
     <main id="main-content" class="rp-main" tabindex="-1"><slot /></main>
     <footer class="rp-footer">
       <span>imjae · Game programming</span>
       <a href="/">개발 블로그</a>
+      <a href="/editor/#portfolio-copy">문구·영상 수정</a>
       <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="rp-sr-only"> (새 탭)</span></a>
       <a href="#main-content">맨 위로 ↑</a>
     </footer>

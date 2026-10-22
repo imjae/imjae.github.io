@@ -1,10 +1,10 @@
 ---
-interface Props { editing?: boolean; viewerUrl: string; editorUrl: string; editorExternal?: boolean; }
-const { editing = false, viewerUrl, editorUrl, editorExternal = false } = Astro.props;
+interface Props { editing?: boolean; viewerUrl: string; editorUrl: string; editorExternal?: boolean; editorTitle?: string; label?: string; }
+const { editing = false, viewerUrl, editorUrl, editorExternal = false, editorTitle = 'Edit this article on GitHub (new tab)', label = 'Blog mode' } = Astro.props;
 ---
-<nav class="mode-switch" aria-label="Blog mode">
+<nav class="mode-switch" aria-label={label}>
   <a href={viewerUrl} data-view-mode aria-current={!editing ? 'page' : undefined}>View</a>
-  <a href={editorUrl} aria-current={editing ? 'page' : undefined} target={editorExternal ? '_blank' : undefined} rel={editorExternal ? 'noopener noreferrer' : undefined} title={editorExternal ? 'Edit this article on GitHub (new tab)' : undefined}>Edit{editorExternal && <span aria-hidden="true"> ↗</span>}</a>
+  <a href={editorUrl} aria-current={editing ? 'page' : undefined} target={editorExternal ? '_blank' : undefined} rel={editorExternal ? 'noopener noreferrer' : undefined} title={editorExternal ? editorTitle : undefined}>Edit{editorExternal && <span aria-hidden="true"> ↗</span>}</a>
 </nav>
 <style>
   .mode-switch{display:flex;align-items:center;border:1px solid var(--line);border-radius:5px;padding:3px;gap:2px;flex-shrink:0;font-size:10px}

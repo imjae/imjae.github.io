@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getArticles, articleUrl, formatDate } from '../lib/articles';
 import { topics, kinds, getTopic } from '../data/site';
-import { repository, branch, githubFileUrl } from '../lib/github-authoring.mjs';
+import { repository, branch, githubFileUrl, portfolioCopyEditorUrl, portfolioPageEditorUrl } from '../lib/github-authoring.mjs';
 import PinnedEditor from '../components/PinnedEditor.astro';
 import ProjectVideoEditor from '../components/ProjectVideoEditor.astro';
 import { getReadingItems } from '../lib/reading-shelf.server';
@@ -14,10 +14,22 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
   <div class="editor-shortcuts">
     <a href="#new-post" class="button button-dark">새 글 작성</a>
     <a href="/editor/?topic=reading#new-post">독서 기록 추가</a>
+    <a href="#portfolio-copy">포트폴리오 문구</a>
     <a href="#project-video">DCB 영상 링크</a>
     <a href={`${repository}/tree/${branch}/content/articles`} target="_blank" rel="noopener noreferrer">초안·전체 파일 ↗</a>
     <a href={`${repository}/actions`} target="_blank" rel="noopener noreferrer">배포 확인 ↗</a>
   </div>
+  <section class="editor-section" id="portfolio-copy" aria-labelledby="portfolio-copy-title">
+    <div class="section-heading"><h2 id="portfolio-copy-title">지원용 포트폴리오 문구 수정</h2></div>
+    <p class="editor-help">소개, 구현 사례의 제목·설명·내 역할, AI 활용과 기여·확인 범위는 <strong>소개·사례 문구 수정</strong>에서 편집합니다. 페이지의 구역 제목과 안내 문장은 <strong>구역 제목·안내 수정</strong>에 있습니다.</p>
+    <div class="editor-shortcuts">
+      <a href={portfolioCopyEditorUrl} target="_blank" rel="noopener noreferrer">소개·사례 문구 수정 ↗</a>
+      <a href={portfolioPageEditorUrl} target="_blank" rel="noopener noreferrer">구역 제목·안내 수정 ↗</a>
+      <a href="#project-video">영상·GIF 주소 수정</a>
+      <a href="/portfolio/krafton-2027/">포트폴리오 보기 →</a>
+    </div>
+    <p class="editor-help">GitHub 로그인과 저장소 쓰기 권한이 필요합니다. 따옴표 안의 문구를 바꾸고 파일 형식을 유지해 주세요. <strong>Commit changes</strong>로 저장하고 배포가 완료되면 반영됩니다.</p>
+  </section>
   <ProjectVideoEditor />
   <PinnedEditor articles={articles} />
   <section class="editor-section" aria-labelledby="manage-title">

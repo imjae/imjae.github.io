@@ -3,6 +3,8 @@ import { validateProjectVideoSettings } from './project-video.mjs';
 import { prepareReadingBook, readingSections } from './reading-record.mjs';
 export const repository = 'https://github.com/imjae/imjae.github.io';
 export const branch = 'main';
+export const portfolioCopyEditorUrl = `${repository}/edit/${branch}/src/data/krafton-2027.ts`;
+export const portfolioPageEditorUrl = `${repository}/edit/${branch}/src/pages/portfolio/krafton-2027/index.astro`;
 const topics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading'];
 const kinds = ['case-study', 'devlog', 'note', 'reading'];
 const identifier = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
