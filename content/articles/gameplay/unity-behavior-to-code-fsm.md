@@ -4,7 +4,7 @@ description: "몬스터 패턴의 원본을 Unity Behavior 그래프에서 C# �
 slug: "unity-behavior-to-code-fsm"
 date: "2026-06-02"
 dateBasis: "commit"
-updated: "2026-10-18"
+updated: "2026-10-22"
 topic: "gameplay"
 kind: "case-study"
 tags: ["인턴쉽", "Unity", "FSM", "DSL", "AI"]
@@ -126,22 +126,22 @@ AI와의 작업에서도 요청의 대상이 구체적이 되었다. 특정 상�
 
 ## 이번 글에서 확인한 이점과 남은 검증
 
-이번 정리에서는 6월 2일의 작업 요청 로그, 도입·뷰어·프리셋·패키지 제거 커밋과 현재 소스를 대조했다. 새 Unity 컴파일, EditMode 검사나 실제 전투 재생은 실행하지 않았다.
-
-| 항목 | 확인 범위 |
+| 구분 | 내용 |
 | --- | --- |
-| AI가 수정하기 쉬운 원본을 요구한 배경 | 당시 작업 요청 로그에서 확인 |
-| C# definition을 원본으로 쓰는 상태·행동 구조 | 도입 커밋과 현재 registry·빌더·실행기에서 확인 |
-| 기존 Behavior와 병행한 뒤 의존을 제거한 과정 | 6월 2일과 17일의 변경 이력에서 확인 |
-| 시각화·매개변수 preset·디버깅 기능 | 뷰어와 적용 경로의 소스 확인, 이번 UI 조작·Play Mode 미실행 |
-| 전이·중단·인스턴스 분리 검사 | 검사 코드 확인, 이번 실행 결과 없음 |
-| CPU·GC·프레임 성능 개선 | 동일 조건 전후 측정 자료 미확보 |
-| Animator·Animation Event·루트 모션·히트박스 연결 | 별도 실제 전투 검증 필요 |
+| 기록으로 확인한 것 | 6월 2일 요청 로그의 배경, 도입·뷰어·프리셋·패키지 제거 커밋, 현재 registry와 빌더, 실행기, 뷰어, 검사 코드 |
+| 실행하지 않은 것 | 새 Unity 컴파일, EditMode 검사, 뷰어 조작, Play Mode와 실제 전투 재생 |
+| 근거가 없는 것 | 같은 조건의 CPU·GC·프레임 전후 측정. Animator와 Animation Event, 루트 모션, 히트박스 연결의 전투 검증 |
 
-`BehaviorGraphAgent` 의존을 없애도 새 runner의 조건 평가와 action 실행, 시야·이동·전투 계산은 남는다. 성능 비교를 하려면 같은 몬스터 수·인지 대상·카메라와 실행 환경에서 각 비용을 나눠 측정해야 한다.
+`BehaviorGraphAgent` 의존을 없애도 조건 평가, action 실행, 시야·이동·전투 계산은 남는다. 성능을 비교하려면 같은 몬스터 수와 카메라, 실행 환경에서 비용을 나눠 재야 한다.
 
-이 작업에서 설명할 수 있는 기여는 반복해서 수정할 패턴의 원본 형태를 정하고, 기존 동작과 병행해 이관한 뒤 시각화·튜닝·검사 경로를 연결한 과정이다. AI를 사용해 구현을 진행했으며, 당시 직접 제시한 요구는 현재뿐 아니라 이후 패턴 추가까지 읽고 수정하기 쉬운 구조였다. 이번 글의 이력 대조와 설명 작성에도 AI를 사용했다.
+### 직접 정한 것과 AI를 사용한 것
 
-Unity Behavior 자체도 C# 연동, 재사용 가능한 그래프와 Play Mode 시각화를 제공한다. 이번 선택은 DCB의 패턴 변경과 AI 협업 방식에 맞춰 원본과 도구의 역할을 조정한 사례다. 패키지의 기본 성격은 [Unity Behavior 공식 기능 소개](https://docs.unity3d.com/Packages/com.unity.behavior@1.0/manual/behavior-features.html)에서 확인할 수 있다. 도입 당시 사용 버전과 현재 공식 문서의 세부 버전은 다르므로, 과거 동작의 근거는 당시 프로젝트 커밋을 사용했다.
+| 구분 | 내용 |
+| --- | --- |
+| 직접 보고하고 요청한 것 | 2026년 6월 2일 몬스터가 많을 때의 `BehaviorGraphAgent.Update` 비용 보고와 개선 방안 요청 |
+| 직접 제시한 목표와 조건 | 현재뿐 아니라 이후 추가할 패턴까지 읽고 수정하기 쉬운 원본 구조. 구조를 바꿔도 비용 문제가 해결되지 않으면 추가 개발을 하지 않아도 된다는 조건 |
+| 이 작업에서 설명할 수 있는 기여 | 반복해서 수정할 패턴의 원본 형태를 타입별 C# definition으로 정하고, 기존 Behavior 경로와 병행해 이관한 뒤 시각화·튜닝·검사 경로를 연결한 과정 |
+| AI를 사용한 것 | 코드 기반 DSL, 공통 실행기와 스케줄러, 뷰어, override 프리셋, 디버깅 표시의 구현. 이 글의 이력 대조와 설명 작성 |
+| 재사용한 것 | 기존 `MonsterStateController`와 인지·이동·전투 코드. 전환 전에는 Unity Behavior 1.0.14를 사용했다 |
 
-관련 개념은 [FSM의 전이·중단 규칙](/writing/fsm-transition-interruption/)과 [Behavior Tree의 실행·중단](/writing/behavior-tree-running-abort/)에서 이어서 볼 수 있다.
+Unity Behavior도 C# 연동과 재사용 가능한 그래프, Play Mode 시각화를 제공한다. 이번 선택은 DCB의 패턴 변경과 AI 협업 방식에 맞춰 원본과 도구의 역할을 바꾼 사례이며, 과거 동작의 근거는 당시 커밋을 썼다. 패키지 소개는 [Unity Behavior 공식 문서](https://docs.unity3d.com/Packages/com.unity.behavior@1.0/manual/behavior-features.html)에 있다. 관련 개념은 [FSM의 전이·중단 규칙](/writing/fsm-transition-interruption/)과 [Behavior Tree의 실행·중단](/writing/behavior-tree-running-abort/)에서 이어진다.

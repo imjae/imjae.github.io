@@ -134,6 +134,7 @@ main:focus { outline: none; }
 .rp-contributions > div { border-top: 1px solid #a9b99f; padding-top: 20px; }
 .rp-contributions dt { font-size: 14px; font-weight: 650; margin-bottom: 12px; }
 .rp-contributions dd { font-size: 13px; color: var(--rp-muted); line-height: 2; }
+.rp-verification-note { margin: 22px 0 0; max-width: 760px; font-size: 12px; line-height: 1.95; color: var(--rp-muted); word-break: keep-all; }
 .rp-verification-wrap { max-width: 100%; overflow-x: auto; }
 .rp-verification { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 12px; line-height: 1.95; text-align: left; }
 .rp-verification caption { text-align: left; margin: 0 0 13px; font-size: 11px; color: var(--rp-muted); }
