@@ -23,7 +23,8 @@ function linkedArticles(links: PortfolioLink[], required = false) {
       if (required) throw new Error(`지원용 포트폴리오의 필수 공개 글 누락: ${link.slug}`);
       return [];
     }
-    return [{ href: articleUrl(article), title: article.data.title, label: link.label }];
+    const href = link.anchor ? `${articleUrl(article)}#${link.anchor}` : articleUrl(article);
+    return [{ href, title: article.data.title, label: link.label, kind: link.kind }];
   });
 }
 function orderedCases(items: PortfolioCaseData[], sectionNumber: string) {

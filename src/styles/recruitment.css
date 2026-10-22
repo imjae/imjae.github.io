@@ -109,6 +109,10 @@ main:focus { outline: none; }
 .rp-case-facts > div { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 16px; }
 .rp-case-facts dt { font-size: 11px; color: var(--rp-green); font-weight: 650; line-height: 1.9; padding-top: 3px; }
 .rp-case-facts dd { font-size: 13px; line-height: 1.95; }
+.rp-case-impl { margin: 0; padding-left: 18px; }
+.rp-case-impl li { margin-bottom: 7px; }
+.rp-case-impl li:last-child { margin-bottom: 0; }
+.rp-case-links a.rp-case-link-problems { color: #4c6551; font-weight: 650; border-color: var(--rp-green); }
 .rp-limit { border-left: 2px solid #bac9ad; padding-left: 12px; margin: 21px 0 0; font-size: 12px; color: var(--rp-muted); line-height: 1.9; }
 .rp-limit > span { font-size: 10px; font-weight: 650; margin-right: 9px; color: #4c6551; }
 .rp-case-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 21px; }

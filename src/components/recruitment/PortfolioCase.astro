@@ -3,7 +3,7 @@ import type { PortfolioCase } from '../../data/krafton-2027';
 import PortfolioMedia from './PortfolioMedia.astro';
 interface Props {
   item: PortfolioCase & { number: string };
-  links: { href: string; title: string; label: string }[];
+  links: { href: string; title: string; label: string; kind?: string }[];
 }
 const { item, links } = Astro.props;
 ---
@@ -21,14 +21,12 @@ const { item, links } = Astro.props;
     <PortfolioMedia media={item.media} slotId={item.id} placeholderTitle={`${item.title} 상세 영상`} />
     <div class="rp-case-body">
     <dl class="rp-case-facts">
-      <div><dt>문제</dt><dd>{item.problem}</dd></div>
-      <div><dt>선택</dt><dd>{item.approach}</dd></div>
-      <div><dt>내 기여</dt><dd>{item.contribution}</dd></div>
-      <div><dt>확인한 내용</dt><dd>{item.evidence}</dd></div>
+      <div><dt>소개</dt><dd>{item.intro}</dd></div>
+      <div><dt>구현</dt><dd><ul class="rp-case-impl">{item.implementation.map(line => <li>{line}</li>)}</ul></dd></div>
+      <div><dt>내 역할</dt><dd>{item.role}</dd></div>
     </dl>
-    <p class="rp-limit"><span>남은 확인</span>{item.limitation}</p>
     <div class="rp-case-links" aria-label={`${item.title} 관련 글`}>
-      {links.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}
+      {links.map(link => <a href={link.href} title={link.title} class:list={{ 'rp-case-link-problems': link.kind === 'problems' }}>{link.label}<span aria-hidden="true">↗</span></a>)}
     </div>
     </div>
   </div>
