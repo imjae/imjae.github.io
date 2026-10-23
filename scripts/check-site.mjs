@@ -91,7 +91,7 @@ if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot =>
 const recruitmentVideoSlots = new Set(['project', 'combat', 'traversal', 'equipment', 'water', 'fire']);
 const readVideoFigure = (html, slot) => html.match(new RegExp(`<figure\\b[^>]*data-video-slot="${slot}"[^>]*>[\\s\\S]*?</figure>`))?.[0];
 const escapeHtml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-function checkVideoDestination(html, slot, destination, placeholder = false) {
+function checkVideoDestination(html, slot, destination, placeholder = false, showCaption = true) {
   const figure = readVideoFigure(html, slot);
   const saved = videoSettings[slot];
   if (!saved?.videoUrl) {
@@ -105,7 +105,10 @@ function checkVideoDestination(html, slot, destination, placeholder = false) {
   if (!figure) { failures.push(`${destination} 등록 영상 누락: ${slot}`); return; }
   const originalUrl = figure.match(/<a\b[^>]*\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
   if (originalUrl !== media.url) failures.push(`${destination} 등록한 주소가 다른 영상 칸에 연결됨: ${slot}`);
-  if (!figure.includes(escapeHtml(media.title)) || !figure.includes(escapeHtml(media.caption))) failures.push(`${destination} 실제 영상 제목·촬영 범위 캡션이 다름: ${slot}`);
+  const caption = figure.match(/<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>/)?.[1] ?? '';
+  if (!figure.includes(escapeHtml(media.title))) failures.push(`${destination} 영상 접근성 제목 누락: ${slot}`);
+  if (showCaption && (!caption.includes(escapeHtml(media.title)) || !caption.includes(escapeHtml(media.caption)))) failures.push(`${destination} 실제 영상 제목·촬영 범위 캡션이 다름: ${slot}`);
+  if (!showCaption && (caption.includes(escapeHtml(media.title)) || caption.includes(escapeHtml(media.caption)))) failures.push(`${destination} 제거한 영상 하단 문구가 표시됨: ${slot}`);
   for (const [tag, src] of [['iframe', media.embedUrl], ['video', media.videoSrc], ['img', media.gifSrc]]) {
     if (!src) continue;
     const actualSrc = figure.match(new RegExp(`<${tag}\\b[^>]*\\bsrc="([^"]*)"`))?.[1].replaceAll('&amp;', '&');
@@ -113,7 +116,7 @@ function checkVideoDestination(html, slot, destination, placeholder = false) {
   }
 }
 for (const { id } of projectVideoSlots) {
-  if (recruitmentVideoSlots.has(id)) checkVideoDestination(recruitmentPage, id, '지원용 포트폴리오', true);
+  if (recruitmentVideoSlots.has(id)) checkVideoDestination(recruitmentPage, id, '지원용 포트폴리오', true, id !== 'project');
   else if (readVideoFigure(recruitmentPage, id)) failures.push(`지원용 대표 사례에 추가 영상이 잘못 연결됨: ${id}`);
   const saved = videoSettings[id];
   if (!saved) continue;

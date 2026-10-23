@@ -7,9 +7,10 @@ interface Props {
   slotId?: string;
   placeholderTitle?: string;
   label?: string;
+  showCaption?: boolean;
 }
 const resolved = resolvePortfolioMedia(Astro.props.media);
-const { loading = 'lazy', slotId, placeholderTitle, label = 'DETAIL VIDEO' } = Astro.props;
+const { loading = 'lazy', slotId, placeholderTitle, label = 'DETAIL VIDEO', showCaption = true } = Astro.props;
 const hasInlineMedia = Boolean(resolved?.embedUrl || resolved?.videoSrc || resolved?.gifSrc);
 ---
 {(resolved || placeholderTitle) && <figure class:list={['rp-media', { 'rp-media-empty': !resolved }]} data-video-slot={slotId}>
@@ -28,8 +29,8 @@ const hasInlineMedia = Boolean(resolved?.embedUrl || resolved?.videoSrc || resol
     <span class="rp-media-label">{label}</span>
     <div><strong>{resolved ? '외부 영상' : '영상 준비 중'}</strong><p>{resolved ? '아래 원본 링크에서 볼 수 있습니다.' : '영상이나 GIF를 등록하면 이곳에 표시합니다.'}</p></div>
   </div>}
-  <figcaption>
-    <strong>{resolved?.title || placeholderTitle}</strong>
-    {resolved && <><span>{resolved.caption}</span><a href={resolved.url} target="_blank" rel="noopener noreferrer">{resolved.gifSrc ? 'GIF 원본 보기' : '영상 원본 보기'} ↗<span class="rp-sr-only"> (새 탭)</span></a></>}
-  </figcaption>
+  {(showCaption || resolved) && <figcaption>
+    {showCaption && <strong>{resolved?.title || placeholderTitle}</strong>}
+    {resolved && <>{showCaption && <span>{resolved.caption}</span>}<a href={resolved.url} target="_blank" rel="noopener noreferrer">{resolved.gifSrc ? 'GIF 원본 보기' : '영상 원본 보기'} ↗<span class="rp-sr-only"> (새 탭)</span></a></>}
+  </figcaption>}
 </figure>}

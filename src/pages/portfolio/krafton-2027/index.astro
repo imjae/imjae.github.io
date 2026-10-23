@@ -118,7 +118,7 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
   <div id="project" class="rp-project rp-section">
     <div class="rp-section-title"><div><p class="rp-kicker">PROJECT / UNITY · C#</p><h2 id="project-title" data-portfolio-copy="project.title">{project.title}</h2></div><p data-portfolio-copy="project.subtitle">{project.subtitle}</p></div>
     <div class="rp-showcase rp-project-showcase">
-      <div id="project-video"><PortfolioMedia media={overviewMedia} slotId="project" placeholderTitle="DCB 전체 플레이 영상" label="GAMEPLAY OVERVIEW" loading="eager" /></div>
+      <div id="project-video"><PortfolioMedia media={overviewMedia} slotId="project" placeholderTitle="DCB 전체 플레이 영상" label="GAMEPLAY OVERVIEW" loading="eager" showCaption={false} /></div>
     <div class="rp-project-content">
       <p class="rp-project-description" data-portfolio-copy="project.description">{project.description}</p>
       <dl class="rp-project-facts">
