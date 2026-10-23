@@ -6,10 +6,13 @@ import { repository, branch, githubFileUrl } from '../lib/github-authoring.mjs';
 import PinnedEditor from '../components/PinnedEditor.astro';
 import ProjectVideoEditor from '../components/ProjectVideoEditor.astro';
 import { getReadingItems } from '../lib/reading-shelf.server';
+import { privateAuthoring } from '../lib/authoring.server.mjs';
+import AuthorLoginPrompt from '../components/AuthorLoginPrompt.astro';
 const articles = await getArticles(false);
 const listedBooks = (await getReadingItems(articles)).filter(item => !item.article).map(item => ({ slug: item.slug, title: item.book.title, author: item.book.author }));
 ---
 <BaseLayout title="수정 모드" active="editor" noindex description="GitHub에서 블로그 글을 추가·수정·삭제합니다.">
+  {privateAuthoring ? <>
   <header class="page-intro"><h1>수정 모드</h1><p>글 추가·수정·삭제는 GitHub에서 저장합니다.<br/>저장소 쓰기 권한이 있는 계정으로 로그인해 주세요.</p></header>
   <div class="editor-shortcuts">
     <a href="#new-post" class="button button-dark">새 글 작성</a>
@@ -76,6 +79,7 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
     </form>
   </section>
   <section class="editor-guide" aria-labelledby="publish-title"><h2 id="publish-title">저장과 공개</h2><ol><li>GitHub에서 본문을 작성하고 <strong>Commit changes</strong>로 저장합니다.</li><li>초안은 <code>draft: true</code>로 둡니다. 공개할 준비가 되면 <code>draft: false</code>로 바꿉니다.</li><li><code>main</code>에 저장한 뒤 검증과 배포가 끝나면 블로그에 반영됩니다.</li></ol><p><a href={`${repository}/blob/${branch}/docs/EDITORIAL.md`} target="_blank" rel="noopener noreferrer">문구 작성 지침 ↗</a><a href={`${repository}/blob/${branch}/docs/WRITING.md`} target="_blank" rel="noopener noreferrer">글쓰기 가이드 ↗</a></p></section>
+  </> : <AuthorLoginPrompt />}
 </BaseLayout>
 <script type="application/json" id="listed-books" set:html={JSON.stringify(listedBooks).replaceAll('<', '\u003c')} />
 <script>

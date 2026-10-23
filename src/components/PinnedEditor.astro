@@ -20,6 +20,7 @@ const index = articles.map(article => ({ slug: article.data.slug, title: article
 <script>
   import { preparePinSettings } from '../lib/github-authoring.mjs';
   const data = JSON.parse(document.querySelector('#pin-editor-data')?.textContent ?? '{}') as { pins: string[]; articles: { slug: string; title: string }[] };
+  if (data.pins && data.articles) {
   const initial = [...data.pins];
   const titles = new Map(data.articles.map(article => [article.slug, article.title]));
   const storageKey = `imjae:pin-editor:${JSON.stringify(initial)}`;
@@ -84,6 +85,7 @@ const index = articles.map(article => ({ slug: article.data.slug, title: article
   reset.addEventListener('click', () => { pins = [...initial]; render(); });
   save.addEventListener('click', event => { if (save.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
   render();
+  }
 </script>
 <style is:global>
   .pinned-editor{margin-bottom:38px}.pin-help{font-size:12px;color:var(--muted);line-height:1.9;max-width:740px}

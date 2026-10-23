@@ -1,0 +1,7 @@
+---
+import { authorLoginUrl, authoringConfigured } from '../lib/authoring.server.mjs';
+---
+<header class="page-intro"><h1>편집 로그인</h1><p>사이트 소유자의 GitHub 계정으로 로그인하면 글과 포트폴리오를 수정할 수 있습니다.</p></header>
+{authoringConfigured
+  ? <p><a class="button button-dark" href={authorLoginUrl('/editor/')}>GitHub로 로그인</a></p>
+  : <p>로그인 연결을 준비하고 있습니다.</p>}

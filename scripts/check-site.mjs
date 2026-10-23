@@ -13,13 +13,15 @@ import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
 
-const root = resolve('dist');
+const privateAuthoring = process.env.AUTHORING_MODE === 'private';
+const root = resolve(privateAuthoring ? '.authoring-dist' : 'dist');
 const failures = [];
 const articles = [];
 async function files(directory) { return (await Promise.all((await readdir(directory, { withFileTypes: true })).map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : [join(directory, entry.name)]))).flat(); }
 async function exists(file) { try { return (await stat(file)).isFile(); } catch { return false; } }
 const htmlFiles = (await files(root)).filter((file) => file.endsWith('.html'));
 const siteText = (await Promise.all(htmlFiles.map((file) => readFile(file, 'utf8')))).join('\n');
+if (!privateAuthoring && /data-author-session|action="\/auth\/logout"/.test(siteText)) failures.push('공개 빌드에 소유자 세션 전용 UI가 포함됨');
 const feeds = (await readFile(join(root,'rss.xml'),'utf8')) + (await readFile(join(root,'sitemap.xml'),'utf8'));
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -43,7 +45,8 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
     const modes = html.match(/<nav\b[^>]*class="mode-switch"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
     const editLink = [...modes.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(match => match[0]).find(link => />Edit(?:<|\s)/.test(link));
     const expected = githubFileUrl('edit', file);
-    if (editLink?.match(/\bhref="([^"]*)"/)?.[1] !== expected || !editLink?.includes('target="_blank"') || !editLink?.includes('rel="noopener noreferrer"')) failures.push(`글의 Edit가 실제 원본의 GitHub 편집 화면으로 연결되지 않음: ${data.slug}`);
+    if (privateAuthoring && (editLink?.match(/\bhref="([^"]*)"/)?.[1] !== expected || !editLink?.includes('target="_blank"') || !editLink?.includes('rel="noopener noreferrer"'))) failures.push(`글의 Edit가 실제 원본의 GitHub 편집 화면으로 연결되지 않음: ${data.slug}`);
+    if (!privateAuthoring && editLink) failures.push(`공개 글에 로그인 없는 Edit가 노출됨: ${data.slug}`);
   }
   if (data.draft && siteText.includes(`/writing/${data.slug}/`)) failures.push(`초안 링크 노출: ${data.slug}`);
   if (data.draft && (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(data.slug))) failures.push(`검색 색인 또는 피드에 초안 노출: ${data.slug}`);
@@ -77,18 +80,19 @@ const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^
 if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
 const recruitmentPage = await readFile(join(root,'portfolio/krafton-2027/index.html'),'utf8');
 const portfolioModes = recruitmentPage.match(/<nav\b[^>]*aria-label="Portfolio mode"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
-if (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes('data-portfolio-view') || portfolioModes.includes('github.com')) failures.push('포트폴리오 Edit가 화면 안의 문구 편집 전환이 아님');
+if (privateAuthoring && (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes('data-portfolio-view') || portfolioModes.includes('github.com'))) failures.push('포트폴리오 Edit가 화면 안의 문구 편집 전환이 아님');
 const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 const copyState = stateJson ? JSON.parse(stateJson) : {};
 const copyKeys = [...recruitmentPage.matchAll(/\bdata-portfolio-copy="([^"]+)"/g)].map(match => match[1]);
 for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0', 'contributionRows.0.description']) {
   if (!copyKeys.includes(key)) failures.push(`포트폴리오 주요 문구 편집 지점 누락: ${key}`);
 }
-for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
+if (privateAuthoring) for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
+if (!privateAuthoring && (stateJson || portfolioModes.includes('data-portfolio-edit') || editor.includes('id="new-post-form"') || editor.includes('id="pin-editor-data"') || editor.includes('data-video-editor='))) failures.push('공개 빌드에 로그인 없는 편집 화면이 포함됨');
 if (copyKeys.some(key => /^(?:clientCases|graphicsCases)\.[^.]+\.role$/.test(key)) || /<dt>내 역할<\/dt>/.test(recruitmentPage)) failures.push('포트폴리오 기능별 사례에 제거한 내 역할 칸이 표시됨');
-if (!editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
+if (privateAuthoring && !editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
 const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
+if (privateAuthoring && JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
 const recruitmentVideoSlots = new Set(['project', 'combat', 'traversal', 'equipment', 'water', 'fire']);
 const readVideoFigure = (html, slot) => html.match(new RegExp(`<figure\\b[^>]*data-video-slot="${slot}"[^>]*>[\\s\\S]*?</figure>`))?.[0];
 const escapeHtml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
@@ -120,7 +124,7 @@ for (const { id } of projectVideoSlots) {
   if (recruitmentVideoSlots.has(id)) checkVideoDestination(recruitmentPage, id, '지원용 포트폴리오', true, id !== 'project');
   else if (readVideoFigure(recruitmentPage, id)) failures.push(`지원용 대표 사례에 추가 영상이 잘못 연결됨: ${id}`);
   const saved = videoSettings[id];
-  if (!saved) continue;
+  if (!saved || !privateAuthoring) continue;
   const field = editor.match(new RegExp(`<fieldset\\b[^>]*data-video-editor="${id}"[^>]*>[\\s\\S]*?</fieldset>`))?.[0] ?? '';
   const inputValue = field.match(/<input\b[^>]*\bvalue="([^"]*)"/)?.[1].replaceAll('&amp;', '&') ?? '';
   if (inputValue !== saved.videoUrl) failures.push(`영상 수정 모드의 게시된 주소가 다름: ${id}`);
@@ -169,7 +173,7 @@ if (projectVideo?.videoUrl) {
   const href = videoLink?.match(/\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
   if (href !== projectVideo.videoUrl || !videoLink?.includes('target="_blank"') || !videoLink?.includes('rel="noopener noreferrer"')) failures.push('DCB 소개의 게임 영상 링크와 저장 설정이 다름');
 } else if (videoLink) failures.push('영상 주소가 없는데 DCB 소개에 영상 버튼이 노출됨');
-if (!projectPage.includes('/editor/?project=dcb#project-video') || !editor.includes('id="project-video"')) failures.push('DCB 영상 링크의 수정 모드 연결 누락');
+if (privateAuthoring && (!projectPage.includes('/editor/?project=dcb#project-video') || !editor.includes('id="project-video"'))) failures.push('DCB 영상 링크의 수정 모드 연결 누락');
 if (!/name="robots" content="noindex, nofollow"/.test(editor)) failures.push('수정 모드의 검색 수집 제외 설정 누락');
 if (feeds.includes('/editor/')) failures.push('수정 모드가 RSS 또는 sitemap에 포함됨');
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }

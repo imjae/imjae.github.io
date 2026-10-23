@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "imjae-blog-author",
+  "main": "server/author-auth.mjs",
+  "compatibility_date": "2026-10-23",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "GITHUB_CLIENT_ID": "Ov23liP7iIh0hmeTFXlz",
+    "ALLOWED_GITHUB_ID": "37284282"
+  },
+  "assets": {
+    "directory": "./.authoring-dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "AUTHOR_SESSIONS",
+        "class_name": "AuthorSessions"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "AuthorSessions"
+      ]
+    }
+  ]
+}

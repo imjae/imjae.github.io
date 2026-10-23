@@ -1,0 +1,49 @@
+# GitHub 소유자 로그인과 화면 편집
+
+## 구조
+
+공개 주소 `https://imjae.github.io`는 기존 블로그를 유지하고 View·Sign in을 제공한다. 공개 `/editor/`는 로그인 안내이며 글·고정·영상 관리 양식과 포트폴리오 편집 도구를 렌더링하지 않는다. `?edit=1`로도 편집 도구를 만들지 않는다.
+
+Cloudflare Worker에는 같은 사이트의 **편집용 빌드**를 따로 배포한다. 로그인하면 기존 문구·영상·레이아웃이 있는 편집 주소로 이동한다. 서버가 GitHub `/user`의 고유 ID를 `37284282`와 비교한다. 이는 2026-10-23 공개 GitHub API로 확인한 `imjae` 계정 ID다. 로그인 이름만으로 허용하지 않는다.
+
+Worker는 모든 요청에서 자산보다 먼저 실행한다(`assets.run_worker_first: true`). 로그인하지 않은 사람과 다른 계정은 관리 HTML·JavaScript·정적 자산을 받을 수 없다. 공개 저장소에 있는 코드를 복사해 개인 브라우저에서 바꾸는 것과 블로그의 관리 권한은 구분한다. 공개 저장은 기존 GitHub 쓰기 권한과 Commit changes를 계속 사용하며 로그인 서버에 저장소 쓰기 권한을 주지 않는다.
+
+편집 서버 주소는 `https://imjae-blog-author.imjae-game-dev-notes.workers.dev`이며 OAuth 콜백은 이 주소의 `/auth/callback`입니다. 2026-10-23 Wrangler의 최소 권한 로그인을 마치고 보호된 빌드를 배포했습니다. GitHub OAuth 앱 `imjae Blog Editor`(설정 ID `3957530`)의 Client ID를 연결하고 Secret은 Cloudflare에만 등록했습니다. 실제 imjae 로그인·문구 편집·View·새로고침 복원·취소와 로그아웃 후 세션 차단을 확인했습니다. 다른 실제 GitHub 계정은 사용하지 않았으며 타 계정 ID·위조·만료·재사용 거부는 자동 검사로 확인했습니다.
+
+## 로그인과 세션
+
+- OAuth에는 추가 scope를 요청하지 않는다. GitHub 토큰은 Worker에서 계정 확인에만 사용한 뒤 버리며 브라우저·쿠키·세션 저장소에 보관하지 않는다.
+- OAuth state는 브라우저의 HttpOnly 쿠키와 대조하고 Durable Object에서 원자적으로 한 번만 소비한다. PKCE S256과 10분 만료를 적용한다.
+- 로그인 성공 후 8시간의 무작위 서버 세션을 새로 발급한다. 세션 쿠키는 `__Host-`·Secure·HttpOnly·SameSite=Lax를 사용한다. 이전 세션은 폐기한다.
+- 로그아웃은 같은 origin의 POST만 허용하며 서버의 세션을 삭제한다. 삭제된 세션은 다시 사용할 수 없다.
+- 보호된 응답은 `private, no-store`이며 검색 수집을 막는다. 인증 설정 누락·GitHub 오류·세션 저장소 오류는 편집을 허용하지 않는다.
+- 로그인 뒤에도 같은 화면의 Edit에서 문구를 고치고 View에서 미리 본다. 새로고침·임시 편집 복원·GitHub 저장은 기존 방식이다. 세션이 만료되면 다시 로그인한다.
+
+## 연결 순서
+
+비밀번호·Client Secret·Cloudflare API 토큰은 채팅·Git·문서·명령 인자로 전달하지 않는다.
+
+1. Cloudflare 계정에서 Workers 사용을 준비한다. 로컬 CLI는 `npx wrangler login --scopes account:read user:read workers_scripts:write --use-keyring`으로 로그인한다. Windows keyring 의존성이 필요하면 Wrangler가 안내하는 공식 패키지를 설치한다. 기본 승인 만료가 짧을 경우 `--device`를 사용한다. 계정·사용자 조회와 Worker 배포 외의 추가 scope를 요청하지 않으며, CLI의 로그인 유지는 Cloudflare가 요구하는 Background Access를 사용한다. 새 이용약관·결제·권한 승인이 나타나면 내용을 확인한 뒤 본인이 결정한다.
+2. `npm run author:build`로 편집용 `.authoring-dist/`를 만든다. `npx wrangler deploy --config wrangler.authoring.jsonc`로 Worker 주소를 확보한다. OAuth 설정을 채우기 전에는 503으로 닫혀 있으므로 편집 화면이 공개되지 않는다.
+3. GitHub **Settings → Developer settings → OAuth Apps → New OAuth App**에서 앱을 등록한다. Homepage URL은 `https://imjae.github.io`, Authorization callback URL은 **실제 Worker origin 뒤의 `/auth/callback`**으로 지정한다. 기기 인증 흐름과 추가 scope는 사용하지 않는다.
+4. 공개 정보인 Client ID는 `wrangler.authoring.jsonc`의 `GITHUB_CLIENT_ID`에 넣는다. 이 값은 공개 앱 식별자이며 로그인 비밀 값이 아니다. Client Secret은 Cloudflare 대시보드의 Worker **Settings → Variables and Secrets**에서 **Secret** 타입의 `GITHUB_CLIENT_SECRET`으로 직접 등록한다. Client Secret은 명령 인자·저장소 파일에 적지 않는다.
+5. GitHub 저장소의 Actions **Variables**에 `AUTHORING_ORIGIN`을 실제 Worker origin으로 설정한다. origin에는 HTTPS 주소만 쓰고 경로·쿼리·마지막 항목은 붙이지 않는다.
+6. 자동 동기화를 사용할 경우 해당 Worker 배포에 필요한 Cloudflare 권한으로 API 토큰을 만든다. GitHub Actions **Secrets**에 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`를 직접 등록하고 **Variable** `AUTHORING_DEPLOY_ENABLED=true`를 지정한다. 토큰은 브라우저나 블로그 빌드에 전달하지 않는다.
+7. `Publish owner-only editor`를 실행해 최신 본문과 편집 도구를 Worker에 배포한다. 공개 Pages 워크플로도 실행해 Sign in 링크를 연결한다. 이후 main 변경은 두 배포로 동기화한다. Worker 배포는 기존 Client Secret을 유지한다.
+8. 실제 GitHub 로그아웃 상태·다른 계정·imjae 계정에서 각각 확인한다. imjae 로그인 뒤 직접 문구 편집·View·임시 복원·GitHub 저장을 확인하고, 로그아웃 뒤 보호된 주소와 자산을 다시 열어 거부되는지 확인한다.
+
+`AUTHORING_ORIGIN`은 실제 편집 서버 주소로 설정했다. 자동 배포용 Cloudflare API 토큰은 아직 등록하지 않았으므로 보호된 빌드는 현재 로그인한 로컬 Wrangler로 배포한다. main의 글·문구가 바뀌면 최신 main만 담은 작업 공간에서 `npm ci`, `npm run author:build`, `npx wrangler deploy --config wrangler.authoring.jsonc`를 실행해야 편집 서버에도 반영된다. `.authoring-dist/`를 Pages에 올려 대신하지 않는다.
+
+## 로컬 검사
+
+```sh
+npm run verify
+npm run author:build
+npx wrangler deploy --config wrangler.authoring.jsonc --dry-run
+```
+
+Cloudflare Workers는 외부 fetch의 `redirect: error`를 지원하지 않으므로 `manual`을 사용하고 3xx·비정상 응답을 거부한다. Client Secret과 GitHub 토큰이 다른 주소로 전달되는 자동 리디렉션은 사용하지 않는다.
+
+기존 사이트 검사에 공개 빌드의 Edit·관리 양식 제외와 보호 빌드의 직접 편집 유지 검사를 나눴다. 인증 테스트는 state·PKCE·소유자 ID·세션 위조와 만료·CSRF·로그아웃·오류 시 차단·자산 접근을 다룬다. GitHub 응답을 대체한 자동 검사는 실제 GitHub OAuth나 Cloudflare 배포 검증을 대신하지 않는다.
+
+참고: [GitHub OAuth 흐름](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps), [Worker 우선 실행](https://developers.cloudflare.com/workers/static-assets/routing/worker-script/), [Durable Object 저장소](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/).

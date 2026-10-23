@@ -1,13 +1,14 @@
 ---
 import { articleUrl, formatDate } from '../lib/articles';
 import { getReadingItems } from '../lib/reading-shelf.server';
+import { privateAuthoring } from '../lib/authoring.server.mjs';
 const books = await getReadingItems();
 const noteCount = books.filter(item => item.article).length;
 ---
 <section class="reading-shelf" aria-labelledby="bookshelf-title">
   <div class="section-heading shelf-heading">
     <h2 id="bookshelf-title">Bookshelf <span>{books.length}</span></h2>
-    <a class="text-link" href="/editor/?topic=reading#new-post">독서 기록 추가 <span aria-hidden="true">↗</span></a>
+    {privateAuthoring && <a class="text-link" href="/editor/?topic=reading#new-post">독서 기록 추가 <span aria-hidden="true">↗</span></a>}
   </div>
   <label class="search-box"><span aria-hidden="true">⌕</span><input id="book-search" type="search" placeholder="책 제목, 저자, 감상에서 검색" aria-label="독서 기록 검색" autocomplete="off" /><kbd>/</kbd></label>
   <div class="filter-row"><label for="book-view" class="sr-only">기록 종류</label><select id="book-view"><option value="all">전체 기록</option><option value="notes">독서 메모</option><option value="listed">감상 미작성</option></select></div>
@@ -22,7 +23,7 @@ const noteCount = books.filter(item => item.article).length;
           <div class="book-meta"><span>{book.author ?? '저자 미기재'}</span>{article?.data.draft && <span class="draft-label">초안</span>}<span>{book.finished ? '완독 ' : '기록 '}<time datetime={book.finished ?? item.date}>{formatDate(book.finished ?? item.date)}</time></span></div>
           <h3>{article ? <a href={articleUrl(article)}>{book.title}</a> : book.title}</h3>
           <div class="book-note"><p class="book-note-label">{article ? book.note ? '짧은 감상' : '기록 요약' : '감상 미작성'}</p>{article ? <p>{book.note ?? article.data.description}</p> : <p>책 목록에 남긴 기록입니다.{item.rating && <> 기록한 별점은 {item.rating}/5입니다.</>}</p>}</div>
-          {article ? <a class="book-more" href={articleUrl(article)}>독서 메모 읽기 <span aria-hidden="true">→</span></a> : <a class="book-more" href={`/editor/?topic=reading&book=${encodeURIComponent(item.slug)}#new-post`}>감상 남기기 <span aria-hidden="true">↗</span></a>}
+          {article ? <a class="book-more" href={articleUrl(article)}>독서 메모 읽기 <span aria-hidden="true">→</span></a> : privateAuthoring && <a class="book-more" href={`/editor/?topic=reading&book=${encodeURIComponent(item.slug)}#new-post`}>감상 남기기 <span aria-hidden="true">↗</span></a>}
         </div>
       </article>;
     })}

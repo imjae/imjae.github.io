@@ -14,7 +14,9 @@ const { fields } = Astro.props;
 <noscript><p class="rp-copy-noscript">화면에서 문구를 편집하려면 JavaScript가 필요합니다.</p></noscript>
 <script>
   import { preparePortfolioCopySaves } from '../../lib/portfolio-copy.mjs';
-  const fields = JSON.parse(document.querySelector('#portfolio-copy-state')!.textContent!) as Record<string, string>;
+  const stateElement = document.querySelector('#portfolio-copy-state');
+  if (stateElement) {
+  const fields = JSON.parse(stateElement.textContent!) as Record<string, string>;
   const nodes = [...document.querySelectorAll<HTMLElement>('[data-portfolio-copy]')];
   const view = document.querySelector<HTMLButtonElement>('[data-portfolio-view]')!;
   const edit = document.querySelector<HTMLButtonElement>('[data-portfolio-edit]')!;
@@ -111,4 +113,5 @@ const { fields } = Astro.props;
   view.disabled = edit.disabled = false;
   paint();
   setMode(new URLSearchParams(location.search).get('edit') === '1');
+  }
 </script>

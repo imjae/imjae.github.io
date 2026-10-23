@@ -20,6 +20,8 @@ jobs:
       - uses: actions/checkout@v7
       - name: Verify, build and upload
         uses: withastro/action@v6
+        env:
+          PUBLIC_AUTHORING_ORIGIN: ${{ vars.AUTHORING_ORIGIN }}
         with:
           node-version: 24
           build-cmd: npm run verify

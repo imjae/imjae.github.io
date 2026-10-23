@@ -1,5 +1,15 @@
 # 블로그 관리 인수인계
 
+## 2026-10-23 GitHub 소유자 로그인과 보호된 화면 편집
+
+공개 Pages와 Cloudflare의 보호된 편집 빌드를 나눴다. 공개 화면은 View·Sign in과 로그인 안내를 표시하고, 편집 서버는 GitHub 고유 ID 37284282(imjae)를 확인한 세션에만 기존 화면의 Edit·글·고정·영상 관리를 제공한다. Worker가 모든 자산보다 먼저 인증하며, OAuth state 단일 사용·PKCE·HttpOnly 서버 세션·즉시 로그아웃·오류 시 차단을 적용했다. GitHub 토큰은 계정 확인에만 잠시 사용하고 저장하거나 브라우저로 보내지 않는다. [연결·배포 절차](AUTHOR-LOGIN.md)에 설정을 모았다.
+
+최신 HEAD c1c5dfb와 인증 변경만 합친 검증 복사본의 npm run verify에서 테스트 71개·Astro 진단 0개·공개 110개 경로·117개 HTML 검사, 보호 빌드 110개 경로·117개 HTML 검사를 통과했다. Home 고정 12편·긴 CLI 글·390px 모바일 검색 1편과 가로 넘침 없음을 확인했다. 실제 Cloudflare와 GitHub 앱 imjae Blog Editor를 연결해 imjae 로그인, graphics 구역 복귀, 직접 문구 수정·View·새로고침 복원·변경 취소, 로그아웃 후 세션 거부를 확인했다. 임시 문구는 취소했으며 GitHub에 저장하지 않았다. 익명 HTML은 로그인으로 이동하고 관리 자산·세션은 401로 차단된다. 다른 실제 GitHub 계정은 사용하지 않았으며 타 계정·위조·만료·재사용과 동시 state 소비 거부는 자동 검사로 확인했다.
+
+실제 런타임에서 Workers가 fetch의 redirect:error를 지원하지 않는 문제를 발견해 manual과 응답 상태 검사로 수정했다. SQLite 트랜잭션은 storage 객체를 사용하고 Referrer-Policy는 same-origin으로 같은 origin POST 로그아웃을 지원한다. 공개 빌드에는 편집 양식·세션 UI가 없으며 .authoring-dist는 Pages 업로드 대상이 아니다. 검증 자료는 .verification/author-auth/에 있다.
+
+Worker는 imjae-blog-author.imjae-game-dev-notes.workers.dev에 수동 배포했다. 공개 배포용 AUTHORING_ORIGIN을 GitHub 변수에 등록했다. 편집 서버의 자동 배포 토큰은 아직 설정하지 않아 main 변경 후 보호된 빌드는 별도 배포해야 한다. 관련 워크플로는 AUTHORING_DEPLOY_ENABLED 설정 전 실행하지 않는다. About·촬영·지원서 보관 초안과 다른 WIP는 이번 커밋에 포함하지 않는다.
+
 ## 2026-10-23 전체 글과 크래프톤 포트폴리오 문구 정리
 
 사용자 요청으로 공개 글과 초안 93편을 조사했다. 검사 실행·통과 건수, 자료 대조 보고, 남은 확인 절, 글 작성 중 Unity·장면·측정을 실행하지 않았다는 고지를 제거했다. 기술 설명·실제 성능 비교·예제의 전제·AI 활용과 재사용 자산 표시는 유지했다. 설명·요약·표·소제목은 존댓말로 고쳤고 인용문·실행 코드·legacy/jekyll 원본·slug·작성일·공개 상태는 보존했다. 바뀐 소제목 183개에는 이전 fragment 주소를 남겼다. 지원서 입력 기록은 원문 보관 목적에 맞춰 그대로 유지했다.

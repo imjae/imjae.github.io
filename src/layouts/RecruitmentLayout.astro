@@ -1,6 +1,8 @@
 ---
 import '../styles/recruitment.css';
 import { site } from '../data/site';
+import { privateAuthoring, authorLoginUrl } from '../lib/authoring.server.mjs';
+import AuthorSessionGuard from '../components/AuthorSessionGuard.astro';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -39,8 +41,11 @@ const sections = [
         <div class="rp-header-actions">
           <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
           <nav class="rp-mode-switch" aria-label="Portfolio mode">
-            <button type="button" data-portfolio-view aria-pressed="true" disabled>View</button>
-            <button type="button" data-portfolio-edit aria-pressed="false" disabled>Edit</button>
+            {privateAuthoring ? <>
+              <button type="button" data-portfolio-view aria-pressed="true" disabled>View</button>
+              <button type="button" data-portfolio-edit aria-pressed="false" disabled>Edit</button>
+              <form action="/auth/logout" method="post"><button type="submit">Sign out</button></form>
+            </> : <><a href="#main-content" aria-current="page">View</a><a href={authorLoginUrl('/portfolio/krafton-2027/?edit=1')} data-author-login>Sign in</a></>}
           </nav>
         </div>
       </div>
@@ -49,9 +54,16 @@ const sections = [
     <footer class="rp-footer">
       <span>imjae · Game programming</span>
       <a href="/">개발 블로그</a>
-      <a href="/editor/#portfolio-copy">문구·영상 수정</a>
+      {privateAuthoring && <a href="/editor/#portfolio-copy">문구·영상 수정</a>}
       <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="rp-sr-only"> (새 탭)</span></a>
       <a href="#main-content">맨 위로 ↑</a>
     </footer>
   </body>
+  {privateAuthoring && <AuthorSessionGuard />}
 </html>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-author-login]').forEach(link => link.addEventListener('click', () => {
+    const url = new URL(link.href);
+    if (url.pathname === '/auth/login') { url.searchParams.set('return_to', location.pathname + '?edit=1' + location.hash); link.href = url.href; }
+  }));
+</script>

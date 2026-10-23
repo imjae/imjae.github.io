@@ -14,7 +14,9 @@
     "test": "node --test tests/*.test.mjs",
     "check:site": "node scripts/check-site.mjs",
     "verify": "npm run test && npm run check && npm run build && npm run check:site",
-    "new": "node scripts/new-post.mjs"
+    "new": "node scripts/new-post.mjs",
+    "author:build": "node scripts/build-authoring.mjs",
+    "author:deploy": "npm run author:build && wrangler deploy --config wrangler.authoring.jsonc"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.3",
@@ -27,7 +29,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.152.0"
   },
   "overrides": {
     "katex": "$katex"
