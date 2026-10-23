@@ -7,6 +7,8 @@ import { readPinSettings } from '../src/lib/pin-settings.server.mjs';
 import { readProjectVideoSettingsBySlot } from '../src/lib/project-video.server.mjs';
 import { projectVideoSlots } from '../src/lib/project-video.mjs';
 import { dcbFeatures } from '../src/data/dcb-features.mjs';
+import { dcbVideos, getDcbVideoMedia } from '../src/data/dcb-videos.mjs';
+import { resolvePortfolioMedia } from '../src/lib/recruitment-media.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
@@ -86,20 +88,42 @@ for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`�
 if (!editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
 const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
 if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
+const recruitmentVideoSlots = new Set(['project', 'combat', 'traversal', 'equipment', 'water', 'fire']);
+const readVideoFigure = (html, slot) => html.match(new RegExp(`<figure\\b[^>]*data-video-slot="${slot}"[^>]*>[\\s\\S]*?</figure>`))?.[0];
+const escapeHtml = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+function checkVideoDestination(html, slot, destination, placeholder = false) {
+  const figure = readVideoFigure(html, slot);
+  const saved = videoSettings[slot];
+  if (!saved?.videoUrl) {
+    if (placeholder && !figure) failures.push(`${destination} 영상 칸 누락: ${slot}`);
+    if (!placeholder && figure) failures.push(`${destination} 미등록 영상 영역 노출: ${slot}`);
+    if (saved && figure && /<(?:img|iframe|video)\b/.test(figure)) failures.push(`${destination} 제거한 영상이 다시 표시됨: ${slot}`);
+    return;
+  }
+  const media = resolvePortfolioMedia(getDcbVideoMedia(slot, saved));
+  if (!media) { failures.push(`등록한 영상 주소를 표시할 수 없음: ${slot}`); return; }
+  if (!figure) { failures.push(`${destination} 등록 영상 누락: ${slot}`); return; }
+  const originalUrl = figure.match(/<a\b[^>]*\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
+  if (originalUrl !== media.url) failures.push(`${destination} 등록한 주소가 다른 영상 칸에 연결됨: ${slot}`);
+  if (!figure.includes(escapeHtml(media.title)) || !figure.includes(escapeHtml(media.caption))) failures.push(`${destination} 실제 영상 제목·촬영 범위 캡션이 다름: ${slot}`);
+  for (const [tag, src] of [['iframe', media.embedUrl], ['video', media.videoSrc], ['img', media.gifSrc]]) {
+    if (!src) continue;
+    const actualSrc = figure.match(new RegExp(`<${tag}\\b[^>]*\\bsrc="([^"]*)"`))?.[1].replaceAll('&amp;', '&');
+    if (actualSrc !== src) failures.push(`${destination} 재생 미디어 주소가 다름: ${slot}`);
+  }
+}
 for (const { id } of projectVideoSlots) {
-  const figure = recruitmentPage.match(new RegExp(`<figure\\b[^>]*data-video-slot="${id}"[^>]*>[\\s\\S]*?</figure>`))?.[0];
-  if (!figure) { failures.push(`포트폴리오 영상 칸 누락: ${id}`); continue; }
+  if (recruitmentVideoSlots.has(id)) checkVideoDestination(recruitmentPage, id, '지원용 포트폴리오', true);
+  else if (readVideoFigure(recruitmentPage, id)) failures.push(`지원용 대표 사례에 추가 영상이 잘못 연결됨: ${id}`);
   const saved = videoSettings[id];
   if (!saved) continue;
   const field = editor.match(new RegExp(`<fieldset\\b[^>]*data-video-editor="${id}"[^>]*>[\\s\\S]*?</fieldset>`))?.[0] ?? '';
   const inputValue = field.match(/<input\b[^>]*\bvalue="([^"]*)"/)?.[1].replaceAll('&amp;', '&') ?? '';
   if (inputValue !== saved.videoUrl) failures.push(`영상 수정 모드의 게시된 주소가 다름: ${id}`);
-  if (!saved.videoUrl) {
-    if (/<(?:img|iframe|video)\b/.test(figure)) failures.push(`제거한 영상이 다시 표시됨: ${id}`);
-  } else {
-    const originalUrl = figure.match(/<a\b[^>]*\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
-    if (originalUrl !== saved.videoUrl) failures.push(`등록한 주소가 다른 영상 칸에 연결됨: ${id}`);
-  }
+}
+for (const video of dcbVideos) {
+  if (video.projectPage) checkVideoDestination(projectPage, video.slot, 'DCB 소개');
+  else if (readVideoFigure(projectPage, video.slot)) failures.push(`DCB 소개에 기능별 영상이 잘못 연결됨: ${video.slot}`);
 }
 const primaryFeatures = new Set(['ai-collaboration', 'monster-combat', 'ik-traversal', 'modular-equipment', 'water-playback', 'fire-vfx']);
 const recruitmentFeatures = [...recruitmentPage.matchAll(/\bdata-dcb-feature="([^"]+)"/g)].map(match => match[1]);
@@ -120,6 +144,10 @@ for (const feature of dcbFeatures) {
   const page = join(root,route,'index.html');
   if (!(await exists(page))) { failures.push(`기능 상세 화면 누락: ${feature.slug}`); continue; }
   const html = await readFile(page,'utf8');
+  for (const video of dcbVideos) {
+    if (video.featureSlugs.includes(feature.slug)) checkVideoDestination(html, video.slot, `기능 ${feature.slug}`);
+    else if (readVideoFigure(html, video.slot)) failures.push(`영상이 다른 기능에 연결됨: ${video.slot} → ${feature.slug}`);
+  }
   const expected = selectFeatureArticles(feature, articles).map(article => article.data.slug);
   const actual = [...html.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
   if (JSON.stringify(actual) !== JSON.stringify(expected)) failures.push(`기능별 공개 글 목록·순서가 다름: ${feature.slug}`);

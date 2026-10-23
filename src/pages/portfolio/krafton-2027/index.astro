@@ -9,10 +9,11 @@ import { portfolioTextFields, applyPortfolioText } from '../../../lib/portfolio-
 import { readPortfolioText } from '../../../lib/portfolio-copy.server.mjs';
 import PortfolioCopyEditor from '../../../components/recruitment/PortfolioCopyEditor.astro';
 import { dcbFeatures } from '../../../data/dcb-features.mjs';
+import { getDcbVideoMedia } from '../../../data/dcb-videos.mjs';
 import { getArticles, articleUrl } from '../../../lib/articles';
 import { site } from '../../../data/site';
 import { readProjectVideoSettingsBySlot } from '../../../lib/project-video.server.mjs';
-import { resolvePortfolioMedia, selectProjectPortfolioMedia } from '../../../lib/recruitment-media.mjs';
+import { resolvePortfolioMedia } from '../../../lib/recruitment-media.mjs';
 
 const baseCopy = {
   profile: defaults.profile, project: defaults.project, clientCases: defaults.clientCases,
@@ -45,9 +46,7 @@ function orderedCases(items: PortfolioCaseData[], sectionNumber: string) {
     return {
       item: {
         ...item,
-        media: selectProjectPortfolioMedia(videoSettings[item.id], item.media, {
-          title: `${item.title} 상세 영상`, caption: item.summary,
-        }),
+        media: getDcbVideoMedia(item.id, videoSettings[item.id], item.media),
       },
       links: linkedArticles(item.links, true),
       order,
@@ -79,9 +78,7 @@ const extraArticles = linkedArticles([...additionalLinks]
   .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
 const workflowArticles = linkedArticles(aiLinks);
 const savedVideo = videoSettings.project;
-const overviewMedia = selectProjectPortfolioMedia(savedVideo, project.media, {
-  title: `${project.title} 전체 플레이 영상`, caption: project.subtitle,
-});
+const overviewMedia = getDcbVideoMedia('project', savedVideo, project.media);
 const projectMedia = resolvePortfolioMedia(overviewMedia);
 const videoUrl = projectMedia?.url;
 const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || projectMedia?.gifSrc);

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "project": "dcb",
+  "createdAt": "2026-10-23T01:03:00.000Z",
+  "slot": "cargo-loading",
+  "videoUrl": "https://youtu.be/V-E3P6LaJVI?t=104",
+  "startSeconds": 104,
+  "endSeconds": 111,
+  "clipVariant": "main-cargo-excerpt"
+}

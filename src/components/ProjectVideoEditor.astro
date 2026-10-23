@@ -16,7 +16,7 @@ const slots = projectVideoSlots.map(slot => ({
 <section class="editor-section project-video-editor" id="project-video" aria-labelledby="project-video-title">
   <div class="section-heading"><h2 id="project-video-title">DCB 영상·GIF</h2></div>
   <p class="video-help">전체 플레이와 각 기능의 주소를 따로 등록합니다. 각 항목의 저장 버튼으로 해당 주소만 반영합니다.</p>
-  <p class="video-help" id="project-video-help">YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 영상 자리는 준비 상태로 표시합니다.</p>
+  <p class="video-help" id="project-video-help">YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 해당 영상의 등록을 해제합니다.</p>
   <div class="video-slot-grid">
     {slots.map(slot => <fieldset class="video-slot" data-video-editor={slot.id}>
       <legend>{slot.label}</legend>

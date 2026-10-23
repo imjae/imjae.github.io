@@ -23,6 +23,31 @@ test('최신 영상 변경·제거 설정을 선택해 이전 주소가 다시 �
   assert.equal(first.videoUrl, 'https://example.com/first');
 });
 
+test('등록한 정수 구간은 선택 후에도 유지되고 독립 영상으로 교체하면 이전 구간을 지운다', () => {
+  const excerpt = { ...record('2026-10-22T00:00:00.000Z', 'https://youtu.be/abcdefghijk?t=104'), slot: 'cargo-loading', startSeconds: 104, endSeconds: 111, clipVariant: 'main-cargo-excerpt' };
+  assert.deepEqual(validateProjectVideoSettings(excerpt), excerpt);
+  assert.deepEqual(selectProjectVideoSettings([excerpt], 'cargo-loading'), excerpt);
+  const replacement = { ...record('2026-10-23T00:00:00.000Z', 'https://youtu.be/12345678901'), slot: 'cargo-loading' };
+  assert.deepEqual(selectProjectVideoSettings([replacement, excerpt], 'cargo-loading'), replacement);
+  const removed = { ...record('2026-10-24T00:00:00.000Z', ''), slot: 'cargo-loading' };
+  assert.deepEqual(selectProjectVideoSettings([excerpt, removed], 'cargo-loading'), removed);
+});
+
+test('영상 구간의 잘못된 형식·순서와 지게 이외의 발췌 캡션 설정을 거절한다', () => {
+  const base = { ...record(now.toISOString(), 'https://youtu.be/abcdefghijk'), slot: 'cargo-loading' };
+  for (const change of [
+    { startSeconds: -1 }, { startSeconds: 0.5 }, { startSeconds: '104' }, { startSeconds: null },
+    { endSeconds: 0 }, { endSeconds: 0.5 }, { endSeconds: '111' }, { endSeconds: null },
+    { startSeconds: Number.MAX_SAFE_INTEGER + 1 }, { endSeconds: Infinity },
+    { startSeconds: 111, endSeconds: 104 }, { startSeconds: 104, endSeconds: 104 },
+    { videoUrl: '', startSeconds: 0 }, { clipVariant: 'unknown', startSeconds: 104, endSeconds: 111 },
+    { clipVariant: 'main-cargo-excerpt' },
+    { slot: 'okgwi', clipVariant: 'main-cargo-excerpt', startSeconds: 20, endSeconds: 45 },
+  ]) assert.throws(() => validateProjectVideoSettings({ ...base, ...change }), JSON.stringify(change));
+  assert.equal(validateProjectVideoSettings({ ...base, startSeconds: 0 }).startSeconds, 0);
+  assert.equal(validateProjectVideoSettings({ ...base, endSeconds: 45 }).endSeconds, 45);
+});
+
 test('저장소 GIF 경로를 정리하며 다른 상대 경로와 외부 호스트 우회는 거절한다', () => {
   assert.equal(normalizeVideoUrl(' /assets/clips/../demo.GIF?v=2 '), '/assets/demo.GIF?v=2');
   for (const path of ['assets/demo.gif', '/assets/demo.mp4', '//example.com/demo.gif', '/\\example.com/demo.gif']) {

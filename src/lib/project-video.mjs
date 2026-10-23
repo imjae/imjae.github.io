@@ -5,6 +5,12 @@ export const projectVideoSlots = [
   { id: 'equipment', label: '장비 조합' },
   { id: 'water', label: '물·급류' },
   { id: 'fire', label: '불·화염' },
+  { id: 'rope-bridge', label: '출렁다리' },
+  { id: 'cinematic', label: '시네마틱' },
+  { id: 'cargo-loading', label: '지게 적재·운반' },
+  { id: 'gather-repair', label: '채집·지게 수리' },
+  { id: 'shrine', label: '신단 기도·빛 연출' },
+  { id: 'okgwi', label: '옥귀 전투' },
 ];
 
 function normalizeVideoSlot(slot = 'project') {
@@ -35,7 +41,19 @@ export function validateProjectVideoSettings(value) {
   if (!value || value.version !== 1 || value.project !== 'dcb') throw new Error('프로젝트 영상 설정을 확인해 주세요.');
   if (typeof value.createdAt !== 'string' || !Number.isFinite(Date.parse(value.createdAt)) || new Date(value.createdAt).toISOString() !== value.createdAt) throw new Error('영상 설정의 저장 시각을 확인해 주세요.');
   const slot = normalizeVideoSlot(value.slot);
-  return { version: 1, project: 'dcb', createdAt: value.createdAt, videoUrl: normalizeVideoUrl(value.videoUrl), ...(slot === 'project' ? {} : { slot }) };
+  const videoUrl = normalizeVideoUrl(value.videoUrl);
+  const { startSeconds, endSeconds, clipVariant } = value;
+  if (startSeconds !== undefined && (!Number.isSafeInteger(startSeconds) || startSeconds < 0)) throw new Error('영상 시작 시각은 0 이상의 정수 초로 적어 주세요.');
+  if (endSeconds !== undefined && (!Number.isSafeInteger(endSeconds) || endSeconds <= (startSeconds ?? 0))) throw new Error('영상 종료 시각은 시작 이후의 정수 초로 적어 주세요.');
+  if (!videoUrl && (startSeconds !== undefined || endSeconds !== undefined || clipVariant !== undefined)) throw new Error('영상 구간을 등록하려면 영상 주소가 필요합니다.');
+  if (clipVariant !== undefined && (slot !== 'cargo-loading' || clipVariant !== 'main-cargo-excerpt' || startSeconds === undefined || endSeconds === undefined)) throw new Error('지게 본편 발췌 설정과 시작·종료 시각을 확인해 주세요.');
+  return {
+    version: 1, project: 'dcb', createdAt: value.createdAt, videoUrl,
+    ...(slot === 'project' ? {} : { slot }),
+    ...(startSeconds !== undefined ? { startSeconds } : {}),
+    ...(endSeconds !== undefined ? { endSeconds } : {}),
+    ...(clipVariant !== undefined ? { clipVariant } : {}),
+  };
 }
 
 export function selectProjectVideoSettings(settings, target = 'project') {

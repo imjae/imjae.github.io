@@ -1,0 +1,31 @@
+---
+import PortfolioMedia from './recruitment/PortfolioMedia.astro';
+import { getDcbVideoMedia } from '../data/dcb-videos.mjs';
+import { readProjectVideoSettingsBySlot } from '../lib/project-video.server.mjs';
+import { resolvePortfolioMedia } from '../lib/recruitment-media.mjs';
+
+interface Props {
+  slots: string[];
+  id: string;
+  title?: string;
+}
+const { slots, id, title = '플레이 영상' } = Astro.props;
+const settings = await readProjectVideoSettingsBySlot();
+const videos = slots.map(slot => ({ slot, media: getDcbVideoMedia(slot, settings[slot]) }))
+  .filter(video => resolvePortfolioMedia(video.media));
+---
+{videos.length > 0 && <section class="dcb-videos" id={id} aria-labelledby={`${id}-title`}>
+  <div class="section-heading"><h2 id={`${id}-title`}>{title}</h2></div>
+  {videos.map(({ slot, media }) => <PortfolioMedia media={media} slotId={slot} />)}
+</section>}
+<style>
+  .dcb-videos{margin:38px 0 42px;scroll-margin-top:25px}
+  .dcb-videos :global(.rp-media){margin:24px 0 32px}
+  .dcb-videos :global(.rp-video-frame){width:100%;aspect-ratio:16/9;min-height:202px;background:#213b31;border-radius:5px;overflow:hidden}
+  .dcb-videos :global(.rp-video-frame iframe),.dcb-videos :global(.rp-video-frame video),.dcb-videos :global(.rp-video-frame img){display:block;width:100%;height:100%;border:0;object-fit:contain}
+  .dcb-videos :global(figcaption){display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:12px;line-height:1.9;color:var(--muted);overflow-wrap:anywhere}
+  .dcb-videos :global(figcaption strong){color:var(--ink);font-weight:650}
+  .dcb-videos :global(figcaption a){width:fit-content;color:var(--green);text-decoration:underline;text-underline-offset:4px}
+  .dcb-videos :global(.rp-sr-only){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+  @media print{.dcb-videos :global(.rp-video-frame){display:none}.dcb-videos :global(.rp-media){break-inside:avoid}.dcb-videos :global(figcaption a)::after{content:' (' attr(href) ')'}}
+</style>
