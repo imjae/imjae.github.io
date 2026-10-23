@@ -1,0 +1,114 @@
+---
+interface Props { fields: Record<string, string>; }
+const { fields } = Astro.props;
+---
+<aside id="portfolio-copy-toolbar" class="rp-copy-toolbar" hidden aria-label="포트폴리오 문구 편집">
+  <div><strong>화면에서 문구 수정</strong><p>문구를 클릭해 고칩니다. View로 미리 볼 수 있으며, 공개 반영은 저장 후 GitHub의 Commit changes로 확정합니다.</p><p id="portfolio-copy-status" role="status" aria-live="polite">게시된 문구와 같습니다.</p></div>
+  <div class="rp-copy-actions">
+    <div id="portfolio-copy-saves"><button type="button" disabled>저장할 변경 없음</button></div>
+    <button type="button" id="portfolio-copy-reset" disabled>변경 취소</button>
+    <button type="button" id="portfolio-copy-restore" hidden>이전 임시 편집 복원</button>
+  </div>
+</aside>
+<script type="application/json" id="portfolio-copy-state" set:html={JSON.stringify(fields).replaceAll('<', '\\u003c')}></script>
+<noscript><p class="rp-copy-noscript">화면에서 문구를 편집하려면 JavaScript가 필요합니다.</p></noscript>
+<script>
+  import { preparePortfolioCopySaves } from '../../lib/portfolio-copy.mjs';
+  const fields = JSON.parse(document.querySelector('#portfolio-copy-state')!.textContent!) as Record<string, string>;
+  const nodes = [...document.querySelectorAll<HTMLElement>('[data-portfolio-copy]')];
+  const view = document.querySelector<HTMLButtonElement>('[data-portfolio-view]')!;
+  const edit = document.querySelector<HTMLButtonElement>('[data-portfolio-edit]')!;
+  const toolbar = document.querySelector<HTMLElement>('#portfolio-copy-toolbar')!;
+  const status = document.querySelector<HTMLElement>('#portfolio-copy-status')!;
+  const saves = document.querySelector<HTMLElement>('#portfolio-copy-saves')!;
+  const reset = document.querySelector<HTMLButtonElement>('#portfolio-copy-reset')!;
+  const restore = document.querySelector<HTMLButtonElement>('#portfolio-copy-restore')!;
+  const storageKey = 'portfolio-copy:krafton-2027';
+  let changes: Record<string, string> = {};
+  let editing = false;
+  let previous: Record<string, string> | undefined;
+  let notice = '';
+
+  function paint() {
+    for (const node of nodes) node.textContent = changes[node.dataset.portfolioCopy!] ?? fields[node.dataset.portfolioCopy!];
+  }
+  function remember() {
+    try {
+      if (Object.keys(changes).length) sessionStorage.setItem(storageKey, JSON.stringify({ base: fields, changes }));
+      else if (!previous) sessionStorage.removeItem(storageKey);
+    } catch { /* 저장소를 사용할 수 없어도 현재 탭의 편집은 계속한다. */ }
+  }
+  function render() {
+    const dirty = Object.keys(changes).length;
+    toolbar.hidden = !editing && !dirty && !previous;
+    document.body.classList.toggle('rp-copy-editing', editing);
+    document.body.classList.toggle('rp-copy-pending', !toolbar.hidden);
+    view.setAttribute('aria-pressed', String(!editing));
+    edit.setAttribute('aria-pressed', String(editing));
+    reset.disabled = !dirty && !previous;
+    restore.hidden = !previous;
+    for (const node of nodes) {
+      const mode = editing ? 'plaintext-only' : 'false';
+      if (node.contentEditable !== mode) node.contentEditable = mode;
+      if (editing) {
+        node.setAttribute('role', 'textbox');
+        node.setAttribute('aria-label', `문구: ${(fields[node.dataset.portfolioCopy!] || node.dataset.portfolioCopy!).slice(0, 60)}`);
+        node.setAttribute('aria-multiline', 'true');
+        node.tabIndex = 0;
+      } else {
+        node.removeAttribute('role'); node.removeAttribute('aria-label'); node.removeAttribute('aria-multiline'); node.removeAttribute('tabindex');
+      }
+    }
+    saves.replaceChildren();
+    status.textContent = notice || (dirty ? `저장 전 변경 ${dirty}개 · View는 현재 편집의 미리보기입니다.` : '게시된 문구와 같습니다.');
+    if (!dirty) {
+      const idle = document.createElement('button'); idle.type = 'button'; idle.disabled = true; idle.textContent = '저장할 변경 없음'; saves.append(idle);
+      return;
+    }
+    try {
+      const batches = preparePortfolioCopySaves(changes, fields);
+      batches.forEach((batch: { url: string }, index: number) => {
+        const link = document.createElement('a'); link.href = batch.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.textContent = batches.length === 1 ? '변경 저장 ↗' : `변경 저장 ${index + 1}/${batches.length} ↗`;
+        link.addEventListener('click', () => { status.textContent = 'GitHub에서 Commit changes로 저장하면 배포 후 공개 페이지에 반영됩니다.'; });
+        saves.append(link);
+      });
+      if (batches.length > 1) status.textContent += ` 내용이 길어 저장 ${batches.length}개로 나눴습니다. 각 저장을 확정해 주세요.`;
+    } catch (error) {
+      status.textContent = error instanceof Error ? error.message : '문구를 확인해 주세요.';
+    }
+  }
+  function setMode(value: boolean) {
+    editing = value;
+    const url = new URL(location.href);
+    if (editing) url.searchParams.set('edit', '1'); else url.searchParams.delete('edit');
+    history.replaceState(null, '', url);
+    render();
+  }
+  for (const node of nodes) node.addEventListener('input', () => {
+    const key = node.dataset.portfolioCopy!;
+    const text = node.innerText.replaceAll('\r\n', '\n');
+    if (text === fields[key]) delete changes[key]; else changes[key] = text;
+    for (const other of nodes) if (other !== node && other.dataset.portfolioCopy === key) other.textContent = text;
+    notice = ''; remember(); render();
+  });
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (editing && target?.closest('[data-portfolio-copy]')?.closest('a')) event.preventDefault();
+  });
+  view.addEventListener('click', () => setMode(false));
+  edit.addEventListener('click', () => setMode(true));
+  reset.addEventListener('click', () => { changes = {}; previous = undefined; notice = ''; remember(); paint(); render(); });
+  restore.addEventListener('click', () => { changes = { ...previous, ...changes }; previous = undefined; notice = ''; remember(); paint(); setMode(true); });
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(storageKey) || 'null');
+    if (draft?.changes && typeof draft.changes === 'object') {
+      const pending = Object.fromEntries(Object.entries(draft.changes).filter(([key, value]) => Object.hasOwn(fields, key) && typeof value === 'string' && value !== fields[key])) as Record<string, string>;
+      if (JSON.stringify(draft.base) === JSON.stringify(fields)) changes = pending;
+      else if (Object.keys(pending).length) { previous = pending; notice = '게시된 내용이 바뀌었습니다. 이전 임시 편집을 복원하려면 복원 버튼을 누릅니다.'; }
+    }
+  } catch { /* 손상된 임시 데이터는 게시된 문구에 적용하지 않는다. */ }
+  view.disabled = edit.disabled = false;
+  paint();
+  setMode(new URLSearchParams(location.search).get('edit') === '1');
+</script>

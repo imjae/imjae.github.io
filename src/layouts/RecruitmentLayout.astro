@@ -1,8 +1,6 @@
 ---
 import '../styles/recruitment.css';
 import { site } from '../data/site';
-import ModeSwitch from '../components/ModeSwitch.astro';
-import { portfolioCopyEditorUrl } from '../lib/github-authoring.mjs';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -40,7 +38,10 @@ const sections = [
         </nav>
         <div class="rp-header-actions">
           <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
-          <ModeSwitch viewerUrl="#main-content" editorUrl={portfolioCopyEditorUrl} editorExternal editorTitle="Edit portfolio copy on GitHub (new tab)" label="Portfolio mode" />
+          <nav class="rp-mode-switch" aria-label="Portfolio mode">
+            <button type="button" data-portfolio-view aria-pressed="true" disabled>View</button>
+            <button type="button" data-portfolio-edit aria-pressed="false" disabled>Edit</button>
+          </nav>
         </div>
       </div>
     </header>

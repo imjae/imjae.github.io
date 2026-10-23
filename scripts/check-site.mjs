@@ -74,14 +74,16 @@ const projectPage = await readFile(join(root,'portfolio/dcb/index.html'),'utf8')
 const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^>]*>/g)];
 if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
 const recruitmentPage = await readFile(join(root,'portfolio/krafton-2027/index.html'),'utf8');
-const portfolioCopyUrl = 'https://github.com/imjae/imjae.github.io/edit/main/src/data/krafton-2027.ts';
-const portfolioPageUrl = 'https://github.com/imjae/imjae.github.io/edit/main/src/pages/portfolio/krafton-2027/index.astro';
 const portfolioModes = recruitmentPage.match(/<nav\b[^>]*aria-label="Portfolio mode"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
-if (!portfolioModes.includes(`href="${portfolioCopyUrl}"`) || !portfolioModes.includes('target="_blank"') || !portfolioModes.includes('rel="noopener noreferrer"')) failures.push('지원용 포트폴리오의 Edit가 실제 문구 원본 편집 화면으로 연결되지 않음');
-const portfolioEditor = editor.match(/<section\b[^>]*id="portfolio-copy"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
-for (const url of [portfolioCopyUrl, portfolioPageUrl]) {
-  if (!portfolioEditor.includes(`href="${url}"`)) failures.push(`포트폴리오 문구 관리의 원본 편집 링크 누락: ${url}`);
+if (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes('data-portfolio-view') || portfolioModes.includes('github.com')) failures.push('포트폴리오 Edit가 화면 안의 문구 편집 전환이 아님');
+const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+const copyState = stateJson ? JSON.parse(stateJson) : {};
+const copyKeys = [...recruitmentPage.matchAll(/\bdata-portfolio-copy="([^"]+)"/g)].map(match => match[1]);
+for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.role', 'graphicsCases.water.intro', 'graphicsCases.fire.role', 'verificationNote']) {
+  if (!copyKeys.includes(key)) failures.push(`포트폴리오 주요 문구 편집 지점 누락: ${key}`);
 }
+for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
+if (!editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
 const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
 if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
 for (const { id } of projectVideoSlots) {
