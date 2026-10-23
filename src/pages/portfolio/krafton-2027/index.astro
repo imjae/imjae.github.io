@@ -18,12 +18,12 @@ import { resolvePortfolioMedia } from '../../../lib/recruitment-media.mjs';
 const baseCopy = {
   profile: defaults.profile, project: defaults.project, clientCases: defaults.clientCases,
   graphicsCases: defaults.graphicsCases, aiSteps: defaults.aiSteps, aiUsageCase: defaults.aiUsageCase,
-  contributionRows: defaults.contributionRows, verificationNote: defaults.verificationNote,
+  contributionRows: defaults.contributionRows,
   additionalLinks: defaults.additionalLinks, aiLinks: defaults.aiLinks, pageCopy: defaultPageCopy,
 };
 const fields = await readPortfolioText(portfolioTextFields(baseCopy));
 const { profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase, contributionRows,
-  verificationNote, additionalLinks, aiLinks, pageCopy } = applyPortfolioText(baseCopy, fields) as typeof baseCopy;
+  additionalLinks, aiLinks, pageCopy } = applyPortfolioText(baseCopy, fields) as typeof baseCopy;
 
 const articles = await getArticles(false);
 const videoSettings = await readProjectVideoSettingsBySlot();
@@ -126,7 +126,7 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
         {profile.period && <div><dt>개발 기간</dt><dd data-portfolio-copy="profile.period">{profile.period}</dd></div>}
         {profile.team && <div><dt>팀 구성</dt><dd data-portfolio-copy="profile.team">{profile.team}</dd></div>}
       </dl>
-      <div class="rp-project-links"><a class="rp-inline-link" href="/portfolio/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a><a class="rp-inline-link" href="#scope">기여와 확인 범위 <span aria-hidden="true">↓</span></a></div>
+      <div class="rp-project-links"><a class="rp-inline-link" href="/portfolio/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a><a class="rp-inline-link" href="#scope">담당 작업과 사용 자산 <span aria-hidden="true">↓</span></a></div>
     </div>
     </div>
   </div>
@@ -135,7 +135,7 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
     <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">01</span>{aiFeature.label}</p><h3 id="ai-title" data-portfolio-copy="pageCopy.aiTitle">{pageCopy.aiTitle}</h3></div><p data-portfolio-copy="pageCopy.aiDescription">{pageCopy.aiDescription}</p></div>
     <article id="ai-parallel" class="rp-decision" aria-labelledby="decision-title">
       <div class="rp-decision-heading"><p class="rp-eyebrow"><span class="rp-case-number">01.1</span>활용 사례</p><h4 class="rp-case-title" id="decision-title" data-portfolio-copy="aiUsageCase.title">{aiUsageCase.title}</h4><p data-portfolio-copy="aiUsageCase.context">{aiUsageCase.context}</p></div>
-      <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd data-portfolio-copy="aiUsageCase.choice">{aiUsageCase.choice}</dd></div><div><dt>확인 근거</dt><dd data-portfolio-copy="aiUsageCase.evidence">{aiUsageCase.evidence}</dd></div></dl><p class="rp-limit"><span>남은 확인</span><span data-portfolio-copy="aiUsageCase.limitation">{aiUsageCase.limitation}</span></p><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
+      <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd data-portfolio-copy="aiUsageCase.choice">{aiUsageCase.choice}</dd></div></dl><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
     </article>
     <h4 class="rp-workflow-title" data-portfolio-copy="pageCopy.workflowTitle">{pageCopy.workflowTitle}</h4>
     <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">STEP {String(index + 1).padStart(2, '0')}</span><h5 data-portfolio-copy={`aiSteps.${index}.title`}>{step.title}</h5><p data-portfolio-copy={`aiSteps.${index}.description`}>{step.description}</p></li>)}</ol>
@@ -153,9 +153,8 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
   </section>
 
   <section id="scope" class="rp-section" aria-labelledby="scope-title">
-    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">04</span>CONTRIBUTION & EVIDENCE</p><h3 id="scope-title" data-portfolio-copy="pageCopy.scopeTitle">{pageCopy.scopeTitle}</h3></div><p data-portfolio-copy="pageCopy.scopeDescription">{pageCopy.scopeDescription}</p></div>
+    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">04</span>CONTRIBUTION & ASSETS</p><h3 id="scope-title" data-portfolio-copy="pageCopy.scopeTitle">{pageCopy.scopeTitle}</h3></div><p data-portfolio-copy="pageCopy.scopeDescription">{pageCopy.scopeDescription}</p></div>
     <dl class="rp-contributions">{contributionRows.map((row, index) => <div><dt data-portfolio-copy={`contributionRows.${index}.label`}>{row.label}</dt><dd data-portfolio-copy={`contributionRows.${index}.description`}>{row.description}</dd></div>)}</dl>
-    <p class="rp-verification-note" data-portfolio-copy="verificationNote">{verificationNote}</p>
   </section>
 
   <aside id="more" class="rp-section rp-more" aria-labelledby="more-title">

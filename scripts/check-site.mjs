@@ -81,7 +81,7 @@ if (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes(
 const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 const copyState = stateJson ? JSON.parse(stateJson) : {};
 const copyKeys = [...recruitmentPage.matchAll(/\bdata-portfolio-copy="([^"]+)"/g)].map(match => match[1]);
-for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0', 'verificationNote']) {
+for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0', 'contributionRows.0.description']) {
   if (!copyKeys.includes(key)) failures.push(`포트폴리오 주요 문구 편집 지점 누락: ${key}`);
 }
 for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);

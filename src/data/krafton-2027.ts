@@ -185,15 +185,11 @@ export const aiUsageCase: {
   title: string;
   context: string;
   choice: string;
-  evidence: string;
-  limitation: string;
   links: PortfolioLink[];
 } = {
   title: '병렬 세션 지침과 통합 방식',
   context: '문제 파악·구현·검증·통합 단계별로 필요한 컨텍스트를 분리했습니다. 이전 단계의 가정이나 다른 작업의 지시가 섞여 수정 범위를 벗어나거나, 구현한 내용을 검증 완료로 단정하는 AI의 실수를 줄이려는 목적입니다.',
   choice: '공통 지침으로 작업 기준을 맞추고, Git 워크트리로 구현·검증 공간을 분리했습니다. 작업마다 수정·보존 범위와 완료 조건을 정하고, 슬롯 소유 기록으로 중복 사용을 관리했습니다. 결과는 작업별 커밋과 검증 기록으로 받아 의존 순서대로 통합하도록 했습니다.',
-  evidence: 'Deluge의 병행 작업·통합 이력과 현재 DCB의 공통 지침·슬롯 운영 절차를 대조했습니다.',
-  limitation: '시간 절감률·처리량은 미측정이며, 선점 경쟁과 비정상 종료 복구의 재현 검증은 남아 있습니다.',
   links: [{ slug: 'parallel-ai-worktrees', label: '병렬 세션 지침과 통합 방식 자세히 보기' }],
 };
 
@@ -204,16 +200,13 @@ export const contributionRows: Array<{ label: string; description: string }> = [
   },
   {
     label: 'AI가 보조한 작업',
-    description: '코드·셰이더 후보, 측정·검사 도구 작성, 상태 조사, 배치 실행과 Git 통합에 AI를 사용했습니다. 자동 검사 결과를 직접 수행한 플레이로 바꾸어 설명하지 않습니다.',
+    description: '코드·셰이더 후보, 측정·검사 도구 작성, 상태 조사, 배치 실행과 Git 통합에 AI를 사용했습니다.',
   },
   {
     label: '작업자·기존 자산·외부 도구',
     description: '3D 모델은 기존 자산을 사용하고, 트레버설 클립은 애니메이션 작업자에게 받았습니다. 화염 플립북은 Unity ParticlePack, 물 계산은 Blender Mantaflow를 사용했습니다.',
   },
 ];
-
-// 기능별 확인 조건은 각 사례의 limitation에 있습니다. 여기에는 사례에 속하지 않는 공통 실행 근거만 둡니다.
-export const verificationNote = '게임 자체는 격리 워크트리의 Unity 6000.3 배치 Editor에서 일반 시작과 새 로비·빌리지 진입, 별도 프로세스 재시작까지 확인한 기록이 있습니다. 독립 실행 Player, 실제 장치 조작, 전투·사망·귀환과 장시간 플레이는 아직 확인하지 않았습니다.';
 
 export const additionalLinks: PortfolioLink[] = [
   { slug: 'jige-cargo-secondary-motion', label: '지게 짐의 출렁임' },

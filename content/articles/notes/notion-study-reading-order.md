@@ -1,9 +1,9 @@
 ---
 title: "게임 개발 글 37편: 문제 해결부터 그래픽스와 웹까지"
-description: "게임 개발 문제 해결, 수학, OpenGL, Unity, 웹과 백엔드 글을 주제별로 연결한다."
+description: "게임 개발 문제 해결, 수학, OpenGL, Unity, 웹과 백엔드 글을 주제별로 연결합니다."
 slug: "notion-study-reading-order"
 date: "2026-10-17"
-updated: "2026-10-18"
+updated: "2026-10-23"
 topic: "notes"
 kind: "note"
 tags: ["Unity", "OpenGL", "Verification"]
@@ -12,9 +12,9 @@ draft: false
 
 ## 주제와 읽기 순서
 
-문제 해결 사례 다섯 편에서 시작해 벡터·UI·OpenGL, Unity 동작·자원 관리, 그래픽스 효과와 웹·백엔드로 이어진다. 각 글은 개념과 예제, 실습·풀이, 확인 범위를 다룬다.
+문제 해결 사례 다섯 편에서 시작해 벡터·UI·OpenGL, Unity 동작·자원 관리, 그래픽스 효과와 웹·백엔드로 이어집니다. 각 글은 개념과 예제, 실습·풀이를 다룹니다.
 
-OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N04로 돌아온다. 행렬이 낯설다면 N15를 N08보다 먼저 읽어도 된다. 자료구조는 [컬렉션 선택](/writing/data-structures-collections/) → [동적 배열·List의 확장과 삭제](/writing/dynamic-array-list-growth-removal/) 순으로 별도 연결했다.
+OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N04로 돌아옵니다. 행렬이 낯설다면 N15를 N08보다 먼저 읽어도 됩니다. 자료구조는 [컬렉션 선택](/writing/data-structures-collections/) → [동적 배열·List의 확장과 삭제](/writing/dynamic-array-list-growth-removal/) 순으로 별도 연결했습니다.
 
 | 순서 | 글 | 분류 |
 | --- | --- | --- |
@@ -56,12 +56,8 @@ OpenGL을 처음 시작한다면 N14의 컨텍스트 준비를 먼저 한 뒤 N0
 | 36 | [HTTP 요청·응답·실패·취소를 작업 API로 이해하기](/writing/http-response-failure-cancellation/) | 기술 메모 |
 | 37 | [Unity에서 클라우드 데이터에 접근할 때의 인증·SDK 경계](/writing/unity-cloud-auth-sdk-boundary/) | 도구와 구조 |
 
-## 예제와 확인 범위를 읽는 방법
+## 예제 활용
 
-수·함수·기저·회전 등 추가 수학 내용은 [수학 카테고리](/topics/math/)와 [게임 수학 읽기 순서](/writing/game-math-reading-order/)에서 이어서 읽을 수 있다. 이 목록의 기존 수학 글 주소는 그대로 유지했다.
+수·함수·기저·회전 내용은 [수학 카테고리](/topics/math/)와 [게임 수학 읽기 순서](/writing/game-math-reading-order/)에서 이어서 읽을 수 있습니다.
 
-수치·콘솔 예제의 성공은 그 함수나 모델의 확인이다. Unity의 에셋·Animator·씬, GPU의 실제 셰이더·화면, Azure·AWS의 계정·서비스 실행과 같은 뜻으로 읽지 않는다. 미실행 항목은 각 글 끝에 적었다. 실습에서 제시한 예상 결과도 실제 캡처·측정값과 구분했다.
-
-새 글의 짧은 코드는 원리를 설명하는 구간일 수 있다. 해당 글에서 요구하는 컨텍스트·패키지·호출자와 소유권 조건을 먼저 준비한다. 외부 환경이 필요한 실습은 전용 샘플에서 수행하고 기존 프로젝트의 캐시·권한·데이터를 임의로 바꾸지 않는다.
-
-노션의 긴 번역문·외부 그림·비공개 소스를 통째로 복제하지 않았다. 공식 문서를 대조하고 설명·표·예제를 새로 구성했으며 작성과 검사에 AI를 사용했다.
+각 코드 예제에 필요한 컨텍스트·패키지·호출자와 소유권 조건을 먼저 준비합니다. 외부 환경이 필요한 실습은 전용 샘플에서 진행합니다. 설명·표·예제 작성에는 AI를 활용했습니다.

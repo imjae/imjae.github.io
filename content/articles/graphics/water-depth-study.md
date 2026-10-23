@@ -1,6 +1,6 @@
 ---
 title: "물의 깊이와 지형 접점 확인"
-description: "물의 두께와 지형 접점을 비교할 작업의 초안이다."
+description: "물의 두께와 지형 접점을 비교할 작업의 초안입니다."
 slug: "water-depth-study"
 date: "2026-10-17"
 topic: "graphics"
