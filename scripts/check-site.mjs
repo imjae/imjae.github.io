@@ -81,10 +81,11 @@ if (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes(
 const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 const copyState = stateJson ? JSON.parse(stateJson) : {};
 const copyKeys = [...recruitmentPage.matchAll(/\bdata-portfolio-copy="([^"]+)"/g)].map(match => match[1]);
-for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.role', 'graphicsCases.water.intro', 'graphicsCases.fire.role', 'verificationNote']) {
+for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0', 'verificationNote']) {
   if (!copyKeys.includes(key)) failures.push(`포트폴리오 주요 문구 편집 지점 누락: ${key}`);
 }
 for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
+if (copyKeys.some(key => /^(?:clientCases|graphicsCases)\.[^.]+\.role$/.test(key)) || /<dt>내 역할<\/dt>/.test(recruitmentPage)) failures.push('포트폴리오 기능별 사례에 제거한 내 역할 칸이 표시됨');
 if (!editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
 const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
 if (JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');

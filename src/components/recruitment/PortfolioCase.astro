@@ -24,7 +24,6 @@ const { item, links, copyGroup } = Astro.props;
     <dl class="rp-case-facts">
       <div><dt>소개</dt><dd data-portfolio-copy={`${copyGroup}.${item.id}.intro`}>{item.intro}</dd></div>
       <div><dt>구현</dt><dd><ul class="rp-case-impl">{item.implementation.map((line, index) => <li data-portfolio-copy={`${copyGroup}.${item.id}.implementation.${index}`}>{line}</li>)}</ul></dd></div>
-      <div><dt>내 역할</dt><dd data-portfolio-copy={`${copyGroup}.${item.id}.role`}>{item.role}</dd></div>
     </dl>
     <div class="rp-case-links" aria-label={`${item.title} 관련 글`}>
       {links.map(link => <a href={link.href} title={link.title} class:list={{ 'rp-case-link-problems': link.kind === 'problems' }}>{link.label}<span aria-hidden="true">↗</span></a>)}
