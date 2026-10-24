@@ -19,6 +19,17 @@ Worker는 모든 요청에서 자산보다 먼저 실행한다(`assets.run_worke
 - 보호된 응답은 `private, no-store`이며 검색 수집을 막는다. 인증 설정 누락·GitHub 오류·세션 저장소 오류는 편집을 허용하지 않는다.
 - 로그인 뒤에도 같은 화면의 Edit에서 문구를 고치고 View에서 미리 본다. 새로고침·임시 편집 복원·GitHub 저장은 기존 방식이다. 세션이 만료되면 다시 로그인한다.
 
+## main 저장과 자동 배포
+
+GitHub에서 글이나 포트폴리오 문구를 `main`에 저장하면 다음 두 워크플로가 같은 커밋으로 실행된다.
+
+- `Publish game development notes`: 검사 후 공개 GitHub Pages에 `dist/`를 배포한다.
+- `Publish owner-only editor`: 검사 후 보호된 편집 빌드 `.authoring-dist/`와 로그인 Worker를 Cloudflare에 배포한다.
+
+사용자는 GitHub의 Commit changes로 저장하고 두 워크플로가 완료될 때까지 기다리면 된다. 로컬 Wrangler 로그인이나 수동 편집 서버 배포는 필요하지 않다. 공개 화면과 편집 화면은 배포 완료 시간이 잠시 다를 수 있으며, 실패한 워크플로는 Actions에서 원인을 확인한 뒤 다시 실행한다. 두 빌드를 섞거나 `.authoring-dist/`를 Pages에 업로드하지 않는다.
+
+편집 서버의 자동 배포는 저장소 변수 `AUTHORING_DEPLOY_ENABLED=true`와 Actions Secrets의 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`를 사용한다. 토큰은 해당 계정의 `imjae-blog-author` Worker를 갱신할 수 있는 Editor 권한으로 제한하고, GitHub 저장소 파일·워크플로 본문·빌드 결과에는 넣지 않는다. 인증 값이 없으면 편집 서버 워크플로는 배포 전 명확한 오류로 종료한다. 토큰을 폐기하거나 만료한 경우 Actions Secret만 교체한다.
+
 ## 연결 순서
 
 비밀번호·Client Secret·Cloudflare API 토큰은 채팅·Git·문서·명령 인자로 전달하지 않는다.
@@ -28,11 +39,11 @@ Worker는 모든 요청에서 자산보다 먼저 실행한다(`assets.run_worke
 3. GitHub **Settings → Developer settings → OAuth Apps → New OAuth App**에서 앱을 등록한다. Homepage URL은 `https://imjae.github.io`, Authorization callback URL은 **실제 Worker origin 뒤의 `/auth/callback`**으로 지정한다. 기기 인증 흐름과 추가 scope는 사용하지 않는다.
 4. 공개 정보인 Client ID는 `wrangler.authoring.jsonc`의 `GITHUB_CLIENT_ID`에 넣는다. 이 값은 공개 앱 식별자이며 로그인 비밀 값이 아니다. Client Secret은 Cloudflare 대시보드의 Worker **Settings → Variables and Secrets**에서 **Secret** 타입의 `GITHUB_CLIENT_SECRET`으로 직접 등록한다. Client Secret은 명령 인자·저장소 파일에 적지 않는다.
 5. GitHub 저장소의 Actions **Variables**에 `AUTHORING_ORIGIN`을 실제 Worker origin으로 설정한다. origin에는 HTTPS 주소만 쓰고 경로·쿼리·마지막 항목은 붙이지 않는다.
-6. 자동 동기화를 사용할 경우 해당 Worker 배포에 필요한 Cloudflare 권한으로 API 토큰을 만든다. GitHub Actions **Secrets**에 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`를 직접 등록하고 **Variable** `AUTHORING_DEPLOY_ENABLED=true`를 지정한다. 토큰은 브라우저나 블로그 빌드에 전달하지 않는다.
+6. 자동 동기화에는 `imjae-blog-author` Worker의 Editor 권한을 가진 Cloudflare API 토큰을 만든다. GitHub Actions **Secrets**에 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`를 등록하고 **Variable** `AUTHORING_DEPLOY_ENABLED=true`를 지정한다. 토큰은 배포 명령의 환경 변수로만 전달하며 브라우저나 블로그 빌드에 전달하지 않는다.
 7. `Publish owner-only editor`를 실행해 최신 본문과 편집 도구를 Worker에 배포한다. 공개 Pages 워크플로도 실행해 Sign in 링크를 연결한다. 이후 main 변경은 두 배포로 동기화한다. Worker 배포는 기존 Client Secret을 유지한다.
 8. 실제 GitHub 로그아웃 상태·다른 계정·imjae 계정에서 각각 확인한다. imjae 로그인 뒤 직접 문구 편집·View·임시 복원·GitHub 저장을 확인하고, 로그아웃 뒤 보호된 주소와 자산을 다시 열어 거부되는지 확인한다.
 
-`AUTHORING_ORIGIN`은 실제 편집 서버 주소로 설정했다. 자동 배포용 Cloudflare API 토큰은 아직 등록하지 않았으므로 보호된 빌드는 현재 로그인한 로컬 Wrangler로 배포한다. main의 글·문구가 바뀌면 최신 main만 담은 작업 공간에서 `npm ci`, `npm run author:build`, `npx wrangler deploy --config wrangler.authoring.jsonc`를 실행해야 편집 서버에도 반영된다. `.authoring-dist/`를 Pages에 올려 대신하지 않는다.
+`AUTHORING_ORIGIN`은 실제 편집 서버 주소로 설정했고 자동 배포 인증과 활성화 변수를 연결했다. main의 글·문구 변경은 두 워크플로로 동기화한다. 수동 복구가 필요한 경우에는 최신 main만 담은 작업 공간에서 `npm ci`, `npm run author:build`, `npx wrangler deploy --config wrangler.authoring.jsonc`를 실행한다. `.authoring-dist/`를 Pages에 올려 대신하지 않는다.
 
 ## 로컬 검사
 

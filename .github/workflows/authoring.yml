@@ -12,7 +12,19 @@ jobs:
   deploy:
     if: github.ref == 'refs/heads/main' && vars.AUTHORING_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PUBLIC_AUTHORING_ORIGIN: ${{ vars.AUTHORING_ORIGIN }}
     steps:
+      - name: Check deployment credentials
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Cloudflare deployment secrets are not configured."
+            exit 1
+          fi
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
