@@ -7,7 +7,15 @@ const { fields, defaults } = Astro.props;
     <strong>화면에서 문구 수정</strong>
     <p>빈 문구는 View와 공개 화면에서 숨깁니다. 문구를 선택해 삭제하거나 각 영역에서 새 문단을 추가할 수 있습니다.</p>
     <p id="portfolio-copy-status" role="status" aria-live="polite">게시된 문구와 같습니다.</p>
-    <div id="portfolio-copy-selection" class="rp-copy-selection" hidden><span id="portfolio-copy-selected-label"></span><button type="button" id="portfolio-copy-remove" disabled>선택 문구 삭제</button></div>
+    <div id="portfolio-copy-selection" class="rp-copy-selection" hidden>
+      <span id="portfolio-copy-selected-label"></span>
+      <button type="button" id="portfolio-copy-remove" disabled>선택 문구 삭제</button>
+      <div id="portfolio-copy-order" class="rp-copy-order" role="group" aria-label="추가 문단 순서" hidden>
+        <span id="portfolio-copy-position" aria-live="polite" aria-atomic="true"></span>
+        <button type="button" id="portfolio-copy-up" aria-label="선택한 문단 위로 이동" disabled>↑ 위로</button>
+        <button type="button" id="portfolio-copy-down" aria-label="선택한 문단 아래로 이동" disabled>↓ 아래로</button>
+      </div>
+    </div>
     <ul id="portfolio-copy-errors" class="rp-copy-errors" aria-label="수정이 필요한 항목" hidden></ul>
     <details id="portfolio-copy-removed" class="rp-copy-removed" hidden><summary>삭제한 문구 추가</summary><div id="portfolio-copy-removed-list"></div></details>
   </div>

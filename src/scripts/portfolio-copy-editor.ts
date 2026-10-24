@@ -1,4 +1,4 @@
-import { isPortfolioParagraphKey, portfolioCopyIssues, portfolioParagraphSlots, portfolioParagraphs, preparePortfolioCopySaves } from '../lib/portfolio-copy.mjs';
+import { isPortfolioParagraphKey, isPortfolioParagraphOrderKey, movePortfolioParagraph, portfolioCopyIssues, portfolioParagraphSlots, portfolioParagraphs, preparePortfolioCopySaves } from '../lib/portfolio-copy.mjs';
 
 const stateElement = document.querySelector('#portfolio-copy-state');
 if (stateElement) {
@@ -18,6 +18,10 @@ if (stateElement) {
   const selection = document.querySelector<HTMLElement>('#portfolio-copy-selection')!;
   const selectedLabel = document.querySelector<HTMLElement>('#portfolio-copy-selected-label')!;
   const remove = document.querySelector<HTMLButtonElement>('#portfolio-copy-remove')!;
+  const order = document.querySelector<HTMLElement>('#portfolio-copy-order')!;
+  const position = document.querySelector<HTMLElement>('#portfolio-copy-position')!;
+  const up = document.querySelector<HTMLButtonElement>('#portfolio-copy-up')!;
+  const down = document.querySelector<HTMLButtonElement>('#portfolio-copy-down')!;
   const removed = document.querySelector<HTMLDetailsElement>('#portfolio-copy-removed')!;
   const removedTitle = removed.querySelector('summary')!;
   const removedList = document.querySelector<HTMLElement>('#portfolio-copy-removed-list')!;
@@ -31,7 +35,7 @@ if (stateElement) {
   const openEmpty = new Set<string>();
   let lastParagraphTime = 0;
   const valueFor = (key: string) => changes[key] ?? fields[key] ?? '';
-  const allowedKey = (key: string) => Object.hasOwn(fields, key) || isPortfolioParagraphKey(key);
+  const allowedKey = (key: string) => Object.hasOwn(fields, key) || isPortfolioParagraphKey(key) || isPortfolioParagraphOrderKey(key);
 
   function remember() {
     try {
@@ -51,6 +55,13 @@ if (stateElement) {
     selection.hidden = !editing || !selectedKey;
     selectedLabel.textContent = selectedKey ? `선택: ${fieldInfo.get(selectedKey)?.label ?? '새 문단'}` : '';
     remove.disabled = !selectedKey || !valueFor(selectedKey).trim();
+    const paragraphs = selectedKey && isPortfolioParagraphKey(selectedKey)
+      ? portfolioParagraphs({ ...fields, ...changes }, selectedKey.split('.')[1]).filter(item => item.text.trim()) : [];
+    const index = paragraphs.findIndex(item => item.key === selectedKey);
+    order.hidden = !editing || index < 0;
+    position.textContent = index < 0 ? '' : `${paragraphs.length}개 중 ${index + 1}번째 문단`;
+    up.disabled = index <= 0;
+    down.disabled = index < 0 || index >= paragraphs.length - 1;
   }
 
   function registerNode(node: HTMLElement) {
@@ -92,11 +103,17 @@ if (stateElement) {
     for (const slot of Object.keys(portfolioParagraphSlots)) {
       const container = document.querySelector<HTMLElement>(`[data-portfolio-paragraphs="${slot}"]`);
       if (!container) continue;
+      let previousNode: HTMLElement | undefined;
       for (const { key, text } of portfolioParagraphs({ ...fields, ...changes }, slot)) {
-        if (fieldInfo.has(key)) continue;
-        const node = document.createElement('p'); node.dataset.portfolioCopy = key; node.textContent = text;
-        container.insertBefore(node, container.querySelector('[data-add-paragraph]'));
-        registerNode(node);
+        let node = fieldInfo.get(key)?.node;
+        if (!node) {
+          node = document.createElement('p'); node.dataset.portfolioCopy = key; node.textContent = text;
+          registerNode(node);
+        }
+        const next = previousNode ? previousNode.nextElementSibling : container.firstElementChild;
+        // 같은 순서의 노드는 옮기지 않아 입력 중인 문단의 초점을 유지한다.
+        if (node !== next) container.insertBefore(node, next);
+        previousNode = node;
       }
     }
     for (const node of [...nodes]) {
@@ -232,6 +249,14 @@ if (stateElement) {
     if (!selectedKey) return;
     setValue(selectedKey, ''); openEmpty.delete(selectedKey); paint(); remember(); render();
   });
+  function moveSelected(direction: number) {
+    if (!selectedKey) return;
+    const values = movePortfolioParagraph({ ...fields, ...changes }, selectedKey, direction);
+    for (const [key, value] of Object.entries(values)) setValue(key, value);
+    remember(); focusField(selectedKey);
+  }
+  up.addEventListener('click', () => moveSelected(-1));
+  down.addEventListener('click', () => moveSelected(1));
   view.addEventListener('click', () => setMode(false)); edit.addEventListener('click', () => setMode(true));
   reset.addEventListener('click', () => {
     changes = {}; removedValues = {}; previous = undefined; selectedKey = undefined; openEmpty.clear(); notice = '';

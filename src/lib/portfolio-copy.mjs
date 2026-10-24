@@ -11,9 +11,31 @@ export function isPortfolioParagraphKey(key) {
   return Boolean(match && Object.hasOwn(portfolioParagraphSlots, match[1]));
 }
 
+export function isPortfolioParagraphOrderKey(key) {
+  return key.startsWith('paragraphOrder.') && isPortfolioParagraphKey(key.replace(/^paragraphOrder\./, 'paragraphs.'));
+}
+
+const paragraphOrderKey = key => key.replace(/^paragraphs\./, 'paragraphOrder.');
+const paragraphRank = value => typeof value === 'string' && /^(0|[1-9][0-9]{0,8})$/.test(value) ? Number(value) : Infinity;
+
 export function portfolioParagraphs(fields, slot) {
   return Object.entries(fields).filter(([key]) => isPortfolioParagraphKey(key) && key.split('.')[1] === slot)
-    .sort(([left], [right]) => left.localeCompare(right)).map(([key, text]) => ({ key, text }));
+    .sort(([left], [right]) => (paragraphRank(fields[paragraphOrderKey(left)]) - paragraphRank(fields[paragraphOrderKey(right)])) || left.localeCompare(right))
+    .map(([key, text]) => ({ key, text }));
+}
+
+/** @returns {Record<string, string>} */
+export function movePortfolioParagraph(fields, key, direction) {
+  if (!isPortfolioParagraphKey(key) || ![-1, 1].includes(direction)) return {};
+  const paragraphs = portfolioParagraphs(fields, key.split('.')[1]);
+  const visible = paragraphs.filter(item => item.text.trim());
+  const index = visible.findIndex(item => item.key === key);
+  const neighbor = visible[index + direction];
+  if (index < 0 || !neighbor) return {};
+  const from = paragraphs.findIndex(item => item.key === key);
+  const to = paragraphs.findIndex(item => item.key === neighbor.key);
+  [paragraphs[from], paragraphs[to]] = [paragraphs[to], paragraphs[from]];
+  return Object.fromEntries(paragraphs.map((item, rank) => [paragraphOrderKey(item.key), String(rank)]));
 }
 
 // 주소·순서·기능 식별자는 제외하고 화면 문구만 다룬다.
@@ -39,8 +61,9 @@ export function portfolioCopyIssues(values, allowed) {
   const issues = [];
   for (const [key, value] of Object.entries(values)) {
     let message = '';
-    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || (!Object.hasOwn(allowed, key) && !isPortfolioParagraphKey(key))) message = '수정할 수 없는 항목입니다.';
+    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || (!Object.hasOwn(allowed, key) && !isPortfolioParagraphKey(key) && !isPortfolioParagraphOrderKey(key))) message = '수정할 수 없는 항목입니다.';
     else if (typeof value !== 'string') message = '문자로 입력해 주세요.';
+    else if (isPortfolioParagraphOrderKey(key) && value !== '' && !Number.isFinite(paragraphRank(value))) message = '문단 순서는 0 이상의 정수로 저장해 주세요.';
     else if (value.trim() && [...value].length > 600) message = `현재 ${[...value].length}자입니다. 600자 이하로 줄여 주세요.`;
     if (message) issues.push({ key, message });
   }

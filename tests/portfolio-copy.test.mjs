@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, unlink, rmdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings, portfolioCopyIssues, isPortfolioParagraphKey, portfolioParagraphs } from '../src/lib/portfolio-copy.mjs';
+import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings, portfolioCopyIssues, isPortfolioParagraphKey, portfolioParagraphs, isPortfolioParagraphOrderKey, movePortfolioParagraph } from '../src/lib/portfolio-copy.mjs';
 import { readPortfolioText } from '../src/lib/portfolio-copy.server.mjs';
 
 const base = { profile: { name: 'imjae', contact: 'author@example.com' }, cases: [{ id: 'water', title: '물 캐시', links: [{ slug: 'water-playback', label: '구현 기록' }], media: { url: 'https://example.com/video' } }, { id: 'fire', title: '불' }] };
@@ -120,4 +120,53 @@ test('글자 수는 이모지도 한 글자로 세며 저장 검증과 같은 �
   const invalid = { 'profile.name': '🎮'.repeat(601) };
   assert.match(portfolioCopyIssues(invalid, fields)[0].message, /601자/);
   assert.throws(() => validatePortfolioCopySettings(record(invalid), fields), /profile\.name.*601자/);
+});
+
+const paragraphKey = (index, slot = 'hero') => `paragraphs.${slot}.179280000000${index}-12345678-1234-1234-1234-123456789abc`;
+const orderKey = key => key.replace(/^paragraphs\./, 'paragraphOrder.');
+
+test('문단 위·아래 이동은 같은 영역에서만 순서를 바꾸고 내용과 식별자를 보존한다', () => {
+  const [first, second, third] = [0, 1, 2].map(index => paragraphKey(index));
+  const project = paragraphKey(0, 'project');
+  const values = { [first]: '첫 문단', [second]: '둘째 문단', [third]: '셋째 문단', [project]: '프로젝트 문단' };
+  const moved = { ...values, ...movePortfolioParagraph(values, third, -1) };
+  assert.deepEqual(portfolioParagraphs(moved, 'hero').map(item => item.key), [first, third, second]);
+  for (const key of Object.keys(values)) assert.equal(moved[key], values[key]);
+  assert.deepEqual(portfolioParagraphs(moved, 'project'), [{ key: project, text: '프로젝트 문단' }]);
+  const returned = { ...moved, ...movePortfolioParagraph(moved, third, 1) };
+  assert.deepEqual(portfolioParagraphs(returned, 'hero').map(item => item.key), [first, second, third]);
+  assert.deepEqual(movePortfolioParagraph(values, first, -1), {});
+  assert.deepEqual(movePortfolioParagraph(values, third, 1), {});
+  assert.deepEqual(movePortfolioParagraph(values, 'profile.name', -1), {});
+});
+
+test('순서만 저장해 다시 읽거나 파일을 나눠 저장해도 순서를 복원하고 새 문단은 뒤에 붙인다', () => {
+  const [first, second, third, added] = [0, 1, 2, 3].map(index => paragraphKey(index));
+  const values = { [first]: '첫'.repeat(590), [second]: '둘'.repeat(590), [third]: '셋'.repeat(590) };
+  const order = movePortfolioParagraph(values, third, -1);
+  const initial = record(values);
+  const saveOptions = { now: new Date('2026-10-24T00:00:00.000Z') };
+  const orderOnly = preparePortfolioCopySaves(order, fields, saveOptions).map(save => JSON.parse(save.content));
+  const selected = selectPortfolioText([initial, ...orderOnly], fields);
+  assert.deepEqual(portfolioParagraphs(selected, 'hero').map(item => item.key), [first, third, second]);
+  const batches = preparePortfolioCopySaves({ ...values, ...order }, fields, saveOptions);
+  assert.ok(batches.length > 1);
+  const restored = selectPortfolioText(batches.reverse().map(save => JSON.parse(save.content)), fields);
+  assert.deepEqual(portfolioParagraphs(restored, 'hero').map(item => item.key), [first, third, second]);
+  assert.deepEqual(portfolioParagraphs({ ...restored, [added]: '나중에 추가' }, 'hero').map(item => item.key), [first, third, second, added]);
+});
+
+test('삭제된 문단은 이동 대상으로 건너뛰고 잘못된 순서 메타데이터를 거절한다', () => {
+  const [first, hidden, third] = [0, 1, 2].map(index => paragraphKey(index));
+  const values = { [first]: '첫 문단', [hidden]: '', [third]: '셋째 문단' };
+  const moved = { ...values, ...movePortfolioParagraph(values, third, -1) };
+  assert.deepEqual(portfolioParagraphs(moved, 'hero').filter(item => item.text).map(item => item.key), [third, first]);
+  assert.deepEqual(portfolioParagraphs({ ...moved, [hidden]: '복원 문단' }, 'hero').map(item => item.key), [third, hidden, first]);
+  assert.deepEqual(movePortfolioParagraph(values, hidden, -1), {});
+  assert.ok(isPortfolioParagraphOrderKey(orderKey(first)));
+  for (const value of ['-1', '1.5', '01', 'Infinity', '1000000000', 2, '']) {
+    if (value === '') assert.doesNotThrow(() => validatePortfolioCopySettings(record({ [orderKey(first)]: value }), fields));
+    else assert.throws(() => validatePortfolioCopySettings(record({ [orderKey(first)]: value }), fields));
+  }
+  assert.throws(() => validatePortfolioCopySettings(record({ [orderKey(first).replace('.hero.', '.unknown.')]: '0' }), fields));
 });
