@@ -40,6 +40,7 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
       <a class="brand" href="/" aria-label="imjae home">imjae<span>.</span><small>DEV NOTES</small></a>
       <nav class="header-nav" aria-label="Main navigation">
         <a href="/" aria-current={active === 'home' ? 'page' : undefined}>Home</a>
+        <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>About</a>
         <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>Portfolio</a>
         <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>Writing</a>
         <a class="github-link" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>

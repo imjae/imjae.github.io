@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { site } from '../data/site';
+import { getArticles } from '../lib/articles';
+
+// 비어 있는 항목은 화면에 표시하지 않는다. 확정한 사실만 채운다.
+const profile = {
+  education: '',   // 예: '○○대학교 ○○학과 2027년 2월 졸업 예정'
+  contact: '',     // 예: 'name@example.com' (mailto 링크로 표시)
+  dcbPeriod: '',   // 예: '2025년 9월 ~ 현재'
+  dcbTeam: '',     // 예: '프로그래밍 담당 1명, 애니메이션은 외부 작업자'
+};
+const featuredSlugs = ['ik-traversal', 'monster-combat', 'water-playback'];
+const articles = await getArticles(false);
+const featured = featuredSlugs.flatMap((slug) => articles.filter((article) => article.data.slug === slug));
+---
+<BaseLayout title="소개" active="about" description="Unity와 C#으로 게임을 개발하는 imjae의 소개입니다. 다루는 분야, 개발 중인 DCB의 담당 범위와 먼저 읽을 글을 정리했습니다.">
+  <header class="page-intro"><p class="eyebrow">IMJAE / GAME DEVELOPER</p><h1>소개</h1><p>Unity와 C#으로 게임을 개발합니다. 구현한 기능, 공부한 내용, 오류를 수정한 과정을 이 블로그에 정리합니다.</p></header>
+  <div class="about-content prose">
+    <dl class="about-facts">
+      <dt>이름</dt><dd>imjae</dd>
+      <dt>위치</dt><dd>서울</dd>
+      {profile.education && <><dt>학력</dt><dd>{profile.education}</dd></>}
+      <dt>연락</dt><dd><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>{profile.contact && <> · <a href={`mailto:${profile.contact}`}>{profile.contact}</a></>}</dd>
+    </dl>
+
+    <h2>다루는 분야</h2>
+    <table>
+      <thead><tr><th>분야</th><th>이 블로그에서 다룬 작업</th></tr></thead>
+      <tbody>
+        <tr><td>게임플레이</td><td>캐릭터 이동과 IK 트레버설, 몬스터 행동 DSL·FSM과 그룹 전투, 지게 짐과 밧줄 다리의 물리 2차 운동, 이동 속도·스태미너 규칙</td></tr>
+        <tr><td>그래픽스·VFX</td><td>오프라인 유체 캐시의 재생과 메시 업로드, 환경 화염의 레이어와 품질 단계, 장비 조합 UI 이펙트, OpenGL 학습 기록</td></tr>
+        <tr><td>도구와 시스템</td><td>2D·3D 장비 파츠 조합, 플레이어 밸런싱 에디터 창, Addressables 콘텐츠 빌드와 Azure DevOps 배포</td></tr>
+        <tr><td>AI 협업</td><td>병렬 AI 세션 지침과 Git 워크트리 운영, CLI 기반 하네스 제작</td></tr>
+      </tbody>
+    </table>
+    <div class="stack-list"><span>Unity 6</span><span>C#</span><span>HDRP</span><span>Addressables</span><span>Git</span><span>Azure DevOps</span></div>
+
+    <h2>개발 중인 프로젝트 DCB</h2>
+    <p>조선을 배경으로 지게에 짐을 싣고 운반하는 액션 게임입니다. Unity 6, C#, HDRP, Addressables를 사용합니다. 이전 Deluge 프로젝트의 물 재생과 몬스터 행동 작업이 DCB로 이어졌습니다.</p>
+    <p>기획, 게임플레이·데이터 시스템, UI와 조립 도구, 셰이더와 이펙트, AI 협업을 통한 구현·검증을 담당했습니다. 3D 모델과 애니메이션 원본은 기존 자산을 활용했으며, 재사용한 텍스처 등은 개별 글에서 구분합니다.</p>
+    {(profile.dcbPeriod || profile.dcbTeam) && <dl class="about-facts">
+      {profile.dcbPeriod && <><dt>기간</dt><dd>{profile.dcbPeriod}</dd></>}
+      {profile.dcbTeam && <><dt>구성</dt><dd>{profile.dcbTeam}</dd></>}
+    </dl>}
+    <p><a class="button button-dark" href="/portfolio/dcb/">프로젝트 보기 <span aria-hidden="true">↗</span></a></p>
+
+    <h2>먼저 읽을 글</h2>
+    <div class="article-list">{featured.map((article) => <ArticleCard article={article} />)}</div>
+    <p class="about-more"><a class="text-link" href="/series/dcb/">DCB 글 목록 <span aria-hidden="true">→</span></a></p>
+
+    <h2>AI를 사용하는 방식</h2>
+    <p>요구사항과 제약을 정하고, AI가 작성한 코드 초안과 검증 도구를 확인해 채택합니다. 글마다 직접 정한 범위, AI를 사용한 범위, 재사용한 자산을 구분해 적습니다. 자세한 방식은 <a href="/writing/working-with-ai/">AI를 사용한 구현과 검증 과정</a>에 있습니다.</p>
+
+    <h2>블로그 구성</h2>
+    <p>Gameplay, Graphics, Tools &amp; Systems, AI Collaboration, Notes, Mathematics, Reading의 일곱 주제로 나눕니다. <a href="/writing/">글 모아보기</a>에서 본문 검색과 태그로 찾을 수 있고, <a href="/topics/reading/">Reading</a>에는 읽은 책과 감상을 모읍니다.</p>
+  </div>
+</BaseLayout>
+<style>
+  .about-facts{display:grid;grid-template-columns:72px 1fr;gap:4px 20px;margin:0 0 34px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;line-height:2}
+  .about-facts dt{font:9px var(--mono);letter-spacing:1px;color:var(--green);align-self:center}
+  .about-facts dd{margin:0;color:var(--muted);word-break:keep-all}
+  .about-content .stack-list{margin:0 0 30px}
+  .about-content .article-list{margin-bottom:18px}
+  .about-more{margin-bottom:21px}
+</style>

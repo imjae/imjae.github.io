@@ -13,6 +13,7 @@ dist/
 !.env.example
 media-inbox/*
 !media-inbox/.gitkeep
+private/
 
 # GitHub 로그인 편집 서버의 로컬 빌드·비밀 설정
 .authoring-dist/
