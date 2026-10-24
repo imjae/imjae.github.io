@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, unlink, rmdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings } from '../src/lib/portfolio-copy.mjs';
+import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings, portfolioCopyIssues } from '../src/lib/portfolio-copy.mjs';
 import { readPortfolioText } from '../src/lib/portfolio-copy.server.mjs';
 
 const base = { profile: { name: 'imjae', contact: 'author@example.com' }, cases: [{ id: 'water', title: '물 캐시', links: [{ slug: 'water-playback', label: '구현 기록' }], media: { url: 'https://example.com/video' } }, { id: 'fire', title: '불' }] };
@@ -66,4 +66,25 @@ test('실제 설정 파일을 다시 읽으면 저장 문구가 복원되고 미
     await rmdir(join(root, 'content')).catch(() => {});
     await rmdir(root);
   }
+});
+
+test('빈 문구와 긴 문구를 모두 항목별로 알리고 고치면 저장 내용을 보존한다', () => {
+  const values = { 'profile.name': ' \n', 'cases.water.title': '문'.repeat(601), 'cases.fire.title': '새 불 제목' };
+  const issues = portfolioCopyIssues(values, fields);
+  assert.deepEqual(issues.map(issue => issue.key), ['profile.name', 'cases.water.title']);
+  assert.match(issues[0].message, /비어/);
+  assert.match(issues[1].message, /601자/);
+  assert.throws(() => validatePortfolioCopySettings(record(values), fields), /profile\.name.*비어/);
+  values['profile.name'] = '이름';
+  values['cases.water.title'] = '물'.repeat(600);
+  assert.deepEqual(portfolioCopyIssues(values, fields), []);
+  const saved = preparePortfolioCopySaves(values, fields);
+  assert.deepEqual(Object.assign({}, ...saved.map(save => JSON.parse(save.content).values)), values);
+});
+
+test('글자 수는 이모지도 한 글자로 세며 저장 검증과 같은 오류를 사용한다', () => {
+  assert.deepEqual(portfolioCopyIssues({ 'profile.name': '🎮'.repeat(600) }, fields), []);
+  const invalid = { 'profile.name': '🎮'.repeat(601) };
+  assert.match(portfolioCopyIssues(invalid, fields)[0].message, /601자/);
+  assert.throws(() => validatePortfolioCopySettings(record(invalid), fields), /profile\.name.*601자/);
 });

@@ -305,10 +305,16 @@ main:focus { outline: none; }
 .rp-copy-editing .rp-selection [data-portfolio-copy] { outline-color: #c9d9b5; }
 .rp-copy-editing .rp-selection [data-portfolio-copy]:focus { background: #ffffff18; }
 .rp-copy-pending { padding-bottom: 250px; }
-.rp-copy-toolbar { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 36px); max-width: 1160px; z-index: 8; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-height: 42vh; overflow: auto; padding: 16px 20px; background: var(--rp-paper); border: 1px solid #a2b89c; border-radius: 5px; box-shadow: 0 4px 25px #213b3128; }
+.rp-copy-toolbar { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 36px); max-width: 1160px; z-index: 8; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 20px; background: var(--rp-paper); border: 1px solid #a2b89c; border-radius: 5px; box-shadow: 0 4px 25px #213b3128; }
 .rp-copy-toolbar[hidden], .rp-copy-toolbar [hidden] { display: none; }
 .rp-copy-toolbar strong { font-size: 14px; }
 .rp-copy-toolbar p { font-size: 12px; color: var(--rp-muted); line-height: 1.8; margin-top: 5px; }
+.rp-copy-summary { min-width: 0; flex: 1; }
+.rp-copy-errors { max-height: 18vh; overflow: auto; margin-top: 8px; }
+.rp-copy-errors button { display: block; width: 100%; border: 0; border-left: 3px solid #a43b32; padding: 6px 10px; color: #822e27; background: #f9eeeb; font: 12px/1.7 var(--rp-sans); text-align: left; overflow-wrap: anywhere; cursor: pointer; }
+.rp-copy-errors li + li { margin-top: 5px; }
+.rp-copy-pending [data-portfolio-copy][aria-invalid=true], .rp-copy-pending [data-portfolio-copy][aria-invalid=true]:focus { outline: 2px solid #a43b32; outline-offset: 3px; color: #822e27; background: #f9eeeb; min-width: 2ch; min-height: 1.5em; }
+.rp-copy-pending :is(span,b,strong)[data-portfolio-copy][aria-invalid=true] { display: inline-block; }
 .rp-copy-actions, #portfolio-copy-saves { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .rp-copy-actions { flex-shrink: 0; max-width: 45%; }
 .rp-copy-actions a, .rp-copy-actions button { display: inline-block; border: 1px solid var(--rp-line); border-radius: 3px; padding: 10px 12px; font: 12px/1.5 var(--rp-sans); color: var(--rp-ink); background: var(--rp-paper); cursor: pointer; }

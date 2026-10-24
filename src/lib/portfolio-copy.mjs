@@ -19,16 +19,25 @@ export function applyPortfolioText(value, fields, prefix = '') {
   return value;
 }
 
+export function portfolioCopyIssues(values, allowed) {
+  const issues = [];
+  for (const [key, value] of Object.entries(values)) {
+    let message = '';
+    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || !Object.hasOwn(allowed, key)) message = '수정할 수 없는 항목입니다.';
+    else if (typeof value !== 'string') message = '문자로 입력해 주세요.';
+    else if (!value.trim()) message = '내용이 비어 있습니다. 1~600자로 입력해 주세요.';
+    else if ([...value].length > 600) message = `현재 ${[...value].length}자입니다. 600자 이하로 줄여 주세요.`;
+    if (message) issues.push({ key, message });
+  }
+  return issues;
+}
+
 export function validatePortfolioCopySettings(data, allowed) {
   if (data?.version !== 1 || data.portfolio !== 'krafton-2027' || typeof data.createdAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(data.createdAt) || Number.isNaN(Date.parse(data.createdAt)) || new Date(data.createdAt).toISOString() !== data.createdAt) throw new Error('포트폴리오 문구의 저장 형식과 시각을 확인해 주세요.');
   if (!data.values || typeof data.values !== 'object' || Array.isArray(data.values) || !Object.keys(data.values).length) throw new Error('저장할 문구가 없습니다.');
-  const values = {};
-  for (const [key, value] of Object.entries(data.values)) {
-    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || !Object.hasOwn(allowed, key)) throw new Error(`수정할 수 없는 문구입니다: ${key}`);
-    if (typeof value !== 'string' || !value.trim() || [...value].length > 600) throw new Error('문구는 1~600자로 적어 주세요.');
-    values[key] = value;
-  }
-  return { version: 1, portfolio: 'krafton-2027', createdAt: data.createdAt, values };
+  const [issue] = portfolioCopyIssues(data.values, allowed);
+  if (issue) throw new Error(`${issue.key}: ${issue.message}`);
+  return { version: 1, portfolio: 'krafton-2027', createdAt: data.createdAt, values: { ...data.values } };
 }
 
 export function selectPortfolioText(records, defaults) {
