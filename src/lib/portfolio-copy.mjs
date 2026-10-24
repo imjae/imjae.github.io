@@ -1,5 +1,21 @@
 const excluded = new Set(['id', 'featureSlug', 'slug', 'anchor', 'kind', 'media', 'contact']);
 
+export const portfolioParagraphSlots = {
+  hero: '상단 소개', project: '프로젝트 소개', ai: 'AI 활용', client: '게임플레이 구현',
+  graphics: '런타임·그래픽스', more: '추가 기록', combat: '그룹 전투', traversal: 'IK 트레버설',
+  equipment: '장비 조합', water: '물 캐시', fire: '불 이펙트',
+};
+
+export function isPortfolioParagraphKey(key) {
+  const match = /^paragraphs\.([a-z]+)\.([0-9]{13}-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/.exec(key);
+  return Boolean(match && Object.hasOwn(portfolioParagraphSlots, match[1]));
+}
+
+export function portfolioParagraphs(fields, slot) {
+  return Object.entries(fields).filter(([key]) => isPortfolioParagraphKey(key) && key.split('.')[1] === slot)
+    .sort(([left], [right]) => left.localeCompare(right)).map(([key, text]) => ({ key, text }));
+}
+
 // 주소·순서·기능 식별자는 제외하고 화면 문구만 다룬다.
 export function portfolioTextFields(value, prefix = '', result = {}) {
   if (typeof value === 'string') result[prefix] = value;
@@ -23,10 +39,9 @@ export function portfolioCopyIssues(values, allowed) {
   const issues = [];
   for (const [key, value] of Object.entries(values)) {
     let message = '';
-    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || !Object.hasOwn(allowed, key)) message = '수정할 수 없는 항목입니다.';
+    if (!/^[a-zA-Z][a-zA-Z0-9-]*(?:\.[a-zA-Z0-9-]+)*$/.test(key) || (!Object.hasOwn(allowed, key) && !isPortfolioParagraphKey(key))) message = '수정할 수 없는 항목입니다.';
     else if (typeof value !== 'string') message = '문자로 입력해 주세요.';
-    else if (!value.trim()) message = '내용이 비어 있습니다. 1~600자로 입력해 주세요.';
-    else if ([...value].length > 600) message = `현재 ${[...value].length}자입니다. 600자 이하로 줄여 주세요.`;
+    else if (value.trim() && [...value].length > 600) message = `현재 ${[...value].length}자입니다. 600자 이하로 줄여 주세요.`;
     if (message) issues.push({ key, message });
   }
   return issues;
@@ -37,7 +52,8 @@ export function validatePortfolioCopySettings(data, allowed) {
   if (!data.values || typeof data.values !== 'object' || Array.isArray(data.values) || !Object.keys(data.values).length) throw new Error('저장할 문구가 없습니다.');
   const [issue] = portfolioCopyIssues(data.values, allowed);
   if (issue) throw new Error(`${issue.key}: ${issue.message}`);
-  return { version: 1, portfolio: 'krafton-2027', createdAt: data.createdAt, values: { ...data.values } };
+  return { version: 1, portfolio: 'krafton-2027', createdAt: data.createdAt,
+    values: Object.fromEntries(Object.entries(data.values).map(([key, value]) => [key, value.trim() ? value : ''])) };
 }
 
 export function selectPortfolioText(records, defaults) {
@@ -51,7 +67,7 @@ export function selectPortfolioText(records, defaults) {
 export function preparePortfolioCopySaves(values, allowed, { now = new Date(), id = crypto.randomUUID() } = {}) {
   if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('저장 식별자를 확인해 주세요.');
   const base = { version: 1, portfolio: 'krafton-2027', createdAt: now.toISOString() };
-  validatePortfolioCopySettings({ ...base, values }, allowed);
+  values = validatePortfolioCopySettings({ ...base, values }, allowed).values;
   const prepare = (entries, index) => {
     const content = `${JSON.stringify({ ...base, values: Object.fromEntries(entries) }, null, 2)}\n`;
     const path = `content/portfolio-copy/${base.createdAt.replaceAll(':', '-').replace('.', '-')}-${id}-${index}.json`;

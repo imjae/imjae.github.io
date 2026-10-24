@@ -109,6 +109,8 @@ for (const key of ['profile.headline', 'project.description', 'pageCopy.combatCo
 }
 if (privateAuthoring) for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
 if (!privateAuthoring && (stateJson || portfolioModes.includes('data-portfolio-edit') || editor.includes('id="new-post-form"') || editor.includes('id="pin-editor-data"') || editor.includes('data-video-editor='))) failures.push('공개 빌드에 로그인 없는 편집 화면이 포함됨');
+if (!privateAuthoring && /data-add-paragraph=|id="portfolio-copy-defaults"|id="portfolio-copy-removed"/.test(recruitmentPage)) failures.push('공개 포트폴리오에 문구 추가·삭제 관리 UI가 포함됨');
+if (privateAuthoring && (!recruitmentPage.includes('id="portfolio-copy-remove"') || !recruitmentPage.includes('id="portfolio-copy-removed"') || [...recruitmentPage.matchAll(/data-add-paragraph=/g)].length !== 11)) failures.push('보호된 포트폴리오의 문구 삭제·복원·문단 추가 UI 누락');
 if (copyKeys.some(key => /^(?:clientCases|graphicsCases)\.[^.]+\.role$/.test(key)) || /<dt>내 역할<\/dt>/.test(recruitmentPage)) failures.push('포트폴리오 기능별 사례에 제거한 내 역할 칸이 표시됨');
 if (copyKeys.includes('project.role') || copyKeys.some(key => /^contributionRows\./.test(key) || /^pageCopy\.scope/.test(key)) || /(?:id="scope"|href="#scope"|class="rp-project-assets"|<dt>담당 범위<\/dt>)/.test(recruitmentPage)) failures.push('지원용 포트폴리오에 제거한 담당 범위·사용 자산 구역이나 연결이 표시됨');
 if (privateAuthoring && !editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');

@@ -1,12 +1,14 @@
 ---
 import type { PortfolioCase } from '../../data/krafton-2027';
 import PortfolioMedia from './PortfolioMedia.astro';
+import PortfolioParagraphs from './PortfolioParagraphs.astro';
 interface Props {
   item: PortfolioCase & { number: string };
   copyGroup: 'clientCases' | 'graphicsCases';
+  fields: Record<string, string>;
   links: { href: string; title: string; label: string; kind?: string }[];
 }
-const { item, links, copyGroup } = Astro.props;
+const { item, links, copyGroup, fields } = Astro.props;
 ---
 <article id={item.id} class="rp-case" aria-labelledby={`${item.id}-title`} data-portfolio-case={item.id} data-dcb-feature={item.featureSlug}>
   <header class="rp-case-heading">
@@ -15,16 +17,17 @@ const { item, links, copyGroup } = Astro.props;
       <p class="rp-eyebrow" data-portfolio-copy={`${copyGroup}.${item.id}.category`}>{item.category}</p>
       <h4 class="rp-case-title" id={`${item.id}-title`} data-portfolio-copy={`${copyGroup}.${item.id}.title`}>{item.title}</h4>
       <p class="rp-case-summary" data-portfolio-copy={`${copyGroup}.${item.id}.summary`}>{item.summary}</p>
-      <ul class="rp-tags" aria-label="사용 기술">{item.tags.map((tag, index) => <li data-portfolio-copy={`${copyGroup}.${item.id}.tags.${index}`}>{tag}</li>)}</ul>
+      <ul class:list={['rp-tags', { 'rp-copy-container-empty': !item.tags.some(tag => tag.trim()) }]} aria-label="사용 기술">{item.tags.map((tag, index) => <li data-portfolio-copy={`${copyGroup}.${item.id}.tags.${index}`}>{tag}</li>)}</ul>
     </div>
   </header>
   <div class="rp-showcase rp-case-content">
     <PortfolioMedia media={item.media} slotId={item.id} placeholderTitle={`${item.title} 상세 영상`} />
     <div class="rp-case-body">
     <dl class="rp-case-facts">
-      <div><dt>소개</dt><dd data-portfolio-copy={`${copyGroup}.${item.id}.intro`}>{item.intro}</dd></div>
-      <div><dt>구현</dt><dd><ul class="rp-case-impl">{item.implementation.map((line, index) => <li data-portfolio-copy={`${copyGroup}.${item.id}.implementation.${index}`}>{line}</li>)}</ul></dd></div>
+      <div class:list={{ 'rp-copy-container-empty': !item.intro.trim() }}><dt>소개</dt><dd data-portfolio-copy={`${copyGroup}.${item.id}.intro`}>{item.intro}</dd></div>
+      <div class:list={{ 'rp-copy-container-empty': !item.implementation.some(line => line.trim()) }}><dt>구현</dt><dd><ul class="rp-case-impl">{item.implementation.map((line, index) => <li data-portfolio-copy={`${copyGroup}.${item.id}.implementation.${index}`}>{line}</li>)}</ul></dd></div>
     </dl>
+    <PortfolioParagraphs fields={fields} slot={item.id as 'combat' | 'traversal' | 'equipment' | 'water' | 'fire'} />
     <div class="rp-case-links" aria-label={`${item.title} 관련 글`}>
       {links.map(link => <a href={link.href} title={link.title} class:list={{ 'rp-case-link-problems': link.kind === 'problems' }}>{link.label}<span aria-hidden="true">↗</span></a>)}
     </div>

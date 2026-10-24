@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, unlink, rmdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings, portfolioCopyIssues } from '../src/lib/portfolio-copy.mjs';
+import { portfolioTextFields, applyPortfolioText, selectPortfolioText, preparePortfolioCopySaves, validatePortfolioCopySettings, portfolioCopyIssues, isPortfolioParagraphKey, portfolioParagraphs } from '../src/lib/portfolio-copy.mjs';
 import { readPortfolioText } from '../src/lib/portfolio-copy.server.mjs';
 
 const base = { profile: { name: 'imjae', contact: 'author@example.com' }, cases: [{ id: 'water', title: '물 캐시', links: [{ slug: 'water-playback', label: '구현 기록' }], media: { url: 'https://example.com/video' } }, { id: 'fire', title: '불' }] };
@@ -68,18 +68,51 @@ test('실제 설정 파일을 다시 읽으면 저장 문구가 복원되고 미
   }
 });
 
-test('빈 문구와 긴 문구를 모두 항목별로 알리고 고치면 저장 내용을 보존한다', () => {
+test('빈 문구는 삭제로 저장하고 글자 수 초과만 항목별로 알린다', () => {
   const values = { 'profile.name': ' \n', 'cases.water.title': '문'.repeat(601), 'cases.fire.title': '새 불 제목' };
   const issues = portfolioCopyIssues(values, fields);
-  assert.deepEqual(issues.map(issue => issue.key), ['profile.name', 'cases.water.title']);
-  assert.match(issues[0].message, /비어/);
-  assert.match(issues[1].message, /601자/);
-  assert.throws(() => validatePortfolioCopySettings(record(values), fields), /profile\.name.*비어/);
+  assert.deepEqual(issues.map(issue => issue.key), ['cases.water.title']);
+  assert.match(issues[0].message, /601자/);
+  assert.throws(() => validatePortfolioCopySettings(record(values), fields), /cases\.water\.title.*601자/);
+  assert.equal(validatePortfolioCopySettings(record({ 'profile.name': ' \n' }), fields).values['profile.name'], '');
   values['profile.name'] = '이름';
   values['cases.water.title'] = '물'.repeat(600);
   assert.deepEqual(portfolioCopyIssues(values, fields), []);
   const saved = preparePortfolioCopySaves(values, fields);
   assert.deepEqual(Object.assign({}, ...saved.map(save => JSON.parse(save.content).values)), values);
+});
+
+test('문구 삭제와 다시 추가한 값이 최신 설정과 실제 저장 내용에 반영된다', () => {
+  const values = { 'profile.name': '', 'cases.water.title': ' \n' };
+  const saves = preparePortfolioCopySaves(values, fields);
+  const records = saves.map(save => JSON.parse(save.content));
+  const hidden = selectPortfolioText(records, fields);
+  assert.equal(hidden['profile.name'], '');
+  assert.equal(hidden['cases.water.title'], '');
+  const restored = selectPortfolioText([...records, record({ 'profile.name': '다시 쓴 이름' }, '2099-10-24T00:00:00.000Z')], fields);
+  assert.equal(restored['profile.name'], '다시 쓴 이름');
+  assert.equal(restored['cases.water.title'], '');
+  assert.equal(applyPortfolioText(base, hidden).profile.name, '');
+});
+
+test('등록된 영역의 새 문단만 허용하고 나눈 저장·삭제 후에도 추가 순서를 유지한다', () => {
+  const first = 'paragraphs.hero.1792800000000-12345678-1234-1234-1234-123456789abc';
+  const second = 'paragraphs.hero.1792800000001-12345678-1234-1234-1234-123456789abc';
+  const project = first.replace('.hero.', '.project.');
+  assert.ok(isPortfolioParagraphKey(first));
+  for (const key of [first.replace('.hero.', '.unknown.'), 'paragraphs.hero.script', '../path', 'project.media.url']) {
+    assert.ok(!isPortfolioParagraphKey(key));
+    assert.throws(() => validatePortfolioCopySettings(record({ [key]: '임의 문구' }), fields));
+  }
+  const values = { [second]: '두'.repeat(590), [first]: '첫'.repeat(590), [project]: '<script>는 실행하지 않고 문구로 표시합니다.' };
+  const saves = preparePortfolioCopySaves(values, fields);
+  assert.ok(saves.length > 1);
+  const selected = selectPortfolioText(saves.reverse().map(save => JSON.parse(save.content)), fields);
+  assert.deepEqual(portfolioParagraphs(selected, 'hero').map(item => item.key), [first, second]);
+  assert.equal(portfolioParagraphs(selected, 'project')[0].text, values[project]);
+  const deleted = selectPortfolioText([record(selected), record({ [first]: '' }, '2099-10-24T00:00:00.000Z')], fields);
+  assert.equal(portfolioParagraphs(deleted, 'hero')[0].text, '');
+  assert.equal(portfolioParagraphs(deleted, 'hero')[1].text, values[second]);
 });
 
 test('글자 수는 이모지도 한 글자로 세며 저장 검증과 같은 오류를 사용한다', () => {

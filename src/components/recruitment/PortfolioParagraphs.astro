@@ -1,0 +1,12 @@
+---
+import { portfolioParagraphs, portfolioParagraphSlots } from '../../lib/portfolio-copy.mjs';
+import { privateAuthoring } from '../../lib/authoring.server.mjs';
+interface Props { fields: Record<string, string>; slot: keyof typeof portfolioParagraphSlots; }
+const { fields, slot } = Astro.props;
+const paragraphs = portfolioParagraphs(fields, slot);
+const label = portfolioParagraphSlots[slot];
+---
+{(privateAuthoring || paragraphs.some(item => item.text.trim())) && <div class="rp-paragraphs" data-portfolio-paragraphs={slot} data-paragraph-label={label}>
+  {paragraphs.map(item => <p data-portfolio-copy={item.key}>{item.text}</p>)}
+  {privateAuthoring && <button class="rp-paragraph-add" type="button" data-add-paragraph={slot}>＋ {label} 문단 추가</button>}
+</div>}
