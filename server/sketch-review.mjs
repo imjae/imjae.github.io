@@ -71,7 +71,7 @@ export class SketchReviews {
         if (!job) return null;
         const kind = ['approved','deploying'].includes(job.status) ? 'deploy' : 'prepare';
         if (kind === 'deploy' && job.status === 'approved' && job.approval.expiresAt <= now) {
-          job.status='awaiting-approval'; delete job.approval; job.message='승인이 만료됐습니다. 결과를 다시 확인해 주세요.'; await this.storage.put(`job:${job.id}`,job); return null;
+          job.status='awaiting-approval'; job.updatedAt=now; delete job.approval; job.message='승인이 만료됐습니다. 결과를 다시 확인해 주세요.'; await this.storage.put(`job:${job.id}`,job); return null;
         }
         job.status = kind === 'deploy' ? 'deploying' : 'preparing';
         job.lease = { token:crypto.randomUUID(), expiresAt:now+leaseMs, kind };

@@ -17,6 +17,19 @@ test('외부 글·없는 버전·과도한 이미지·좌표를 거절한다',()
   for(const mutate of [s=>s.context.url='https://evil.test/writing/x/',s=>s.context.sourceHash=null,s=>s.context.strokes[0].points[0].x=Infinity,s=>s.image='not-png',s=>s.instruction='x'.repeat(4001)]){const s=submission();mutate(s);assert.throws(()=>validateSubmission(s));}
   assert.ok(decodePng(png).length>32);
 });
+test('옛 필기의 원문 연결은 현재 버전 확인을 명시해야 한다',()=>{
+  const s=submission();s.context.currentSourceHash='f'.repeat(64);
+  assert.throws(()=>validateSubmission(s));s.reanchored=true;
+  assert.equal(validateSubmission(s).context.currentSourceHash,'f'.repeat(64));
+  s.context.sourceHash=null;assert.ok(validateSubmission(s));
+});
+test('만료된 승인은 검토 대기로 돌리고 화면 갱신 시각도 변경한다',async()=>{
+  const f=fixture(),job=await f.ready();
+  await f.storage.put('job:'+job.id,{...job,status:'approved',updatedAt:1,approval:{expiresAt:1}});
+  assert.equal(await f.claim(),null);
+  const expired=await f.storage.get('job:'+job.id);
+  assert.equal(expired.status,'awaiting-approval');assert.ok(expired.updatedAt>1);assert.equal(expired.approval,undefined);
+});
 test('분할 파일을 해시로 검증하고 손상되면 거절한다',async()=>{
   const storage=new MemoryStorage(),value='한글'.repeat(100000);
   await putBlob(storage,'test',value,'text/plain');
