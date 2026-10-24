@@ -51,7 +51,7 @@ export const project: {
 } = {
   title: 'DCB',
   subtitle: '지게에 짐을 싣고 운반하는 액션 게임',
-  description: '조선을 배경으로 이동·전투·장비 조합과 환경 상호작용을 개발하고 있습니다. 아래 사례는 기능의 동작과 구현 방식을 보여 주고, 구현하며 생긴 문제는 연결된 글에서 따로 읽을 수 있습니다.',
+  description: '조선을 배경으로 한 익스트렉션 액션 생존 RPG입니다.\n\n게임의 전반적인 구성과 아트 방향을 잡고, 3D 모델러·3D 애니메이터와 논의하며 모델과 애니메이션의 콘셉트를 구체화했습니다. 협의를 바탕으로 제작된 리소스를 게임에 통합하고, 게임플레이와 시스템을 구현했습니다.\n\nIK 트레버설 시스템을 도입해 지면·환경과 상호작용하는 이동과 옆걸음, 클라이밍, 계단 오르기 같은 장애물 통과를 구현했습니다.\n\n무기 파츠를 자유롭게 조합할 수 있는 구조도 구현했습니다.\n\n아래 사례는 기능의 동작과 구현 방식을 보여 주고, 구현하며 생긴 문제는 연결된 글에서 따로 읽을 수 있습니다.',
   role: '기획, 게임플레이·데이터 시스템, UI·조립 도구와 셰이더·이펙트를 담당하며, 코드와 검증 도구 작성에는 AI를 활용했습니다.',
 };
 
@@ -193,6 +193,7 @@ export const aiUsageCase: {
   links: [{ slug: 'parallel-ai-worktrees', label: '병렬 세션 지침과 통합 방식 자세히 보기' }],
 };
 
+// 기존 문구 저장 파일과 호환되도록 순서를 유지한다. 담당 범위·사용 자산 구역은 표시하지 않는다.
 export const contributionRows: Array<{ label: string; description: string }> = [
   {
     label: '직접 정하고 판단한 범위',
@@ -204,7 +205,7 @@ export const contributionRows: Array<{ label: string; description: string }> = [
   },
   {
     label: '작업자·기존 자산·외부 도구',
-    description: '3D 모델은 기존 자산을 사용하고, 트레버설 클립은 애니메이션 작업자에게 받았습니다. 화염 플립북은 Unity ParticlePack, 물 계산은 Blender Mantaflow를 사용했습니다.',
+    description: '3D 모델과 애니메이션은 채용한 3D 모델러·3D 애니메이터에게 전달받았습니다. 화염 플립북은 Unity ParticlePack, 물 계산은 Blender Mantaflow를 사용했습니다.',
   },
 ];
 

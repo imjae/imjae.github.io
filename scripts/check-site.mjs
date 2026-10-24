@@ -84,12 +84,13 @@ if (privateAuthoring && (!portfolioModes.includes('data-portfolio-edit') || !por
 const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 const copyState = stateJson ? JSON.parse(stateJson) : {};
 const copyKeys = [...recruitmentPage.matchAll(/\bdata-portfolio-copy="([^"]+)"/g)].map(match => match[1]);
-for (const key of ['profile.headline', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0', 'contributionRows.0.description']) {
+for (const key of ['profile.headline', 'project.description', 'pageCopy.combatContents', 'aiUsageCase.title', 'pageCopy.clientTitle', 'clientCases.traversal.implementation.0', 'graphicsCases.water.intro', 'graphicsCases.fire.implementation.0']) {
   if (!copyKeys.includes(key)) failures.push(`포트폴리오 주요 문구 편집 지점 누락: ${key}`);
 }
 if (privateAuthoring) for (const key of copyKeys) if (!Object.hasOwn(copyState, key)) failures.push(`편집 문구의 저장 식별자 누락: ${key}`);
 if (!privateAuthoring && (stateJson || portfolioModes.includes('data-portfolio-edit') || editor.includes('id="new-post-form"') || editor.includes('id="pin-editor-data"') || editor.includes('data-video-editor='))) failures.push('공개 빌드에 로그인 없는 편집 화면이 포함됨');
 if (copyKeys.some(key => /^(?:clientCases|graphicsCases)\.[^.]+\.role$/.test(key)) || /<dt>내 역할<\/dt>/.test(recruitmentPage)) failures.push('포트폴리오 기능별 사례에 제거한 내 역할 칸이 표시됨');
+if (copyKeys.includes('project.role') || copyKeys.some(key => /^contributionRows\./.test(key) || /^pageCopy\.scope/.test(key)) || /(?:id="scope"|href="#scope"|class="rp-project-assets"|<dt>담당 범위<\/dt>)/.test(recruitmentPage)) failures.push('지원용 포트폴리오에 제거한 담당 범위·사용 자산 구역이나 연결이 표시됨');
 if (privateAuthoring && !editor.includes('href="/portfolio/krafton-2027/?edit=1"')) failures.push('관리 화면에 포트폴리오 직접 편집 연결 누락');
 const editorSlots = [...editor.matchAll(/\bdata-video-editor="([^"]+)"/g)].map(match => match[1]);
 if (privateAuthoring && JSON.stringify(editorSlots) !== JSON.stringify(projectVideoSlots.map(slot => slot.id))) failures.push('영상 수정 모드의 전체 플레이·기능별 입력 항목이 다름');
@@ -139,7 +140,7 @@ const expectedRecruitmentFeatures = dcbFeatures.filter(feature => primaryFeature
 if (JSON.stringify(recruitmentFeatures) !== JSON.stringify(expectedRecruitmentFeatures)) failures.push('지원용 포트폴리오의 AI 협업·대표 사례 순서가 DCB 기능 설정과 다름');
 const recruitmentNav = recruitmentPage.match(/<nav\b[^>]*class="rp-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
 const recruitmentAnchors = [...recruitmentNav.matchAll(/\bhref="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(recruitmentAnchors) !== JSON.stringify(['#project', '#ai', '#client', '#graphics', '#scope'])) failures.push('지원용 포트폴리오 메뉴에서 AI 협업이 대표 구현보다 뒤에 있음');
+if (JSON.stringify(recruitmentAnchors) !== JSON.stringify(['#project', '#ai', '#client', '#graphics'])) failures.push('지원용 포트폴리오 메뉴의 구역이나 AI 협업 순서가 다름');
 const extraFeatureOrder = [...recruitmentPage.matchAll(/\bdata-portfolio-extra="\/writing\/([^/]+)\/"/g)].map(match => {
   const index = dcbFeatures.findIndex(feature => feature.overviewSlug === match[1] || feature.articleSlugs.includes(match[1]));
   return index < 0 ? dcbFeatures.length : index;

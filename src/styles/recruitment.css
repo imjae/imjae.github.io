@@ -135,10 +135,6 @@ main:focus { outline: none; }
 .rp-decision-heading > p:last-child { font-size: 13px; color: var(--rp-muted); line-height: 1.9; }
 .rp-workflow-links { display: flex; flex-wrap: wrap; gap: 18px 30px; margin-top: 25px; }
 .rp-workflow-links a { font-size: 12px; text-decoration: underline; text-underline-offset: 5px; line-height: 1.8; }
-.rp-contributions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 32px 0 36px; }
-.rp-contributions > div { border-top: 1px solid #a9b99f; padding-top: 20px; }
-.rp-contributions dt { font-size: 14px; font-weight: 650; margin-bottom: 12px; }
-.rp-contributions dd { font-size: 13px; color: var(--rp-muted); line-height: 2; }
 .rp-verification-note { margin: 22px 0 0; max-width: 760px; font-size: 12px; line-height: 1.95; color: var(--rp-muted); word-break: keep-all; }
 .rp-verification-wrap { max-width: 100%; overflow-x: auto; }
 .rp-verification { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 12px; line-height: 1.95; text-align: left; }
@@ -253,8 +249,6 @@ main:focus { outline: none; }
   .rp-decision { display: block; padding: 25px 21px; }
   .rp-decision-heading { margin-bottom: 24px; }
   .rp-workflow-links { gap: 14px 24px; }
-  .rp-contributions { grid-template-columns: 1fr; gap: 23px; margin: 25px 0 30px; }
-  .rp-contributions dt { margin-bottom: 9px; }
   .rp-verification { font-size: 12px; }
   .rp-more { display: block; }
   .rp-more h3 { font-size: 24px; }
@@ -286,10 +280,9 @@ main:focus { outline: none; }
   .rp-section-title h3 { font-size: 18pt; }
   .rp-case-title { font-size: 15pt; }
   .rp-section-number { background: #eee; color: #111; }
-  .rp-case-facts dd, .rp-intro, .rp-contributions dd { font-size: 10pt; }
-  .rp-section-title, .rp-project-facts > div, .rp-contributions { display: block; }
+  .rp-case-facts dd, .rp-intro { font-size: 10pt; }
+  .rp-section-title, .rp-project-facts > div { display: block; }
   .rp-section-title > p { margin-top: 9px; }
-  .rp-contributions > div { padding: 12px 0; }
   .rp-verification-wrap { overflow: visible; }
   .rp-verification { min-width: 0; font-size: 9pt; }
   .rp-verification tr { break-inside: avoid; }

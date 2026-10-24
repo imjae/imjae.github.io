@@ -23,7 +23,7 @@ const baseCopy = {
   additionalLinks: defaults.additionalLinks, aiLinks: defaults.aiLinks, pageCopy: defaultPageCopy,
 };
 const fields = await readPortfolioText(portfolioTextFields(baseCopy));
-const { profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase, contributionRows,
+const { profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase,
   additionalLinks, aiLinks, pageCopy } = applyPortfolioText(baseCopy, fields) as typeof baseCopy;
 
 const articles = await getArticles(false);
@@ -72,7 +72,6 @@ const contents = [
   { id: 'ai', number: '01', title: pageCopy.aiTitle, copyKey: 'pageCopy.aiTitle', children: [{ id: 'ai-parallel', number: '01.1', title: aiUsageCase.title, copyKey: 'aiUsageCase.title' }] },
   { id: 'client', number: '02', title: pageCopy.clientContents, copyKey: 'pageCopy.clientContents', children: clients.map(({ item }) => ({ id: item.id, number: item.number, title: caseIndexLabels[item.id] ?? item.title, copyKey: `pageCopy.${item.id}Contents` })) },
   { id: 'graphics', number: '03', title: pageCopy.graphicsContents, copyKey: 'pageCopy.graphicsContents', children: graphics.map(({ item }) => ({ id: item.id, number: item.number, title: caseIndexLabels[item.id] ?? item.title, copyKey: `pageCopy.${item.id}Contents` })) },
-  { id: 'scope', number: '04', title: pageCopy.scopeContents, copyKey: 'pageCopy.scopeContents', children: [] },
 ];
 const usageLinks = linkedArticles(aiUsageCase.links, true);
 const extraArticles = linkedArticles([...additionalLinks]
@@ -122,12 +121,11 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
       <div id="project-video"><PortfolioMedia media={overviewMedia} slotId="project" placeholderTitle="DCB 전체 플레이 영상" label="GAMEPLAY OVERVIEW" loading="eager" showCaption={false} /></div>
     <div class="rp-project-content">
       <p class="rp-project-description" data-portfolio-copy="project.description">{project.description}</p>
-      <dl class="rp-project-facts">
-        <div><dt>담당 범위</dt><dd data-portfolio-copy="project.role">{project.role}</dd></div>
+      {(profile.period || profile.team) && <dl class="rp-project-facts">
         {profile.period && <div><dt>개발 기간</dt><dd data-portfolio-copy="profile.period">{profile.period}</dd></div>}
         {profile.team && <div><dt>팀 구성</dt><dd data-portfolio-copy="profile.team">{profile.team}</dd></div>}
-      </dl>
-      <div class="rp-project-links"><a class="rp-inline-link" href="/portfolio/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a><a class="rp-inline-link" href="#scope">담당 작업과 사용 자산 <span aria-hidden="true">↓</span></a></div>
+      </dl>}
+      <div class="rp-project-links"><a class="rp-inline-link" href="/portfolio/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a></div>
     </div>
     </div>
   </div>
@@ -151,11 +149,6 @@ const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || 
   <section id="graphics" class="rp-section" aria-labelledby="graphics-title">
     <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">03</span>RUNTIME & GRAPHICS</p><h3 id="graphics-title" data-portfolio-copy="pageCopy.graphicsTitle">{pageCopy.graphicsTitle}</h3></div><p data-portfolio-copy="pageCopy.graphicsDescription">{pageCopy.graphicsDescription}</p></div>
     <div class="rp-graphics-grid">{graphics.map(({ item, links }) => <PortfolioCase item={item} links={links} copyGroup="graphicsCases" />)}</div>
-  </section>
-
-  <section id="scope" class="rp-section" aria-labelledby="scope-title">
-    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">04</span>CONTRIBUTION & ASSETS</p><h3 id="scope-title" data-portfolio-copy="pageCopy.scopeTitle">{pageCopy.scopeTitle}</h3></div><p data-portfolio-copy="pageCopy.scopeDescription">{pageCopy.scopeDescription}</p></div>
-    <dl class="rp-contributions">{contributionRows.map((row, index) => <div><dt data-portfolio-copy={`contributionRows.${index}.label`}>{row.label}</dt><dd data-portfolio-copy={`contributionRows.${index}.description`}>{row.description}</dd></div>)}</dl>
   </section>
 
   <aside id="more" class="rp-section rp-more" aria-labelledby="more-title">
