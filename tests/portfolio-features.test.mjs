@@ -7,7 +7,7 @@ const article = (slug, data = {}) => ({ data: { slug, project: 'dcb', draft: fal
 test('기능 제목과 주소를 글 제목과 분리하고 지정한 읽기 순서로 여러 글을 묶는다', () => {
   const feature = { slug: 'equipment-system', title: '장비 조합', overviewSlug: 'usage', articleSlugs: ['assembly', 'usage', 'effects'] };
   const articles = [article('effects'), article('assembly'), article('usage')];
-  assert.equal(featureUrl(feature), '/portfolio/dcb/features/equipment-system/');
+  assert.equal(featureUrl(feature), '/projects/dcb/features/equipment-system/');
   assert.deepEqual(selectFeatureArticles(feature, articles).map(a => a.data.slug), ['usage', 'assembly', 'effects']);
   assert.deepEqual(articles.map(a => a.data.slug), ['effects', 'assembly', 'usage']);
   const groups = groupFeatureArticles(feature, articles);

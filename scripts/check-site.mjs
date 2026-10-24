@@ -75,10 +75,30 @@ for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philos
 const editor = await readFile(join(root,'editor','index.html'),'utf8');
 const videoSettings = await readProjectVideoSettingsBySlot();
 const projectVideo = videoSettings.project;
-const projectPage = await readFile(join(root,'portfolio/dcb/index.html'),'utf8');
+const projectPage = await readFile(join(root,'projects/dcb/index.html'),'utf8');
+const portfolioPage = await readFile(join(root,'portfolio/index.html'),'utf8');
+const portfolioMain = portfolioPage.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
+const portfolioLinks = [...portfolioMain.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(match => match[1]);
+if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/krafton-2027/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록에 전용 링크 외의 프로젝트 소개가 표시됨');
+async function checkDcbRoute(html, route) {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
+  if (/\bhref="\/portfolio\//.test(main) || /<a\b[^>]*href="\/portfolio\/"[^>]*aria-current=/.test(html)) failures.push(`DCB 화면이 포트폴리오 하위로 표시됨: ${route}`);
+  if (!html.includes(`rel="canonical" href="https://imjae.github.io${route}"`)) failures.push(`DCB 정규 주소가 다름: ${route}`);
+  if (!feeds.includes(`<loc>https://imjae.github.io${route}</loc>`)) failures.push(`DCB 정규 주소의 sitemap 누락: ${route}`);
+  if (!route.startsWith('/projects/dcb/')) return;
+  const oldRoute = route.replace('/projects/dcb/', '/portfolio/dcb/');
+  const redirectPath = join(root, oldRoute, 'index.html');
+  if (!(await exists(redirectPath))) { failures.push(`기존 DCB 주소의 정적 이동 페이지 누락: ${oldRoute}`); return; }
+  const redirect = await readFile(redirectPath, 'utf8');
+  if (!redirect.includes(`content="0;url=${route}"`) || !redirect.includes(`href="${route}"`)) failures.push(`기존 DCB 주소의 이동 대상이 다름: ${oldRoute}`);
+  if (feeds.includes(`<loc>https://imjae.github.io${oldRoute}</loc>`)) failures.push(`기존 DCB 주소가 sitemap에 남음: ${oldRoute}`);
+}
+await checkDcbRoute(projectPage, '/projects/dcb/');
+await checkDcbRoute(await readFile(join(root,'series/dcb/index.html'),'utf8'), '/series/dcb/');
 const featureLinks = [...projectPage.matchAll(/<a\b[^>]*data-feature="([^"]+)"[^>]*>/g)];
 if (JSON.stringify(featureLinks.map(match => match[1])) !== JSON.stringify(dcbFeatures.map(feature => feature.slug))) failures.push('DCB 구현한 기능 목록과 기능 설정의 순서가 다름');
 const recruitmentPage = await readFile(join(root,'portfolio/krafton-2027/index.html'),'utf8');
+if (!recruitmentPage.includes('href="/projects/dcb/"')) failures.push('지원용 포트폴리오에서 DCB 프로젝트 참조가 누락됨');
 const portfolioModes = recruitmentPage.match(/<nav\b[^>]*aria-label="Portfolio mode"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
 if (privateAuthoring && (!portfolioModes.includes('data-portfolio-edit') || !portfolioModes.includes('data-portfolio-view') || portfolioModes.includes('github.com'))) failures.push('포트폴리오 Edit가 화면 안의 문구 편집 전환이 아님');
 const stateJson = recruitmentPage.match(/<script\b[^>]*id="portfolio-copy-state"[^>]*>([\s\S]*?)<\/script>/)?.[1];
@@ -153,6 +173,7 @@ for (const feature of dcbFeatures) {
   const page = join(root,route,'index.html');
   if (!(await exists(page))) { failures.push(`기능 상세 화면 누락: ${feature.slug}`); continue; }
   const html = await readFile(page,'utf8');
+  await checkDcbRoute(html, route);
   for (const video of dcbVideos) {
     if (video.featureSlugs.includes(feature.slug)) checkVideoDestination(html, video.slot, `기능 ${feature.slug}`);
     else if (readVideoFigure(html, video.slot)) failures.push(`영상이 다른 기능에 연결됨: ${video.slot} → ${feature.slug}`);

@@ -44,7 +44,7 @@ const featured = featuredSlugs.flatMap((slug) => articles.filter((article) => ar
       {profile.dcbPeriod && <><dt>기간</dt><dd>{profile.dcbPeriod}</dd></>}
       {profile.dcbTeam && <><dt>구성</dt><dd>{profile.dcbTeam}</dd></>}
     </dl>}
-    <p><a class="button button-dark" href="/portfolio/dcb/">프로젝트 보기 <span aria-hidden="true">↗</span></a></p>
+    <p><a class="button button-dark" href="/projects/dcb/">프로젝트 보기 <span aria-hidden="true">↗</span></a></p>
 
     <h2>먼저 읽을 글</h2>
     <div class="article-list">{featured.map((article) => <ArticleCard article={article} />)}</div>

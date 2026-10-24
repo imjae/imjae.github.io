@@ -149,4 +149,4 @@ flowchart TD
 
 ## 관련 글
 
-실제 속도·비용 계산은 [지게 운반 규칙 분석](/writing/jige-carry-burden/), 후속 제어 요소는 [게임플레이 밸런싱과 제어](/portfolio/dcb/features/gameplay-balancing/)에서 볼 수 있습니다.
+실제 속도·비용 계산은 [지게 운반 규칙 분석](/writing/jige-carry-burden/), 후속 제어 요소는 [게임플레이 밸런싱과 제어](/projects/dcb/features/gameplay-balancing/)에서 볼 수 있습니다.

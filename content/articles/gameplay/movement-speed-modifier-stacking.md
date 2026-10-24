@@ -187,4 +187,4 @@ flowchart TD
 
 원인별 속도 보정, 무게·운반 한도 변경의 연결, 물 감속의 등록·해제와 보행·소음 경로를 구성했습니다. 물 감속과 지게 부담 코드는 AI와 함께 작성했습니다.
 
-걸음 선택과 스태미너 고갈 후 입력 처리는 [이동 전환·재입력](/writing/locomotion-stamina-reinput/), 자원 단계와 회복은 [행동 비용과 회복](/writing/action-stamina-cost-and-recovery/)에서 이어집니다. 다음 행동 중 이동·입력 제약 분석은 [게임플레이 밸런싱과 제어 목록](/portfolio/dcb/features/gameplay-balancing/)에 연결합니다.
+걸음 선택과 스태미너 고갈 후 입력 처리는 [이동 전환·재입력](/writing/locomotion-stamina-reinput/), 자원 단계와 회복은 [행동 비용과 회복](/writing/action-stamina-cost-and-recovery/)에서 이어집니다. 다음 행동 중 이동·입력 제약 분석은 [게임플레이 밸런싱과 제어 목록](/projects/dcb/features/gameplay-balancing/)에 연결합니다.

@@ -3,7 +3,8 @@
 게임 개발과 학습 내용을 정리하는 기술 블로그입니다.
 
 - 블로그: https://imjae.github.io/
-- 포트폴리오 입구: https://imjae.github.io/portfolio/dcb/
+- 포트폴리오 목록: https://imjae.github.io/portfolio/
+- DCB 프로젝트: https://imjae.github.io/projects/dcb/
 - 구성: Astro 정적 사이트, Markdown 콘텐츠, GitHub Pages 자동 배포.
 - 요구 환경: Node.js 24 이상. Ruby와 Jekyll 설치는 필요하지 않습니다.
 

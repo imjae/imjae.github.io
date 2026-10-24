@@ -202,4 +202,4 @@ flowchart TD
 
 장비 비용의 적용, 착용·적재 배율, 차감과 회복 제어의 분리, 구르기 실패 복구와 패리 상태 정리를 담당했습니다. 구르기 안전장치·패리 확장·지게 부담 코드는 AI와 함께 작성했습니다.
 
-앞선 [이동 전환·고갈 후 재입력](/writing/locomotion-stamina-reinput/)은 지속 이동 소모와 입력 기록을 다룹니다. [운반의 속도·스태미너 계산](/writing/jige-carry-burden/)과 함께 보면 같은 자원을 쓰는 이동 비용과 행동 비용이 어디서 합쳐지는지 확인할 수 있습니다. 다음 이동 보정·행동 중 입력 제약 분석은 [게임플레이 밸런싱과 제어 목록](/portfolio/dcb/features/gameplay-balancing/)에서 이어집니다.
+앞선 [이동 전환·고갈 후 재입력](/writing/locomotion-stamina-reinput/)은 지속 이동 소모와 입력 기록을 다룹니다. [운반의 속도·스태미너 계산](/writing/jige-carry-burden/)과 함께 보면 같은 자원을 쓰는 이동 비용과 행동 비용이 어디서 합쳐지는지 확인할 수 있습니다. 다음 이동 보정·행동 중 입력 제약 분석은 [게임플레이 밸런싱과 제어 목록](/projects/dcb/features/gameplay-balancing/)에서 이어집니다.

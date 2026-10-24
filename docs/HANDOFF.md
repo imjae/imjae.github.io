@@ -1,20 +1,52 @@
 # 블로그 관리 인수인계
 
+## 2026-10-24 남은 포트폴리오·DCB 분리 변경 게시
+
+사용자가 미배포 내역을 확인한 뒤 남은 변경의 배포를 요청했다. 포트폴리오 목록은 지원용 포트폴리오 링크만 표시하고, DCB 소개와 기능 10개는 `/projects/dcb/` 아래로 분리한다. 기존 소개와 기능 주소 11개는 새 주소로 이동하며 검색 매개변수와 본문 fragment를 유지한다. Home·About·사이드바·영상 관리·관련 글·시리즈·sitemap의 참조와 검사를 함께 맞췄다. 글의 기존 날짜·slug·공개 상태와 포트폴리오의 확정 문구는 유지한다.
+
+게시 전 `npm run verify`에서 테스트 71개·Astro 57개 파일 진단 0개·122개 경로 빌드·128개 HTML 검사를 통과했다. 보호된 편집 빌드도 128개 HTML 검사를 통과했다. 브라우저에서 포트폴리오 링크 1개, DCB 독립 메뉴 선택, 이전 소개·기능 주소의 검색 매개변수·fragment 보존, Home 고정 12편, 긴 물 글, 390px 모바일 AI 분야의 `CLI 지연` 검색 1편과 가로 넘침 없음을 확인했다. 최종 로그와 화면은 `.verification/portfolio-project-separation/`의 `final-*` 파일에 보관한다.
+
+`ai-resource-catalog-review.md`는 `draft: true`인 로컬 초안으로 유지하고 이번 커밋과 배포에 포함하지 않는다. 공개 사이트와 보호된 편집 서버는 main 저장으로 같은 커밋에서 자동 배포한다.
+
 ## 2026-10-24 main 저장 시 공개 사이트·편집 서버 자동 배포 연결
 
 사용자 요청으로 GitHub Actions Secrets에 `CLOUDFLARE_API_TOKEN`과 `CLOUDFLARE_ACCOUNT_ID`를 등록하고 저장소 변수 `AUTHORING_DEPLOY_ENABLED=true`를 활성화했다. 사용자가 Cloudflare 토큰을 직접 발급해 localhost 연결 화면에 입력했고, 해당 Worker 접근을 확인한 뒤 GitHub 공개 키로 암호화해 전송했다. 토큰은 저장소·파일·명령 인자·출력에 남기지 않았다. Secret의 이름과 변수 값만 다시 조회해 등록을 확인했다.
 
 이후 main의 Commit changes는 기존 공개 Pages 워크플로와 보호된 편집 서버 워크플로를 같은 커밋으로 실행한다. 편집 서버 워크플로에 인증 누락 사전 확인, 15분 실행 제한과 공개 편집 origin 설정을 추가했다. `dist/`와 `.authoring-dist/`의 배포 대상 분리, Worker의 GitHub 고유 ID 검사와 비로그인 자산 차단은 유지한다. 로컬 Wrangler 로그인은 수동 복구에만 사용한다.
 
-워크플로 YAML의 main 실행 조건·읽기 전용 GitHub 권한·보호된 빌드 분리와 연결 화면의 암호화·요청 검사를 확인했다. 실제 main 저장으로 두 워크플로의 자동 실행과 배포 결과를 검증한다. 관련 로컬 기록은 `.verification/dual-deploy-20261024/`에 보관하며, 별도의 DCB 주소 개편과 새 초안은 이번 커밋에 포함하지 않는다.
+워크플로 YAML의 main 실행 조건·읽기 전용 GitHub 권한·보호된 빌드 분리와 연결 화면의 암호화·요청 검사를 확인했다. `74f024655b824e4d810d4181894de5973afbe278`를 main에 push해 [공개 Pages](https://github.com/imjae/imjae.github.io/actions/runs/40053789753)와 [보호된 편집 서버](https://github.com/imjae/imjae.github.io/actions/runs/40053789778)가 같은 커밋의 push 이벤트로 자동 실행되고 둘 다 success인 것을 확인했다. 양쪽 모두 테스트 71개·Astro 진단 0개·111개 경로·117개 HTML 검사를 통과했다. 공개 사이트의 새 소개와 담당 범위 구역 제거, 편집 서버의 익명 HTML 303 이동·세션 401을 확인했다. 자동 배포된 Worker 버전은 `e1baf2a7-48ff-433b-8044-658df999147f`다. 관련 로컬 기록은 `.verification/dual-deploy-20261024/actions-evidence.json`에 보관한다. 별도의 DCB 주소 개편과 새 초안은 게시에 포함하지 않았으며, 기본 체크아웃의 기존 변경 파일 26개를 보존했다.
 
-## 2026-10-24 지원용 포트폴리오 소개와 구역 정리 게시
+## 2026-10-24 지원용 포트폴리오 공개·편집 서버 배포 완료
 
-사용자가 대화로 확정한 소개 문구와 담당 범위·사용 자산 구역 제거의 배포를 승인했다. 프로젝트 소개는 게임 설명 다음에 전체 구성·아트 방향 설정, 3D 모델러·3D 애니메이터와의 콘셉트 협의, 제작 리소스 통합과 게임플레이·시스템 구현을 설명한다. 별도 담당 범위·사용 자산 구역과 목차·Contribution 메뉴는 제거했다. AI 활용 구역과 화면 문구 편집은 유지하며, 기존 저장 기록을 보존하기 위해 사용하지 않는 역할·기여 데이터의 키와 순서는 남겼다.
+사용자가 배포를 승인해 담당 범위·사용 자산 구역 제거와 확정한 아트 협업 소개 문구만 `907d707a183c4b5a29ebd9748c32043ab4a74a4a`로 main에 게시했다. [Pages 배포](https://github.com/imjae/imjae.github.io/actions/runs/40051675627)는 success이며 공개 포트폴리오의 새 소개와 제거한 구역·메뉴가 없는 것을 브라우저로 확인했다. 별도로 작업 중인 DCB 프로젝트 주소 개편과 새 초안은 제외했다. 게시 대상에서는 기존 `/portfolio/dcb/` 주소를 유지한다.
 
-기본 소개와 `content/portfolio-copy/2026-10-24T01-45-54-000Z-project-introduction.json`의 최신 설정을 맞췄다. 사용자는 이후 세부 문구를 직접 편집하기로 했다. 공개 Pages와 보호된 편집 빌드에 같은 변경을 배포한다. 별도로 작업 중인 DCB 프로젝트 주소 개편과 새 초안은 이번 게시에 포함하지 않으며 기존 DCB 주소를 유지한다.
+게시용 작업 공간의 `npm run verify`에서 테스트 71개·Astro 54개 파일 진단 0개·111개 경로·117개 HTML 검사, 보호된 편집 빌드의 117개 HTML 검사를 통과했다. Home 고정 12편·긴 CLI 글·390px 모바일 AI 분야의 `CLI 지연` 검색 1편과 가로 넘침 없음도 확인했다. 최초 Wrangler 실행 환경에 인증이 없어 사용자가 기존과 같은 최소 권한의 Cloudflare OAuth 로그인을 승인했고 OS keyring을 사용했다. 같은 게시용 소스를 Worker에 배포했으며 버전은 `cc92fe8a-c39a-4e0a-9f4e-d29aa06edd05`다. 익명 HTML은 303 로그인 이동, 세션과 관리 스크립트는 401을 확인했다. 이번 브라우저는 GitHub 로그아웃 상태여서 실제 로그인 후 편집 화면은 열지 않았다. 검증 자료는 `.verification/portfolio-introduction-20261024/`에 보관한다.
 
-게시 대상만 분리한 `npm run verify`에서 테스트 71개·Astro 54개 파일 진단 0개·111개 경로 빌드·117개 HTML 검사를 통과했다. 보호된 편집 빌드도 117개 HTML 검사를 통과했다. 브라우저에서 새 소개와 구역 제거, Home 고정 12편, 긴 CLI 글, 390px 모바일 AI 분야의 `CLI 지연` 검색 1편과 가로 넘침 없음을 확인했다. 검증 로그와 화면은 로컬 `.verification/portfolio-introduction-20261024/`에 보관한다.
+기본 체크아웃은 게시 커밋으로 맞췄고 기존 변경 파일 30개의 내용 해시가 유지됨을 확인했다. 다른 로컬 변경은 남겨 둔다. 편집 서버는 글을 포함한 별도 정적 빌드이며 GitHub Actions의 편집 서버 자동 배포는 아직 꺼져 있다. 따라서 이후 본문·문구 변경은 Pages만 자동 반영되고 Worker는 별도 배포가 필요하다. 사용자가 이 구조의 이유를 질문해 현재 배포용 인증이 연결되지 않은 점과 자동 동기화가 필요한 점을 설명했다. 인증 정보를 저장소·명령 인자·출력에 넣지 않는다.
+
+## 2026-10-24 프로젝트 소개에 아트 협업 문구 반영
+
+사용자가 확정한 “게임의 전반적인 구성과 아트 방향을 잡고, 3D 모델러·3D 애니메이터와 논의하며 모델과 애니메이션의 콘셉트를 구체화했습니다. 협의를 바탕으로 제작된 리소스를 게임에 통합하고, 게임플레이와 시스템을 구현했습니다.”를 지원용 포트폴리오의 게임 장르 소개 다음 문단에 반영했다. 뒤에는 기존 트레버설·무기 조합과 관련 글 안내가 이어지며, 문장을 짧게 다듬었다. 담당 범위·사용 자산 구역은 다시 추가하지 않았다.
+
+`src/data/krafton-2027.ts`의 기본 소개와 `content/portfolio-copy/2026-10-24T01-45-54-000Z-project-introduction.json`의 최신 설정을 같은 문구로 맞췄다. 이전 화면 편집 기록은 보존하고 실제로 우선 적용되는 설정에 반영했다. `npm run verify`의 테스트 71개·Astro 57개 파일 진단 0개·122개 경로·128개 HTML 검사와 보호된 편집 빌드의 128개 HTML 검사를 통과했다. 브라우저에서 데스크톱·390px 소개 문구와 가로 넘침 없음, Home 고정 12편, 긴 CLI 글, 모바일 AI 분야의 `CLI 지연` 검색 1편을 확인했다. 검증 자료는 `.verification/portfolio-introduction-20261024/`에 있다. 사용자 지시에 따라 커밋·push·배포하지 않았다.
+
+## 2026-10-24 지원용 포트폴리오의 담당 범위 구역 제거
+
+사용자 요청으로 `/portfolio/krafton-2027/`의 프로젝트 담당 범위 행과 하단 담당 작업·사용 자산 구역을 제거했다. 상단 Contribution 메뉴, 목차 04와 프로젝트의 해당 바로가기도 제거했다. 처음에는 자산 출처를 프로젝트 소개 아래 짧은 사용 자산 안내로 옮겼으나, 후속 요청으로 이 안내도 모두 제거했다. AI 활용 구역은 유지한다. 기존 문구 저장 파일의 검증을 위해 역할·기여 데이터의 키와 배열 순서는 유지하며, 제거한 구역은 화면과 편집 지점에 표시하지 않는다.
+
+사용 자산 안내까지 제거한 작업 트리의 `npm run verify`에서 테스트 71개·Astro 57개 파일 진단 0개·122개 경로 빌드·128개 HTML 검사를 통과했다. 보호된 편집 빌드도 128개 HTML 검사를 통과했다. 브라우저에서 담당 범위·사용 자산 문구와 편집 지점 제거, Home 고정 12편, 긴 CLI 글, 모바일 AI 분야의 `CLI 지연` 검색 1편과 가로 넘침 없음을 확인했다. 앞선 390px 포트폴리오 확인을 포함한 검증 자료는 `.verification/portfolio-without-scope-20261024/`에 있으며, 최신 화면은 `portfolio-without-assets-desktop.png`다.
+
+사용자는 먼저 대화로 내용을 정한 뒤 배포 여부를 결정하겠다고 명시했다. 커밋·push·배포하지 않으며 기존의 다른 로컬 변경은 유지한다. 게임을 혼자 개발했고 채용한 3D 모델러·3D 애니메이터에게 리소스를 전달받았다는 사실은 별도 구역 대신 프로젝트 소개에 담는 방향으로 정했다. 이때는 소개 문구를 초안으로만 제안했으며, 이후 확정한 문구의 반영은 위 항목에 기록했다.
+
+## 2026-10-24 포트폴리오 목록과 DCB 프로젝트 분리
+
+사용자가 표시한 포트폴리오 목록의 DCB 소개·구조도·프로젝트 보기 영역을 제거했다. `/portfolio/` 본문에는 크래프톤 지원용 포트폴리오 전용 링크 버튼만 표시한다. DCB는 별도 프로젝트 `/projects/dcb/`로 옮겼고 기능 10개도 `/projects/dcb/features/<slug>/`로 이동했다. 포트폴리오에서 DCB를 참조하는 링크는 유지하며 DCB 소개·기능·시리즈의 포트폴리오 경로 표시와 메뉴 선택은 제거했다. 사이드바의 Projects에서 DCB를 선택한다.
+
+후속 요청으로 링크 버튼 제목 아래의 기존 부연 설명 “DCB의 핵심 구현과 AI 협업, 담당 범위와 검증 내용을 모았습니다.”를 복원했다. 버튼 목록과 DCB 프로젝트의 분리 구조는 유지한다.
+
+기존 `/portfolio/dcb/`와 기능별 주소 10개는 각각 같은 DCB 새 주소로 정적 이동한다. 이동할 때 검색 매개변수와 본문 fragment를 유지하며, JavaScript가 없으면 기본 주소로 이동하는 메타 태그와 링크를 제공한다. Home·About·사이드바·영상 관리·관련 글의 링크와 sitemap은 새 주소를 사용한다. 글의 slug·날짜·공개 상태와 시리즈 주소는 유지했다. 기존 주소의 실제 HTML·이동 대상·sitemap 제외와 참조 방향은 `scripts/check-site.mjs`에서 확인한다.
+
+최종 `npm run verify`에서 테스트 71개·Astro 57개 파일 진단 0개·122개 경로 빌드·128개 HTML 검사를 통과했다. 보호된 편집 빌드도 122개 경로·128개 HTML 검사를 통과했다. 브라우저에서 전용 버튼 1개·DCB의 독립 메뉴 선택·포트폴리오→DCB 연결·이전 소개/기능 주소의 fragment 보존과 Home 고정 12편·긴 물 글·390px 모바일 검색 1편을 확인했다. 모바일 포트폴리오·기능 목록·검색에 가로 넘침이 없다. 검증 자료는 `.verification/portfolio-project-separation/`에 보관한다. 기존 미게시 초안은 유지했으며 커밋·push·배포하지 않았다.
 
 ## 2026-10-23 전체 글과 크래프톤 포트폴리오 문구 정리
 
@@ -96,12 +128,13 @@ DCB 기능 페이지는 등록된 영상만 설명 글 앞에 표시한다. 신�
 
 ## 블로그의 목적과 현재 구성
 
-게임 개발과 학습 내용을 정리하는 기술 블로그다. DCB 포트폴리오를 포함하며, 이후 게임플레이·그래픽스·개발 도구·AI 사용·학습과 독서 기록을 계속 추가한다.
+게임 개발과 학습 내용을 정리하는 기술 블로그다. DCB 프로젝트와 별도의 지원용 포트폴리오를 포함하며, 포트폴리오에서 DCB를 참조한다. 이후 게임플레이·그래픽스·개발 도구·AI 사용·학습과 독서 기록을 계속 추가한다.
 
 - 공개 주소: https://imjae.github.io/
 - 저장소: https://github.com/imjae/imjae.github.io
 - 글 목록: https://imjae.github.io/writing/
-- 포트폴리오: https://imjae.github.io/portfolio/dcb/
+- 포트폴리오 목록: https://imjae.github.io/portfolio/
+- DCB 프로젝트: https://imjae.github.io/projects/dcb/
 - DCB 시리즈: https://imjae.github.io/series/dcb/
 - 수정 모드: https://imjae.github.io/editor/
 - 배포 상태: https://github.com/imjae/imjae.github.io/actions
@@ -359,7 +392,7 @@ Matplotlib로 새 좌표 그림 두 개를 `public/media/vector-length-dot-cross
 | `src/layouts/BaseLayout.astro` | 공통 레이아웃과 메뉴 |
 | `src/pages/index.astro` | Home 소개 |
 | `src/pages/editor.astro`, `src/lib/github-authoring.mjs` | 수정 모드와 GitHub 연결·새 글 양식 |
-| `src/pages/portfolio/`, `src/pages/series/` | 포트폴리오와 시리즈 |
+| `src/pages/portfolio/`, `src/pages/projects/`, `src/pages/series/` | 포트폴리오·프로젝트·시리즈 |
 | `src/lib/legacy-redirect.ts` | 예전 Jekyll 주소의 이동 대상 결정 |
 | `public/media/<slug>/` | 새 글에 사용할 공개 이미지의 저장 위치 |
 | `scripts/new-post.mjs`, `scripts/check-site.mjs` | 로컬 초안 생성과 정적 사이트 검사 |

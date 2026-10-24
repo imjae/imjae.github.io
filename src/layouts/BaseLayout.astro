@@ -54,7 +54,7 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
         <nav class="topic-nav" aria-label="Topics">
           {topics.map((topic) => <a href={`/topics/${topic.id}/`} class:list={{ selected: active === topic.id }} style={`--topic-color:${topic.color}`}><span class="topic-mark"></span>{topic.title}<small>{(topic.id === 'reading' ? readingCount : articles.filter((article) => article.data.topic === topic.id).length).toString().padStart(2, '0')}</small></a>)}
         </nav>
-        <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/portfolio/dcb/"><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/">DCB articles <span aria-hidden="true">→</span></a></div>
+        <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/projects/dcb/" class:list={{ selected: active === 'dcb' }} aria-current={Astro.url.pathname === '/projects/dcb/' ? 'page' : undefined}><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/" aria-current={Astro.url.pathname === '/series/dcb/' ? 'page' : undefined}>DCB articles <span aria-hidden="true">→</span></a></div>
         <div class="sidebar-foot"><a href="/rss.xml">RSS feed ↗</a></div>
       </aside>
       <main id="main-content"><slot /></main>

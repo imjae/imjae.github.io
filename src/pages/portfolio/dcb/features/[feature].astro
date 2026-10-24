@@ -1,37 +1,9 @@
 ---
-import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import ArticleCard from '../../../../components/ArticleCard.astro';
-import DcbVideos from '../../../../components/DcbVideos.astro';
+import DcbRedirect from '../../../../components/DcbRedirect.astro';
 import { dcbFeatures } from '../../../../data/dcb-features.mjs';
-import { dcbVideos } from '../../../../data/dcb-videos.mjs';
-import { getArticles } from '../../../../lib/articles';
-import { groupFeatureArticles } from '../../../../lib/portfolio-features.mjs';
+import { featureUrl } from '../../../../lib/portfolio-features.mjs';
 export function getStaticPaths() {
-  return dcbFeatures.map(feature => ({ params: { feature: feature.slug }, props: { feature } }));
+  return dcbFeatures.map(feature => ({ params: { feature: feature.slug }, props: { target: featureUrl(feature) } }));
 }
-const { feature } = Astro.props;
-const { overview, analyses } = groupFeatureArticles(feature, await getArticles(), import.meta.env.DEV);
-const videoSlots = dcbVideos.filter(video => video.featureSlugs.includes(feature.slug)).map(video => video.slot);
 ---
-<BaseLayout title={`${feature.title} — DCB`} description={feature.description} active="portfolio">
-  <div class="breadcrumb"><a href="/portfolio/">포트폴리오</a><span>/</span><a href="/portfolio/dcb/">DCB</a><span>/</span><span>{feature.title}</span></div>
-  <header class="page-intro">
-    <p class="eyebrow">DCB / {feature.number} / {feature.label}</p>
-    <h1>{feature.title}</h1>
-    <p>{feature.description}</p>
-  </header>
-  <DcbVideos slots={videoSlots} id="feature-videos" />
-  <section aria-labelledby="feature-overview-title" data-feature-overview>
-    <div class="section-heading"><h2 id="feature-overview-title">기능 설명</h2></div>
-    {overview ? <div class="article-list"><ArticleCard article={overview} /></div> : <p class="empty-state">공개된 기능 설명 글이 없습니다.</p>}
-  </section>
-  <section aria-labelledby="feature-analyses-title" data-feature-analyses>
-    <div class="section-heading"><h2 id="feature-analyses-title">구현·분석 글 <span>{analyses.length}</span></h2></div>
-    {analyses.length > 0 ? <div class="article-list">{analyses.map(article => <ArticleCard article={article} />)}</div> : <p class="empty-state">공개된 구현·분석 글이 없습니다.</p>}
-  </section>
-  <a class="back-to-writing" href="/portfolio/dcb/#features">← DCB 기능 목록</a>
-</BaseLayout>
-<style>
-  .breadcrumb{flex-wrap:wrap;line-height:1.8;row-gap:7px}
-  [data-feature-analyses]{margin-top:38px}
-</style>
+<DcbRedirect target={Astro.props.target} />

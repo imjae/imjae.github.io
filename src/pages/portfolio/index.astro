@@ -1,20 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SystemSketch from '../../components/SystemSketch.astro';
 ---
 <BaseLayout title="포트폴리오" active="portfolio">
-  <header class="page-intro"><h1>포트폴리오</h1><p>진행한 프로젝트와 구현한 기능을 정리했습니다.</p></header>
-  <a class="recruitment-entry" href="/portfolio/krafton-2027/">
-    <div><h2>크래프톤 지원용 포트폴리오</h2><p>DCB의 핵심 구현과 AI 협업, 담당 범위와 검증 내용을 모았습니다.</p></div>
-    <span aria-hidden="true">↗</span>
-  </a>
-  <section class="portfolio-hero"><div><p class="eyebrow">Unity · C#</p><h2>DCB</h2><p>지게로 짐을 운반하는 액션 게임을 개발하고 있습니다.<br/>트레버설, 몬스터 전투, 장비 조합과 환경 이펙트를 구현했습니다.</p><a href="/portfolio/dcb/" class="button button-dark">프로젝트 보기 ↗</a></div><SystemSketch /></section>
+  <header class="page-intro"><h1>포트폴리오</h1></header>
+  <ul class="portfolio-links" aria-label="포트폴리오 목록">
+    <li><a class="recruitment-entry" href="/portfolio/krafton-2027/">
+      <div><h2>크래프톤 지원용 포트폴리오</h2><p>DCB의 핵심 구현과 AI 협업, 담당 범위와 검증 내용을 모았습니다.</p></div>
+      <span aria-hidden="true">↗</span>
+    </a></li>
+  </ul>
 </BaseLayout>
 <style>
-  .recruitment-entry { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 4px; background: #eaf0e6; }
-  .recruitment-entry h2 { margin: 0 0 7px; font-size: 17px; line-height: 1.6; color: var(--green); letter-spacing: -.4px; }
-  .recruitment-entry p { margin: 0; font-size: 12px; line-height: 1.9; color: var(--muted); word-break: keep-all; overflow-wrap: anywhere; }
-  .recruitment-entry > span { flex-shrink: 0; color: var(--green); }
+  .portfolio-links { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .recruitment-entry { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 4px; background: #eaf0e6; color: var(--green); font-size: 17px; line-height: 1.6; letter-spacing: -.4px; word-break: keep-all; overflow-wrap: anywhere; }
+  .recruitment-entry h2 { margin: 0 0 7px; font-size: 17px; line-height: 1.6; }
+  .recruitment-entry p { margin: 0; font-size: 12px; line-height: 1.9; color: var(--muted); letter-spacing: normal; }
+  .recruitment-entry > span:last-child { flex-shrink: 0; }
   .recruitment-entry:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
   @media (max-width: 640px) { .recruitment-entry { padding: 18px; gap: 16px; } .recruitment-entry h2 { font-size: 16px; } }
 </style>
