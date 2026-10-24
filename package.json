@@ -15,6 +15,7 @@
     "check:site": "node scripts/check-site.mjs",
     "verify": "npm run test && npm run check && npm run build && npm run check:site",
     "new": "node scripts/new-post.mjs",
+    "sketch:resolve": "node scripts/sketch-source.mjs",
     "author:build": "node scripts/build-authoring.mjs",
     "author:deploy": "npm run author:build && wrangler deploy --config wrangler.authoring.jsonc"
   },

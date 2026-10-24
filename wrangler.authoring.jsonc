@@ -22,6 +22,10 @@
       {
         "name": "AUTHOR_SESSIONS",
         "class_name": "AuthorSessions"
+      },
+      {
+        "name": "SKETCH_REVIEWS",
+        "class_name": "SketchReviews"
       }
     ]
   },
@@ -31,6 +35,10 @@
       "new_sqlite_classes": [
         "AuthorSessions"
       ]
+    },
+    {
+      "tag": "v2-sketch-reviews",
+      "new_sqlite_classes": ["SketchReviews"]
     }
   ]
 }

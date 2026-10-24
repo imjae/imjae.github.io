@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articleSourceHash } from '../../lib/sketch-source.server.mjs';
 import { getArticles, articleUrl, formatDate, readingTime, dateBasisLabel, type Article } from '../../lib/articles';
 import { getTopic, kinds, seriesTitle } from '../../data/site';
 export async function getStaticPaths() { return (await getArticles()).map((article) => ({ params: { slug: article.data.slug }, props: { article } })); }
@@ -24,7 +25,7 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
       <a href="/topics/reading/">Reading 목록 →</a>
     </aside>}
   </header>
-  <div class="article-body-layout"><div class="article-main"><article class="prose"><Content /></article>
+  <div class="article-body-layout"><div class="article-main"><article class="prose" data-sketch-source={articleSourceHash(article.filePath)}><Content /></article>
     {series.length > 1 && article.data.series && <section class="series-panel" aria-label="같은 시리즈"><h2><a href={`/series/${article.data.series}/`}>{seriesTitle(article.data.series)}</a></h2><ol>{series.map((entry,index) => <li class:list={{ current: entry.id === article.id }}><span>{String(index+1).padStart(2,'0')}</span><a href={articleUrl(entry)} aria-current={entry.id === article.id ? 'page' : undefined}>{entry.data.title}</a></li>)}</ol></section>}
     <a class="back-to-writing" href="/writing/">← 글 모아보기</a>
   </div>{headings.some((heading) => heading.depth === 2) && <nav class="toc" aria-label="이 글의 목차"><p>ON THIS PAGE</p><ol>{headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => <li class={`depth-${heading.depth}`}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav>}</div>
