@@ -38,6 +38,10 @@ npm run sketch:resolve -- --url https://imjae.github.io/writing/cli-agent-harnes
 
 ## 승인과 배포
 
+검토 화면은 **변경 비교 / 글 미리보기 / 보낸 필기**로 나눈다. 변경 비교는 900px 이상에서 수정 전후를 나란히, 좁은 화면에서 전환해 표시한다. 변경 위치 선택과 이전/다음으로 긴 비교를 이동한다. 미리보기는 별도 스크롤 영역이고, 하단 확인 체크와 **승인하고 배포**는 검토 중 유지된다. **추가 수정 요청**은 별도 입력 화면에서 보낸다. 자동 상태 조회로 같은 수정안의 입력·스크롤·체크를 초기화하지 않으며, 새 수정안은 다시 확인해야 한다. 원본 diff·검사 결과는 보낸 필기의 상세에서 확인한다.
+
+`sketch-ui.mjs`는 인증 뒤 HTML/CSP를 제공하고, `sketch-ui-client.mjs`는 브라우저 코드를 문자열로 보존해 Worker 번들러의 서버 전용 보조 함수가 섞이지 않게 한다. `sketch-diff.mjs`는 승인 대상인 원본 diff에서 비교 표시만 추출한다. 본문은 textContent로 표시하므로 HTML·코드를 실행하지 않는다. 표시용 변환은 승인 digest·원본 diff를 바꾸지 않는다.
+
 검토 결과는 기반/결과 커밋, source/after 해시, 미리보기·diff 해시, 검사 결과 및 요청 세대에 묶인 digest로 고정된다. 서버는 소유자가 본 review ID·digest와 현재 main을 확인해 24시간 승인 영수증을 만든다. 추가 수정은 이전 결과·승인을 제거한다.
 
 PC는 승인한 로컬 커밋·diff·미리보기·원문과 깨끗한 작업 공간을 재확인한다. main이 기반과 같을 때 그 head를 일반 fast-forward push한다. `.github/workflows/deploy.yml`과 `authoring.yml`이 같은 커밋으로 성공하고 공개/편집 글의 해시가 모두 일치해야 배포 완료다. 실제 글의 변경은 사용자 승인 전에는 main에 올리지 않는다.
