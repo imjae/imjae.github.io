@@ -75,9 +75,9 @@ export const reviewClientSource = String.raw`function reviewClient(parseDiff) {
     } catch (e) { error(e); }
     finally { busy = false; $('detail').removeAttribute('aria-busy'); }
   }
-  function comparePanel(panel, diff) {
+  function comparePanel(panel, diff, displayChanges) {
     panel.classList.add('compare-panel'); panel.dataset.side = 'after';
-    const changes = parseDiff(diff);
+    const changes = displayChanges || parseDiff(diff);
     if (!changes.length) {
       panel.append(text('p', '문장 비교를 만들 수 없어 원본 변경 내용을 표시합니다.', 'muted'), text('pre', diff)); return;
     }
@@ -98,7 +98,7 @@ export const reviewClientSource = String.raw`function reviewClient(parseDiff) {
     nav.append(sides); panel.append(nav);
     const cards = changes.map((change, i) => {
       const card = text('section', '', 'change-card'); card.id = 'change-' + i; card.setAttribute('aria-label', '변경 ' + (i + 1));
-      card.append(text('h3', '변경 ' + (i + 1), 'change-title'));
+      card.append(text('h3', '변경 ' + (i + 1) + (change.label ? ' · ' + change.label : ''), 'change-title'));
       const columns = text('div', '', 'change-columns');
       for (const [side, label] of [['before','수정 전'], ['after','수정 후']]) {
         const content = text('div', '', 'change-side ' + side);
@@ -158,7 +158,7 @@ export const reviewClientSource = String.raw`function reviewClient(parseDiff) {
       buttons.push(b); views.push(view); panels.append(view); return view;
     }
     if (r) {
-      comparePanel(addTab('변경 비교', 'compare'), r.diff);
+      comparePanel(addTab('변경 비교', 'compare'), r.diff, r.displayChanges);
       const preview = addTab('글 미리보기', 'preview');
       preview.append(text('p', '수정 후 글입니다. 영상 재생과 다른 페이지 이동은 지원하지 않습니다.', 'preview-note'));
       const frame = document.createElement('iframe'); frame.title = '승인할 글 미리보기'; frame.setAttribute('sandbox', ''); frame.src = '/api/sketch/jobs/' + job.id + '/preview'; preview.append(frame);

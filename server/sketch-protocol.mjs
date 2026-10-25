@@ -1,3 +1,5 @@
+import { canonicalSketchTarget } from './sketch-target.mjs';
+
 export const MAX_BODY = 6_000_000;
 export const UUID = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/;
 export const SHA = /^[a-f0-9]{64}$/;
@@ -25,8 +27,7 @@ export function validateSubmission(s) {
   check(s?.version === 1 && UUID.test(s.id), '요청 식별자를 확인해 주세요.');
   check(typeof s.instruction === 'string' && s.instruction.length <= 4000 && Number.isFinite(Date.parse(s.capturedAt)), '요청 설명과 시각을 확인해 주세요.');
   const c = s.context; check(c && typeof c.url === 'string', '글 주소가 필요합니다.');
-  const url = new URL(c.url);
-  check(url.origin === 'https://imjae.github.io' && !url.username && !url.password && /^\/writing\/[a-z0-9]+(?:-[a-z0-9]+)*\/?$/.test(url.pathname), '공개 블로그 글만 수정할 수 있습니다.');
+  const target = canonicalSketchTarget(c.url);
   const currentHash = c.currentSourceHash ?? c.sourceHash;
   check(SHA.test(currentHash) && (c.sourceHash === currentHash || s.reanchored === true) && typeof c.visibleText === 'string' && c.visibleText.trim() && c.visibleText.length <= 16000 && typeof c.title === 'string' && c.title.length <= 300, '원문 버전과 문맥을 확인해 주세요.');
   check(typeof c.documentId === 'string' && c.documentId.length <= 100 && Number.isSafeInteger(c.revision) && c.revision >= 0, '문서 상태를 확인해 주세요.');
@@ -40,7 +41,7 @@ export function validateSubmission(s) {
     check(points <= 24000 && stroke.points.every(p => ['x','y','pressure'].every(k => Number.isFinite(p[k]) && Math.abs(p[k]) <= 10_000_000) && p.pressure >= 0 && p.pressure <= 1), '필기 좌표를 확인해 주세요.');
   }
   decodePng(s.image);
-  return { ...s, context: { ...c, url: `https://imjae.github.io${url.pathname.replace(/\/$/,'')}/` } };
+  return { ...s, context: { ...c, url: target.url } };
 }
 
 // SQLite-backed DO values are chunked below the KV per-value limit.

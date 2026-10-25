@@ -1,5 +1,6 @@
 import { MAX_BODY, UUID, SHA, COMMIT, check, readJson, digest, validateSubmission, decodePng, putBlob, getBlob } from './sketch-protocol.mjs';
 import { reviewPage } from './sketch-ui.mjs';
+import { canonicalSketchTarget } from './sketch-target.mjs';
 
 const TERMINAL = ['deployed','rejected','failed','deployment-failed','needs-recapture'];
 const leaseMs = 15 * 60 * 1000;
@@ -12,9 +13,10 @@ export async function handleSketchRequest(request, env, { runner = false, ownerI
     if (runner) {
       check(env.SKETCH_RUNNER_TOKEN && request.headers.get('Authorization')?.startsWith('Bearer '), '실행기 인증이 필요합니다.',401);
       check(await digest(request.headers.get('Authorization').slice(7)) === await digest(env.SKETCH_RUNNER_TOKEN), '실행기 인증이 필요합니다.',401);
-      const published = /^\/api\/sketch\/runner\/published\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(url.pathname);
+      const published = /^\/api\/sketch\/runner\/published\/(?:([a-z0-9]+(?:-[a-z0-9]+)*)|portfolio\/krafton-2027)$/.exec(url.pathname);
       if (published && request.method === 'GET') {
-        const asset = await env.ASSETS.fetch(new Request(`${url.origin}/writing/${published[1]}/`));
+        const path = published[1] ? `/writing/${published[1]}/` : '/portfolio/krafton-2027/';
+        const asset = await env.ASSETS.fetch(new Request(`${url.origin}${path}`));
         check(asset.ok, '배포된 편집 글이 없습니다.',404);
         return Response.json({ sourceHash: /data-sketch-source="([a-f0-9]{64})"/.exec(await asset.text())?.[1] || null });
       }
@@ -134,6 +136,10 @@ export class SketchReviews {
     if (body.kind === 'ready') {
       check(job.status === 'preparing' && body.review?.generation === job.generation,'이전 수정 결과입니다.',409);
       const r=body.review;
+      if(canonicalSketchTarget(job.url).kind==='portfolio') {
+        check(r.targetKind==='portfolio' && r.sourcePath===`content/portfolio-copy/sketch-${job.id}-${job.generation}.json`, '포트폴리오 변경 파일을 확인해 주세요.');
+        check(Array.isArray(r.displayChanges) && r.displayChanges.length>0 && r.displayChanges.length<=30 && r.displayChanges.every(c=>typeof c.label==='string' && c.label.length<=100 && ['before','after'].every(k=>Array.isArray(c[k]) && c[k].length===1 && typeof c[k][0]==='string' && [...c[k][0]].length<=600)), '포트폴리오 문구 비교를 확인해 주세요.');
+      }
       check(COMMIT.test(r.baseCommit) && COMMIT.test(r.headCommit) && r.baseCommit !== r.headCommit && SHA.test(r.sourceHash) && r.sourceHash === job.sourceHash && SHA.test(r.afterHash),'원본과 수정 버전을 확인해 주세요.');
       check(typeof body.preview === 'string' && body.preview.length <= 3_000_000 && typeof r.diff === 'string' && r.diff.length <= 600000 && r.diff.length && typeof r.summary === 'string' && r.summary.length <= 12000,'미리보기 정보를 확인해 주세요.');
       check(r.checks?.verify === true && r.checks?.authoring === true && r.checks?.browser === true,'사이트 검사를 완료해야 합니다.');

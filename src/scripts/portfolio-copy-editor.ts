@@ -185,6 +185,7 @@ if (stateElement) {
   function render() {
     syncParagraphs();
     const dirty = Object.keys(changes).length;
+    document.body.dataset.sketchDirty = String(Boolean(dirty));
     toolbar.hidden = !editing && !dirty && !previous;
     document.body.classList.toggle('rp-copy-editing', editing);
     document.body.classList.toggle('rp-copy-pending', !toolbar.hidden);

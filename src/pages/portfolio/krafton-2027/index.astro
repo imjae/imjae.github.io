@@ -2,9 +2,7 @@
 import RecruitmentLayout from '../../../layouts/RecruitmentLayout.astro';
 import PortfolioCase from '../../../components/recruitment/PortfolioCase.astro';
 import PortfolioMedia from '../../../components/recruitment/PortfolioMedia.astro';
-import * as defaults from '../../../data/krafton-2027';
 import type { PortfolioLink, PortfolioCase as PortfolioCaseData } from '../../../data/krafton-2027';
-import { pageCopy as defaultPageCopy } from '../../../data/portfolio-page-copy';
 import { portfolioTextFields, applyPortfolioText } from '../../../lib/portfolio-copy.mjs';
 import { readPortfolioText } from '../../../lib/portfolio-copy.server.mjs';
 import PortfolioCopyEditor from '../../../components/recruitment/PortfolioCopyEditor.astro';
@@ -16,13 +14,9 @@ import { site } from '../../../data/site';
 import { readProjectVideoSettingsBySlot } from '../../../lib/project-video.server.mjs';
 import { resolvePortfolioMedia } from '../../../lib/recruitment-media.mjs';
 import { privateAuthoring } from '../../../lib/authoring.server.mjs';
+import { portfolioCopyBase as baseCopy } from '../../../data/portfolio-copy-base';
+import { portfolioSourceHash } from '../../../lib/sketch-portfolio.server.mjs';
 
-const baseCopy = {
-  profile: defaults.profile, project: defaults.project, clientCases: defaults.clientCases,
-  graphicsCases: defaults.graphicsCases, aiSteps: defaults.aiSteps, aiUsageCase: defaults.aiUsageCase,
-  contributionRows: defaults.contributionRows,
-  additionalLinks: defaults.additionalLinks, aiLinks: defaults.aiLinks, pageCopy: defaultPageCopy,
-};
 const defaultFields = portfolioTextFields(baseCopy);
 const fields = await readPortfolioText(defaultFields);
 const { profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase,
@@ -86,6 +80,7 @@ const videoUrl = projectMedia?.url;
 const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || projectMedia?.gifSrc);
 ---
 <RecruitmentLayout
+  sourceHash={portfolioSourceHash(fields)}
   title="imjae — 게임 프로그래밍 포트폴리오"
   description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 활용 경험을 소개합니다."
 >
