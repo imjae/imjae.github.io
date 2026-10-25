@@ -1,0 +1,22 @@
+---
+import { publishManifest } from '../lib/publish-manifest.server.mjs';
+const { articles, revision } = await publishManifest();
+---
+<aside id="publish-progress" class="publish-progress" data-publish-revision={revision} hidden aria-label="저장·배포 진행">
+  <header><strong>저장·배포</strong><button type="button" data-publish-collapse aria-expanded="true">접기</button></header>
+  <div data-publish-body>
+    <label class="publish-job-label" for="publish-job">확인할 저장</label><select id="publish-job" aria-label="확인할 저장"></select>
+    <p data-publish-message role="status" aria-live="polite">저장 화면을 준비하고 있습니다.</p>
+    <ol class="publish-stages"><li data-publish-stage="commit">GitHub 저장 <span>확인 중</span></li><li data-publish-stage="pages">공개 블로그 <span>대기</span></li><li data-publish-stage="authoring">편집 화면 <span>대기</span></li></ol>
+    <p class="publish-help">GitHub에서 Commit changes를 완료하고 창을 닫으면 이 화면에서 진행 상태를 확인할 수 있습니다.</p>
+    <div class="publish-actions"><button type="button" data-publish-check>다시 확인</button><a data-publish-reopen target="_blank" rel="noopener noreferrer" hidden>GitHub 저장 화면 열기 ↗</a><a data-publish-return hidden>수정한 위치에서 최신 버전 보기</a><button type="button" data-publish-remove>이 기록 닫기</button></div>
+  </div>
+</aside>
+<script type="application/json" id="publish-articles" set:html={JSON.stringify(articles).replaceAll('<', '\\u003c')} />
+<script>import '../scripts/publish-progress';</script>
+<style is:global>
+  .publish-progress{box-sizing:border-box;position:fixed;z-index:110;right:20px;top:88px;width:350px;max-width:calc(100% - 24px);max-height:calc(100dvh - 120px);overflow:auto;background:#fbfcf8;color:#253d34;border:1px solid #a7b9a5;border-radius:6px;box-shadow:0 8px 32px #18372b24;padding:17px;font-family:system-ui,sans-serif;font-size:12px;line-height:1.7}.publish-progress *{box-sizing:border-box}
+  .publish-progress[hidden],.publish-progress [hidden]{display:none!important}.publish-progress>header{display:flex;align-items:center;justify-content:space-between;gap:12px}.publish-progress strong{font-size:14px}.publish-progress button,.publish-progress a{font:inherit;border:1px solid #bfcdbb;border-radius:3px;padding:7px 9px;background:#f5f7f1;color:#244f3d;cursor:pointer;text-decoration:none}.publish-progress button:disabled{opacity:.5;cursor:default}.publish-progress button:focus-visible,.publish-progress a:focus-visible,.publish-progress select:focus-visible{outline:2px solid #29694f;outline-offset:3px}.publish-progress select{display:block;width:100%;min-width:0;margin:5px 0 12px;padding:7px;background:white;border:1px solid #bfcdbb;color:inherit;font:inherit}.publish-job-label{display:block;margin-top:14px}.publish-progress p{overflow-wrap:anywhere;margin:12px 0}.publish-stages{list-style:none;padding:0;margin:12px 0;border-top:1px solid #d8e0d3}.publish-stages li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #d8e0d3}.publish-stages span{color:#657566}.publish-stages li[data-state=success] span{color:#216140}.publish-stages li[data-state=failed] span{color:#a23e29}.publish-help{color:#68756a;font-size:11px}.publish-actions{display:flex;flex-wrap:wrap;gap:8px}.publish-actions [data-publish-return]{width:100%;text-align:center;background:#234f3d;color:white;border-color:#234f3d}.publish-actions [data-publish-remove]{border:0;background:transparent;color:#68756a}.publish-progress[data-phase=failed],.publish-progress[data-phase=conflict]{border-color:#b57c6e}
+  @media(max-width:760px){.publish-progress{top:80px;right:12px;width:calc(100% - 24px);max-height:55dvh;padding:14px;font-size:12px}.publish-progress button,.publish-progress a{min-height:42px;display:inline-flex;align-items:center;justify-content:center}.publish-progress select{font-size:16px}.publish-actions{gap:7px}}
+  @media print{.publish-progress{display:none}}
+</style>

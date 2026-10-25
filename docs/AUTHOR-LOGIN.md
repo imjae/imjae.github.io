@@ -30,6 +30,12 @@ GitHub에서 글이나 포트폴리오 문구를 `main`에 저장하면 다음 �
 
 편집 서버의 자동 배포는 저장소 변수 `AUTHORING_DEPLOY_ENABLED=true`와 Actions Secrets의 `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`를 사용한다. 토큰은 해당 계정의 `imjae-blog-author` Worker를 갱신할 수 있는 Editor 권한으로 제한하고, GitHub 저장소 파일·워크플로 본문·빌드 결과에는 넣지 않는다. 인증 값이 없으면 편집 서버 워크플로는 배포 전 명확한 오류로 종료한다. 토큰을 폐기하거나 만료한 경우 Actions Secret만 교체한다.
 
+## 저장 후 진행 확인
+
+보호된 화면의 저장·배포 진행창은 `/api/publish-progress/start`에서 공개 글의 수정 전 커밋을 고정하고 `/api/publish-progress/status`에서 해당 파일의 커밋·원문과 두 Actions·실제 배포를 확인한다. 설정 JSON은 고유 파일 경로와 예상 내용 해시로 연결한다. 두 빌드의 `publish-manifest.json`이 같은 배포 커밋과 대상 원문을 포함하고 두 워크플로가 성공해야 완료다. 후속 배포는 원래 저장을 포함하는 후속 커밋인지 대조한다. 분할 저장은 모든 파일을 확인한다.
+
+API는 기존 소유자 세션과 같은 origin POST 뒤에서만 동작한다. GitHub 공개 리소스를 읽으며 로그인 토큰·저장소 쓰기 권한·새 자격 증명을 추가하지 않는다. 조회 요청은 30초 간격으로 수행하고 숨긴 탭은 멈추며 서버 조회 제한에는 재시도 안내를 표시한다. 배포 확인용 공개 JSON에는 공개 글·공개 설정의 경로와 원문 해시만 들어가며 초안 본문이나 비밀 값은 포함하지 않는다. 새 글 초안 작성·삭제는 기존 흐름을 유지한다.
+
 ## 연결 순서
 
 비밀번호·Client Secret·Cloudflare API 토큰은 채팅·Git·문서·명령 인자로 전달하지 않는다.

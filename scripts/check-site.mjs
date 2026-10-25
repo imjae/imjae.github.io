@@ -22,6 +22,10 @@ async function exists(file) { try { return (await stat(file)).isFile(); } catch 
 const htmlFiles = (await files(root)).filter((file) => file.endsWith('.html'));
 const siteText = (await Promise.all(htmlFiles.map((file) => readFile(file, 'utf8')))).join('\n');
 if (!privateAuthoring && /data-author-session|action="\/auth\/logout"/.test(siteText)) failures.push('공개 빌드에 소유자 세션 전용 UI가 포함됨');
+if (!privateAuthoring && /id="publish-progress"|id="publish-articles"/.test(siteText)) failures.push('공개 빌드에 저장·배포 관리 화면이 포함됨');
+if (privateAuthoring && !siteText.includes('id="publish-progress"')) failures.push('편집 빌드에 저장·배포 진행창이 없음');
+const publishManifest = JSON.parse(await readFile(join(root, 'publish-manifest.json'), 'utf8'));
+if (publishManifest.version !== 1 || !/^[a-f0-9]{40}$/.test(publishManifest.revision ?? '')) failures.push('배포 버전 식별자 누락');
 const feeds = (await readFile(join(root,'rss.xml'),'utf8')) + (await readFile(join(root,'sitemap.xml'),'utf8'));
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -39,6 +43,8 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   articles.push({ data });
   const output = join(root,'writing',data.slug,'index.html');
   if (data.draft && await exists(output)) failures.push(`비공개 초안이 배포에 포함됨: ${data.slug}`);
+  const manifestPath = relative(resolve('.'), file).replaceAll('\\', '/');
+  if (data.draft && Object.hasOwn(publishManifest.files, manifestPath)) failures.push(`배포 확인 정보에 초안이 포함됨: ${data.slug}`);
   if (!data.draft && !(await exists(output))) failures.push(`공개 글 페이지 누락: ${data.slug}`);
   if (!data.draft && await exists(output)) {
     const html = await readFile(output, 'utf8');

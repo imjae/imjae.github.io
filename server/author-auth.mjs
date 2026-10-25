@@ -1,4 +1,5 @@
 import { handleSketchRequest } from './sketch-review.mjs';
+import { handlePublishProgress } from './publish-progress.mjs';
 export { SketchReviews } from './sketch-review.mjs';
 const SESSION_COOKIE = '__Host-imjae_author';
 const STATE_COOKIE = '__Host-imjae_oauth';
@@ -129,6 +130,8 @@ export async function handleAuthorRequest(request, env, { fetcher = fetch, now =
         response = Response.json({ login: session.login });
       } else if (url.pathname === '/sketch/' || url.pathname.startsWith('/api/sketch/')) {
         response = await handleSketchRequest(request, env, { ownerId: session.id });
+      } else if (url.pathname.startsWith('/api/publish-progress/')) {
+        response = await handlePublishProgress(request, env, { fetcher });
       } else if (url.pathname.startsWith('/auth/') || !['GET', 'HEAD'].includes(request.method)) {
         response = message(404, '요청한 화면을 찾을 수 없습니다.');
       } else {

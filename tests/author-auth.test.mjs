@@ -59,13 +59,14 @@ test('로그인 없는 HTML·편집 쿼리·스크립트·이미지·직접 경�
   const page = await f.request('/portfolio/krafton-2027/?edit=1', { headers: { Accept: 'text/html' } });
   assert.equal(page.status, 303);
   assert.match(page.headers.get('Location'), /^\/auth\/login\?return_to=/);
-  for (const path of ['/editor/', '/_astro/editor.js', '/favicon.svg', '/auth/session', '/editor/index.html']) {
+  for (const path of ['/editor/', '/_astro/editor.js', '/favicon.svg', '/auth/session', '/editor/index.html', '/api/publish-progress/status']) {
     const response = await f.request(path);
     assert.equal(response.status, 401, path);
     assert.match(response.headers.get('Cache-Control'), /no-store/);
     assert.match(response.headers.get('X-Robots-Tag'), /noindex/);
   }
   assert.equal(f.assets(), 0);
+  assert.equal((await f.request('/api/publish-progress/start', { method: 'POST', headers: { Origin: 'https://author.example', 'Content-Type': 'application/json' }, body: '{}' })).status, 401);
 });
 
 test('OAuth state·PKCE를 검증하고 본인의 불변 GitHub ID만 세션을 발급한다', async () => {

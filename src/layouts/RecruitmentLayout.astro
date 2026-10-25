@@ -3,6 +3,7 @@ import '../styles/recruitment.css';
 import { site } from '../data/site';
 import { privateAuthoring, authorLoginUrl } from '../lib/authoring.server.mjs';
 import AuthorSessionGuard from '../components/AuthorSessionGuard.astro';
+import PublishProgress from '../components/PublishProgress.astro';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -60,6 +61,7 @@ const sections = [
     </footer>
   </body>
   {privateAuthoring && <AuthorSessionGuard />}
+  {privateAuthoring && <PublishProgress />}
 </html>
 <script>
   document.querySelectorAll<HTMLAnchorElement>('[data-author-login]').forEach(link => link.addEventListener('click', () => {

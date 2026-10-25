@@ -5,6 +5,8 @@ import { getArticles } from '../lib/articles';
 import { getReadingItems } from '../lib/reading-shelf.server';
 import { githubFileUrl } from '../lib/github-authoring.mjs';
 import ModeSwitch from '../components/ModeSwitch.astro';
+import PublishProgress from '../components/PublishProgress.astro';
+import { privateAuthoring } from '../lib/authoring.server.mjs';
 interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; editProject?: string; }
 const { title, description = site.description, active = '', noindex = false, editFile, editProject } = Astro.props;
 const articles = await getArticles();
@@ -60,5 +62,6 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
       <main id="main-content"><slot /></main>
     </div>
     <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span><a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
+    {privateAuthoring && <PublishProgress />}
   </body>
 </html>
