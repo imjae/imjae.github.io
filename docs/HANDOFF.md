@@ -1,5 +1,13 @@
 # 블로그 관리 인수인계
 
+## 2026-10-26 Git LFS의 Azure Repos 이전 글 공개
+
+`content/articles/tools/git-lfs-azure-repos-migration.md`를 Tools & Systems의 구조 노트로 작성했다. DCB 시리즈에 연결하고, 초안 검토 후 사용자의 명시적인 배포 요청으로 `draft: false`로 전환했다. 작업 날짜는 DCB 이전 문서·도구 커밋 `a7add57531ffa8eaf33713e17eb6a0c24edbd2f6`의 AuthorDate인 2026-10-24, 수정일은 2026-10-26이다. 공개 주소는 `/writing/git-lfs-azure-repos-migration/`다.
+
+DCB의 `Docs/RepositoryMigration-Azure-20261024.md`, `fresh-clone-verification.json`, `migration-completion.json`을 대조해 Git·LFS의 분리, 과거 캐시 복구, 비표준 tree 참조 보관, 전체 OID 전송, HTTP 업로드 문제, 독립 다운로드와 해시 검증, dev·imjae 추적 전환을 설명했다. 원본 커밋 10,327개와 문서 커밋 추가 이후를 구분했다. 비공개 원격 URL·조직/저장소 ID·로컬 절대 경로·원시 로그는 본문에 옮기지 않았다. 사용자 결정과 Codex 지원 범위도 명시했다. Azure의 LFS 지원·제한과 Git/LFS 명령 의미는 2026-10-26 공식 문서를 확인하고 본문에 연결했다.
+
+공개 전환 후 `npm run verify`에서 테스트 114개, Astro 오류·경고 0개, 123개 경로 빌드와 129개 HTML 검사를 통과했다. 글 목록·Tools & Systems·DCB 시리즈·RSS·사이트맵·공개 manifest에 새 글이 포함됐다. 로컬 미리보기에서 글의 표 2개·Mermaid 흐름도, Home, 모바일 Tools & Systems의 LFS 검색을 확인했다. 390px 뷰포트(스크롤바 제외 본문 375px)에서 가로 넘침이 없었다. 배포 완료는 해당 커밋의 두 Actions와 실제 공개 페이지·원문 해시로 확인한다. 검증 로그·화면과 최종 배포 결과는 `.verification/azure-lfs-article-20261026/`에 보관한다.
+
 ## 2026-10-25 필기로 크래프톤 포트폴리오 수정
 
 공개·소유자 편집 주소의 `/portfolio/krafton-2027/`를 필기 수정 대상으로 추가했다. 문구별 JSON 저장 구조를 유지하고 기본 문구·기존 저장 기록을 합친 해시로 캡처 버전을 확인한다. AI는 기존 키의 문구만 바꾸며 새 JSON 기록 한 개를 만든다. 기본 TS·영상·연락처·주소·문단 순서·새 문단은 변경하지 않는다. 직접 편집한 미저장 변경은 캡처 전에 정리해야 한다.
