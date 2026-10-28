@@ -6,7 +6,7 @@ export const studyCourses = [{
   planSlug: 'unreal-cpp-engine-12-week-plan',
   weeks: [
     { number: 1, title: 'C++ 객체와 메모리', description: '값과 참조, 객체 수명, RAII, 복사와 이동을 독립 예제로 확인합니다.', articleSlug: 'cpp-objects-memory-lifetime' },
-    { number: 2, title: 'C++ 코드 구조와 컨테이너', description: '아이템 저장소를 만들며 소유권, 복사 비용과 헤더 의존성을 다룹니다.' },
+    { number: 2, title: 'C++ 코드 구조와 컨테이너', description: '아이템 저장소를 만들며 소유권, 복사 비용과 헤더 의존성을 다룹니다.', articleSlug: 'cpp-code-structure-containers' },
     { number: 3, title: '빌드와 모듈', description: 'UBT·UHT·컴파일러의 역할과 모듈 의존성을 연결합니다.' },
     { number: 4, title: 'UObject와 리플렉션', description: 'C++ 클래스, 블루프린트 기본값과 생성 코드의 관계를 살펴봅니다.' },
     { number: 5, title: '객체 수명과 GC', description: '참조 추적, EndPlay, Destroy와 메모리 정리 시점을 구분합니다.' },
