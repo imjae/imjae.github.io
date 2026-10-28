@@ -1,5 +1,15 @@
 # 블로그 관리 인수인계
 
+## 2026-10-28 4주차 UObject와 리플렉션 공개 글
+
+사용자가 4주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-uobject-reflection.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 5`로 작성하고 검증 후 `draft: false`로 전환했다. UObject·UClass·CDO, StaticClass/GetClass, UCLASS·UPROPERTY·UFUNCTION, BlueprintNativeEvent와 생성 코드를 설명한다. 3주차 ModuleLab을 이어 사용하는 Build.cs 및 Actor 헤더·구현 전체를 제공한다. C++·블루프린트 기본값 100/200, 레벨 인스턴스 250, 비용 20/25의 비교와 저장·재로드·기본값 복원·접근 지정자 변형을 5일 실습으로 구성했다. 과정은 12주·공개 글 4편·작성 예정 8개다.
+
+두 주차 본문에서 프로젝트 14파일을 별도 검증 경로로 추출했다. 4주차의 세 파일은 본문과 일치하며 UE 5.8.4 Editor·Game 타깃의 `-DisableUnity -NoPCH` 빌드를 통과했다. 별도 Editor 검증 코드에서 속성·함수 플래그, 비등록 PlainCounter, 네이티브/블루프린트 CDO를 검사했다. 블루프린트·레벨을 생성·저장하고 새 프로세스에서 재로드해 100/200/250, Transient Energy=0과 일반 멤버 PlainCounter=7을 확인했다. 블루프린트 재정의 전 비용 20, 재정의 후 25, 직접 `_Implementation` 호출의 20과 부족·음수·0 비용 경계도 확인했다. 블루프린트 그래프 생성 시 부모 함수의 반환값이 자동 연결되는 동작을 발견해 본문에 연결 해제 절차를 추가했다. NullRHI의 `-game` 실행에서 BeginPlay와 100→90, 200→175, 250→225 소비 로그 및 종료 코드 0을 확인했다. 생성 파일의 속성 등록·thunk·ProcessEvent·네이티브 등록도 대조했다.
+
+Unreal UI 조작·PIE·쿠킹·패키징·GPU 출력은 검증하지 않았다. 기본값 300 변경 전파/복원 UI와 BlueprintReadOnly 전환은 독자 변형 과제로 남는다. 엔진 시작 시 UnifiedErrorTest 부근의 LogAutomationTest 오류 15개와 권장 버전보다 최신 MSVC·엔진 헤더 deprecation 경고가 있어 전체 엔진 테스트 무오류로 확대하지 않는다. 게임 저장소의 소스는 사용하거나 수정하지 않았다.
+
+`npm run verify`의 테스트 114개·Astro 70개 파일 오류/경고 0개와 공개/편집 빌드 각각 131개 경로·137개 HTML 검사를 통과했다. 두 빌드의 원문 해시·과정 목록·Writing·RSS·사이트맵 포함을 확인했다. 브라우저에서 과정→4주차 이동, 초안 배너 제외·목차 17개·코드 5블록·표 5개·Mermaid 1개, 390px 본문 가로 넘침 없음과 Home 고정 12편, Study/Study.Reflection 모바일 검색 1편을 확인했다. 검증 프로젝트·추가 Editor 코드·저장한 에셋·로그·화면·배포 증거는 `.verification/cpp-week4-20261028/`에 보관한다. 해당 커밋의 두 Actions와 공개/편집 서버의 manifest 및 실제 본문 원문 해시 일치를 확인한 뒤 배포 완료를 보고한다.
+
 ## 2026-10-28 3주차 언리얼 빌드와 모듈 공개 글
 
 사용자가 3주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-build-modules.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 4`로 작성하고 검증 후 `draft: false`로 전환했다. C#·C 공통 문법은 숙지했다는 전제를 유지하며 UBT·UHT·컴파일러·링커, Target과 Module 규칙, Public/Private 의존성, API 매크로와 생성 헤더를 5일 실습으로 설명한다. 독립 `ModuleLab` 프로젝트에서 Runtime·Editor 모듈과 콘솔 명령을 연결하고 오류 재현·변형 과제 및 Epic 공식 문서를 제공한다. 주차 데이터의 3주차에 글을 연결했으며 과정은 전체 12주·공개 글 3편·작성 예정 9개다.

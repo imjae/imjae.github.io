@@ -8,7 +8,7 @@ export const studyCourses = [{
     { number: 1, title: 'C++ 객체와 메모리', description: '값과 참조, 객체 수명, RAII, 복사와 이동을 독립 예제로 확인합니다.', articleSlug: 'cpp-objects-memory-lifetime' },
     { number: 2, title: 'C++ 코드 구조와 컨테이너', description: '아이템 저장소를 만들며 소유권, 복사 비용과 헤더 의존성을 다룹니다.', articleSlug: 'cpp-code-structure-containers' },
     { number: 3, title: '빌드와 모듈', description: 'UBT·UHT·컴파일러의 역할과 모듈 의존성을 연결합니다.', articleSlug: 'unreal-build-modules' },
-    { number: 4, title: 'UObject와 리플렉션', description: 'C++ 클래스, 블루프린트 기본값과 생성 코드의 관계를 살펴봅니다.' },
+    { number: 4, title: 'UObject와 리플렉션', description: 'C++ 클래스, 블루프린트 기본값과 생성 코드의 관계를 살펴봅니다.', articleSlug: 'unreal-uobject-reflection' },
     { number: 5, title: '객체 수명과 GC', description: '참조 추적, EndPlay, Destroy와 메모리 정리 시점을 구분합니다.' },
     { number: 6, title: '게임 실행 구조', description: '레벨 전환과 Pawn 교체를 따라 객체의 유지·생성 범위를 확인합니다.' },
     { number: 7, title: '프레임과 이벤트', description: 'Tick·Timer·Delegate의 실행 순서와 해제 시점을 비교합니다.' },
