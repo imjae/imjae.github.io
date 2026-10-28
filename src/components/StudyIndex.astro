@@ -1,0 +1,27 @@
+---
+import { studyCourses } from '../data/study-courses.mjs';
+import { getArticles } from '../lib/articles';
+import ArticleCard from './ArticleCard.astro';
+const articles = await getArticles();
+const otherArticles = articles.filter(article => article.data.topic === 'study' && !studyCourses.some(course => course.id === article.data.series));
+---
+<ul class="study-sections" aria-label="Study 섹션">
+  {studyCourses.map(course => <li><a class="study-entry" href={`/series/${course.id}/`}>
+    <div><p class="eyebrow">{course.weeks.length} WEEKS / C++ · UNREAL ENGINE</p><h2>{course.title}</h2><p>{course.description}</p><small>전체 계획과 주차별 글 목록</small></div>
+    <span aria-hidden="true">→</span>
+  </a></li>)}
+</ul>
+{otherArticles.length > 0 && <section class="other-study"><h2>그 밖의 글</h2><div class="article-list">{otherArticles.map(article => <ArticleCard article={article} />)}</div></section>}
+<style>
+  .study-sections { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .study-entry { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px; border: 1px solid var(--line); border-radius: 4px; background: #eaf0e6; color: var(--green); word-break: keep-all; overflow-wrap: anywhere; }
+  .study-entry .eyebrow { margin-bottom: 12px; }
+  .study-entry h2 { font-size: 21px; line-height: 1.6; margin: 0 0 9px; }
+  .study-entry p:not(.eyebrow) { margin: 0 0 14px; font-size: 13px; line-height: 1.9; color: var(--muted); }
+  .study-entry small { font-size: 11px; }
+  .study-entry > span { flex-shrink: 0; }
+  .study-entry:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
+  .other-study { margin-top: 40px; }
+  .other-study h2 { font-size: 18px; }
+  @media (max-width: 640px) { .study-entry { padding: 20px; gap: 16px; } .study-entry h2 { font-size: 18px; } }
+</style>

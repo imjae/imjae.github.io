@@ -6,6 +6,8 @@ date: "2026-10-28"
 dateBasis: "authored"
 topic: "study"
 kind: "note"
+series: "unreal-cpp-engine"
+order: 1
 tags: ["Unreal Engine", "C++", "UObject", "Memory", "Profiling"]
 draft: false
 ---

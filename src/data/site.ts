@@ -1,3 +1,5 @@
+import { studyCourses } from './study-courses.mjs';
+
 export const site = {
   title: 'imjae · Dev Notes',
   description: 'Unity와 C# 게임 개발, 그래픽스, 개발 도구와 게임 수학에 관한 기술 기록입니다.',
@@ -17,7 +19,7 @@ export const topics = [
 ] as const;
 
 export const kinds = { 'case-study': '구조 노트', devlog: '개발 기록', note: '기술 노트', reading: '읽기 노트' } as const;
-export const seriesTitle = (id: string) => id === 'dcb' ? 'DCB 개발 기록' : id.replaceAll('-', ' ');
+export const seriesTitle = (id: string) => id === 'dcb' ? 'DCB 개발 기록' : studyCourses.find(course => course.id === id)?.title ?? id.replaceAll('-', ' ');
 export { dcbFeatures as cases } from './dcb-features.mjs';
 
 export const getTopic = (id: string) => topics.find((topic) => topic.id === id) ?? topics[4];

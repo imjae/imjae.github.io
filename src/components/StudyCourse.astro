@@ -1,0 +1,54 @@
+---
+import { studyCourses } from '../data/study-courses.mjs';
+import { getArticles, articleUrl } from '../lib/articles';
+interface Props { course: (typeof studyCourses)[number]; }
+const { course } = Astro.props;
+const articles = (await getArticles()).filter(article => article.data.series === course.id);
+const plan = articles.find(article => article.data.slug === course.planSlug);
+const weeks = course.weeks.map(week => ({ ...week, article: articles.find(article => article.data.slug === week.articleSlug) }));
+const publishedCount = weeks.filter(week => week.article && !week.article.data.draft).length;
+---
+<div class="breadcrumb"><a href="/topics/study/">Study</a><span>/</span><span>{course.title}</span></div>
+<header class="page-intro course-intro"><p class="eyebrow">STUDY / 12 WEEKS</p><h1>{course.title}</h1><p>{course.description}</p></header>
+{plan && <a class="course-plan" href={articleUrl(plan)}><div><span class="eyebrow">OVERVIEW</span><h2>12주 전체 계획</h2><p>주차별 목표, 하루 진행 방식과 완료 기준을 확인합니다.</p></div><span aria-hidden="true">→</span></a>}
+<section aria-labelledby="weeks-title">
+  <div class="section-heading"><h2 id="weeks-title">주차별 글</h2><span class="course-count">전체 {weeks.length}주 · 공개 글 {publishedCount}편</span></div>
+  <ol class="week-list">
+    {weeks.map(week => {
+      const Entry = week.article ? 'a' : 'div';
+      return <li data-study-week={week.number}><Entry class:list={['week-entry', { 'is-planned': !week.article }]} href={week.article ? articleUrl(week.article) : undefined}>
+        <span class="week-number">{String(week.number).padStart(2, '0')}<small>주차</small></span>
+        <div class="week-copy"><h3>{week.title}</h3><p>{week.description}</p></div>
+        <span class:list={['week-status', { 'is-draft': week.article?.data.draft }]}>{week.article ? (week.article.data.draft ? '로컬 초안' : '읽기 →') : '작성 예정'}</span>
+      </Entry></li>;
+    })}
+  </ol>
+</section>
+<a class="back-to-writing" href="/topics/study/">← Study 목록</a>
+<style>
+  .course-intro { margin-top: 28px; }
+  .course-plan { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px; margin-bottom: 40px; background: #eaf0e6; color: var(--green); border: 1px solid var(--line); border-radius: 4px; }
+  .course-plan .eyebrow { display: block; margin-bottom: 8px; }
+  .course-plan h2 { margin: 0 0 8px; font-size: 19px; }
+  .course-plan p { margin: 0; font-size: 12px; line-height: 1.9; color: var(--muted); }
+  .course-plan:hover h2, a.week-entry:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
+  .course-count { color: var(--muted); font-size: 11px; }
+  .week-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .week-entry { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 22px; align-items: center; padding: 24px 8px; border-bottom: 1px solid var(--line); }
+  a.week-entry:hover { background: #eaf0e644; }
+  .week-number { color: var(--green); font: 22px var(--mono); text-align: center; }
+  .week-number small { display: block; margin-top: 5px; color: var(--muted); font: 10px system-ui, sans-serif; }
+  .week-copy h3 { margin: 0 0 7px; font-size: 16px; line-height: 1.6; }
+  .week-copy p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.85; word-break: keep-all; overflow-wrap: anywhere; }
+  .week-status { color: var(--green); white-space: nowrap; font-size: 11px; }
+  .is-planned .week-status { color: var(--muted); }
+  .is-draft { color: #875b28; }
+  @media (max-width: 640px) {
+    .course-plan { padding: 20px; }
+    .section-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .week-entry { grid-template-columns: 32px minmax(0, 1fr); gap: 10px 15px; padding: 20px 0; }
+    .week-status { grid-column: 2; }
+    .week-number { font-size: 19px; align-self: start; padding-top: 3px; }
+    .week-copy h3 { font-size: 15px; }
+  }
+</style>

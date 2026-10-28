@@ -14,7 +14,7 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
 <BaseLayout title={article.data.title} description={article.data.description} active={article.data.topic} noindex={article.data.draft} editFile={article.filePath}>
   {article.data.draft && <div class="draft-banner">로컬에서만 보는 초안입니다. 공개 빌드·검색·RSS에는 포함되지 않습니다.</div>}
   <header class="article-header" style={`--topic-color:${topic.color}`}>
-    <div class="breadcrumb"><a href="/writing/">글 모아보기</a><span>/</span><a href={`/topics/${topic.id}/`}>{topic.title}</a></div>
+    <div class="breadcrumb"><a href="/writing/">글 모아보기</a><span>/</span><a href={`/topics/${topic.id}/`}>{topic.title}</a>{topic.id === 'study' && article.data.series && <><span>/</span><a href={`/series/${article.data.series}/`}>{seriesTitle(article.data.series)}</a></>}</div>
     <p class="eyebrow">{topic.english} / {kinds[article.data.kind]}{article.data.project ? ` / ${article.data.project.toUpperCase()}` : ''}</p>
     <h1>{article.data.title}</h1><p class="article-description">{article.data.description}</p>
     <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date} title={dateBasisLabel(article.data.dateBasis)}>{article.data.dateBasis === 'notion' ? '노션 원문 ' : article.data.dateBasis === 'commit' ? '작업 기록 ' : ''}{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
