@@ -1,5 +1,13 @@
 # 블로그 관리 인수인계
 
+## 2026-10-28 3주차 언리얼 빌드와 모듈 공개 글
+
+사용자가 3주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-build-modules.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 4`로 작성하고 검증 후 `draft: false`로 전환했다. C#·C 공통 문법은 숙지했다는 전제를 유지하며 UBT·UHT·컴파일러·링커, Target과 Module 규칙, Public/Private 의존성, API 매크로와 생성 헤더를 5일 실습으로 설명한다. 독립 `ModuleLab` 프로젝트에서 Runtime·Editor 모듈과 콘솔 명령을 연결하고 오류 재현·변형 과제 및 Epic 공식 문서를 제공한다. 주차 데이터의 3주차에 글을 연결했으며 과정은 전체 12주·공개 글 3편·작성 예정 9개다.
+
+본문의 프로젝트 파일 12개를 그대로 추출해 UE 5.8.4에서 Development Editor와 Game 타깃을 빌드했다. Editor의 `-DisableUnity -NoPCH` 빌드도 통과했다. 헤더 누락, API export 누락, 모듈 의존성 누락, include 경로만 제공한 링크 실패, generated.h 뒤의 include 등 실패 실험 5개를 예상 단계에서 재현하고 원본 복구 빌드를 확인했다. UnrealEditor-Cmd의 NullRHI 실행에서 Runtime·Editor 모듈 시작, `Study.BuildProbe`의 value=100/lower=0/wide=100/limit=0 및 StudyCounter 리플렉션 이름, 종료 코드 0과 모듈 종료를 확인했다. Game 타깃 로그에 StudyEditor가 없고 실행 파일이 생성됐다. 엔진 시작 로그에는 예제 실행 전 UnifiedErrorTest 부근의 LogAutomationTest 오류 15개가 있으며, 빌드에는 권장 버전보다 최신 MSVC 도구 집합 경고와 엔진 헤더 deprecation 경고가 있다. 전체 엔진 테스트 무오류나 게임 플레이·PIE·쿠킹·패키징을 검증한 것으로 확대하지 않는다. 비공개 게임 코드는 사용하거나 수정하지 않았다.
+
+`npm run verify`의 테스트 114개·Astro 70개 파일 오류/경고 0개와 공개/편집 빌드 각각 130개 경로·136개 HTML 검사를 통과했다. 두 빌드의 원문 해시, 과정 12주/3편/9개 및 Writing·RSS·사이트맵 포함을 확인했다. 브라우저에서 과정→3주차 이동, 초안 배너 제외, 코드 18블록·표 3개·Mermaid 1개·목차 대상 17개를 검사했다. 390px 본문의 가로 넘침 없음, Home 고정 12편과 Study/Study.BuildProbe 모바일 검색 1편을 확인했다. 추출 프로젝트·실패 실험·실행 로그·사이트 검사·화면·배포 기록은 `.verification/cpp-week3-20261028/`에 보관한다. 배포 완료는 해당 커밋의 두 워크플로 및 실제 공개/편집 페이지·manifest 원문 해시를 확인한 뒤 보고한다.
+
 ## 2026-10-28 표준 초안 보충 노트 공개와 1·2주차 연결
 
 사용자가 보충 노트 공개 배포와 1·2주차에서의 바로가기를 승인했다. `cpp-standard-draft-reading-notes.md`를 `draft: false`로 전환하고 두 주차 글의 도입부에 한국어 보충 노트 링크를 추가했다. 보충 노트에서 두 글로 돌아가는 기존 링크를 유지한다. 기존 예제·원문 출처·요약과 전문 번역의 구분·작성일·slug는 유지하며 주차 데이터의 12주·공개 주차 글 2편도 유지한다.
