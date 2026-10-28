@@ -6,7 +6,7 @@ export const studyCourses = [{
   label: 'DCB · UNREAL ENGINE',
   planSlug: 'dcb-unreal-port-study-plan',
   weeks: [
-    { number: 1, title: '첫 실행 구간과 게임 프레임워크', description: '검증 맵의 플레이어 생성·조종·HUD·저장 흐름을 따라가고 실험 맵을 마련합니다.', articleSlug: 'dcb-unreal-first-playable-framework' },
+    { number: 1, title: 'Unity와 비교하는 에디터·Blueprint 첫 실습', description: '맵 복제·Actor 배치·Blueprint 출력부터 시작해 DCB의 카메라·속도·채집·저장을 직접 바꿔 봅니다.', articleSlug: 'dcb-unreal-first-playable-framework' },
     { number: 2, title: '입력·이동·운반 상태', description: 'Enhanced Input과 CharacterMovement로 짐 무게, 질주와 UI 입력 전환을 다룹니다.' },
     { number: 3, title: '아이템 데이터와 에셋 로딩', description: '아이템 ID·무게·아이콘·메시를 연결하고 소프트 참조의 로딩과 쿠킹을 확인합니다.' },
     { number: 4, title: '이동 애니메이션과 운반 자세', description: '기존 클립으로 Animation Blueprint와 Blend Space를 구성하고 전환을 비교합니다.' },

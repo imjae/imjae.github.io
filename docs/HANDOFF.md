@@ -1,5 +1,15 @@
 # 블로그 관리 인수인계
 
+## 2026-10-29 DCB 1주차를 Unity 비교·입문 실습으로 재작성
+
+사용자가 언리얼을 전혀 모른다는 전제로 Unity 기능과 비교하고, 정확히 무엇을 해야 하는지 중심으로 다시 쓰도록 요청했다. 기존 `dcb-unreal-first-playable-framework`의 slug·날짜·공개 상태를 유지하고 제목을 「DCB 언리얼 전환 1: Unity와 비교하며 에디터와 Blueprint부터 시작하기」로 바꿨다. 과정 목록의 1주차 제목·설명도 맞췄다. 다른 주차·기존 C++ 과정은 수정하지 않는다.
+
+5일·15개 번호 실습으로 구성했다. Content Browser/Outliner/Details, 맵 저장, Cube의 좌표·단위, BP_Week01Marker의 BeginPlay/Print String, 실행선·데이터 핀·Target, Instance Editable과 클래스 기본값/인스턴스 override를 먼저 다룬다. 이후 DCB 플레이어 에셋 분리·GameMode/Possession·SpringArm, ScriptableObject/DataAsset 비교·속도 변경·입력 매핑·Timer Probe·Cast, 채집 Count 3→5·UMG·귀환/재실행을 이어간다. 각 단계에 메뉴·선택 대상·입력값·예상 화면·복원 순서를 넣고 3개의 반복 과제와 문제 해결 표를 제공한다. 첫 Play 전에 실험 슬롯 `DCB_Study_Week01_Intro`를 지정하며 실제 Slot getter를 출력한다. 사망은 추가 실습, C++ 소스 읽기는 후속 선택 자료로 옮겼다.
+
+직전 점검의 게임 에셋/설정 10개가 같은 SHA256인지 다시 확인하고 관련 현재 C++ 경로를 읽었다. Epic·Unity 공식 문서와 대조했다. 게임 소스·에셋·개인 저장을 수정하지 않았으며, 이번의 신규 Blueprint 작성·컴파일과 수동 PIE는 수행하지 않았다. 새 글의 실행 수치와 완료 결과를 만들어 넣지 않았다.
+
+`npm run verify`에서 테스트 123개, Astro 70파일 오류/경고 0개를 확인했고 문구 보완 뒤 공개 빌드/링크 검사와 편집용 빌드를 다시 완료했다. 두 빌드 각각 135개 경로·141개 HTML, 원문 해시·목차 링크·RSS·사이트맵을 검사했다. 본문은 목차 28개·표 10개·관계도 1개이며 데스크톱/390px에서 페이지 가로 넘침이 없다. 모바일 목차 이동, Study/BP_Week01Marker 검색 1편, 과정 목록과 Home 고정 12편을 확인했다. 원문 사본·빌드/배포 확인은 `.verification/dcb-unreal-week1-unity-20261029/`에 저장한다. 정확한 배포 커밋의 공개/편집 Actions와 두 manifest의 원문 해시를 확인한 뒤 완료를 보고한다.
+
 ## 2026-10-29 DCB 1주차의 개념과 에디터 실습 확대
 
 사용자가 1주차 글을 실제 DCB 프로젝트에 맞춰 자세히 작성하고 게시하도록 요청했다. 기존 `dcb-unreal-first-playable-framework`의 slug·날짜·공개 상태를 유지하고, 객체/에셋 개념, Class Defaults와 인스턴스, 맵·GameMode·Character·Tuning 복제, Level Blueprint의 실험 슬롯 지정, PIE 조작, Timer 기반 상태 Probe, 입력 매핑과 속도 변경, 채집·내려놓기·귀환·사망·새 실행의 비교 절차를 추가했다. 표 12개·관계도 1개·본문 목차 24개이며 일별 절차, 예상 결과, 문제 해결과 답을 포함한다.
