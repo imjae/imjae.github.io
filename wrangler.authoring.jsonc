@@ -26,6 +26,10 @@
       {
         "name": "SKETCH_REVIEWS",
         "class_name": "SketchReviews"
+      },
+      {
+        "name": "SKETCH_QUESTIONS",
+        "class_name": "SketchQuestions"
       }
     ]
   },
@@ -39,6 +43,10 @@
     {
       "tag": "v2-sketch-reviews",
       "new_sqlite_classes": ["SketchReviews"]
+    },
+    {
+      "tag": "v3-sketch-questions",
+      "new_sqlite_classes": ["SketchQuestions"]
     }
   ]
 }

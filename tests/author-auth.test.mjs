@@ -59,7 +59,7 @@ test('로그인 없는 HTML·편집 쿼리·스크립트·이미지·직접 경�
   const page = await f.request('/portfolio/krafton-2027/?edit=1', { headers: { Accept: 'text/html' } });
   assert.equal(page.status, 303);
   assert.match(page.headers.get('Location'), /^\/auth\/login\?return_to=/);
-  for (const path of ['/editor/', '/_astro/editor.js', '/favicon.svg', '/auth/session', '/editor/index.html', '/api/publish-progress/status']) {
+  for (const path of ['/editor/', '/_astro/editor.js', '/favicon.svg', '/auth/session', '/editor/index.html', '/api/publish-progress/status','/sketch/ask/','/api/sketch/ask']) {
     const response = await f.request(path);
     assert.equal(response.status, 401, path);
     assert.match(response.headers.get('Cache-Control'), /no-store/);
@@ -91,6 +91,13 @@ test('OAuth state·PKCE를 검증하고 본인의 불변 GitHub ID만 세션을 
   assert.equal(allowed.headers.get('Cache-Control'), 'private, no-store');
   assert.equal(allowed.headers.get('Referrer-Policy'), 'same-origin');
   assert.equal(f.assets(), 1);
+  const question = await f.request('/sketch/ask/', {headers:{Cookie:cookie}});
+  assert.equal(question.status,200);
+  assert.match(await question.text(),/receiveSketchQuestion/);
+  assert.equal(f.assets(),1,'question UI must not fall through to static assets');
+  const unconfigured = await f.request('/api/sketch/ask',{method:'POST',headers:{Cookie:cookie,Origin:'https://author.example','X-Sketch-Request':'1','Content-Type':'application/json'},body:'{}'});
+  assert.equal(unconfigured.status,503);
+  assert.match(await unconfigured.text(),/PC 질문 연결/);
   const identity = await f.request('/auth/session', { headers: { Cookie: cookie } });
   assert.deepEqual(await identity.json(), { login: 'imjae' });
   assert.ok([...f.storage.data.values()].every(value => !JSON.stringify(value).includes('upstream-test-token')));

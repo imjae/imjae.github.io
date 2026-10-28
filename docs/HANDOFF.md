@@ -1,5 +1,11 @@
 # 블로그 관리 인수인계
 
+## 2026-10-28 SketchBrowser 구독 기반 일회용 질문 연결
+
+사용자가 API 키 없이 사용할 서버 연결과 배포를 요청했다. 소유자 인증 뒤 선택 PNG를 현재 연결된 개인 PC의 Codex로 전달하는 비저장 WebSocket 중계를 추가했다. 로컬 ChatGPT 로그인은 PC에 유지하고 서버로 복사하지 않는다. 기존 글 수정 실행기·승인 배포 흐름과 분리한다. `SKETCH_QUESTIONS` 바인딩과 v3 마이그레이션을 포함하며 설정·보관 경계는 [영역 질문 서버](SKETCH-QUESTION.md)를 따른다. 공개 글 본문 변경은 없다.
+
+서버 122개 테스트, Astro 오류·경고 0개, 공개·편집 빌드 각각 131개 경로·137개 HTML 검사를 통과했다. SketchBrowser에서 실제 Cloudflare 런타임의 인증 WebSocket·응답·취소·오프라인을 검사했다. 실제 구독 이미지 호출은 합성 질문 답 2와 빈 이미지 `no_content`를 확인했다. APK 빌드·실물 태블릿 검증은 하지 않는다. 서버 배포 완료와 운영 연결 결과는 SketchBrowser 기능 구현 표에 기록한다.
+
 ## 2026-10-28 4주차 UObject와 리플렉션 공개 글
 
 사용자가 4주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-uobject-reflection.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 5`로 작성하고 검증 후 `draft: false`로 전환했다. UObject·UClass·CDO, StaticClass/GetClass, UCLASS·UPROPERTY·UFUNCTION, BlueprintNativeEvent와 생성 코드를 설명한다. 3주차 ModuleLab을 이어 사용하는 Build.cs 및 Actor 헤더·구현 전체를 제공한다. C++·블루프린트 기본값 100/200, 레벨 인스턴스 250, 비용 20/25의 비교와 저장·재로드·기본값 복원·접근 지정자 변형을 5일 실습으로 구성했다. 과정은 12주·공개 글 4편·작성 예정 8개다.
