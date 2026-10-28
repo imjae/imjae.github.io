@@ -1,5 +1,15 @@
 # 블로그 관리 인수인계
 
+## 2026-10-29 DCB 1주차의 개념과 에디터 실습 확대
+
+사용자가 1주차 글을 실제 DCB 프로젝트에 맞춰 자세히 작성하고 게시하도록 요청했다. 기존 `dcb-unreal-first-playable-framework`의 slug·날짜·공개 상태를 유지하고, 객체/에셋 개념, Class Defaults와 인스턴스, 맵·GameMode·Character·Tuning 복제, Level Blueprint의 실험 슬롯 지정, PIE 조작, Timer 기반 상태 Probe, 입력 매핑과 속도 변경, 채집·내려놓기·귀환·사망·새 실행의 비교 절차를 추가했다. 표 12개·관계도 1개·본문 목차 24개이며 일별 절차, 예상 결과, 문제 해결과 답을 포함한다.
+
+현재 UE 5.8.4로 기존 에셋을 저장하지 않고 읽는 Python commandlet을 실행했다. GameMode의 기본 Pawn/Controller, Controller의 UMG 클래스, Character의 Tuning/InputContext/InputActions, 초기 상태, 밸런스 값, 검증 맵의 GameMode·Actor 6개와 입력 매핑을 확인했다. IA_Look에는 오른쪽 스틱만 있고 마우스 축이 없으며, Interaction은 F이고 저장 Prompt의 E는 C++ 표시 경로에서 F로 치환된다. Character의 MaxWalkSpeed는 매 Tick 계산하고, SaveGame의 체력 필드가 새 플레이어에 적용되지 않는 점을 본문에 반영했다. CDO Slot 변경은 새 네이티브 객체에 적용되지 않아 채택하지 않았다. 본문은 실행 중 Subsystem 인스턴스에 Slot을 설정하고 LoadProgress로 저장 객체를 교체하는 Level Blueprint 절차를 안내한다.
+
+이 검사는 기존 에셋·소스의 읽기와 임시 메모리 객체의 속성 확인이다. 제안한 Blueprint 그래프의 직접 작성/컴파일, PIE의 수동 조작, GPU 출력, 패키징은 수행하지 않았다. 게임 소스·에셋을 저장하거나 개인 SaveGame을 읽고 쓰지 않았다. 확인 대상 게임 파일 10개의 검사 전후 SHA256이 같다. 임시 Python/JSON/로그와 기존 글 사본은 Git에서 제외되는 `.verification/dcb-unreal-week1-20261029/`에 둔다.
+
+`npm run verify`에서 테스트 123개, Astro 70파일 오류/경고 0개, 135개 경로·141개 HTML 검사를 통과했고 `npm run author:build`도 통과했다. 브라우저에서 긴 본문·목차 이동·관계도, 390px의 페이지 가로 넘침 없음, Writing의 Study/BP_Week01Probe 검색 1편, Home 고정 12편을 확인했다. 해당 폴더의 배포 기록에 공개/편집 Actions와 정확한 커밋·원문 해시 대조 결과를 저장한다.
+
 ## 2026-10-29 DCB 언리얼 전환 과정과 첫 주 안내
 
 사용자가 기존 엔진 구조 계획을 실제 DCB 언리얼 전환과 연결하는 Study 공간과 앞으로의 계획을 요청했다. `dcb-unreal-port` 과정을 Study 첫 카드에 추가하고, `dcb-unreal-port-study-plan`과 `dcb-unreal-first-playable-framework`를 2026-10-29/authored로 작성했다. 초안으로 작성한 뒤 요청한 섹션의 공개 글로 전환했다. 12주 계획은 하루 2시간·주 5일의 가정이며, 플레이어·아이템·적·낮은 턱 각 한 종류와 짧은 동선의 채집→적재→전투→귀환→저장을 다룬다. 전체 포팅 완료 일정이나 이미 수행한 주차 결과로 소개하지 않는다. 1주차는 현재 맵·키 입력·생성/조종/HUD/저장 책임을 확인하는 5일 과제다. 주차별 공개 글 1편·작성 예정 11개이며 기존 C++ 과정의 5편은 유지한다. 이전 계획의 주소를 유지하고 새 과정 안내와 수정일만 추가했다.
