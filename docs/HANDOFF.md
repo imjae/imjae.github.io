@@ -1,5 +1,15 @@
 # 블로그 관리 인수인계
 
+## 2026-10-28 5주차 객체 수명과 GC 공개 글
+
+사용자가 5주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-object-lifetime-gc.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 6`으로 작성하고 검증 후 `draft: false`로 전환했다. NewObject·SpawnActor·CreateDefaultSubobject, Outer와 추적 참조, UPROPERTY/TObjectPtr·TWeakObjectPtr·TStrongObjectPtr, 순환 참조와 참조 해제를 설명한다. UObject 실험·Actor/Component 생명주기·Destroy 전후 유효성의 전체 코드 여섯 파일과 실행·변형 과제를 제공한다. 과정은 12주·공개 글 5편·작성 예정 7개다.
+
+3~5주차 본문에서 독립 프로젝트 20파일을 추출했다. 5주차 여섯 파일이 본문과 일치하며 UE 5.8.4 Editor·Game 타깃의 `-DisableUnity -NoPCH` 빌드를 통과했다. NullRHI `-game` 실행에서 Held 유지, OuterOnly·지역 TObjectPtr·외부에서 도달하지 못하는 순환 참조의 수거, Held 및 Keeper의 참조 해제 후 수거를 확인했다. 일반 UObject의 BeginDestroy를 관찰했으며 강제 GC는 독립 콘솔 함수에서 실행한다. Actor는 등록 속성으로 보관해도 Destroy 직후 pointer=1/valid=0/weak=0, GC 후 null=1/weak=0이었다. Actor·Component의 EndPlay(reason=0)→Destroy 반환→BeginDestroy→수거 확인 순서와 컴포넌트 초기화를 검사했다. 저장한 배치 Actor의 PostLoad, Spawn한 Actor의 PostActorCreated를 비교하고 별도 실행으로 레벨 전환 reason=1과 앱 종료 reason=4를 확인했다. 모든 검증 프로세스는 종료 코드 0으로 끝났다.
+
+Unreal UI 조작·PIE·스트리밍 레벨·쿠킹·패키징·GPU 출력은 검증하지 않았다. 추가 UPROPERTY와 Transient 제거 변형은 독자 과제로 남는다. Editor 시작의 UnifiedErrorTest 부근 LogAutomationTest 오류, 최신 MSVC 도구 집합 및 엔진 헤더 deprecation 경고를 전체 엔진 무오류로 확대하지 않는다. 비공개 게임 저장소의 소스는 사용하거나 수정하지 않았다.
+
+`npm run verify`와 최종 테스트 123개, Astro 70개 파일 오류/경고 0개를 확인했다. 긴 생성 함수 이름으로 생긴 데스크톱 목차의 가로 넘침을 짧은 소제목으로 수정하고 공개/편집 빌드 각각 132개 경로·138개 HTML 검사를 다시 수행했다. 두 빌드의 원문 해시·과정 목록·Writing·RSS·사이트맵을 확인했다. 브라우저에서 과정→5주차 이동, 초안 제외·코드 9블록·표 3개·Mermaid 1개·목차 16개, 데스크톱과 390px 본문의 가로 넘침 없음, Home 고정 12편과 Study/Study.ActorGCProbe 모바일 검색 1편을 확인했다. 독립 프로젝트·추가 검증 코드·레벨·로그·화면·배포 증거는 `.verification/cpp-week5-20261028/`에 보관한다. 해당 커밋의 두 Actions와 공개/편집 서버 manifest·본문 원문 해시를 확인한 뒤 배포 완료를 보고한다.
+
 ## 2026-10-28 질문 패널 초기화 오류 수정
 
 0.2.3 실사용에서 대기 문구가 유지되는 문제를 확인했다. Wrangler의 keepNames 변환이 `questionClient.toString()`에 삽입한 `__name`을 브라우저가 찾지 못하는 오류를 실제 배포용 dry-run 번들로 재현했다. 브라우저 코드를 원본 문자열로 보존하고 이미지 수신 확인을 추가했다. 같은 질문 ID를 다시 전달해도 추론 요청은 한 번만 생성한다. 서버 123개 검사와 앱에서 원본·번들 UI/브리지 검사를 통과했다. Android origin-only 메시지 주소와 로딩 완료 전달도 앱 소스에서 수정했으며 새 APK 반영은 별도다. 공개 글 수정 없이 서버 UI·회귀 검사만 배포한다.
