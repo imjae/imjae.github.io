@@ -1,7 +1,10 @@
-export function questionClient() {
+// Keep browser code as source: Wrangler adds server-only __name helpers to
+// function.toString(), which would stop initialization inside the WebView.
+export const questionClientSource = String.raw`function questionClient() {
   const status=document.getElementById('status'), answer=document.getElementById('answer');
   const retry=document.getElementById('retry');
-  let input=null,controller=null,disposed=false,generation=0,accepted=false;
+  let input=null,controller=null,disposed=false,generation=0,acceptedId=null;
+  function notify(value) {window.ReactNativeWebView?.postMessage(JSON.stringify(value));}
   function cancelRemote(id) {void fetch('/api/sketch/ask/cancel',{method:'POST',credentials:'same-origin',cache:'no-store',keepalive:true,
     headers:{'Content-Type':'application/json','X-Sketch-Request':'1'},body:JSON.stringify({id})}).catch(()=>{});}
   function text(message,kind) { status.textContent=message;status.setAttribute('role',kind==='error'?'alert':'status'); }
@@ -28,8 +31,10 @@ export function questionClient() {
     } finally {clearTimeout(timer);if(controller===abort)controller=null;}
   }
   window.receiveSketchQuestion=value=>{
-    if(disposed||accepted||!value||typeof value.id!=='string'||! /^[0-9a-f-]{36}$/i.test(value.id)||typeof value.image!=='string'||value.image.length>4000000)return;
-    accepted=true;input={id:value.id,image:value.image};void submit();
+    if(disposed||!value||typeof value.id!=='string'||! /^[0-9a-f-]{36}$/i.test(value.id)||typeof value.image!=='string'||value.image.length>4000000)return;
+    if(acceptedId){if(value.id===acceptedId)notify({type:'sketch-question-received',id:acceptedId});return;}
+    acceptedId=value.id;input={id:value.id,image:value.image};
+    notify({type:'sketch-question-received',id:acceptedId});void submit();
   };
   window.disposeSketchQuestion=()=>{
     if(disposed)return;
@@ -39,15 +44,15 @@ export function questionClient() {
   window.addEventListener('pagehide',window.disposeSketchQuestion);
   window.addEventListener('pageshow',event=>{if(event.persisted)window.disposeSketchQuestion();});
   retry.addEventListener('click',()=>{if(input&&!controller&&!disposed){input.id=crypto.randomUUID();void submit();}});
-  window.ReactNativeWebView?.postMessage(JSON.stringify({type:'sketch-question-ready'}));
-}
+  notify({type:'sketch-question-ready'});
+}`;
 
 export function questionPage() {
   const nonce=crypto.randomUUID();
   return new Response(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>영역 질문</title>
 <style>:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#fbfaf6;color:#29352d;font:17px/1.75 system-ui,sans-serif}main{padding:24px;max-width:640px;margin:auto}#status{margin:0 0 18px;color:#52674d}#answer{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}button{font:inherit;color:#fff;background:#48694f;border:0;border-radius:8px;min-height:48px;padding:8px 18px;margin-top:20px}button:focus-visible{outline:3px solid #c58a24;outline-offset:3px}[hidden]{display:none!important}</style></head><body><main>
 <p id="status" role="status" aria-live="polite">선택한 영역을 기다리고 있어요.</p><p id="answer" hidden></p><button id="retry" hidden>다시 시도</button>
-<noscript>질문을 표시하려면 JavaScript가 필요합니다.</noscript></main><script nonce="${nonce}">(${questionClient.toString()})();</script></body></html>`,{
+<noscript>질문을 표시하려면 JavaScript가 필요합니다.</noscript></main><script nonce="${nonce}">(${questionClientSource})();</script></body></html>`,{
     headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow, noarchive',
       'Content-Security-Policy':`default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`},
   });

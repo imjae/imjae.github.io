@@ -30,6 +30,8 @@ PNG base64 최대 4MB, 동시에 한 질문, 메모리 카운터 기준 분당 5
 
 ## 검사와 배포
 
+0.2.3의 “선택한 영역을 기다리고 있어요” 정지 원인은 배포 시 함수 문자열에 섞인 `__name`과 Android origin-only 메시지를 거절한 앱 검사였다. 브라우저 코드를 `String.raw`로 보존하고 서버는 동일 ID 수신을 다시 확인하되 추론을 중복 시작하지 않는다. `sketch-question-ui.test.mjs`는 실제 keepNames 번들에서 초기화·수신 확인을 검사한다. 앱은 source origin 검증 뒤 현재 페이지의 정확한 origin·경로에서만 주입하고 로딩 완료 전달·8초 수신 제한을 사용한다. 서버 수정만으로 기존 0.2.3의 네이티브 주소 검사까지 바뀌지는 않는다.
+
 `npm test`, `npm run check`, `npm run author:build`로 서버 배포 전 검사한다. SketchBrowser의 `pnpm test:question`은 실제 처리기·UI와 Miniflare WebSocket 런타임을 사용한다. 인증·CSRF·입력 크기·오프라인·취소 선도착·타임아웃·늦은 응답·한도·고정 안내·저장소 미사용을 확인한다. 자동 검사의 모델은 테스트 대역이다.
 
 별도 실제 ChatGPT 구독 호출에서 합성 “1 + 1은?” 이미지의 답 2와 흰색 400×300 이미지의 `no_content`를 확인했다. 다양한 손글씨·수식과 Android WebView 로그인·캡처는 실물 검증 대상이다. 서버 배포는 `main`의 기존 owner-only editor 워크플로를 사용한다. 앱 빌드 워크플로는 실행하지 않는다.
