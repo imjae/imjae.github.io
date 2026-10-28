@@ -8,7 +8,7 @@
 
 ## 메뉴와 주제 표기
 
-사용자 요청에 따라 블로그와 지원용 포트폴리오의 상단 메뉴, 주제 이름은 영어로 표시한다. 블로그 메뉴는 Home, About, Portfolio, Writing, GitHub, 모드 전환은 View와 Edit를 사용한다. 주제는 Gameplay, Graphics, Tools & Systems, AI Collaboration, Notes, Mathematics, Reading으로 표기한다. 글의 제목·설명·본문과 작성 양식의 안내는 한국어를 유지한다.
+사용자 요청에 따라 블로그와 지원용 포트폴리오의 상단 메뉴, 주제 이름은 영어로 표시한다. 블로그 메뉴는 Home, About, Portfolio, Writing, GitHub, 모드 전환은 View와 Edit를 사용한다. 주제는 Gameplay, Graphics, Tools & Systems, AI Collaboration, Notes, Mathematics, Reading, Study로 표기한다. 글의 제목·설명·본문과 작성 양식의 안내는 한국어를 유지한다.
 
 Reading에는 책 제목·저자와 독서 메모를 모은다. 완독일은 확인된 경우에만 입력하고, 글 작성일을 완독일로 대신하지 않는다. 짧은 감상은 사용자가 실제로 남긴 생각을 적으며 기존 요약을 개인 감상으로 바꾸어 쓰지 않는다.
 

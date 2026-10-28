@@ -6,7 +6,7 @@ import { parseArgs } from 'node:util';
 import { parseFrontmatter } from './frontmatter.mjs';
 
 const origin = 'https://imjae.github.io';
-const sourcePath = /^content\/articles\/(gameplay|graphics|tools|ai|notes|math|reading)\/[a-z0-9-]+\.md$/;
+const sourcePath = /^content\/articles\/(gameplay|graphics|tools|ai|notes|math|reading|study)\/[a-z0-9-]+\.md$/;
 
 export function canonicalSketchUrl(value) {
   const url = new URL(value);

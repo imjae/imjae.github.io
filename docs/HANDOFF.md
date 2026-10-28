@@ -1,5 +1,21 @@
 # 블로그 관리 인수인계
 
+## 2026-10-28 Study 카테고리와 언리얼 C++ 계획 공개 전환
+
+사용자가 Study 카테고리와 학습 계획 글의 공개 배포를 승인했다. `content/articles/study/unreal-cpp-engine-12-week-plan.md`를 `draft: false`로 전환했다. 제목·작성일·slug와 12주 계획 본문은 검토한 초안을 유지한다. 공개 주소는 `/topics/study/`와 `/writing/unreal-cpp-engine-12-week-plan/`이다. 공개 전환 검증 로그, 배포 커밋과 두 Actions, 실제 페이지 및 원문 해시 대조 결과는 `.verification/unreal-study-20261028/`에 보관한다. 배포 완료는 두 워크플로와 두 서버의 manifest가 해당 커밋·글 원문과 일치하는지 확인한 뒤 보고한다.
+
+공개 전환 후 `npm run verify`에서 테스트 114개, Astro 오류·경고 0개, 125개 경로·131개 HTML 검사를 통과했다. 편집용 빌드도 125개 경로·131개 HTML 검사를 통과했다. 두 빌드의 Study·Writing·RSS·사이트맵과 manifest에 글이 포함되며, 원문 LF 정규화 SHA-256이 일치한다. 로컬 공개 화면에서 Study 목록 1편과 초안 배너 없는 본문, 표 3개·목차 12개·가로 넘침 없음을 확인했다.
+
+## 2026-10-28 Study 카테고리와 언리얼 C++ 12주 계획 초안
+
+사용자 요청으로 Study(`study`, `/topics/study/`)를 추가했다. Home 주제 카드·사이드바·글 목록 필터·새 글 양식은 공통 주제 데이터를 사용하며, 콘텐츠 스키마·CLI 생성기·GitHub 작성·저장 진행 추적·필기 수정 원본 조회의 허용 주제에도 `study`를 반영했다. 분류 목록은 AGENTS·EDITORIAL·WRITING에 함께 갱신했다.
+
+`content/articles/study/unreal-cpp-engine-12-week-plan.md`를 2026-10-28/authored, `draft: true`로 작성했다. 사용자가 선택한 C++·엔진 구조 중심의 12주 계획이며, 주차별 실험과 완료 기준, 첫 주 일별 과제, 객체 수명·리플렉션·실행 흐름·에셋 로딩·스레드·프로파일링, 엔진 함수 읽기 시작점과 공식 문서를 연결했다. 수행 예정 과제를 완료 경험으로 바꾸지 않고 Codex와의 계획 구성 범위를 적었다. 게임 저장소의 코드·개인 로컬 경로는 본문에 옮기지 않았다.
+
+`npm run verify`에서 테스트 114개, Astro 67개 파일 오류·경고 0개, 124개 경로 빌드와 130개 HTML 검사를 통과했다. `npm run author:build`도 124개 경로·130개 HTML 검사를 통과했다. Study 메타데이터와 CLI 허용 주제, GitHub 작성·수정 경로, 저장 진행 경로 및 경로 탈출 거절을 추가 확인했다. 공개 빌드의 새 Study 목록은 0편이고 초안은 페이지·검색·RSS·사이트맵·공개 manifest에서 제외된다.
+
+브라우저에서 새 글의 표 3개·목차 12개와 문단 링크, 390px 본문/진행표·Study의 UObject 검색 1편과 가로 넘침 없음을 확인했다. 공개 빌드의 Home 고정 12편·주제 8개, 기존 긴 CLI 하네스 글, 390px AI의 CLI 지연 검색 1편도 확인했다. 기록과 화면은 `.verification/unreal-study-20261028/`에 보관한다. 초안 미리보기는 로컬 dev 4348에서 제공하며, 커밋·push·공개 배포는 하지 않았다.
+
 ## 2026-10-26 Git LFS의 Azure Repos 이전 글 공개
 
 `content/articles/tools/git-lfs-azure-repos-migration.md`를 Tools & Systems의 구조 노트로 작성했다. DCB 시리즈에 연결하고, 초안 검토 후 사용자의 명시적인 배포 요청으로 `draft: false`로 전환했다. 작업 날짜는 DCB 이전 문서·도구 커밋 `a7add57531ffa8eaf33713e17eb6a0c24edbd2f6`의 AuthorDate인 2026-10-24, 수정일은 2026-10-26이다. 공개 주소는 `/writing/git-lfs-azure-repos-migration/`다.

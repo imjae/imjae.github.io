@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util';
 import { parseFrontmatter } from './frontmatter.mjs';
 import { prepareReadingBook, readingSections } from '../src/lib/reading-record.mjs';
 
-export const validTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading'];
+export const validTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study'];
 export const validKinds = ['case-study', 'devlog', 'note', 'reading'];
 export async function markdownFiles(directory) {
   let entries;

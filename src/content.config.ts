@@ -12,7 +12,7 @@ const articles = defineCollection({
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     dateBasis: z.enum(['authored', 'notion', 'commit', 'legacy']).default('authored'),
     updated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    topic: z.enum(['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading']),
+    topic: z.enum(['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study']),
     kind: z.enum(['case-study', 'devlog', 'note', 'reading']).default('note'),
     book: z.object({
       title: z.string().trim().min(1).max(160),

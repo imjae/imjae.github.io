@@ -2,7 +2,7 @@
 
 글은 Markdown 파일 하나로 작성합니다. 폴더는 넓은 기술 영역, 태그는 세부 기술, 시리즈는 읽는 순서, 프로젝트는 소속 작업을 뜻합니다.
 
-주제는 Gameplay(`gameplay`), Graphics(`graphics`), Tools & Systems(`tools`), AI Collaboration(`ai`), Notes(`notes`), Mathematics(`math`), Reading(`reading`)을 사용합니다. 수학의 수·함수·벡터·행렬·회전 설명은 `math`에 모으고, 엔진이나 렌더링 API를 중심으로 다루는 글은 해당 기술 주제에 둡니다. 책 목록과 독후감은 `reading`에 모읍니다.
+주제는 Gameplay(`gameplay`), Graphics(`graphics`), Tools & Systems(`tools`), AI Collaboration(`ai`), Notes(`notes`), Mathematics(`math`), Reading(`reading`), Study(`study`)를 사용합니다. 수학의 수·함수·벡터·행렬·회전 설명은 `math`에 모으고, 엔진이나 렌더링 API를 중심으로 다루는 글은 해당 기술 주제에 둡니다. 책 목록과 독후감은 `reading`에 모읍니다. 개념을 순서대로 다루는 계획과 그에 따른 실험 기록은 `study`에 모읍니다.
 
 문구를 작성하거나 수정하기 전에 [블로그 문구 작성 지침](EDITORIAL.md)을 읽습니다. 이 문서는 파일 구성과 게시 절차를 다룹니다.
 
