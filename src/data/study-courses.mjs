@@ -1,5 +1,25 @@
-/** @type {Array<{id: string, title: string, description: string, planSlug: string, weeks: Array<{number: number, title: string, description: string, articleSlug?: string}>}>} */
+/** @type {Array<{id: string, title: string, description: string, label?: string, planSlug: string, weeks: Array<{number: number, title: string, description: string, articleSlug?: string}>}>} */
 export const studyCourses = [{
+  id: 'dcb-unreal-port',
+  title: 'DCB 언리얼 전환과 엔진 기능',
+  description: 'DCB의 이동·운반·전투·귀환을 연결하며 입력, 애니메이션, AI, UI와 레벨을 다루는 12주 계획입니다.',
+  label: 'DCB · UNREAL ENGINE',
+  planSlug: 'dcb-unreal-port-study-plan',
+  weeks: [
+    { number: 1, title: '첫 실행 구간과 게임 프레임워크', description: '검증 맵의 플레이어 생성·조종·HUD·저장 흐름을 따라가고 실험 맵을 마련합니다.', articleSlug: 'dcb-unreal-first-playable-framework' },
+    { number: 2, title: '입력·이동·운반 상태', description: 'Enhanced Input과 CharacterMovement로 짐 무게, 질주와 UI 입력 전환을 다룹니다.' },
+    { number: 3, title: '아이템 데이터와 에셋 로딩', description: '아이템 ID·무게·아이콘·메시를 연결하고 소프트 참조의 로딩과 쿠킹을 확인합니다.' },
+    { number: 4, title: '이동 애니메이션과 운반 자세', description: '기존 클립으로 Animation Blueprint와 Blend Space를 구성하고 전환을 비교합니다.' },
+    { number: 5, title: '공격 모션과 타격 판정', description: 'Montage·Notify State·충돌 검사로 공격 한 종류의 타격 시간과 중단 처리를 맞춥니다.' },
+    { number: 6, title: '적의 탐지·추적·복귀', description: 'NavMesh·AIController·StateTree로 적 한 종류의 장애물 우회와 상태 전환을 만듭니다.' },
+    { number: 7, title: '상호작용과 인벤토리 UI', description: 'UMG의 선택·내려놓기·재수거를 연결하고 포커스와 게임 입력을 정리합니다.' },
+    { number: 8, title: '귀환·레벨 전환·저장', description: 'GameInstanceSubsystem과 SaveGame으로 성공·실패·재출정·앱 재시작을 연결합니다.' },
+    { number: 9, title: '낮은 턱 이동과 발 접지', description: '충돌 탐색·Root Motion·IK를 낮은 턱 한 종류에 적용하고 실패 조건을 정합니다.' },
+    { number: 10, title: '타격·채집 효과와 표면 반응', description: 'Niagara·Material Instance·Physical Material로 대표 효과와 표면별 반응을 다룹니다.' },
+    { number: 11, title: '실제 맵의 짧은 동선', description: 'Landscape·충돌·스트리밍·조명을 다루며 기존 장면의 짧은 이동 구간을 연결합니다.' },
+    { number: 12, title: '패키징과 성능 비교', description: 'Windows 실행 파일에서 전체 구간을 반복하고 Unreal Insights로 병목 하나를 비교합니다.' },
+  ],
+}, {
   id: 'unreal-cpp-engine',
   title: '언리얼 C++과 엔진 구조',
   description: 'C++ 객체 수명에서 UObject, 실행 흐름과 성능 분석까지 이어지는 12주 과정입니다.',

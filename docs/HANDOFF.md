@@ -1,5 +1,13 @@
 # 블로그 관리 인수인계
 
+## 2026-10-29 DCB 언리얼 전환 과정과 첫 주 안내
+
+사용자가 기존 엔진 구조 계획을 실제 DCB 언리얼 전환과 연결하는 Study 공간과 앞으로의 계획을 요청했다. `dcb-unreal-port` 과정을 Study 첫 카드에 추가하고, `dcb-unreal-port-study-plan`과 `dcb-unreal-first-playable-framework`를 2026-10-29/authored로 작성했다. 초안으로 작성한 뒤 요청한 섹션의 공개 글로 전환했다. 12주 계획은 하루 2시간·주 5일의 가정이며, 플레이어·아이템·적·낮은 턱 각 한 종류와 짧은 동선의 채집→적재→전투→귀환→저장을 다룬다. 전체 포팅 완료 일정이나 이미 수행한 주차 결과로 소개하지 않는다. 1주차는 현재 맵·키 입력·생성/조종/HUD/저장 책임을 확인하는 5일 과제다. 주차별 공개 글 1편·작성 예정 11개이며 기존 C++ 과정의 5편은 유지한다. 이전 계획의 주소를 유지하고 새 과정 안내와 수정일만 추가했다.
+
+현재 Unreal DCB의 `.uproject`, 기본 맵 설정, 플레이어·컨트롤러·적·저장 소스와 런타임/모션 이전 보고서를 읽어 범위를 정했다. 단순 방향 추적, 즉시 공격 판정, 직접 클립 재생, 캠프 위치 복귀, 임시 내려놓기 메시를 후속 과제에 연결했다. Epic 공식 문서에서 엔진 기능과 선행 조건을 대조했다. 비공개 전체 소스·로컬 절대 경로·로그·수치 보고는 공개 글에 복사하지 않았으며 게임 저장소는 수정하지 않았다. 새 Unreal 빌드·플레이·시각 검증은 이번 블로그 작업의 범위가 아니다.
+
+`npm run verify`와 `npm run author:build`에서 Astro 오류/경고 0개, 각각 135개 경로·141개 HTML의 링크/공개 상태 검사를 통과했다. 브라우저에서 Study의 두 과정, 새 과정의 계획·1주차·작성 예정 표시, 계획과 첫 글의 본문·모바일 표시, Home 고정 12편, 390px Writing의 Study/검증 맵 이름 검색 1편을 확인했다. 계획 본문은 표 3개, 첫 주 본문은 표 5개이며 확인한 본문에 페이지 가로 넘침이 없었다. 빌드 로그와 원문 해시·목차 대상·RSS·사이트맵 대조 결과는 `.verification/dcb-unreal-study-20261029/`에 둔다. 공개 완료는 해당 커밋의 두 Actions와 공개/편집 서버 manifest 및 실제 공개 경로를 확인한 뒤 보고한다.
+
 ## 2026-10-28 5주차 객체 수명과 GC 공개 글
 
 사용자가 5주차의 개념 설명·실습 코드 작성, 주차별 목록 연결과 공개 배포를 요청했다. `content/articles/study/unreal-object-lifetime-gc.md`를 2026-10-28/authored, Study, `unreal-cpp-engine`의 `order: 6`으로 작성하고 검증 후 `draft: false`로 전환했다. NewObject·SpawnActor·CreateDefaultSubobject, Outer와 추적 참조, UPROPERTY/TObjectPtr·TWeakObjectPtr·TStrongObjectPtr, 순환 참조와 참조 해제를 설명한다. UObject 실험·Actor/Component 생명주기·Destroy 전후 유효성의 전체 코드 여섯 파일과 실행·변형 과제를 제공한다. 과정은 12주·공개 글 5편·작성 예정 7개다.

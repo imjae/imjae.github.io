@@ -7,7 +7,7 @@ const otherArticles = articles.filter(article => article.data.topic === 'study' 
 ---
 <ul class="study-sections" aria-label="Study 섹션">
   {studyCourses.map(course => <li><a class="study-entry" href={`/series/${course.id}/`}>
-    <div><p class="eyebrow">{course.weeks.length} WEEKS / C++ · UNREAL ENGINE</p><h2>{course.title}</h2><p>{course.description}</p><small>전체 계획과 주차별 글 목록</small></div>
+    <div><p class="eyebrow">{course.weeks.length} WEEKS / {course.label ?? 'C++ · UNREAL ENGINE'}</p><h2>{course.title}</h2><p>{course.description}</p><small>전체 계획과 주차별 글 목록</small></div>
     <span aria-hidden="true">→</span>
   </a></li>)}
 </ul>

@@ -4,6 +4,7 @@ description: "C++ 객체 수명부터 UObject, 리플렉션, 실행 흐름, 에�
 slug: "unreal-cpp-engine-12-week-plan"
 date: "2026-10-28"
 dateBasis: "authored"
+updated: "2026-10-29"
 topic: "study"
 kind: "note"
 series: "unreal-cpp-engine"
@@ -13,6 +14,8 @@ draft: false
 ---
 
 ## 목표와 진행 범위
+
+DCB의 실제 기능을 옮기며 진행하는 순서는 [DCB 언리얼 전환과 엔진 기능](/series/dcb-unreal-port/)에서 다룹니다. 이 글의 C++·엔진 구조 항목은 입력·애니메이션·저장 등을 구현하다 필요한 개념을 확인할 때 함께 읽습니다.
 
 언리얼 C++에서 작성한 기능이 언제 호출되고, 어떤 객체를 참조하며, 어느 실행 단계에서 처리되는지 설명하는 것을 목표로 합니다. 객체 수명과 모듈 의존성을 이해한 뒤 프레임 실행, 에셋 로딩, 스레드와 성능 분석으로 범위를 넓힙니다.
 
