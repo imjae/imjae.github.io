@@ -28,6 +28,8 @@ if (!privateAuthoring && /id="publish-progress"|id="publish-articles"/.test(site
 if (privateAuthoring && !siteText.includes('id="publish-progress"')) failures.push('편집 빌드에 저장·배포 진행창이 없음');
 const publishManifest = JSON.parse(await readFile(join(root, 'publish-manifest.json'), 'utf8'));
 if (publishManifest.version !== 1 || !/^[a-f0-9]{40}$/.test(publishManifest.revision ?? '')) failures.push('배포 버전 식별자 누락');
+if (!publishManifest.articles || typeof publishManifest.articles !== 'object' || Array.isArray(publishManifest.articles)) failures.push('기존 글 이전에 필요한 공개 글 배포 정보 누락');
+if (!Array.isArray(publishManifest.managedPosts) || JSON.stringify([...publishManifest.managedPosts].sort()) !== JSON.stringify([...managed].sort())) failures.push('공개·비공개 관리 글의 배포 정보 불일치');
 const feeds = (await readFile(join(root,'rss.xml'),'utf8')) + (await readFile(join(root,'sitemap.xml'),'utf8'));
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -48,7 +50,7 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
     const redirect = await exists(movedPage) ? await readFile(movedPage, 'utf8') : '';
     if (!redirect.includes(managedPostUrl(data.slug))) failures.push(`이전 글 주소 연결 누락: ${data.slug}`);
     if (redirect.includes(data.description) || redirect.includes('class="prose"')) failures.push(`이전 글 원문이 정적 페이지에 남음: ${data.slug}`);
-    if (Object.values(publishManifest.articles).some(article => article.url === `/writing/${data.slug}/`)) failures.push(`이전 글이 공개 글 manifest에 남음: ${data.slug}`);
+    if (Object.values(publishManifest.articles ?? {}).some(article => article.url === `/writing/${data.slug}/`)) failures.push(`이전 글이 공개 글 manifest에 남음: ${data.slug}`);
     if (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(`/writing/${data.slug}/`)) failures.push(`이전 글이 정적 검색 또는 피드에 남음: ${data.slug}`);
     articles.push({ data: { ...data, draft: true } });
     continue;
@@ -57,6 +59,8 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   const output = join(root,'writing',data.slug,'index.html');
   if (data.draft && await exists(output)) failures.push(`비공개 초안이 배포에 포함됨: ${data.slug}`);
   const manifestPath = relative(resolve('.'), file).replaceAll('\\', '/');
+  if (data.draft && Object.hasOwn(publishManifest.articles ?? {}, manifestPath)) failures.push(`공개 글 배포 정보에 초안이 포함됨: ${data.slug}`);
+  if (!data.draft && (publishManifest.articles?.[manifestPath]?.url !== `/writing/${data.slug}/` || publishManifest.articles?.[manifestPath]?.title !== data.title)) failures.push(`공개 글의 배포 정보 불일치: ${data.slug}`);
   if (data.draft && Object.hasOwn(publishManifest.files, manifestPath)) failures.push(`배포 확인 정보에 초안이 포함됨: ${data.slug}`);
   if (!data.draft && !(await exists(output))) failures.push(`공개 글 페이지 누락: ${data.slug}`);
   if (!data.draft && await exists(output)) {
