@@ -30,6 +30,10 @@
       {
         "name": "SKETCH_QUESTIONS",
         "class_name": "SketchQuestions"
+      },
+      {
+        "name": "OWNER_POSTS",
+        "class_name": "OwnerPosts"
       }
     ]
   },
@@ -47,6 +51,10 @@
     {
       "tag": "v3-sketch-questions",
       "new_sqlite_classes": ["SketchQuestions"]
+    },
+    {
+      "tag": "v4-owner-posts",
+      "new_sqlite_classes": ["OwnerPosts"]
     }
   ]
 }

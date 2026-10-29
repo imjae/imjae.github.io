@@ -12,11 +12,13 @@ import { resolvePortfolioMedia } from '../src/lib/recruitment-media.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
+import { managedPostSlugs, managedPostUrl } from '../src/lib/managed-posts.server.mjs';
 
 const privateAuthoring = process.env.AUTHORING_MODE === 'private';
 const root = resolve(privateAuthoring ? '.authoring-dist' : 'dist');
 const failures = [];
 const articles = [];
+const managed = await managedPostSlugs();
 async function files(directory) { return (await Promise.all((await readdir(directory, { withFileTypes: true })).map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : [join(directory, entry.name)]))).flat(); }
 async function exists(file) { try { return (await stat(file)).isFile(); } catch { return false; } }
 const htmlFiles = (await files(root)).filter((file) => file.endsWith('.html'));
@@ -32,6 +34,7 @@ for (const file of htmlFiles) {
   for (const match of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
     const target = match[1].replaceAll('&amp;', '&');
     if (/^(?:https?:|mailto:|data:|tel:|javascript:|#)/.test(target)) continue;
+    if (privateAuthoring && target.startsWith('/notes/edit/')) continue;
     const pathname = decodeURIComponent(target.split(/[?#]/)[0]);
     if (!pathname) continue;
     const base = pathname.startsWith('/') ? join(root, pathname) : resolve(dirname(file), pathname);
@@ -40,6 +43,16 @@ for (const file of htmlFiles) {
 }
 for (const file of await markdownFiles(resolve('content/articles'))) {
   const { data } = parseFrontmatter(await readFile(file,'utf8'));
+  if (managed.has(data.slug)) {
+    const movedPage = join(root, 'writing', data.slug, 'index.html');
+    const redirect = await exists(movedPage) ? await readFile(movedPage, 'utf8') : '';
+    if (!redirect.includes(managedPostUrl(data.slug))) failures.push(`이전 글 주소 연결 누락: ${data.slug}`);
+    if (redirect.includes(data.description) || redirect.includes('class="prose"')) failures.push(`이전 글 원문이 정적 페이지에 남음: ${data.slug}`);
+    if (Object.values(publishManifest.articles).some(article => article.url === `/writing/${data.slug}/`)) failures.push(`이전 글이 공개 글 manifest에 남음: ${data.slug}`);
+    if (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(`/writing/${data.slug}/`)) failures.push(`이전 글이 정적 검색 또는 피드에 남음: ${data.slug}`);
+    articles.push({ data: { ...data, draft: true } });
+    continue;
+  }
   articles.push({ data });
   const output = join(root,'writing',data.slug,'index.html');
   if (data.draft && await exists(output)) failures.push(`비공개 초안이 배포에 포함됨: ${data.slug}`);
@@ -58,6 +71,10 @@ for (const file of await markdownFiles(resolve('content/articles'))) {
   if (data.draft && (siteText.includes(`"slug":"${data.slug}"`) || feeds.includes(data.slug))) failures.push(`검색 색인 또는 피드에 초안 노출: ${data.slug}`);
 }
 const home = await readFile(join(root,'index.html'),'utf8');
+for (const slug of managed) {
+  const redirectPath = join(root, 'writing', slug, 'index.html');
+  if (!(await exists(redirectPath)) || !(await readFile(redirectPath, 'utf8')).includes(managedPostUrl(slug))) failures.push(`이전 글 주소 연결 누락: ${slug}`);
+}
 const readingListings = [];
 for (const name of await readdir(resolve('content/reading-list'))) {
   if (!name.endsWith('.json')) continue;

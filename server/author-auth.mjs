@@ -1,6 +1,8 @@
 import { handleSketchRequest } from './sketch-review.mjs';
 import { handlePublishProgress } from './publish-progress.mjs';
 import { handleQuestionRequest } from './sketch-question.mjs';
+import { handleOwnerPosts, publicPostRequest } from './owner-post-api.mjs';
+export { OwnerPosts } from './owner-posts.mjs';
 export { SketchQuestions } from './sketch-question.mjs';
 export { SketchReviews } from './sketch-review.mjs';
 const SESSION_COOKIE = '__Host-imjae_author';
@@ -69,6 +71,10 @@ export async function handleAuthorRequest(request, env, { fetcher = fetch, now =
     if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET || !/^\d+$/.test(env.ALLOWED_GITHUB_ID ?? '') || !env.AUTHOR_SESSIONS || !env.ASSETS) {
       return privateResponse(message(503, '로그인 연결을 확인해 주세요.'));
     }
+    if (url.pathname === '/api/notes/public' || url.pathname.startsWith('/notes/')) {
+      const publicPost = await publicPostRequest(request, env);
+      if (publicPost) return publicPost;
+    }
     const callback = `${url.origin}/auth/callback`;
     let response;
     if (url.pathname === '/auth/login' && request.method === 'GET') {
@@ -131,6 +137,8 @@ export async function handleAuthorRequest(request, env, { fetcher = fetch, now =
         response = redirect('https://imjae.github.io/', [cookie(SESSION_COOKIE, '', 0)]);
       } else if (url.pathname === '/auth/session' && request.method === 'GET') {
         response = Response.json({ login: session.login });
+      } else if (url.pathname.startsWith('/notes/') || url.pathname === '/api/notes' || url.pathname.startsWith('/api/notes/')) {
+        response = await handleOwnerPosts(request, env, { fetcher });
       } else if (url.pathname === '/sketch/ask/' || url.pathname === '/api/sketch/ask' || url.pathname.startsWith('/api/sketch/ask/')) {
         response = await handleQuestionRequest(request, env, { ownerId: session.id });
       } else if (url.pathname === '/sketch/' || url.pathname.startsWith('/api/sketch/')) {

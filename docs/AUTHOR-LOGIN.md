@@ -12,6 +12,16 @@ Worker는 모든 요청에서 자산보다 먼저 실행한다(`assets.run_worke
 
 ## 로그인과 세션
 
+### 소유자 글 저장소
+
+`OWNER_POSTS` / `OwnerPosts`는 세션 저장소와 별도인 SQLite Durable Object입니다. `/notes/edit/`, `/api/notes`와 글 수정·미리보기·이전 API는 기존 소유자 세션 및 같은 origin POST 검사를 통과해야 합니다. 토큰 권한·보관 정책은 바꾸지 않습니다. 새 글은 항상 private이며 Markdown의 draft/visibility 값을 접근 권한으로 사용하지 않습니다. 글 저장과 공개 범위 변경은 버전 비교와 트랜잭션으로 처리합니다.
+
+로그인 앞에서 허용되는 예외는 GET/HEAD `/api/notes/public`과 **현재 public 상태인** `/notes/<slug>/`의 읽기뿐입니다. 목록과 본문 모두 저장소에서 공개 상태를 검사합니다. 비공개 글의 제목·요약·본문은 익명 응답에 포함하지 않으며, 관리 API·기존 자산·다른 계정 허용 범위는 확장하지 않습니다. 공개 글 응답도 no-store로 내려 토글 후 오래된 서버 캐시가 본문을 제공하지 않게 합니다. 로그인 없는 목록의 CORS는 공개 블로그 origin만 허용합니다.
+
+원문은 GitHub·정적 빌드·공개 manifest에 넣지 않습니다. 이전 설정인 `content/managed-posts/<slug>.json`에는 version과 이미 공개된 slug만 넣습니다. 공개 경로는 원본 Markdown 파일이 제거돼도 유지합니다. GitHub 원본 제거와 양쪽 배포·실제 이전 주소를 확인하기 전에는 이전 완료로 표시하지 않습니다. 이전 커밋의 원문은 과거 공개 기록으로 남습니다. 새 서버 글의 공개·비공개 전환에는 GitHub 쓰기 권한이나 배포가 필요하지 않습니다.
+
+본문은 remark/rehype 파싱·HTML 허용 목록을 거치고, 실행 가능한 URL·스크립트·임의 iframe을 제거합니다. KaTeX trust는 false, Mermaid securityLevel은 strict입니다. 표시 도구만 공개 정적 자산에서 읽으며 비공개 원문을 표시 도구에 전송하지 않습니다. 로그인 만료·탭 복귀 시 소유자 세션을 다시 검사합니다. 원문 백업은 소유자가 내려받는 Markdown이며 Git에 자동 추가하지 않습니다.
+
 - OAuth에는 추가 scope를 요청하지 않는다. GitHub 토큰은 Worker에서 계정 확인에만 사용한 뒤 버리며 브라우저·쿠키·세션 저장소에 보관하지 않는다.
 - OAuth state는 브라우저의 HttpOnly 쿠키와 대조하고 Durable Object에서 원자적으로 한 번만 소비한다. PKCE S256과 10분 만료를 적용한다.
 - 로그인 성공 후 8시간의 무작위 서버 세션을 새로 발급한다. 세션 쿠키는 `__Host-`·Secure·HttpOnly·SameSite=Lax를 사용한다. 이전 세션은 폐기한다.

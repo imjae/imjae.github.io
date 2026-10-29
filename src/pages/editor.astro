@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getArticles, articleUrl, formatDate } from '../lib/articles';
 import { topics, kinds, getTopic } from '../data/site';
-import { repository, branch, githubFileUrl } from '../lib/github-authoring.mjs';
+import { repository, branch, githubFileUrl, articleSourcePath } from '../lib/github-authoring.mjs';
 import PinnedEditor from '../components/PinnedEditor.astro';
 import ProjectVideoEditor from '../components/ProjectVideoEditor.astro';
 import { getReadingItems } from '../lib/reading-shelf.server';
@@ -13,9 +13,10 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
 ---
 <BaseLayout title="수정 모드" active="editor" noindex description="GitHub에서 블로그 글을 추가·수정·삭제합니다.">
   {privateAuthoring ? <>
-  <header class="page-intro"><h1>수정 모드</h1><p>글 추가·수정·삭제는 GitHub에서 저장합니다.<br/>저장소 쓰기 권한이 있는 계정으로 로그인해 주세요.</p></header>
+  <header class="page-intro"><h1>수정 모드</h1><p>내 글에서 글을 작성하고 공개·비공개를 전환합니다.<br/>기존 공개 글은 처음 한 번 GitHub에서 이전을 확정합니다.</p></header>
   <div class="editor-shortcuts">
-    <a href="#new-post" class="button button-dark">새 글 작성</a>
+    <a href="/notes/edit/" class="button button-dark">내 글 · 공개 / 비공개</a>
+    <a href="#new-post">GitHub에 새 글 작성</a>
     <a href="/editor/?topic=reading#new-post">독서 기록 추가</a>
     <a href="#portfolio-copy">포트폴리오 문구</a>
     <a href="#project-video">DCB 영상 링크</a>
@@ -43,6 +44,7 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
       <div class="manage-actions">
         <button class="pin-toggle" type="button" data-pin-toggle={article.data.slug} aria-pressed={article.data.pinned} aria-label={`${article.data.title} ${article.data.pinned ? '고정 해제' : '고정'}`}>{article.data.pinned ? '고정 해제' : '고정'}</button>
         <a href={articleUrl(article)} aria-label={`${article.data.title} 읽기`}>읽기</a>
+        <a href={`/notes/edit/?import=${encodeURIComponent(articleSourcePath(article.filePath))}`} aria-label={`${article.data.title} 공개 범위 변경`}>공개 / 비공개</a>
         <a href={githubFileUrl('edit', article.filePath)} aria-label={`${article.data.title} 수정`} target="_blank" rel="noopener noreferrer">수정 ↗</a>
         <a class="delete-link" href={githubFileUrl('delete', article.filePath)} aria-label={`${article.data.title} 삭제 검토`} target="_blank" rel="noopener noreferrer">삭제 검토 ↗</a>
       </div>
@@ -157,7 +159,7 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
   .book-fields{border:1px solid var(--line);border-radius:5px;padding:22px;margin:25px 0 0;min-width:0}.book-fields legend{padding:0 8px;font-size:13px;color:var(--green)}.book-fields .editor-help{margin:0 0 20px}
   .editor-shortcuts{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:0 0 35px;font-size:12px}.editor-shortcuts>a:not(.button){color:var(--green)}
   .editor-section{margin-bottom:44px}.editor-section>.search-box{max-width:560px}#manage-count{font-size:11px;color:var(--muted);margin:15px 0}
-  .manage-list{border-top:1px solid var(--line)}.manage-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:21px 0;border-bottom:1px solid var(--line)}.manage-row[hidden]{display:none}.manage-meta{font-size:10px;color:var(--muted);margin:0 0 8px}.manage-row h3{font-size:16px;line-height:1.7;margin:0}.manage-actions{display:flex;gap:8px;flex-shrink:0;font-size:11px}.manage-actions a{border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:nowrap}.manage-actions a:hover{background:var(--soft)}.manage-actions .delete-link{color:#8a5347}.selected-post{background:#eaf0e5;padding-left:14px;padding-right:14px}
+  .manage-list{border-top:1px solid var(--line)}.manage-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:21px 0;border-bottom:1px solid var(--line)}.manage-row[hidden]{display:none}.manage-meta{font-size:10px;color:var(--muted);margin:0 0 8px}.manage-row h3{font-size:16px;line-height:1.7;margin:0}.manage-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-size:11px}.manage-actions a{border:1px solid var(--line);border-radius:3px;padding:8px 10px;white-space:nowrap}.manage-actions a:hover{background:var(--soft)}.manage-actions .delete-link{color:#8a5347}.selected-post{background:#eaf0e5;padding-left:14px;padding-right:14px}
   .editor-help{font-size:12px;line-height:2;color:var(--muted);max-width:750px;margin:20px 0}.editor-help strong{font-weight:600;color:var(--ink)}
   .new-post-section{border-top:1px solid var(--line);padding-top:32px;scroll-margin-top:25px}.editor-fields{display:grid;grid-template-columns:1fr 1fr;gap:20px}.editor-fields label{display:flex;flex-direction:column;gap:9px;font-size:12px;min-width:0}.editor-fields .wide{grid-column:1/-1}.editor-fields input,.editor-fields textarea,.editor-fields select{width:100%;border:1px solid #ccd3c6;background:white;border-radius:4px;padding:12px;color:var(--ink);font:inherit;line-height:1.7}.editor-fields textarea{resize:vertical;font-family:var(--sans)}.editor-fields small{font-size:10px;color:var(--muted);line-height:1.8}.editor-fields textarea:focus-visible{outline:2px solid #3a8269;outline-offset:3px}.editor-extra{font-size:12px;margin-top:24px}.editor-extra summary{cursor:pointer;color:var(--green);padding:8px 0}.editor-extra .editor-fields{margin-top:15px}.editor-submit{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:27px}.editor-submit p{font-size:12px;line-height:1.8;color:#8a5347;margin:0}
   .editor-guide{border:1px solid var(--line);background:#eef1e7;border-radius:5px;padding:24px;font-size:12px;line-height:2}.editor-guide h2{font-size:18px}.editor-guide ol{padding-left:20px}.editor-guide li{padding-left:3px;margin-bottom:9px}.editor-guide p{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:0}.editor-guide a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.editor-guide code{font-family:var(--mono);font-size:11px}

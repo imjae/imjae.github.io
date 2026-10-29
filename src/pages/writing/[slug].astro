@@ -4,9 +4,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { articleSourceHash } from '../../lib/sketch-source.server.mjs';
 import { getArticles, articleUrl, formatDate, readingTime, dateBasisLabel, type Article } from '../../lib/articles';
 import { getTopic, kinds, seriesTitle } from '../../data/site';
-export async function getStaticPaths() { return (await getArticles()).map((article) => ({ params: { slug: article.data.slug }, props: { article } })); }
-interface Props { article: Article; }
-const { article } = Astro.props;
+import { managedPostSlugs, managedPostUrl } from '../../lib/managed-posts.server.mjs';
+import { privateAuthoring } from '../../lib/authoring.server.mjs';
+import { articleSourcePath } from '../../lib/github-authoring.mjs';
+export async function getStaticPaths() {
+  const managed = await managedPostSlugs();
+  return [...(await getArticles()).map(article => ({ params: { slug: article.data.slug }, props: { article } })), ...[...managed].map(slug => ({ params: { slug }, props: { managedSlug: slug } }))];
+}
+interface Props { article?: Article; managedSlug?: string; }
+const { article, managedSlug } = Astro.props;
+if (managedSlug) return Astro.redirect(managedPostUrl(managedSlug));
+if (!article) throw new Error('글을 찾을 수 없습니다.');
 const { Content, headings } = await render(article);
 const topic = getTopic(article.data.topic);
 const series = article.data.series ? (await getArticles()).filter((entry) => entry.data.series === article.data.series).sort((a,b) => (a.data.order ?? 99) - (b.data.order ?? 99)) : [];
@@ -19,6 +27,7 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
     <h1>{article.data.title}</h1><p class="article-description">{article.data.description}</p>
     <div class="article-byline"><strong>imjae</strong><time datetime={article.data.date} title={dateBasisLabel(article.data.dateBasis)}>{article.data.dateBasis === 'notion' ? '노션 원문 ' : article.data.dateBasis === 'commit' ? '작업 기록 ' : ''}{formatDate(article.data.date)}</time><span>{readingTime(article)}분 읽기</span>{article.data.updated && <span>수정 {formatDate(article.data.updated)}</span>}</div>
     <div class="tag-list">{article.data.tags.map((tag) => <a href={`/writing/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
+    {privateAuthoring && <p class="article-visibility"><a href={`/notes/edit/?import=${encodeURIComponent(articleSourcePath(article.filePath))}`}>공개·비공개 전환 관리 →</a></p>}
     {article.data.topic === 'reading' && article.data.book && <aside class="reading-summary" aria-label="책과 감상">
       <p><strong>{article.data.book.title}</strong>{article.data.book.author && <span> · {article.data.book.author}</span>}{article.data.book.finished && <span> · 완독 <time datetime={article.data.book.finished}>{formatDate(article.data.book.finished)}</time></span>}</p>
       {article.data.book.note && <div><span class="reading-note-label">짧은 감상</span><p>{article.data.book.note}</p></div>}

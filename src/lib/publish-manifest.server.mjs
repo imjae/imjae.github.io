@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFile, readdir } from 'node:fs/promises';
 import { getArticles, articleUrl } from './articles';
 import { articleSourcePath } from './github-authoring.mjs';
+import { managedPostSlugs } from './managed-posts.server.mjs';
 
 let cached;
 export function publishManifest() {
@@ -24,6 +25,6 @@ export function publishManifest() {
     if (!/^[a-f0-9]{40}$/.test(revision)) {
       try { revision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', windowsHide: true }).trim(); } catch { revision = ''; }
     }
-    return { version: 1, revision: /^[a-f0-9]{40}$/.test(revision) ? revision : null, files, articles };
+    return { version: 1, revision: /^[a-f0-9]{40}$/.test(revision) ? revision : null, files, articles, managedPosts: [...await managedPostSlugs()] };
   })();
 }

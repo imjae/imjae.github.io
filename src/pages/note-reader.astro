@@ -1,0 +1,17 @@
+---
+import 'katex/dist/katex.min.css';
+---
+<!doctype html><html lang="ko"><head><meta charset="utf-8" /><meta name="robots" content="noindex,nofollow" /><title>글 표시 도구</title></head><body><script>
+  const diagrams: HTMLElement[] = [];
+  document.querySelectorAll<HTMLElement>('.prose pre > code.language-mermaid').forEach(code => {
+    const pre = code.parentElement;
+    if (!pre) return;
+    const diagram = document.createElement('div'); diagram.className = 'mermaid'; diagram.textContent = code.textContent;
+    pre.replaceWith(diagram); diagrams.push(diagram);
+  });
+  if (diagrams.length) {
+    const { default: mermaid } = await import('mermaid');
+    mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: 'neutral' });
+    await mermaid.run({ nodes: diagrams });
+  }
+</script></body></html>

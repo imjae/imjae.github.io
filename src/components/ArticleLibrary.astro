@@ -2,6 +2,9 @@
 import ArticleCard from './ArticleCard.astro';
 import { getArticles } from '../lib/articles';
 import { topics } from '../data/site';
+import { managedPostUrl } from '../lib/managed-posts.server.mjs';
+import { privateAuthoring } from '../lib/authoring.server.mjs';
+const notesOrigin = privateAuthoring ? 'self' : new URL(managedPostUrl('example')).origin;
 interface Props { initialTopic?: string; }
 const { initialTopic = '' } = Astro.props;
 const articles = await getArticles();
@@ -9,12 +12,14 @@ const tags = [...new Set(articles.flatMap((article) => article.data.tags))].sort
 const initialTags = new Set(articles.filter((article) => !initialTopic || article.data.topic === initialTopic).flatMap((article) => article.data.tags));
 const index = articles.map((article) => ({ slug: article.data.slug, topic: article.data.topic, tags: article.data.tags, text: [article.data.title, article.data.description, article.data.book?.title ?? '', article.data.book?.author ?? '', article.data.book?.note ?? '', article.body ?? '', ...article.data.tags].join(' ').toLocaleLowerCase() }));
 ---
-<div class="article-library" data-initial-topic={initialTopic}>
+<div class="article-library" data-initial-topic={initialTopic} data-notes-origin={notesOrigin}>
   <label class="search-box"><span aria-hidden="true">⌕</span><input id="article-search" type="search" placeholder="제목, 본문, 태그에서 검색" aria-label="글 검색" autocomplete="off" /><kbd>/</kbd></label>
   <div class="filter-row"><label for="topic-filter" class="sr-only">Topics</label><select id="topic-filter"><option value="">All topics</option>{topics.map((topic) => <option value={topic.id} selected={topic.id === initialTopic}>{topic.title}</option>)}</select><button type="button" id="reset-filters">필터 초기화</button></div>
   <div class="tag-filters" aria-label="태그 필터">{tags.map((tag) => <button type="button" data-tag={tag} aria-pressed="false" hidden={!initialTags.has(tag)}>#{tag}</button>)}</div>
   <div class="search-status"><span id="result-count" role="status" aria-live="polite">{articles.length}개의 기록</span><span>제목 · 본문 · 태그</span></div>
   <div class="article-list">{articles.map((article) => <ArticleCard article={article} />)}</div>
+  <div class="article-list" id="live-posts" aria-label="공개 글"></div>
+  <p id="live-posts-status" class="live-posts-status" role="status" hidden></p>
   <p class="empty-state" id="no-results" hidden>찾는 기록이 없습니다.<br/>다른 검색어를 입력하거나 필터를 초기화해 보세요.</p>
 </div>
 <script type="application/json" id="article-index" set:html={JSON.stringify(index).replaceAll('<', '\u003c')} />
@@ -27,12 +32,42 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
   const data = JSON.parse(document.querySelector('#article-index')?.textContent ?? '[]') as { slug: string; topic: string; tags: string[]; text: string }[];
   const params = new URLSearchParams(location.search);
   let tag = params.get('tag') ?? '';
+  let liveCount = 0, staticCount = data.length, requestNumber = 0, liveTimer: ReturnType<typeof setTimeout>;
+  const livePosts = document.querySelector<HTMLElement>('#live-posts');
+  const liveStatus = document.querySelector<HTMLElement>('#live-posts-status');
+  const updateCount = () => { if (count) count.textContent = `${staticCount + liveCount}개의 기록`; if (empty) empty.hidden = staticCount + liveCount > 0; };
+  async function loadLivePosts() {
+    const request = ++requestNumber;
+    if (!library?.dataset.notesOrigin || !livePosts) return;
+    const origin = library.dataset.notesOrigin === 'self' ? location.origin : library.dataset.notesOrigin;
+    const url = new URL('/api/notes/public', origin);
+    url.search = new URLSearchParams({ q: search?.value ?? '', topic: topic?.value ?? '', tag }).toString();
+    try {
+      const response = await fetch(url, { credentials: 'omit', cache: 'no-store' });
+      if (!response.ok) throw new Error('unavailable');
+      const result = await response.json();
+      if (request !== requestNumber) return;
+      livePosts.replaceChildren(); liveCount = result.posts.length;
+      for (const post of result.posts as { slug: string; title: string; description: string; date: string; topic: string; tags: string[] }[]) {
+        const card = document.createElement('article'); card.className = 'article-card';
+        const meta = document.createElement('p'), heading = document.createElement('h2'), link = document.createElement('a'), description = document.createElement('p');
+        meta.className = 'article-card-meta'; meta.textContent = `${post.topic} · ${post.date}`;
+        link.href = new URL(`/notes/${encodeURIComponent(post.slug)}/`, origin).href; link.textContent = post.title;
+        heading.append(link); description.textContent = post.description; card.append(meta, heading, description); livePosts.append(card);
+      }
+      if (liveStatus) liveStatus.hidden = true;
+      updateCount();
+    } catch {
+      if (request !== requestNumber) return;
+      livePosts.replaceChildren(); liveCount = 0; updateCount();
+      if (liveStatus) { liveStatus.hidden = false; liveStatus.textContent = '서버에 저장한 공개 글을 불러오지 못했습니다. 잠시 후 다시 검색해 주세요.'; }
+    }
+  }
   if (search) search.value = params.get('q') ?? '';
   if (topic && params.has('topic')) topic.value = params.get('topic') ?? '';
   function update() {
     if (!search || !topic) return;
     const availableTags = new Set(data.filter((entry) => !topic.value || entry.topic === topic.value).flatMap((entry) => entry.tags));
-    if (!availableTags.has(tag)) tag = '';
     const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
     let visible = 0;
     const cards = new Map([...document.querySelectorAll<HTMLElement>('[data-entry]')].map((card) => [card.dataset.entry, card]));
@@ -46,8 +81,8 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
       button.hidden = !availableTags.has(button.dataset.tag ?? '');
       button.setAttribute('aria-pressed', String(button.dataset.tag === tag));
     });
-    if (count) count.textContent = `${visible}개의 기록`;
-    if (empty) empty.hidden = visible > 0;
+    staticCount = visible; liveCount = 0; livePosts?.replaceChildren(); updateCount();
+    ++requestNumber; clearTimeout(liveTimer); liveTimer = setTimeout(loadLivePosts, 200);
     const next = new URLSearchParams();
     if (search.value.trim()) next.set('q', search.value.trim());
     if (tag) next.set('tag', tag);
@@ -60,4 +95,7 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
   document.querySelector('#reset-filters')?.addEventListener('click', () => { if (search) search.value = ''; if (topic) topic.value = library?.dataset.initialTopic ?? ''; tag = ''; update(); });
   document.addEventListener('keydown', (event) => { if (event.key === '/' && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLTextAreaElement) && !(event.target instanceof HTMLElement && event.target.isContentEditable)) { event.preventDefault(); search?.focus(); } });
   update();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) void loadLivePosts(); });
+  window.addEventListener('pageshow', event => { if (event.persisted) void loadLivePosts(); });
 </script>
+<style>.live-posts-status{color:var(--muted);font-size:12px}#live-posts :global(.article-card){padding:24px 0;border-bottom:1px solid var(--line)}#live-posts :global(h2){font-size:19px;margin:8px 0}#live-posts :global(.article-card-meta){font-size:11px;color:var(--muted)}#live-posts :global(p){font-size:13px;line-height:1.9}</style>

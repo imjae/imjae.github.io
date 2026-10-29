@@ -1,10 +1,12 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { readPinSettings } from './pin-settings.server.mjs';
 import { applyPinSettings } from './pinned-articles.mjs';
+import { managedPostSlugs } from './managed-posts.server.mjs';
 export type Article = CollectionEntry<'articles'>;
 
 export async function getArticles(includeDrafts = import.meta.env.DEV) {
-  const articles = await getCollection('articles', ({ data }) => includeDrafts || !data.draft);
+  const managed = await managedPostSlugs();
+  const articles = await getCollection('articles', ({ data }) => !managed.has(data.slug) && (includeDrafts || !data.draft));
   const slugs = new Set<string>();
   for (const article of articles) {
     if (slugs.has(article.data.slug)) throw new Error(`중복된 글 주소: ${article.data.slug}`);
