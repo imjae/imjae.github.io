@@ -7,7 +7,7 @@ export const studyCourses = [{
   planSlug: 'dcb-unreal-port-study-plan',
   weeks: [
     { number: 1, title: 'Unity C#과 비교하는 C++ 첫 실습', description: 'C++ Actor·Character·GameMode를 작성하고 빌드해 DCB의 이동·지게·채집·귀환을 직접 연결합니다.', articleSlug: 'dcb-unreal-first-playable-framework' },
-    { number: 2, title: 'C++ 마우스 시점·이동·지게 상태', description: '1주차의 C++ 캐릭터에 마우스 입력을 연결하고 입력 종료, 걷기·질주·짐 무게와 조작 제한을 비교합니다.' },
+      { number: 2, title: 'C++ 마우스 시점·이동·지게 상태', description: '1주차의 C++ 캐릭터에 마우스 입력을 연결하고 입력 종료, 걷기·질주·짐 무게와 조작 제한을 비교합니다.', articleSlug: 'dcb-unreal-cpp-input-movement-carry' },
     { number: 3, title: '아이템 데이터와 에셋 로딩', description: '아이템 ID·무게·아이콘·메시를 연결하고 소프트 참조의 로딩과 쿠킹을 확인합니다.' },
     { number: 4, title: 'C++ 애니메이션 상태와 운반 자세', description: '기존 클립을 C++ 상태 계산과 재생 코드로 연결하고 전환·재생 속도·중단 처리를 비교합니다.' },
     { number: 5, title: '공격 모션과 타격 판정', description: 'C++ AnimNotifyState·충돌 검사로 공격 한 종류의 타격 시간과 중단 처리를 맞춥니다.' },

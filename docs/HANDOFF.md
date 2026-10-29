@@ -1,5 +1,17 @@
 # 블로그 관리 인수인계
 
+## 2026-10-29 DCB 2주차 C++ 입력·이동·지게 실습 게시
+
+사용자가 1주차 C++ 클래스를 이어서 Blueprint 없는 2주차 글을 작성·게시하도록 요청했다. `dcb-unreal-cpp-input-movement-carry`를 새로 작성하고 `dcb-unreal-port` 과정의 2주차에 연결했다. 1주차 마지막 안내와 12주 계획의 둘째 주에도 새 글 링크를 추가했다. 기존 `unreal-cpp-engine` 과정은 그대로다.
+
+본문은 5일·16개 실습, 약 3.7만 자이며 표 11개·C++ 전체 파일 4개·입력 흐름도 1개로 구성한다. Week01CPP 맵과 데이터 복제, Axis2D 마우스 액션·IMC 연결, `ADCBStudyCharacter`/`ADCBStudyGameMode`의 파생 클래스 작성·빌드·GameMode 지정, 감도·반전·카메라/몸 회전, 이동 벡터·Completed/Canceled·걷기/질주 요청, 스태미너에 따른 실제 Gait, 짐 0/15/30/60/90의 속도, 지게 해제 후 짐 유지, P 조작 제한·복원을 Unity 기능과 비교한다. 전체 원본 DCB 소스 대신 이번에 작성한 예제만 게시한다. Cube 외형과 AI 작성 기여를 명시한다.
+
+부모의 private·nonvirtual 입력 함수를 재정의한 것으로 설명하지 않는다. `SetupPlayerInputComponent`에서 부모 바인딩 중 Move/Look/Sprint/Walk만 교체하고 F/G는 유지한다. 마우스 이동량에는 DeltaSeconds를 곱하지 않고 스틱에는 초당 회전값을 적용한다. 기존 Legacy Input Scales가 켜진 환경에서 이중 배율·Pitch 반전을 피하기 위해 Possession 이후 Setup에서 해당 Controller의 구식 배율을 1로 맞춘다. UE 5.8의 deprecated 호환 API 경고가 남는 이유와 추후 Modifier 전환을 본문에서 설명한다. P는 Pause나 인벤토리 UI가 아니며, 현재 눌린 축의 해제 후 재개와 오래된 저장 입력을 구분한다.
+
+`.verification/dcb-unreal-week2-cpp-20261029/`의 격리 프로젝트에 현재 DCB Runtime 소스와 1주차/2주차 예제를 복사했다. 원본 소스·설정·입력/밸런스 에셋 137개 SHA256은 전후 동일하다. 검증 프로젝트에서만 Fab를 끈 상태로 UE 5.8.4 UHT·C++ 컴파일·링크가 성공했다. 원래 밸런스와 입력 에셋을 복제하고 마우스 액션·매핑을 구성한 뒤 `DCB.Study.Week02.InputAndCarry` 자동 검사 1개가 성공했다. 합성 입력으로 바인딩 개수·입력 종료/취소·대각선 제한·마우스 회전량·걷기/질주 우선순위·조작 제한·짐 무게별 실제 곡선 속도·지게 해제·소진 후 Walk 전환을 확인했다. 처음 합성 World에 GameMode 로그인 경로가 없어 Controller가 로컬로 표시되지 않아 회전 검사가 실패했고, 검사 환경에서 로컬 Controller를 지정한 뒤 성공했다. 본문 네 코드 블록은 컴파일한 예제 파일과 일치한다. 이 결과는 실제 장치 입력·수동 PIE·카메라 GPU 화면·전체 게임 빌드·패키징 확인을 의미하지 않는다. 에셋 구성은 commandlet으로 수행했고, 마우스 액션은 Python에서 기존 Axis2D 액션을 복제해 작성했다.
+
+동시에 게시된 소유자 글 기능 변경 `94c2465`까지 rebase하고 npm ci로 새 의존성을 설치한 뒤 다시 확인했다. 최종 `npm run verify`는 테스트 135개, Astro 73파일 오류/경고 0개, 공개 138경로·144 HTML을 통과했다. `npm run author:build`도 138경로·144 HTML을 통과했다. 양쪽 빌드의 원문 해시·목차 대상·RSS·사이트맵, 과정 공개 2편/예정 10개와 기존 과정 공개 5편을 대조했다. 데스크톱 본문·흐름도·Home 고정 12편, 390px에서 페이지 가로 넘침 없이 코드 내부 스크롤, 모바일 목차의 2일차 이동과 Study/DCBWeek02Character 검색 1건을 확인했다. 정확한 커밋의 공개/편집 Actions와 두 manifest, 실제 글·과정 페이지를 확인한 뒤 게시 완료를 보고한다. 검사·빌드·배포 근거는 같은 검증 폴더에 저장한다.
+
 ## 2026-10-29 포트폴리오의 지원처 표현 제거와 주소 변경
 
 사용자 요청으로 포트폴리오 목록의 제목을 `2027 포트폴리오`, 상단 영문 표기를 `PORTFOLIO 2027 / GAME DEVELOPMENT – PROGRAMMING`으로 바꾸고 공개 주소를 `/portfolio/2027/`로 옮겼다. 목록·로그인 복귀·관리 화면·영상 관리·canonical·Open Graph·sitemap을 새 주소에 맞췄다. 기존 `/portfolio/krafton-2027/`에는 정적 이동 페이지를 두어 쿼리와 앵커를 보존하며, JavaScript 없이도 새 주소로 연결한다.

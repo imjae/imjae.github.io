@@ -77,7 +77,7 @@ AI가 제안한 코드를 사용했을 때는 수정한 부분과 직접 확인�
 
 첫 주는 [Unity C#과 비교하는 C++ 첫 실행](/writing/dcb-unreal-first-playable-framework/)의 순서를 따릅니다. 헤더·구현 파일, 빌드, UPROPERTY와 인스턴스 편집을 먼저 다룹니다. C++ GameMode에서 DCB 캐릭터를 생성하고 Timer로 실제 상태를 표시한 뒤, 별도 슬롯의 채집·귀환·저장을 확인합니다.
 
-둘째 주에는 1주차의 C++ 캐릭터에 마우스 Look을 연결합니다. 시점 회전과 몸의 회전, 마우스 이동량과 스틱 값의 차이를 구분하고 C++ 바인딩부터 CharacterMovement까지 따라갑니다. 빈 지게와 적재 상태, 걷기·질주, 스태미너 충분·고갈 상태를 같은 조건으로 비교합니다. 별도 조작 제한으로 입력을 막았다가 풀 때 남는 이동도 확인하고, 실제 인벤토리 포커스와의 통합은 7주차에 이어 갑니다. [Enhanced Input](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
+둘째 주에는 [C++ 마우스 시점·이동·지게 실습](/writing/dcb-unreal-cpp-input-movement-carry/)에서 1주차의 C++ 캐릭터에 마우스 Look을 연결합니다. 시점 회전과 몸의 회전, 마우스 이동량과 스틱 값의 차이를 구분하고 C++ 바인딩부터 CharacterMovement까지 따라갑니다. 빈 지게와 적재 상태, 걷기·질주, 스태미너 충분·고갈 상태를 같은 조건으로 비교합니다. 별도 조작 제한으로 입력을 막았다가 풀 때 남는 이동도 확인하고, 실제 인벤토리 포커스와의 통합은 7주차에 이어 갑니다. [Enhanced Input](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine)
 
 셋째 주에는 임시 물체로 표현된 내려놓기 기능을 아이템 한 종류의 실제 메시와 연결합니다. 원본 식별자와 언리얼 에셋 참조를 연결하고, 로딩 완료 전에 물체가 사라지는 경우와 참조가 잘못된 경우를 다룹니다. 처음부터 모든 데이터를 Asset Manager에 넣기보다, 소프트 참조 한 건의 요청·완료·해제를 이해한 뒤 관리 범위를 정합니다. [Asset Management](https://dev.epicgames.com/documentation/unreal-engine/asset-management-in-unreal-engine)
 
