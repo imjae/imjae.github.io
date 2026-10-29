@@ -106,7 +106,7 @@ const projectPage = await readFile(join(root,'projects/dcb/index.html'),'utf8');
 const portfolioPage = await readFile(join(root,'portfolio/index.html'),'utf8');
 const portfolioMain = portfolioPage.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
 const portfolioLinks = [...portfolioMain.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록에 전용 링크 외의 프로젝트 소개가 표시됨');
+if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/', '/series/dcb-unreal-port/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록의 DCB 프로젝트·언리얼 엔진 포팅 연결이 다름');
 async function checkDcbRoute(html, route) {
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
   if (/\bhref="\/portfolio\//.test(main) || /<a\b[^>]*href="\/portfolio\/"[^>]*aria-current=/.test(html)) failures.push(`DCB 화면이 포트폴리오 하위로 표시됨: ${route}`);
