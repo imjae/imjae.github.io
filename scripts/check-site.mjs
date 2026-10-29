@@ -94,8 +94,9 @@ const pinnedSlugs = selectPinnedArticles(applyPinSettings(articles, settings?.pi
 const shownSlugs = [...home.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
 if (JSON.stringify(shownSlugs) !== JSON.stringify(pinnedSlugs)) failures.push('Home 고정 글 목록과 공개 글의 pinned·pinOrder 설정이 다름');
 if (pinnedSlugs.length > 0 && !home.includes('id="pinned-title"')) failures.push('Home Pinned 제목 누락');
-const heroCopy = home.match(/<div class="hero-copy">([\s\S]*?)<\/div>/)?.[1] ?? '';
-if (/<a\b/.test(heroCopy)) failures.push('Home 소개의 글 목록 버튼이 남아 있음');
+if (!home.includes('id="home-title"') || !home.includes('class="cinematic-backdrop"') || !home.includes('href="/projects/dcb/"')) failures.push('Home 시네마틱 장면 또는 프로젝트 연결 누락');
+if (home.includes('home-introduction') || home.includes('id="home-areas-title"')) failures.push('Home에 이전 소개 영역이 남아 있음');
+if (home.includes('class="system-sketch"')) failures.push('Home에 이전 시스템 도식이 남아 있음');
 for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philosophy-The-Myth-Of-sisyphus.html']) {
   if (!(await exists(join(root,path)))) failures.push(`예전 글 주소의 실제 HTML 누락: ${path}`);
 }

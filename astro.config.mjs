@@ -9,6 +9,7 @@ export default defineConfig({
   trailingSlash: 'always',
   compressHTML: true,
   markdown: {
+    shikiConfig: { theme: 'github-light' },
     processor: unified({
       remarkPlugins: [remarkMath],
       rehypePlugins: [[rehypeKatex, { throwOnError: false }]],

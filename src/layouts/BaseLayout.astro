@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/reading-theme.css';
 import { site, topics } from '../data/site';
 import { getArticles } from '../lib/articles';
 import { getReadingItems } from '../lib/reading-shelf.server';
@@ -7,12 +8,13 @@ import { githubFileUrl } from '../lib/github-authoring.mjs';
 import ModeSwitch from '../components/ModeSwitch.astro';
 import PublishProgress from '../components/PublishProgress.astro';
 import { privateAuthoring } from '../lib/authoring.server.mjs';
-interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; editProject?: string; }
-const { title, description = site.description, active = '', noindex = false, editFile, editProject } = Astro.props;
+interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; editProject?: string; reading?: boolean; }
+const { title, description = site.description, active = '', noindex = false, editFile, editProject, reading = false } = Astro.props;
 const articles = await getArticles();
 const readingCount = (await getReadingItems(articles)).length;
 const canonical = new URL(Astro.url.pathname, site.url);
 const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === 'dcb' ? '/editor/?project=dcb#project-video' : '/editor/';
+const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathname.split('/')[1]);
 ---
 <!doctype html>
 <html lang="ko">
@@ -21,7 +23,7 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} — ${site.title}` : site.title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="theme-color" content={active === 'home' ? '#172938' : '#fafaf7'} />
     <meta name="author" content="imjae" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
@@ -36,21 +38,22 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
   </head>
-  <body>
+  <body class:list={{ 'home-page': active === 'home', 'reading-page': reading }}>
     <a class="skip-link" href="#main-content">본문으로 이동</a>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="imjae home">imjae<span>.</span><small>DEV NOTES</small></a>
+    <header class:list={['site-header', { 'site-header-home': active === 'home' }]}>
+      <a class="brand" href="/" aria-label="imjae home" aria-current={active === 'home' ? 'page' : undefined}>imjae<span>.</span><small>DEV NOTES</small></a>
       <nav class="header-nav" aria-label="Main navigation">
-        <a href="/" aria-current={active === 'home' ? 'page' : undefined}>Home</a>
-        <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>About</a>
+        <a href="/writing/" aria-current={writingSection ? Astro.url.pathname === '/writing/' ? 'page' : 'location' : undefined}>Writing</a>
         <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>Portfolio</a>
-        <a href="/writing/" aria-current={active === 'writing' ? 'page' : undefined}>Writing</a>
-        <a class="github-link" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>About</a>
       </nav>
-      <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} />
+      <div class="header-utilities">
+        <a class="header-github" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a>
+        <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} />
+      </div>
     </header>
-    <div class="workspace">
-      <aside class="sidebar" aria-label="Browse notes">
+    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading }]}>
+      {active !== 'home' && !reading && <aside class="sidebar" aria-label="Browse notes">
         <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
         <p class="nav-caption">Topics</p>
         <nav class="topic-nav" aria-label="Topics">
@@ -58,10 +61,49 @@ const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === '
         </nav>
         <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/projects/dcb/" class:list={{ selected: active === 'dcb' }} aria-current={Astro.url.pathname === '/projects/dcb/' ? 'page' : undefined}><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/" aria-current={Astro.url.pathname === '/series/dcb/' ? 'page' : undefined}>DCB articles <span aria-hidden="true">→</span></a></div>
         <div class="sidebar-foot"><a href="/rss.xml">RSS feed ↗</a></div>
-      </aside>
+      </aside>}
       <main id="main-content"><slot /></main>
     </div>
     <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span><a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
     {privateAuthoring && <PublishProgress />}
   </body>
 </html>
+<style>
+  .site-header { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 32px; }
+  .site-header-home { position: absolute; inset: 0 0 auto; z-index: 2; width: calc(100% - 112px); max-width: 1200px; height: 112px; padding: 0; border-color: #91a7bd40; color: #f2f4f4; --green: #c2e0e8; --muted: #d0dae4; --line: #95a9c35e; }
+  .site-header-home .brand small { display: none; }
+  .site-header-home .brand > span { color: #aac9f3; }
+  .site-header-home :global(a:focus-visible) { outline-color: #c2e0e8; }
+  .site-header-home :global(.mode-switch a[aria-current]) { color: #f2f4f4; background: #ffffff12; }
+  .brand { justify-self: start; white-space: nowrap; }
+  .header-nav { gap: 28px; }
+  .header-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  .header-utilities { display: flex; align-items: center; justify-self: end; gap: 22px; }
+  .header-github { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font: 11px var(--mono); color: var(--muted); white-space: nowrap; }
+  .header-github:hover { color: var(--green); text-decoration: underline; text-underline-offset: 5px; }
+  .workspace-home { display: block; max-width: none; padding: 0; }
+  .workspace-reading { display: block; max-width: 1184px; padding-top: 44px; }
+  .home-page .site-footer { width: calc(100% - 112px); max-width: 1200px; padding: 26px 0 34px; }
+  @media (max-width: 1150px) {
+    .site-header { gap: 22px; }
+    .header-nav { gap: 22px; }
+    .header-utilities { gap: 16px; }
+  }
+  @media (max-width: 900px) {
+    .site-header-home, .home-page .site-footer { width: calc(100% - 64px); }
+  }
+  @media (max-width: 760px) {
+    .site-header { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 20px; padding-bottom: 12px; }
+    .brand { grid-column: 1; grid-row: 1; }
+    .header-nav { grid-column: 1; grid-row: 2; order: 0; width: auto; justify-content: flex-start; gap: 22px; font-size: 12px; }
+    .header-utilities { display: contents; }
+    .header-utilities :global(.mode-switch) { grid-column: 2; grid-row: 1; justify-self: end; }
+    .header-github { grid-column: 2; grid-row: 2; justify-self: end; font-size: 10px; }
+    .site-header-home { height: 115px; padding: 15px 0 12px; gap: 0 20px; }
+    .workspace-reading { padding-top: 29px; }
+  }
+  @media (max-width: 600px) {
+    .site-header-home, .home-page .site-footer { width: calc(100% - 40px); }
+  }
+  @media print { .site-header { display: none; } }
+</style>

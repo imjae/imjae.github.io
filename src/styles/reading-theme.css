@@ -1,0 +1,48 @@
+:root {
+  color-scheme: light;
+  --paper: #fafaf7;
+  --ink: #293331;
+  --muted: #707b75;
+  --line: #dbe0d8;
+  --green: #426d64;
+  --soft: #eef1ea;
+}
+
+.reading-page .article-header h1 {
+  font-size: 42px;
+  font-weight: 550;
+  line-height: 1.45;
+  letter-spacing: -1.4px;
+  color: #293b36;
+}
+.reading-page .article-body-layout { grid-template-columns: minmax(0, 1fr) 180px; gap: 45px; }
+.reading-page .prose { font-size: 15px; line-height: 2.1; color: #3c4540; }
+.reading-page .prose p { word-break: keep-all; overflow-wrap: anywhere; }
+.reading-page .prose h2 { font-size: 24px; font-weight: 600; }
+.reading-page .prose h3 { font-size: 19px; font-weight: 600; }
+.reading-page .prose th { background: var(--soft); }
+.reading-page .prose blockquote, .reading-page .prose aside, .reading-page .series-panel { background: var(--soft); }
+.reading-page .prose code:not(pre code) { background: var(--soft); color: #42685d; }
+.reading-page .prose pre { background: #f0f3ed !important; color: #293331 !important; border-color: var(--line); font-size: 12px; padding-top: 38px; }
+.reading-page .code-copy { background: var(--paper); color: #42685d; border-color: #b8c7bc; }
+.reading-page .article-header > .tag-list a { background: var(--soft); color: #5d756b; }
+.reading-page .toc li { color: #697b71; }
+
+@media (max-width: 1150px) {
+  .reading-page .article-body-layout { grid-template-columns: 1fr; gap: 30px; }
+  .reading-page .article-header h1 { font-size: 37px; }
+}
+@media (max-width: 760px) {
+  .reading-page .article-header h1 { font-size: 28px; line-height: 1.55; letter-spacing: -.8px; }
+  .reading-page .prose { font-size: 14px; }
+  .reading-page .prose h2 { font-size: 22px; }
+  .reading-page .prose h3 { font-size: 18px; }
+  .reading-page .prose pre { font-size: 11px; }
+  .reading-page .prose th, .reading-page .prose td { font-size: 11px; }
+}
+@media print {
+  .reading-page .article-body-layout { display: block; }
+  .reading-page .prose { font-size: 10pt; }
+  .reading-page .article-header h1 { font-size: 24pt; }
+  .reading-page .prose pre { background: #eee !important; color: #111 !important; padding-top: 22px; }
+}
