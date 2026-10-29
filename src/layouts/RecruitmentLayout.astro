@@ -4,11 +4,16 @@ import { site } from '../data/site';
 import { privateAuthoring, authorLoginUrl } from '../lib/authoring.server.mjs';
 import AuthorSessionGuard from '../components/AuthorSessionGuard.astro';
 import PublishProgress from '../components/PublishProgress.astro';
+import { repository, branch } from '../lib/github-authoring.mjs';
 
-interface Props { title: string; description: string; sourceHash?: string; }
-const { title, description, sourceHash } = Astro.props;
-const canonical = new URL('/portfolio/2027/', site.url);
-const sections = [
+interface Props {
+  title: string; description: string; sourceHash?: string;
+  sections?: string[][]; brandLabel?: string; copyEditor?: boolean; editFile?: string;
+}
+const { title, description, sourceHash, brandLabel = 'PORTFOLIO / 2027', copyEditor = true, editFile } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url);
+const editUrl = editFile ? `${repository}/edit/${branch}/${editFile.split('/').map(encodeURIComponent).join('/')}` : undefined;
+const sections = Astro.props.sections ?? [
   ['project', 'Project'], ['ai', 'AI Usage'], ['client', 'Implementation'],
   ['graphics', 'Graphics'],
 ];
@@ -35,7 +40,7 @@ const sections = [
     <a class="rp-skip" href="#main-content">본문으로 이동</a>
     <header class="rp-header">
       <div class="rp-header-inner">
-        <a class="rp-brand" href="#main-content" aria-label="Portfolio home">imjae<span>.</span><small>PORTFOLIO / 2027</small></a>
+        <a class="rp-brand" href="#main-content" aria-label="Portfolio home">imjae<span>.</span><small>{brandLabel}</small></a>
         <nav class="rp-nav" aria-label="Portfolio navigation">
           {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
         </nav>
@@ -43,10 +48,15 @@ const sections = [
           <a class="rp-blog-link" href="/">Blog <span aria-hidden="true">↗</span></a>
           <nav class="rp-mode-switch" aria-label="Portfolio mode">
             {privateAuthoring ? <>
+              {copyEditor ? <>
               <button type="button" data-portfolio-view aria-pressed="true" disabled>View</button>
               <button type="button" data-portfolio-edit aria-pressed="false" disabled>Edit</button>
+              </> : <>
+                <a href="#main-content" aria-current="page">View</a>
+                {editUrl && <a href={editUrl} target="_blank" rel="noopener noreferrer">Edit ↗</a>}
+              </>}
               <form action="/auth/logout" method="post"><button type="submit">Sign out</button></form>
-            </> : <><a href="#main-content" aria-current="page">View</a><a href={authorLoginUrl('/portfolio/2027/?edit=1')} data-author-login>Sign in</a></>}
+            </> : <><a href="#main-content" aria-current="page">View</a><a href={authorLoginUrl(Astro.url.pathname + (copyEditor ? '?edit=1' : ''))} data-author-login>Sign in</a></>}
           </nav>
         </div>
       </div>
@@ -55,7 +65,7 @@ const sections = [
     <footer class="rp-footer">
       <span>imjae · Game programming</span>
       <a href="/">개발 블로그</a>
-      {privateAuthoring && <a href="/editor/#portfolio-copy">문구·영상 수정</a>}
+      {privateAuthoring && copyEditor && <a href="/editor/#portfolio-copy">문구·영상 수정</a>}
       <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="rp-sr-only"> (새 탭)</span></a>
       <a href="#main-content">맨 위로 ↑</a>
     </footer>
@@ -66,6 +76,6 @@ const sections = [
 <script>
   document.querySelectorAll<HTMLAnchorElement>('[data-author-login]').forEach(link => link.addEventListener('click', () => {
     const url = new URL(link.href);
-    if (url.pathname === '/auth/login') { url.searchParams.set('return_to', location.pathname + '?edit=1' + location.hash); link.href = url.href; }
+    if (url.pathname === '/auth/login') { const returnTo = new URL(url.searchParams.get('return_to') || location.pathname, location.origin); url.searchParams.set('return_to', returnTo.pathname + returnTo.search + location.hash); link.href = url.href; }
   }));
 </script>

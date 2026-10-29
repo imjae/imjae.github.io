@@ -1,0 +1,173 @@
+---
+import RecruitmentLayout from '../../../layouts/RecruitmentLayout.astro';
+import { getArticles, articleUrl } from '../../../lib/articles';
+
+const sections = [['overview', 'Overview'], ['ported', 'Ported'], ['in-progress', 'In Progress'], ['approach', 'AI Usage']];
+const ported = [
+  {
+    id: 'resources', label: 'ASSETS & DATA', status: '변환 기반 구현', title: '리소스와 장면의 참조를 함께 옮기기',
+    description: 'Unity의 폴더 구조와 원본 식별자를 유지하면서 메시·텍스처·재질·사운드·데이터와 씬·프리팹을 언리얼 에셋으로 가져오는 도구를 만들었습니다.',
+    details: ['좌표축과 미터·센티미터 단위를 변환하고, 씬과 프리팹의 계층·비활성 상태·리소스 참조를 연결했습니다.', '밸런스 값과 복합 데이터를 옮기고, 원본을 다시 찾을 수 있도록 출처를 보존했습니다.'],
+    scope: '리소스 변환과 참조 연결까지 옮겼습니다. 커스텀 셰이더·지형·조명은 원본과 표현을 맞추는 작업이 남아 있습니다.',
+  },
+  {
+    id: 'movement', label: 'MOVEMENT & CARRY', status: '기본 동작 연결', title: '이동·지게·스태미너를 C++로 연결하기',
+    description: 'Enhanced Input과 CharacterMovement를 중심으로 보행·달리기·질주, 지게 상태와 짐 무게에 따른 이동을 연결했습니다.',
+    details: ['원본 부담 곡선과 이동 배율을 편집 가능한 데이터로 옮겨 적재량·과적·행동 비용에 적용했습니다.', '스태미너 소모·회복·고갈과 이동 단계 변경, 지게 보유·운반 상태를 함께 처리합니다.'],
+    scope: '일반 이동과 운반 규칙의 기본 구현입니다. 원본의 등반·턱 오르기·옆걸음과 손발 IK는 이후 이식 범위입니다.',
+  },
+  {
+    id: 'gameplay', label: 'GAMEPLAY LOOP', status: '작은 실행 구간 연결', title: '수거·기본 전투·귀환·저장으로 한 차례의 출정 만들기',
+    description: '분리된 작은 맵에서 가지 채집과 상자 수거, 근접 공격·회피, 적의 추적·공격, 귀환과 저장이 이어지도록 구성했습니다.',
+    details: ['한 공격에서 같은 대상에 피해가 중복 적용되지 않게 하고, 체력·피격·사망을 연결했습니다.', '성공 귀환은 적재물을 보관함에 더하고, 사망 시에는 적재물을 잃되 기존 보관함을 유지합니다. Unreal 전용 저장 슬롯으로 재로드와 재출발을 처리합니다.'],
+    scope: '공격은 즉시 근접 판정이며, 귀환은 같은 맵의 캠프 복귀입니다. 무기별 콤보·패링·그룹 전투와 로비 전환 전체는 포함하지 않습니다.',
+  },
+  {
+    id: 'motion', label: 'ANIMATION', status: '모션 연결 · 부분 이식', title: '원본 리그의 모션을 언리얼 시퀀스로 굽기',
+    description: '원본 클립 250개를 대상 리그 7개에 맞춰 258개 시퀀스로 베이크했습니다. 플레이어와 사무라이의 대표 동작에 클립을 연결했습니다.',
+    details: ['플레이어의 맨손·운반 대기와 이동, 맨손 공격·구르기·사망, 사무라이의 대기·추적·공격·피격·사망을 연결했습니다.', 'Animator의 상태·파라미터·전이 조건을 데이터로 보존하고, 상자 뚜껑과 HUD의 일부 속성 애니메이션도 옮겼습니다.'],
+    scope: '현재 캐릭터는 동작에 맞는 클립을 직접 재생합니다. 상태 데이터와 클립 참조 연결은 BlendTree·추가 레이어·교차 페이드·루트 이동 전체의 재현과 구분합니다.',
+  },
+  {
+    id: 'inventory', label: 'UI & INVENTORY', status: '기본 UI 동작 연결', title: '인벤토리에서 내려놓고 다시 수거하기',
+    description: '기존 UI의 레이아웃을 UMG로 가져오고, 체력·스태미너·무게 표시와 인벤토리 스택 선택·내려놓기를 연결했습니다.',
+    details: ['선택한 아이템 한 개를 내려놓으면 수량과 해당 무게를 차감하고, 월드에서 다시 수거할 수 있습니다.', '인벤토리를 여는 동안 이동·공격·채집 입력을 제어하고, 닫을 때 게임 입력을 복원합니다.'],
+    scope: '내려놓은 아이템은 임시 큐브로 표시합니다. 실제 아이콘·장비·제작·거래·툴팁과 복잡한 UI 레이아웃은 추가 이식 대상입니다.',
+  },
+  {
+    id: 'effects', label: 'NIAGARA', status: '기본 모듈 부분 이식', title: '파티클의 발생 규칙과 수명 곡선 옮기기',
+    description: 'Unity 파티클의 기본 발생률·버스트·속도·수명과 색·크기 곡선을 Niagara 시스템으로 옮겼습니다.',
+    details: ['빌보드·메시·늘림·수평 빌보드 렌더러의 일부 표현과 비활성 자식 상태를 반영했습니다.', '같은 원본 효과를 찾아 기본 채집·타격 호출에 연결하고, 파티클 색과 알파를 받을 수 있도록 파생 재질을 구성했습니다.'],
+    scope: '지원하는 모듈부터 옮긴 단계입니다. Noise·Trail·Collision·SubEmitter와 복합 셰이더는 원본 효과에 맞춘 재구성이 필요합니다.',
+  },
+];
+const next = [
+  { title: '전투와 캐릭터 표현', body: '타격 이벤트의 발생 시점, 무기별 행동·그룹 AI, 모션 전환과 발 접지·IK를 원본 게임 규칙에 맞춰 연결합니다.' },
+  { title: '아이템과 UI 확장', body: '임시 드랍 외형을 실제 아이템 리소스로 바꾸고, 장비·제작·거래와 UI 애니메이션의 미연결 경로를 이어 갑니다.' },
+  { title: '장면·효과·실행 파일', body: '기존 장면의 짧은 동선에 기능을 통합한 뒤 조명·이펙트 표현과 비용을 조정합니다. 전체 동선과 Windows 패키지에서의 확인은 후속 단계입니다.' },
+];
+const relatedSlugs = ['dcb-unreal-first-playable-framework', 'dcb-unreal-cpp-input-movement-carry'];
+const articles = await getArticles(false);
+const related = relatedSlugs.flatMap(slug => articles.filter(article => article.data.slug === slug));
+---
+<RecruitmentLayout
+  title="DCB 언리얼 엔진 포팅 — imjae"
+  description="Unity DCB를 언리얼 엔진으로 옮긴 리소스·게임플레이·모션·UI·Niagara 구현과 진행 중인 C++ 작업을 소개합니다."
+  brandLabel="DCB / UNREAL ENGINE"
+  sections={sections}
+  copyEditor={false}
+  editFile="src/pages/portfolio/unreal-porting/index.astro"
+>
+  <section id="overview" class="up-hero" aria-labelledby="porting-title">
+    <div>
+      <a class="up-back" href="/portfolio/">← Portfolio</a>
+      <p class="rp-eyebrow">ENGINE PORTING / UNITY → UNREAL ENGINE</p>
+      <h1 id="porting-title">DCB<br /><span>언리얼 엔진 포팅</span></h1>
+      <p class="up-intro">Unity로 개발한 DCB를 AI와 함께 언리얼 엔진으로 옮기고 있습니다. 리소스·데이터를 가져오는 변환 도구와 C++ 실행 구조를 만들고, 기능별 동작을 원본과 맞춰 가고 있습니다.</p>
+      <ul class="rp-stack" aria-label="사용 기술"><li>Unreal Engine 5.8</li><li>C++</li><li>Enhanced Input</li><li>UMG</li><li>Niagara</li></ul>
+      <div class="rp-actions"><a class="rp-button rp-button-primary" href="#ported">포팅한 내용 <span aria-hidden="true">↓</span></a><a class="rp-button" href="#in-progress">진행 중인 내용 <span aria-hidden="true">↓</span></a></div>
+    </div>
+    <aside class="up-transfer" aria-label="엔진별 이식 구조">
+      <p class="up-mono">FROM UNITY TO UNREAL ENGINE</p>
+      <dl>
+        <div><dt>씬 · 프리팹 · 리소스</dt><dd>레벨 · 액터 · 언리얼 에셋</dd></div>
+        <div><dt>C# 게임 로직 · 밸런스</dt><dd>C++ 게임플레이 · 데이터</dd></div>
+        <div><dt>UI · 모션 · 파티클</dt><dd>UMG · 시퀀스 · Niagara</dd></div>
+      </dl>
+      <p class="up-transfer-note">변환한 리소스 위에 기본 실행 구간을 연결하고, 원본 동작을 단계적으로 이식합니다.</p>
+    </aside>
+  </section>
+
+  <div class="up-status" aria-label="프로젝트 진행 상태">
+    <p><span class="up-dot" aria-hidden="true"></span><strong>포팅 진행 중</strong><span>2026.10.29 기준</span></p>
+    <p>기본 실행 구간을 연결한 단계입니다. 원본 게임 전체의 동작과 표현을 맞추는 작업은 계속 진행합니다.</p>
+  </div>
+
+  <section id="ported" class="up-section" aria-labelledby="ported-title">
+    <div class="up-section-heading"><p class="rp-kicker">01 / PORTED</p><h2 id="ported-title">지금까지 포팅한 내용</h2><p>기능별로 옮긴 동작과 현재 적용 범위를 소개합니다.</p></div>
+    <div class="up-grid">
+      {ported.map((item, index) => <article class="up-card" id={item.id} aria-labelledby={`${item.id}-title`}>
+        <div class="up-card-meta"><span class="up-mono">{String(index + 1).padStart(2, '0')} / {item.label}</span><span class="up-badge">{item.status}</span></div>
+        <h3 id={`${item.id}-title`}>{item.title}</h3>
+        <p>{item.description}</p>
+        <ul>{item.details.map(detail => <li>{detail}</li>)}</ul>
+        <p class="up-scope"><strong>현재 범위</strong>{item.scope}</p>
+      </article>)}
+    </div>
+  </section>
+
+  <section id="in-progress" class="up-section" aria-labelledby="progress-title">
+    <div class="up-section-heading"><p class="rp-kicker">02 / IN PROGRESS</p><h2 id="progress-title">현재 진행 중인 내용</h2><p>기능별 C++ 구조를 익히고, 기본 이식본을 원본 게임의 동작으로 확장하고 있습니다.</p></div>
+    <article class="up-current" aria-labelledby="current-title">
+      <div><span class="up-badge up-badge-active">진행 중 · 별도 C++ 실습</span><h3 id="current-title">입력·캐릭터·지게 상태의 실행 흐름 정리</h3></div>
+      <div><p>C++ Actor·Character·GameMode를 직접 구성하고, 기존 전환본의 입력과 이동·운반 규칙을 기능별로 나누어 다루고 있습니다. 마우스 시점, 입력 종료·취소, 걷기·질주와 짐 무게에 따른 속도를 연결하는 단계입니다.</p><p>이 작업은 본 전환본과 분리한 실습 프로젝트에서 진행합니다. 실습 내용을 기존 모션·UI·실제 장면과 통합하는 과정이 이어집니다.</p></div>
+    </article>
+    <div class="up-next"><h3>이후 이식·통합할 내용</h3><p class="up-next-intro">아래 항목은 기본 구현 이후에 이어 갈 작업 범위입니다.</p><ol>{next.map((item, index) => <li><span class="up-next-number">{String(index + 1).padStart(2, '0')}</span><div><h4>{item.title}</h4><p>{item.body}</p></div><span class="up-planned">후속 작업</span></li>)}</ol></div>
+  </section>
+
+  <section id="approach" class="up-section up-approach" aria-labelledby="approach-title">
+    <div class="up-section-heading"><p class="rp-kicker">03 / AI USAGE & ASSETS</p><h2 id="approach-title">AI와 함께 진행하는 이식</h2></div>
+    <div><p>이식할 범위와 보존할 자료, 기능별 완료 조건을 정하고 AI와 함께 변환 도구·C++ 코드·검증 도구를 작성했습니다. 원본 리소스와 기존 장면을 보존하고, 새 실행 구간과 파생 에셋을 별도로 구성했습니다.</p><p>모델·애니메이션·텍스처는 기존 DCB에서 사용한 리소스를 바탕으로 합니다. 기존 자산의 제작과 이번 엔진 전환 작업을 구분하며, Unity 버전의 구현 사례는 <a href="/portfolio/2027/">DCB 프로젝트 포트폴리오</a>에서 소개합니다.</p></div>
+  </section>
+
+  <section class="up-section up-records" aria-labelledby="records-title">
+    <div class="up-section-heading"><p class="rp-kicker">FURTHER READING</p><h2 id="records-title">구현 과정 자세히 보기</h2><p>각 단계의 C++ 코드와 실행 흐름은 별도의 글로 이어집니다.</p></div>
+    <ul>{related.map(article => <li><a href={articleUrl(article)}>{article.data.title}<span aria-hidden="true">↗</span></a></li>)}</ul>
+    <a class="up-all" href="/series/dcb-unreal-port/">전환 과정의 전체 글과 계획 <span aria-hidden="true">→</span></a>
+  </section>
+</RecruitmentLayout>
+
+<style>
+  .up-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:64px;align-items:center;padding:50px 0 54px}
+  .up-back{display:inline-block;font-size:12px;color:var(--rp-muted);margin-bottom:30px}
+  .up-back:hover,.up-all:hover{text-decoration:underline;text-underline-offset:5px}
+  .up-hero h1{font-size:clamp(48px,6vw,76px);line-height:1.12;letter-spacing:-3px;margin:22px 0}
+  .up-hero h1 span{display:inline-block;font-size:clamp(28px,3.4vw,42px);letter-spacing:-1.8px;margin-top:12px}
+  .up-intro{font-size:15px;line-height:1.95;color:var(--rp-muted);max-width:570px}
+  .up-transfer{padding:30px;background:#213b31;color:#f2f3e8;border-radius:4px}
+  .up-mono{font:10px/1.7 var(--rp-mono);letter-spacing:.7px}
+  .up-transfer>p:first-child{color:#b6cdb6;margin-bottom:22px}
+  .up-transfer dl>div{padding:18px 0;border-top:1px solid #496354}
+  .up-transfer dt{font-size:12px;color:#b6cdb6}
+  .up-transfer dd{font-size:18px;line-height:1.5;margin-top:7px}
+  .up-transfer dd:before{content:'→';color:#a3c1a1;margin-right:12px}
+  .up-transfer-note{border-top:1px solid #496354;padding-top:20px;color:#c2d1c0;font-size:12px;line-height:1.9}
+  .up-status{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;border-block:1px solid var(--rp-line);padding:20px 0;font-size:12px;line-height:1.8}
+  .up-status>p:first-child{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .up-status>p:first-child>span:last-child,.up-status>p:last-child{color:var(--rp-muted)}
+  .up-dot{width:7px;height:7px;background:#a47a3e;border-radius:50%}
+  .up-section{padding:64px 0;border-bottom:1px solid var(--rp-line);scroll-margin-top:100px}
+  .up-section-heading{margin-bottom:30px}
+  .up-section-heading h2{margin:8px 0 10px}
+  .up-section-heading>p:last-child:not(.rp-kicker){font-size:14px;color:var(--rp-muted);line-height:1.8}
+  .up-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .up-card{display:flex;flex-direction:column;padding:28px;border:1px solid var(--rp-line);background:var(--rp-card);border-radius:4px;scroll-margin-top:110px}
+  .up-card-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px;color:var(--rp-green)}
+  .up-badge{display:inline-block;font-size:10px;line-height:1.6;padding:4px 8px;border:1px solid #c7d5c1;background:var(--rp-soft);color:var(--rp-green);border-radius:3px}
+  .up-card h3{font-size:21px;line-height:1.5;margin-bottom:14px}
+  .up-card p,.up-card li,.up-current p,.up-approach p{font-size:13px;line-height:1.95;color:var(--rp-muted)}
+  .up-card ul{padding:18px 0 22px 16px;list-style:disc}
+  .up-card li+li{margin-top:10px}
+  .up-card .up-scope{border-top:1px solid var(--rp-line);padding-top:18px;margin-top:auto;font-size:12px}
+  .up-scope strong{display:block;margin-bottom:5px;color:var(--rp-ink);font-weight:600}
+  .up-current{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;padding:30px;border:1px solid #d6c7ac;background:#f4f0e6;border-radius:4px}
+  .up-badge-active{background:#eee3ce;border-color:#d8c6a5;color:#76582c}
+  .up-current h3{font-size:23px;margin-top:16px}
+  .up-current p+p,.up-approach p+p{margin-top:16px}
+  .up-next{margin-top:36px}
+  .up-next>h3{font-size:19px}
+  .up-next-intro{font-size:13px;color:var(--rp-muted);margin:8px 0 20px}
+  .up-next li{display:grid;grid-template-columns:28px 1fr auto;gap:18px;padding:22px 0;border-top:1px solid var(--rp-line);align-items:start}
+  .up-next-number{font:12px/1.8 var(--rp-mono);color:var(--rp-green)}
+  .up-next h4{font-size:16px;line-height:1.6;margin-bottom:6px}
+  .up-next li p{font-size:13px;line-height:1.9;color:var(--rp-muted)}
+  .up-planned{font-size:10px;border:1px solid var(--rp-line);padding:4px 7px;white-space:nowrap;color:var(--rp-muted)}
+  .up-approach{display:grid;grid-template-columns:1fr 1.4fr;gap:40px}
+  .up-approach a{text-decoration:underline;text-underline-offset:4px;color:var(--rp-green)}
+  .up-records{padding-bottom:54px;border-bottom:0}
+  .up-records li a{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-top:1px solid var(--rp-line);font-size:14px;line-height:1.8}
+  .up-records li a:hover{color:var(--rp-green);text-decoration:underline;text-underline-offset:4px}
+  .up-all{display:inline-block;font-size:12px;color:var(--rp-green);margin-top:20px}
+  @media(max-width:960px){.up-hero{gap:30px;grid-template-columns:1fr 1fr}.up-card{padding:22px}.up-status{grid-template-columns:1fr;gap:8px}}
+  @media(max-width:760px){.up-hero{grid-template-columns:1fr;padding:32px 0;gap:30px}.up-hero h1{font-size:52px}.up-grid,.up-current,.up-approach{grid-template-columns:1fr;gap:20px}.up-section{padding:40px 0;scroll-margin-top:120px}.up-transfer,.up-current{padding:24px}.up-next li{grid-template-columns:24px 1fr;gap:12px}.up-planned{grid-column:2;justify-self:start}.up-approach .up-section-heading{margin-bottom:0}}
+</style>

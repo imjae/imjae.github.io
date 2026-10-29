@@ -106,7 +106,12 @@ const projectPage = await readFile(join(root,'projects/dcb/index.html'),'utf8');
 const portfolioPage = await readFile(join(root,'portfolio/index.html'),'utf8');
 const portfolioMain = portfolioPage.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
 const portfolioLinks = [...portfolioMain.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/', '/series/dcb-unreal-port/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록의 DCB 프로젝트·언리얼 엔진 포팅 연결이 다름');
+if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/', '/portfolio/unreal-porting/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록의 DCB 프로젝트·언리얼 엔진 포팅 연결이 다름');
+const unrealPortfolio = await readFile(join(root,'portfolio/unreal-porting/index.html'),'utf8');
+if (!unrealPortfolio.includes('rel="canonical" href="https://imjae.github.io/portfolio/unreal-porting/"') || !feeds.includes('<loc>https://imjae.github.io/portfolio/unreal-porting/</loc>')) failures.push('언리얼 포팅 포트폴리오의 정규 주소 또는 사이트맵 누락');
+for (const [, id] of unrealPortfolio.matchAll(/href="#([^"]+)"/g)) if (!unrealPortfolio.includes(`id="${id}"`)) failures.push(`언리얼 포팅 목차의 이동 대상 누락: ${id}`);
+if (privateAuthoring && !unrealPortfolio.includes('href="https://github.com/imjae/imjae.github.io/edit/main/src/pages/portfolio/unreal-porting/index.astro"')) failures.push('언리얼 포팅 페이지의 보호된 GitHub 편집 링크 누락');
+if (/<(?:button|a)\b[^>]*\bdata-portfolio-edit(?:=|\s|>)|id="portfolio-copy-state"/.test(unrealPortfolio)) failures.push('언리얼 포팅 페이지에 기존 DCB 전용 문구 편집기가 표시됨');
 async function checkDcbRoute(html, route) {
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
   if (/\bhref="\/portfolio\//.test(main) || /<a\b[^>]*href="\/portfolio\/"[^>]*aria-current=/.test(html)) failures.push(`DCB 화면이 포트폴리오 하위로 표시됨: ${route}`);

@@ -61,7 +61,7 @@ DCB 영상 설정은 `content/project-videos/`의 새 JSON 파일로 저장합�
 
 ## 소개 페이지
 
-포트폴리오 목록(`/portfolio/`)에는 **DCB 프로젝트**(`/portfolio/2027/`)와 **언리얼 엔진 포팅**(`/series/dcb-unreal-port/`)을 표시합니다. 포팅 항목은 Unity로 만든 DCB를 언리얼 엔진으로 옮기는 과정과 주차별 글로 연결합니다. DCB의 전체 기능 소개는 별도 프로젝트(`/projects/dcb/`)로 관리하며, 포트폴리오 본문에서 참조합니다. 예전 `/portfolio/dcb/`와 기능별 주소는 새 프로젝트 주소로 정적 이동합니다.
+포트폴리오 목록(`/portfolio/`)에는 **DCB 프로젝트**(`/portfolio/2027/`)와 **언리얼 엔진 포팅**(`/portfolio/unreal-porting/`)을 표시합니다. 두 항목 모두 독립된 포트폴리오 페이지입니다. 포팅 페이지는 옮긴 기능의 현재 범위, 진행 중인 C++ 작업과 후속 이식·통합 작업을 구분합니다. 주차별 과정(`/series/dcb-unreal-port/`)은 하단의 상세 자료로 연결하며, 공개 글 수를 게임 기능의 완료 수로 대신하지 않습니다. 포팅 페이지는 로그인 후 Edit에서 해당 Astro 파일을 GitHub로 열어 수정하고 Commit changes로 저장합니다. DCB의 전체 기능 소개는 별도 프로젝트(`/projects/dcb/`)로 관리하며, 포트폴리오 본문에서 참조합니다. 예전 `/portfolio/dcb/`와 기능별 주소는 새 프로젝트 주소로 정적 이동합니다.
 
 `/about/`는 `src/pages/about.astro`의 소개 페이지입니다. 상단 메뉴의 **About**과 예전 `/profile/` 주소가 여기로 연결됩니다. 다루는 분야, DCB 담당 범위, 먼저 읽을 글, AI 사용 방식을 `~합니다`체로 적습니다. 파일 상단의 `profile` 객체에 학력·연락처·DCB 기간·구성을 채우면 해당 줄이 표시되고, 비워 두면 표시하지 않습니다. 확정한 사실만 채우고 [문구 지침](EDITORIAL.md)의 자기평가·슬로건 금지 기준을 따릅니다. 먼저 읽을 글은 `featuredSlugs`의 공개 글 slug 순서를 따르며 초안은 표시하지 않습니다.
 
