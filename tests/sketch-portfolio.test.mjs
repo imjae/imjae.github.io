@@ -11,9 +11,25 @@ const result = () => ({summary:'상단 소개를 다듬었습니다.',questions:
 
 test('공개·편집 포트폴리오는 같은 고정 대상으로 연결하고 임의 출처·경로를 거절한다',()=>{
   for(const origin of ['https://imjae.github.io','https://imjae-blog-author.imjae-game-dev-notes.workers.dev']) {
-    assert.deepEqual(canonicalSketchTarget(origin+'/portfolio/krafton-2027/?edit=1#ai'),{kind:'portfolio',path:'/portfolio/krafton-2027/',url:'https://imjae.github.io/portfolio/krafton-2027/'});
+    for(const slug of ['2027', 'krafton-2027']) for(const suffix of ['', '/', '/?edit=1#ai']) {
+      assert.deepEqual(canonicalSketchTarget(`${origin}/portfolio/${slug}${suffix}`),{kind:'portfolio',path:'/portfolio/2027/',url:'https://imjae.github.io/portfolio/2027/'});
+    }
   }
-  for(const url of ['https://evil.test/portfolio/krafton-2027/','https://imjae.github.io/portfolio/other/','https://user@imjae.github.io/portfolio/krafton-2027/']) assert.throws(()=>canonicalSketchTarget(url));
+  for(const url of ['https://evil.test/portfolio/2027/','https://imjae.github.io/portfolio/other/','https://user@imjae.github.io/portfolio/2027/']) assert.throws(()=>canonicalSketchTarget(url));
+});
+
+test('새 주소와 이전 실행기 주소 모두 현재 포트폴리오의 배포 해시를 읽는다',async()=>{
+  const f=fixture(), paths=[], sourceHash='a'.repeat(64);
+  f.env.ASSETS={fetch:async request=>{
+    paths.push(new URL(request.url).pathname);
+    return new Response(`<main data-sketch-source="${sourceHash}"></main>`);
+  }};
+  for(const slug of ['2027','krafton-2027']) {
+    const response=await f.call(`/api/sketch/runner/published/portfolio/${slug}`,{runner:true});
+    assert.equal(response.status,200);
+    assert.deepEqual(await response.json(),{sourceHash});
+  }
+  assert.deepEqual(paths,['/portfolio/2027/','/portfolio/2027/']);
 });
 
 test('표시 중인 원문 키만 새 JSON에 저장하고 이전 문구·순서·기본 파일을 보존한다',()=>{
@@ -44,9 +60,9 @@ test('다른 키·원문 불일치·중복·긴 문구·새 링크·HTML·순서
 
 test('포트폴리오 요청을 접수하고 일반 글 결과로 위장한 준비 완료를 거절한다',async()=>{
   const f=fixture(), input=submission();
-  input.context.url='https://imjae-blog-author.imjae-game-dev-notes.workers.dev/portfolio/krafton-2027/?edit=1';
+  input.context.url='https://imjae-blog-author.imjae-game-dev-notes.workers.dev/portfolio/2027/?edit=1';
   const response=await f.call('/api/sketch/jobs',{body:input});assert.equal(response.status,201);
-  const job=await response.json();assert.equal(job.url,'https://imjae.github.io/portfolio/krafton-2027/');
+  const job=await response.json();assert.equal(job.url,'https://imjae.github.io/portfolio/2027/');
   const lease=await f.claim();
   const review={generation:1,baseCommit:'b'.repeat(40),headCommit:'c'.repeat(40),sourceHash:'a'.repeat(64),afterHash:'d'.repeat(64),summary:'소개 수정',diff:'+문구',checks:{verify:true,authoring:true,browser:true}};
   const publish=body=>f.call('/api/sketch/runner/jobs/'+job.id+'/result',{runner:true,body:{lease:lease.lease.token,kind:'ready',preview:'<!doctype html><h1>포트폴리오</h1>',review:body}});

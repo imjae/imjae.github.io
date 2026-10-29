@@ -1,0 +1,163 @@
+---
+import RecruitmentLayout from '../../../layouts/RecruitmentLayout.astro';
+import PortfolioCase from '../../../components/recruitment/PortfolioCase.astro';
+import PortfolioMedia from '../../../components/recruitment/PortfolioMedia.astro';
+import type { PortfolioLink, PortfolioCase as PortfolioCaseData } from '../../../data/krafton-2027';
+import { portfolioTextFields, applyPortfolioText } from '../../../lib/portfolio-copy.mjs';
+import { readPortfolioText } from '../../../lib/portfolio-copy.server.mjs';
+import PortfolioCopyEditor from '../../../components/recruitment/PortfolioCopyEditor.astro';
+import PortfolioParagraphs from '../../../components/recruitment/PortfolioParagraphs.astro';
+import { dcbFeatures } from '../../../data/dcb-features.mjs';
+import { getDcbVideoMedia } from '../../../data/dcb-videos.mjs';
+import { getArticles, articleUrl } from '../../../lib/articles';
+import { site } from '../../../data/site';
+import { readProjectVideoSettingsBySlot } from '../../../lib/project-video.server.mjs';
+import { resolvePortfolioMedia } from '../../../lib/recruitment-media.mjs';
+import { privateAuthoring } from '../../../lib/authoring.server.mjs';
+import { portfolioCopyBase as baseCopy } from '../../../data/portfolio-copy-base';
+import { portfolioSourceHash } from '../../../lib/sketch-portfolio.server.mjs';
+
+const defaultFields = portfolioTextFields(baseCopy);
+const fields = await readPortfolioText(defaultFields);
+const { profile, project, clientCases, graphicsCases, aiSteps, aiUsageCase,
+  additionalLinks, aiLinks, pageCopy } = applyPortfolioText(baseCopy, fields) as typeof baseCopy;
+
+const articles = await getArticles(false);
+const videoSettings = await readProjectVideoSettingsBySlot();
+const bySlug = new Map(articles.map(article => [article.data.slug, article]));
+function linkedArticles(links: PortfolioLink[], required = false) {
+  return links.flatMap(link => {
+    const article = bySlug.get(link.slug);
+    if (!article) {
+      if (required) throw new Error(`지원용 포트폴리오의 필수 공개 글 누락: ${link.slug}`);
+      return [];
+    }
+    const href = link.anchor ? `${articleUrl(article)}#${link.anchor}` : articleUrl(article);
+    return [{ href, title: article.data.title, label: link.label, kind: link.kind }];
+  });
+}
+function orderedCases(items: PortfolioCaseData[], sectionNumber: string) {
+  return items.map(item => {
+    const order = dcbFeatures.findIndex(feature => feature.slug === item.featureSlug);
+    if (order < 0) throw new Error(`지원용 포트폴리오의 기능 설정 누락: ${item.featureSlug}`);
+    return {
+      item: {
+        ...item,
+        media: getDcbVideoMedia(item.id, videoSettings[item.id], item.media),
+      },
+      links: linkedArticles(item.links, true),
+      order,
+    };
+  }).sort((a, b) => a.order - b.order)
+    .map((entry, index) => ({ ...entry, item: { ...entry.item, number: `${sectionNumber}.${index + 1}` } }));
+}
+function articleFeatureOrder(slug: string) {
+  const order = dcbFeatures.findIndex(feature =>
+    feature.overviewSlug === slug || feature.articleSlugs.includes(slug));
+  return order < 0 ? dcbFeatures.length : order;
+}
+const aiFeature = dcbFeatures.find(feature => feature.slug === 'ai-collaboration');
+if (!aiFeature) throw new Error('지원용 포트폴리오의 AI 활용 기능 설정 누락');
+const clients = orderedCases(clientCases, '02');
+const graphics = orderedCases(graphicsCases, '03');
+const caseIndexLabels: Record<string, string> = {
+  combat: pageCopy.combatContents, traversal: pageCopy.traversalContents, equipment: pageCopy.equipmentContents,
+  water: pageCopy.waterContents, fire: pageCopy.fireContents,
+};
+const contents = [
+  { id: 'ai', number: '01', title: pageCopy.aiTitle, copyKey: 'pageCopy.aiTitle', children: [{ id: 'ai-parallel', number: '01.1', title: aiUsageCase.title, copyKey: 'aiUsageCase.title' }] },
+  { id: 'client', number: '02', title: pageCopy.clientContents, copyKey: 'pageCopy.clientContents', children: clients.map(({ item }) => ({ id: item.id, number: item.number, title: caseIndexLabels[item.id] ?? item.title, copyKey: `pageCopy.${item.id}Contents` })) },
+  { id: 'graphics', number: '03', title: pageCopy.graphicsContents, copyKey: 'pageCopy.graphicsContents', children: graphics.map(({ item }) => ({ id: item.id, number: item.number, title: caseIndexLabels[item.id] ?? item.title, copyKey: `pageCopy.${item.id}Contents` })) },
+];
+const usageLinks = linkedArticles(aiUsageCase.links, true);
+const extraArticles = linkedArticles([...additionalLinks]
+  .sort((a, b) => articleFeatureOrder(a.slug) - articleFeatureOrder(b.slug)));
+const workflowArticles = linkedArticles(aiLinks);
+const savedVideo = videoSettings.project;
+const overviewMedia = getDcbVideoMedia('project', savedVideo, project.media);
+const projectMedia = resolvePortfolioMedia(overviewMedia);
+const videoUrl = projectMedia?.url;
+const inlineMedia = Boolean(projectMedia?.embedUrl || projectMedia?.videoSrc || projectMedia?.gifSrc);
+---
+<RecruitmentLayout
+  sourceHash={portfolioSourceHash(fields)}
+  title="imjae — 게임 프로그래밍 포트폴리오"
+  description="Unity·C# 기반 DCB의 캐릭터 제어, 몬스터 전투, 장비 조합, 런타임·그래픽스와 AI 활용 경험을 소개합니다."
+>
+  <section class="rp-hero" aria-labelledby="portfolio-title">
+    <div class="rp-hero-copy">
+      <p class="rp-eyebrow" data-portfolio-copy="pageCopy.eyebrow">{pageCopy.eyebrow}</p>
+      <h1 id="portfolio-title" class:list={{ 'rp-without-name': !profile.name.trim(), 'rp-copy-container-empty': !profile.name.trim() && !profile.headline.trim() }}><b class="rp-edit-name" data-portfolio-copy="profile.name">{profile.name}</b><span data-portfolio-copy="profile.headline">{profile.headline}</span></h1>
+      <p class="rp-intro" data-portfolio-copy="profile.intro">{profile.intro}</p>
+      <PortfolioParagraphs fields={fields} slot="hero" />
+      <ul class:list={['rp-stack', { 'rp-copy-container-empty': !profile.stack.some(item => item.trim()) }]} aria-label="주요 기술">{profile.stack.map((item, index) => <li data-portfolio-copy={`profile.stack.${index}`}>{item}</li>)}</ul>
+      <div class="rp-actions">
+        <a class="rp-button rp-button-primary" href="#ai"><span data-portfolio-copy="pageCopy.aiAction">{pageCopy.aiAction}</span> <span aria-hidden="true">↓</span></a>
+        {inlineMedia
+          ? <a class="rp-button" href="#project-video">{projectMedia?.gifSrc ? '전체 플레이 GIF 보기' : '전체 플레이 영상 보기'} <span aria-hidden="true">↓</span></a>
+          : videoUrl && <a class="rp-button" href={videoUrl} target="_blank" rel="noopener noreferrer">게임 영상 보기 ↗<span class="rp-sr-only"> (새 탭)</span></a>}
+      </div>
+    </div>
+    <aside class="rp-selection" aria-labelledby="selected-work-title">
+      <div class="rp-selection-top"><span data-portfolio-copy="pageCopy.contentsLabel">{pageCopy.contentsLabel}</span><span>UNITY / C#</span></div>
+      <p class="rp-selection-name" id="selected-work-title"><a href="#project"><span data-portfolio-copy="project.title">{project.title}</span></a></p>
+      <p class="rp-selection-sub" data-portfolio-copy="pageCopy.contentsSubtitle">{pageCopy.contentsSubtitle}</p>
+      <nav class="rp-toc" aria-label="DCB 목차">
+        <ol>{contents.map(section => <li>
+          <a class="rp-toc-section" href={`#${section.id}`}><span>{section.number}</span><strong data-portfolio-copy={section.copyKey}>{section.title}</strong><span aria-hidden="true">↘</span></a>
+          {section.children.length > 0 && <ol class="rp-toc-children">{section.children.map(item => <li><a href={`#${item.id}`}><span>{item.number}</span><span data-portfolio-copy={item.copyKey}>{item.title}</span></a></li>)}</ol>}
+        </li>)}</ol>
+      </nav>
+      <a class="rp-selection-foot" href="#more"><span data-portfolio-copy="pageCopy.contentsMore">{pageCopy.contentsMore}</span> <span aria-hidden="true">↓</span></a>
+    </aside>
+  </section>
+
+  <section class="rp-project-tree" aria-labelledby="project-title">
+  <div id="project" class="rp-project rp-section">
+    <div class="rp-section-title"><div><p class="rp-kicker">PROJECT / UNITY · C#</p><h2 id="project-title" data-portfolio-copy="project.title">{project.title}</h2></div><p data-portfolio-copy="project.subtitle">{project.subtitle}</p></div>
+    <div class="rp-showcase rp-project-showcase">
+      <div id="project-video"><PortfolioMedia media={overviewMedia} slotId="project" placeholderTitle="DCB 전체 플레이 영상" label="GAMEPLAY OVERVIEW" loading="eager" showCaption={false} /></div>
+    <div class="rp-project-content">
+      <p class="rp-project-description" data-portfolio-copy="project.description">{project.description}</p>
+      <PortfolioParagraphs fields={fields} slot="project" />
+      {(profile.period || profile.team) && <dl class="rp-project-facts">
+        {profile.period && <div><dt>개발 기간</dt><dd data-portfolio-copy="profile.period">{profile.period}</dd></div>}
+        {profile.team && <div><dt>팀 구성</dt><dd data-portfolio-copy="profile.team">{profile.team}</dd></div>}
+      </dl>}
+      <div class="rp-project-links"><a class="rp-inline-link" href="/projects/dcb/">프로젝트의 전체 기능 보기 <span aria-hidden="true">↗</span></a></div>
+    </div>
+    </div>
+  </div>
+
+  <section id="ai" class="rp-section" aria-labelledby="ai-title" data-dcb-feature={aiFeature.slug}>
+    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">01</span>{aiFeature.label}</p><h3 id="ai-title" data-portfolio-copy="pageCopy.aiTitle">{pageCopy.aiTitle}</h3></div><p data-portfolio-copy="pageCopy.aiDescription">{pageCopy.aiDescription}</p></div>
+    <PortfolioParagraphs fields={fields} slot="ai" />
+    <article id="ai-parallel" class="rp-decision" aria-labelledby="decision-title">
+      <div class="rp-decision-heading"><p class="rp-eyebrow"><span class="rp-case-number">01.1</span>활용 사례</p><h4 class="rp-case-title" id="decision-title" data-portfolio-copy="aiUsageCase.title">{aiUsageCase.title}</h4><p data-portfolio-copy="aiUsageCase.context">{aiUsageCase.context}</p></div>
+      <div><dl class="rp-case-facts"><div><dt>운영 방식</dt><dd data-portfolio-copy="aiUsageCase.choice">{aiUsageCase.choice}</dd></div></dl><div class="rp-case-links">{usageLinks.map(link => <a href={link.href} title={link.title}>{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
+    </article>
+    <h4 class="rp-workflow-title" data-portfolio-copy="pageCopy.workflowTitle">{pageCopy.workflowTitle}</h4>
+    <ol class="rp-workflow">{aiSteps.map((step, index) => <li><span class="rp-step-number">STEP {String(index + 1).padStart(2, '0')}</span><h5 data-portfolio-copy={`aiSteps.${index}.title`}>{step.title}</h5><p data-portfolio-copy={`aiSteps.${index}.description`}>{step.description}</p></li>)}</ol>
+    <div class="rp-workflow-links">{workflowArticles.map(link => <a href={link.href} title={link.title}>{link.label} <span aria-hidden="true">↗</span></a>)}</div>
+  </section>
+
+  <section id="client" class="rp-section" aria-labelledby="client-title">
+    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">02</span>CLIENT SYSTEMS</p><h3 id="client-title" data-portfolio-copy="pageCopy.clientTitle">{pageCopy.clientTitle}</h3></div><p data-portfolio-copy="pageCopy.clientDescription">{pageCopy.clientDescription}</p></div>
+    <PortfolioParagraphs fields={fields} slot="client" />
+    <div class="rp-client-cases">{clients.map(({ item, links }) => <PortfolioCase item={item} links={links} copyGroup="clientCases" fields={fields} />)}</div>
+  </section>
+
+  <section id="graphics" class="rp-section" aria-labelledby="graphics-title">
+    <div class="rp-section-title"><div><p class="rp-kicker"><span class="rp-section-number">03</span>RUNTIME & GRAPHICS</p><h3 id="graphics-title" data-portfolio-copy="pageCopy.graphicsTitle">{pageCopy.graphicsTitle}</h3></div><p data-portfolio-copy="pageCopy.graphicsDescription">{pageCopy.graphicsDescription}</p></div>
+    <PortfolioParagraphs fields={fields} slot="graphics" />
+    <div class="rp-graphics-grid">{graphics.map(({ item, links }) => <PortfolioCase item={item} links={links} copyGroup="graphicsCases" fields={fields} />)}</div>
+  </section>
+
+  <aside id="more" class="rp-section rp-more" aria-labelledby="more-title">
+    <div><p class="rp-kicker">FURTHER READING</p><h3 id="more-title" data-portfolio-copy="pageCopy.moreTitle">{pageCopy.moreTitle}</h3><p data-portfolio-copy="pageCopy.moreDescription">{pageCopy.moreDescription}</p><PortfolioParagraphs fields={fields} slot="more" /></div>
+    <ul class="rp-more-links">{extraArticles.map(link => <li><a href={link.href} data-portfolio-extra={link.href}><span>{link.label}</span><span aria-hidden="true">↗</span></a></li>)}</ul>
+  </aside>
+  </section>
+  <section class="rp-contact" aria-labelledby="contact-title"><div><p class="rp-kicker">CONTACT & LINKS</p><h2 id="contact-title" data-portfolio-copy="profile.name">{profile.name}</h2></div><div><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗<span class="rp-sr-only"> (새 탭)</span></a><a href="/">개발 블로그 ↗</a>{profile.contact && <a href={`mailto:${profile.contact}`}>{profile.contact} ↗</a>}</div></section>
+  {privateAuthoring && <PortfolioCopyEditor fields={fields} defaults={defaultFields} />}
+</RecruitmentLayout>

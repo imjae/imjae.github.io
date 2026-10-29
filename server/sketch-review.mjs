@@ -13,9 +13,9 @@ export async function handleSketchRequest(request, env, { runner = false, ownerI
     if (runner) {
       check(env.SKETCH_RUNNER_TOKEN && request.headers.get('Authorization')?.startsWith('Bearer '), '실행기 인증이 필요합니다.',401);
       check(await digest(request.headers.get('Authorization').slice(7)) === await digest(env.SKETCH_RUNNER_TOKEN), '실행기 인증이 필요합니다.',401);
-      const published = /^\/api\/sketch\/runner\/published\/(?:([a-z0-9]+(?:-[a-z0-9]+)*)|portfolio\/krafton-2027)$/.exec(url.pathname);
+      const published = /^\/api\/sketch\/runner\/published\/(?:([a-z0-9]+(?:-[a-z0-9]+)*)|portfolio\/(?:2027|krafton-2027))$/.exec(url.pathname);
       if (published && request.method === 'GET') {
-        const path = published[1] ? `/writing/${published[1]}/` : '/portfolio/krafton-2027/';
+        const path = published[1] ? `/writing/${published[1]}/` : '/portfolio/2027/';
         const asset = await env.ASSETS.fetch(new Request(`${url.origin}${path}`));
         check(asset.ok, '배포된 편집 글이 없습니다.',404);
         return Response.json({ sourceHash: /data-sketch-source="([a-f0-9]{64})"/.exec(await asset.text())?.[1] || null });

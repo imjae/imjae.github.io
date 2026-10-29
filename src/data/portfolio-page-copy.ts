@@ -1,6 +1,6 @@
 // 기능 식별자·목차 번호는 유지하고 표시 문구만 편집한다.
 export const pageCopy = {
-  eyebrow: 'KRAFTON INTERNSHIP 2027 / GAME DEVELOPMENT – PROGRAMMING',
+  eyebrow: 'PORTFOLIO 2027 / GAME DEVELOPMENT – PROGRAMMING',
   aiAction: 'AI 활용 살펴보기',
   contentsLabel: 'PROJECT CONTENTS',
   contentsProject: 'DCB',

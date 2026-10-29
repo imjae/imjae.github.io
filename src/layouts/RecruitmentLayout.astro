@@ -7,7 +7,7 @@ import PublishProgress from '../components/PublishProgress.astro';
 
 interface Props { title: string; description: string; sourceHash?: string; }
 const { title, description, sourceHash } = Astro.props;
-const canonical = new URL('/portfolio/krafton-2027/', site.url);
+const canonical = new URL('/portfolio/2027/', site.url);
 const sections = [
   ['project', 'Project'], ['ai', 'AI Usage'], ['client', 'Implementation'],
   ['graphics', 'Graphics'],
@@ -46,7 +46,7 @@ const sections = [
               <button type="button" data-portfolio-view aria-pressed="true" disabled>View</button>
               <button type="button" data-portfolio-edit aria-pressed="false" disabled>Edit</button>
               <form action="/auth/logout" method="post"><button type="submit">Sign out</button></form>
-            </> : <><a href="#main-content" aria-current="page">View</a><a href={authorLoginUrl('/portfolio/krafton-2027/?edit=1')} data-author-login>Sign in</a></>}
+            </> : <><a href="#main-content" aria-current="page">View</a><a href={authorLoginUrl('/portfolio/2027/?edit=1')} data-author-login>Sign in</a></>}
           </nav>
         </div>
       </div>

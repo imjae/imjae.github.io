@@ -41,7 +41,7 @@ function fixture({ userId = 37284282, userLogin = 'imjae', scope = '', providerF
   };
   const request = (path, options = {}) => handleAuthorRequest(new Request(`https://author.example${path}`, options), env, { fetcher, now: () => time });
   const start = async returnTo => {
-    const response = await request(`/auth/login?return_to=${encodeURIComponent(returnTo ?? '/portfolio/krafton-2027/?edit=1#graphics')}`);
+    const response = await request(`/auth/login?return_to=${encodeURIComponent(returnTo ?? '/portfolio/2027/?edit=1#graphics')}`);
     const authorization = new URL(response.headers.get('Location'));
     return { response, authorization, state: authorization.searchParams.get('state'), cookie: cookies(response)[0] };
   };
@@ -56,7 +56,7 @@ function fixture({ userId = 37284282, userLogin = 'imjae', scope = '', providerF
 
 test('로그인 없는 HTML·편집 쿼리·스크립트·이미지·직접 경로는 보호 자산에 도달하지 못한다', async () => {
   const f = fixture();
-  const page = await f.request('/portfolio/krafton-2027/?edit=1', { headers: { Accept: 'text/html' } });
+  const page = await f.request('/portfolio/2027/?edit=1', { headers: { Accept: 'text/html' } });
   assert.equal(page.status, 303);
   assert.match(page.headers.get('Location'), /^\/auth\/login\?return_to=/);
   for (const path of ['/editor/', '/_astro/editor.js', '/favicon.svg', '/auth/session', '/editor/index.html', '/api/publish-progress/status','/sketch/ask/','/api/sketch/ask']) {
@@ -82,7 +82,7 @@ test('OAuth state·PKCE를 검증하고 본인의 불변 GitHub ID만 세션을 
   const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(exchange.body.get('code_verifier'))));
   assert.equal(flow.authorization.searchParams.get('code_challenge'), Buffer.from(digest).toString('base64url'));
   assert.equal(response.status, 303);
-  assert.equal(response.headers.get('Location'), '/portfolio/krafton-2027/?edit=1#graphics');
+  assert.equal(response.headers.get('Location'), '/portfolio/2027/?edit=1#graphics');
   assert.ok(cookie);
   assert.ok(response.headers.getSetCookie().every(value => /Secure; HttpOnly; SameSite=Lax/.test(value)));
   const allowed = await f.request('/editor/', { headers: { Cookie: cookie } });
@@ -215,7 +215,7 @@ test('로그아웃은 같은 origin의 POST만 허용하고 서버 세션을 즉
 
 test('로그인 후 이동은 내부 경로만 허용하며 HTTPS 외의 인증 요청을 거부한다', async () => {
   for (const path of ['https://attacker.example', '//attacker.example', '/\\attacker.example', '/%2fattacker.example', '/%5cattacker.example', '/auth/login', '/\nLocation: https://attacker.example']) assert.equal(safeReturnPath(path), '/');
-  assert.equal(safeReturnPath('/portfolio/krafton-2027/?edit=1#graphics'), '/portfolio/krafton-2027/?edit=1#graphics');
+  assert.equal(safeReturnPath('/portfolio/2027/?edit=1#graphics'), '/portfolio/2027/?edit=1#graphics');
   const f = fixture();
   const result = await handleAuthorRequest(new Request('http://author.example/auth/login'), f.env);
   assert.equal(result.status, 400);
