@@ -138,7 +138,7 @@ export async function handleAuthorRequest(request, env, { fetcher = fetch, now =
         response = redirect('https://imjae.github.io/', [cookie(SESSION_COOKIE, '', 0)]);
       } else if (url.pathname === '/auth/session' && request.method === 'GET') {
         response = Response.json({ login: session.login });
-      } else if ((url.pathname.startsWith('/games/') && url.pathname !== '/games/') || url.pathname === '/api/game-plans' || url.pathname.startsWith('/api/game-plans/')) {
+      } else if ((url.pathname.startsWith('/games/') && url.pathname !== '/games/') || /^\/projects\/[^/]+\/(plans|resources)(?:\/|$)/.test(url.pathname) || url.pathname === '/api/project-documents' || url.pathname.startsWith('/api/project-documents/') || url.pathname === '/api/game-plans' || url.pathname.startsWith('/api/game-plans/')) {
         response = await handleGamePlans(request, env);
       } else if (url.pathname.startsWith('/notes/') || url.pathname === '/api/notes' || url.pathname.startsWith('/api/notes/')) {
         response = await handleOwnerPosts(request, env, { fetcher });

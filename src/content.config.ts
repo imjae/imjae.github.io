@@ -30,10 +30,10 @@ const articles = defineCollection({
     legacy: z.boolean().default(false),
   }).superRefine((data, context) => {
     if (data.topic === 'reading' && !data.book) {
-      context.addIssue({ code: 'custom', path: ['book'], message: 'Reading 기록에는 book.title이 필요합니다.' });
+      context.addIssue({ code: 'custom', path: ['book'], message: 'Books 기록에는 book.title이 필요합니다.' });
     }
     if (data.topic === 'reading' && data.kind !== 'reading') {
-      context.addIssue({ code: 'custom', path: ['kind'], message: 'Reading 기록의 kind는 reading이어야 합니다.' });
+      context.addIssue({ code: 'custom', path: ['kind'], message: 'Books 기록의 kind는 reading이어야 합니다.' });
     }
   }),
 });

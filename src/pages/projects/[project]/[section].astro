@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectNav from '../../../components/ProjectNav.astro';
+import { projects, projectDocuments } from '../../../data/projects.mjs';
+import { authorLoginUrl } from '../../../lib/authoring.server.mjs';
+export function getStaticPaths() { return projects.flatMap(project => projectDocuments.map(section => ({ params: { project: project.id, section: section.id }, props: { project, section } }))); }
+const { project, section } = Astro.props;
+---
+<BaseLayout title={`${project.title} · ${section.title}`} description={`${project.title}의 비공개 ${section.title}.`} active="projects" noindex>
+  <ProjectNav id={project.id} selected={section.id} />
+  <header class="document-heading"><p class="eyebrow">{project.title}</p><h1>{section.title}</h1></header>
+  <section class="locked-document">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <h2>비공개 {section.title}</h2>
+    <p>소유자만 열람할 수 있습니다.</p>
+    <a class="sign-in" href={authorLoginUrl(`/projects/${project.id}/${section.id}/`)}>소유자 로그인 <span aria-hidden="true">↗</span></a>
+  </section>
+</BaseLayout>
+<style>
+  .document-heading h1 { margin: 0; font-size: 32px; letter-spacing: -.035em; }
+  .locked-document { border-top: 1px solid var(--line); margin: 30px 0 70px; padding: 38px 0; }
+  svg { color: var(--muted); }
+  h2 { margin: 16px 0 8px; font-size: 18px; font-weight: 600; }
+  .locked-document p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .sign-in { display: inline-flex; align-items: center; gap: 22px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 3px; font-size: 13px; }
+  .sign-in:hover { border-color: var(--green); }
+</style>

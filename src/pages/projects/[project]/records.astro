@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectNav from '../../../components/ProjectNav.astro';
+import ProjectRecord from '../../../components/ProjectRecord.astro';
+import { projects } from '../../../data/projects.mjs';
+import { getArticles } from '../../../lib/articles';
+import '../../../styles/project-pages.css';
+export function getStaticPaths() { return projects.filter(project => project.id !== 'dcb').map(project => ({ params: { project: project.id }, props: { project } })); }
+const { project } = Astro.props;
+const articles = (await getArticles()).filter(article => article.data.project === project.id);
+---
+<BaseLayout title={`${project.title} · 개발 기록`} active="projects">
+  <ProjectNav id={project.id} selected="records" />
+  <header class="project-records-head"><h1>개발 기록</h1><p>{articles.length}편</p></header>
+  {articles.length ? <div class="project-records">{articles.map(article => <ProjectRecord article={article} />)}</div> : <p class="empty-state">아직 공개된 개발 기록이 없습니다.</p>}
+</BaseLayout>

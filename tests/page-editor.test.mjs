@@ -10,8 +10,9 @@ import { postEditorPage, postPage } from '../server/owner-post-ui.mjs';
 test('each list and project page edits its own source, without a general-manager fallback', async () => {
   const cases = [
     ['/', 'src/data/home-covers.ts'], ['/writing/', 'src/pages/writing/index.astro'],
-    ['/portfolio/', 'src/pages/portfolio/index.astro'], ['/games/', 'src/data/games.mjs'],
+    ['/portfolio/', 'src/pages/portfolio/index.astro'], ['/projects/', 'src/data/projects.mjs'], ['/projects/shape-workshop/', 'src/data/projects.mjs'], ['/projects/dungeon-exploration/', 'src/data/projects.mjs'],
     ['/projects/dcb/', 'src/pages/projects/dcb.astro'],
+    ['/projects/shape-workshop/records/', 'src/data/projects.mjs'], ['/projects/dungeon-exploration/records/', 'src/data/projects.mjs'],
     ...['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study'].map(id => [`/topics/${id}/`, 'src/data/site.ts']),
     ...studyCourses.map(course => [`/series/${course.id}/`, 'src/data/study-courses.mjs']),
     ['/series/dcb/', 'src/data/site.ts'],
@@ -27,7 +28,7 @@ test('each list and project page edits its own source, without a general-manager
       assert.ok(await stat(source.path));
     }
   }
-  for (const path of ['/404/', '/login/', '/unknown/', '/about/', '/games/dcb/', '/writing/ik-traversal/']) assert.equal(pageEditorContext(path), null);
+  for (const path of ['/404/', '/login/', '/unknown/', '/about/', '/games/', '/games/dcb/', '/projects/dcb/plans/', '/projects/dcb/resources/', '/writing/ik-traversal/']) assert.equal(pageEditorContext(path), null);
 });
 
 test('feature editing includes only that feature videos and published articles', () => {
@@ -37,6 +38,8 @@ test('feature editing includes only that feature videos and published articles',
   assert.deepEqual(pageEditorArticles(articles, { slugs: ['two', 'draft'] }), [articles[1]]);
   assert.deepEqual(pageEditorArticles(articles, {}), articles.slice(0, 2));
   assert.deepEqual(pageEditorArticles(articles), []);
+  const projectArticles = [{ data: { project: 'shape-workshop' } }, { data: { project: 'dcb' } }, { data: { project: 'shape-workshop', draft: true } }];
+  assert.deepEqual(pageEditorArticles(projectArticles, pageEditorContext('/projects/shape-workshop/records/').articles), [projectArticles[0]]);
   for (const feature of dcbFeatures) {
     const context = pageEditorContext(`/projects/dcb/features/${feature.slug}/`);
     assert.deepEqual(context.articles.slugs, [feature.overviewSlug, ...feature.articleSlugs].filter(Boolean));

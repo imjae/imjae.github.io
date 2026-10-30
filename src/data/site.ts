@@ -14,8 +14,8 @@ export const topics = [
   { id: 'ai', title: 'AI Collaboration', english: 'AI COLLABORATION', description: 'AI를 사용한 구현과 검증 과정.', number: '04', color: '#75618b' },
   { id: 'notes', title: 'Notes', english: 'NOTES', description: '자료구조와 웹 기술에 관한 메모.', number: '05', color: '#716d63' },
   { id: 'math', title: 'Mathematics', english: 'MATHEMATICS', description: '수와 함수, 벡터·행렬·회전의 원리와 계산.', number: '06', color: '#427872' },
-  { id: 'reading', title: 'Reading', english: 'READING', description: '책 목록과 짧은 감상, 독서 메모.', number: '07', color: '#8a685e' },
-  { id: 'study', title: 'Study', english: 'STUDY', description: 'DCB의 언리얼 전환, 엔진 기능별 실습과 C++ 구조.', number: '08', color: '#526c8a' },
+  { id: 'reading', title: 'Books', english: 'BOOKS', description: '책 목록과 짧은 감상, 독서 메모.', number: '07', color: '#8a685e' },
+  { id: 'study', title: 'Learning', english: 'LEARNING', description: 'DCB의 언리얼 전환, 엔진 기능별 실습과 C++ 구조.', number: '08', color: '#526c8a' },
 ] as const;
 
 export const kinds = { 'case-study': '구조 노트', devlog: '개발 기록', note: '기술 노트', reading: '읽기 노트' } as const;

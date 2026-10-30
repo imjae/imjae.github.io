@@ -67,7 +67,7 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
       </div>
       <fieldset id="book-fields" class="book-fields" hidden disabled>
         <legend>책과 짧은 감상</legend>
-        <p class="editor-help">책 한 권마다 기록을 남깁니다. 짧은 감상은 Reading 목록에도 표시되고, 긴 독후감은 GitHub에서 본문에 이어 쓸 수 있습니다.</p>
+        <p class="editor-help">책 한 권마다 기록을 남깁니다. 짧은 감상은 {getTopic('reading').title} 목록에도 표시되고, 긴 독후감은 GitHub에서 본문에 이어 쓸 수 있습니다.</p>
         <div class="editor-fields">
           <label>책 제목<input name="bookTitle" maxlength="160" placeholder="시지프 신화" /></label>
           <label>저자 (선택)<input name="bookAuthor" maxlength="120" placeholder="알베르 카뮈" /></label>

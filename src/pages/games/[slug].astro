@@ -1,39 +1,7 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { games } from '../../data/games.mjs';
-import { authorLoginUrl } from '../../lib/authoring.server.mjs';
-export function getStaticPaths() { return games.map(game => ({ params: { slug: game.id }, props: { game } })); }
-const { game } = Astro.props;
+import ProjectRedirect from '../../components/ProjectRedirect.astro';
+import { projects } from '../../data/projects.mjs';
+export function getStaticPaths() { return projects.map(project => ({ params: { slug: project.id } })); }
+const { slug } = Astro.params;
 ---
-<BaseLayout title={game.title} description={`${game.title}의 비공개 기획서.`} active="games" noindex>
-  <a class="back" href="/games/">← Games</a>
-  <div class="game-detail">
-    <figure><img src={game.cover} alt={game.alt} width="960" height="720" /><figcaption>{game.credit}</figcaption></figure>
-    <section class="game-access" aria-labelledby="game-title">
-      <h1 id="game-title">{game.title}</h1>
-      <div class="locked-plan">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg>
-        <h2>비공개 기획서</h2>
-        <p>이 게임의 기획 내용은 비공개입니다.<br />소유자만 열람할 수 있습니다.</p>
-        <a class="sign-in" href={authorLoginUrl(`/games/${game.id}/`)}>소유자 로그인 <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-  </div>
-</BaseLayout>
-<style>
-  .back { display: inline-block; margin-bottom: 30px; color: var(--muted); font-size: 13px; }
-  .game-detail { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 58px; align-items: start; padding-bottom: 90px; }
-  figure { margin: 0; }
-  figure img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }
-  figcaption { margin-top: 12px; color: var(--muted); font-size: 11px; }
-  .game-access { padding-top: 10px; }
-  h1 { margin: 0 0 30px; font-size: 32px; letter-spacing: -.04em; }
-  .locked-plan { border-top: 1px solid var(--line); padding-top: 29px; }
-  svg { color: var(--muted); }
-  h2 { margin: 15px 0 8px; font-size: 17px; font-weight: 600; }
-  .locked-plan p { margin: 0 0 24px; font-size: 14px; line-height: 1.9; color: var(--muted); }
-  .sign-in { display: inline-flex; align-items: center; gap: 22px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 3px; font-size: 13px; }
-  .sign-in:hover { border-color: var(--green); }
-  @media (max-width: 760px) { .game-detail { gap: 30px; } h1 { font-size: 28px; } }
-  @media (max-width: 600px) { .back { margin-bottom: 22px; } .game-detail { grid-template-columns: 1fr; gap: 25px; padding-bottom: 45px; } .game-access { padding-top: 0; } h1 { margin-bottom: 24px; } }
-</style>
+<ProjectRedirect target={`/projects/${slug}/plans/`} />

@@ -1,0 +1,9 @@
+---
+import { findProject } from '../data/projects.mjs';
+import { renderProjectNavigation, projectNavigationStyles } from '../lib/project-navigation.mjs';
+interface Props { id: string; selected?: string; current?: 'page' | 'location'; }
+const { id, selected = 'intro', current = 'page' } = Astro.props;
+const project = findProject(id)!;
+---
+<Fragment set:html={renderProjectNavigation(project, selected, current)} />
+<style is:inline set:html={projectNavigationStyles}></style>

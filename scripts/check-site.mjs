@@ -14,7 +14,7 @@ import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 import { pageEditorContext } from '../src/lib/page-editor.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
 import { managedPostSlugs, managedPostUrl } from '../src/lib/managed-posts.server.mjs';
-import { games } from '../src/data/games.mjs';
+import { projects, projectDocuments } from '../src/data/projects.mjs';
 
 const privateAuthoring = process.env.AUTHORING_MODE === 'private';
 const root = resolve(privateAuthoring ? '.authoring-dist' : 'dist');
@@ -40,15 +40,31 @@ if (privateAuthoring) {
   if (/href="\/editor\//.test(aboutMode)) failures.push('About Edit가 다른 관리 페이지로 이동함');
 } else if (/data-page-edit|id="about-edit-(?:form|state)"|id="about-editor"/.test(aboutPage)) failures.push('공개 About에 보호된 편집 UI가 포함됨');
 for (const file of await readdir('content/about-copy')) if (file.endsWith('.json') && !publishManifest.files[`content/about-copy/${file}`]) failures.push(`About 저장의 배포 정보 누락: ${file}`);
-const gameAlbum = await readFile(join(root, 'games/index.html'), 'utf8');
-if (!feeds.includes('<loc>https://imjae.github.io/games/</loc>')) failures.push('Games 앨범 사이트맵 누락');
-for (const game of games) {
-  if (!gameAlbum.includes(`href="/games/${game.id}/"`) || !gameAlbum.includes(game.cover)) failures.push(`게임 표지 또는 링크 누락: ${game.id}`);
-  const gate = await readFile(join(root, 'games', game.id, 'index.html'), 'utf8');
-  if (!gate.includes('비공개 기획서') || !gate.includes('소유자만 열람할 수 있습니다.') || !gate.includes('content="noindex, nofollow"')) failures.push(`비공개 기획서 안내 누락: ${game.id}`);
-  if (/id="plan-form"|id="plan-body"|\/api\/game-plans|game-plan-save/.test(gate)) failures.push(`정적 페이지에 기획서 편집 기능 노출: ${game.id}`);
-  if (feeds.includes(`/games/${game.id}/`)) failures.push(`비공개 기획서 주소가 피드에 포함됨: ${game.id}`);
+const projectAlbum = await readFile(join(root, 'projects/index.html'), 'utf8');
+if (!feeds.includes('<loc>https://imjae.github.io/projects/</loc>')) failures.push('Projects 앨범 사이트맵 누락');
+const oldAlbum = await readFile(join(root, 'games/index.html'), 'utf8');
+if (!oldAlbum.includes('href="/projects/"') || !oldAlbum.includes('window.location.replace')) failures.push('Games 앨범 이전 주소 연결 누락');
+if (siteText.includes('class="sidebar-project"')) failures.push('왼쪽 Projects 영역이 남아 있음');
+for (const project of projects) {
+  if (!projectAlbum.includes(`href="/projects/${project.id}/"`) || !projectAlbum.includes(project.cover)) failures.push(`프로젝트 표지 또는 소개 링크 누락: ${project.id}`);
+  const intro = await readFile(join(root, 'projects', project.id, 'index.html'), 'utf8');
+  if (!intro.includes('project-intro-article') || !intro.includes(project.cover)) failures.push(`프로젝트 소개 본문 또는 대표 이미지 누락: ${project.id}`);
+  const records = await readFile(join(root, project.records, 'index.html'), 'utf8');
+  if (!intro.includes(`href="${project.records}"`) || !records.includes('project-records-head') || !records.includes('개발 기록')) failures.push(`프로젝트 개발 기록 연결 누락: ${project.id}`);
+  if (!feeds.includes(`<loc>https://imjae.github.io${project.records}</loc>`)) failures.push(`프로젝트 개발 기록 사이트맵 누락: ${project.id}`);
+  if (!feeds.includes(`<loc>https://imjae.github.io/projects/${project.id}/</loc>`)) failures.push(`프로젝트 소개 사이트맵 누락: ${project.id}`);
+  const legacy = await readFile(join(root, 'games', project.id, 'index.html'), 'utf8');
+  if (!legacy.includes(`href="/projects/${project.id}/plans/"`) || !legacy.includes('window.location.search + window.location.hash')) failures.push(`기존 기획서 주소 또는 편집 상태 연결 누락: ${project.id}`);
+  for (const section of projectDocuments) {
+    const path = `/projects/${project.id}/${section.id}/`;
+    if (!intro.includes(`href="${path}"`)) failures.push(`프로젝트 문서 연결 누락: ${path}`);
+    const gate = await readFile(join(root, 'projects', project.id, section.id, 'index.html'), 'utf8');
+    if (!gate.includes(`비공개 ${section.title}`) || !gate.includes('소유자만 열람할 수 있습니다.') || !gate.includes('content="noindex, nofollow"')) failures.push(`비공개 문서 안내 누락: ${path}`);
+    if (/id="plan-form"|id="plan-body"|id="document-tree"|class="resource-thumbnails"|\/api\/project-documents|game-plan-save/.test(gate)) failures.push(`정적 페이지에 비공개 문서 목록 또는 편집 기능 노출: ${path}`);
+    if (feeds.includes(path)) failures.push(`비공개 문서 주소가 피드에 포함됨: ${path}`);
+  }
 }
+if (feeds.includes('https://imjae.github.io/games/')) failures.push('이전 Games 주소가 피드에 포함됨');
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   const route = '/' + relative(root, file).replaceAll('\\', '/').replace(/index\.html$/, '');

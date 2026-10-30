@@ -1,0 +1,25 @@
+---
+import type { Article } from '../lib/articles';
+import { articleUrl, formatDate } from '../lib/articles';
+import { getTopic } from '../data/site';
+interface Props { article: Article; }
+const { article } = Astro.props;
+---
+<article class="project-record" data-entry={article.data.slug}>
+  <a href={articleUrl(article)}>
+    <div class="record-meta"><span>{getTopic(article.data.topic).title}</span><time datetime={article.data.date}>{formatDate(article.data.date)}</time></div>
+    <h2>{article.data.title}{article.data.draft && <small>초안 · 로컬</small>}</h2>
+    <p>{article.data.description}</p>
+  </a>
+</article>
+<style>
+  .project-record { border-top:1px solid var(--line); }
+  .project-record:last-child { border-bottom:1px solid var(--line); }
+  a { display:block; padding:22px 0; }
+  .record-meta { display:flex; gap:20px; justify-content:space-between; font-size:11px; color:var(--muted); }
+  h2 { margin:7px 0; font-size:19px; font-weight:600; line-height:1.7; word-break:keep-all; }
+  p { margin:0; max-width:900px; color:var(--muted); font-size:13px; line-height:1.9; }
+  small { font-size:11px; margin-left:10px; color:var(--muted); }
+  a:hover h2 { color:var(--green); text-decoration:underline; text-underline-offset:4px; }
+  @media(max-width:600px) { h2 { font-size:17px; } a { padding:20px 0; } }
+</style>

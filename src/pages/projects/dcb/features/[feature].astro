@@ -1,4 +1,5 @@
 ---
+import ProjectNav from '../../../../components/ProjectNav.astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ArticleCard from '../../../../components/ArticleCard.astro';
 import DcbVideos from '../../../../components/DcbVideos.astro';
@@ -14,6 +15,7 @@ const { overview, analyses } = groupFeatureArticles(feature, await getArticles()
 const videoSlots = dcbVideos.filter(video => video.featureSlugs.includes(feature.slug)).map(video => video.slot);
 ---
 <BaseLayout title={`${feature.title} — DCB`} description={feature.description} active="dcb">
+  <ProjectNav id="dcb" selected="records" current="location" />
   <div class="breadcrumb"><a href="/projects/dcb/">DCB</a><span>/</span><span>{feature.title}</span></div>
   <header class="page-intro">
     <p class="eyebrow">DCB / {feature.number} / {feature.label}</p>

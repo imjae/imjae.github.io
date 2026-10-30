@@ -31,7 +31,7 @@ const series = article.data.series ? (await getArticles()).filter((entry) => ent
     {article.data.topic === 'reading' && article.data.book && <aside class="reading-summary" aria-label="책과 감상">
       <p><strong>{article.data.book.title}</strong>{article.data.book.author && <span> · {article.data.book.author}</span>}{article.data.book.finished && <span> · 완독 <time datetime={article.data.book.finished}>{formatDate(article.data.book.finished)}</time></span>}</p>
       {article.data.book.note && <div><span class="reading-note-label">짧은 감상</span><p>{article.data.book.note}</p></div>}
-      <a href="/topics/reading/">Reading 목록 →</a>
+      <a href="/topics/reading/">{topic.title} 목록 →</a>
     </aside>}
   </header>
   <div class="article-body-layout"><div class="article-main"><article class="prose" data-sketch-source={articleSourceHash(article.filePath)}><Content /></article>

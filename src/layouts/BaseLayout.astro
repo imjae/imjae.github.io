@@ -17,7 +17,8 @@ const readingCount = (await getReadingItems(articles)).length;
 const canonical = new URL(Astro.url.pathname, site.url);
 const pageEditor = !inlineEditor && !editFile && !!pageEditorContext(Astro.url.pathname);
 const editorUrl = editFile ? githubFileUrl('edit', editFile) : active === 'editor' ? '/editor/' : undefined;
-const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathname.split('/')[1]);
+const projectSection = Astro.url.pathname.startsWith('/projects/') || active === 'dcb';
+const writingSection = !projectSection && ['writing', 'topics', 'series'].includes(Astro.url.pathname.split('/')[1]);
 ---
 <!doctype html>
 <html lang="ko">
@@ -48,7 +49,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
       <nav class="header-nav" aria-label="Main navigation">
         <a href="/writing/" aria-current={writingSection ? Astro.url.pathname === '/writing/' ? 'page' : 'location' : undefined}>Writing</a>
         <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>Portfolio</a>
-        <a href="/games/" aria-current={active === 'games' ? Astro.url.pathname === '/games/' ? 'page' : 'location' : undefined}>Games</a>
+        <a href="/projects/" aria-current={projectSection ? Astro.url.pathname === '/projects/' ? 'page' : 'location' : undefined}>Projects</a>
         <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>About</a>
       </nav>
       <div class="header-utilities">
@@ -56,14 +57,13 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
         <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} inlineEditor={inlineEditor || pageEditor} />
       </div>
     </header>
-    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' || active === 'games' }]}>
-      {active !== 'home' && active !== 'about' && active !== 'games' && !reading && <aside class="sidebar" aria-label="Browse notes">
+    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' || projectSection }]}>
+      {active !== 'home' && active !== 'about' && !projectSection && !reading && <aside class="sidebar" aria-label="Browse notes">
         <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
         <p class="nav-caption">Topics</p>
         <nav class="topic-nav" aria-label="Topics">
           {topics.map((topic) => <a href={`/topics/${topic.id}/`} class:list={{ selected: active === topic.id }} style={`--topic-color:${topic.color}`}><span class="topic-mark"></span>{topic.title}<small>{(topic.id === 'reading' ? readingCount : articles.filter((article) => article.data.topic === topic.id).length).toString().padStart(2, '0')}</small></a>)}
         </nav>
-        <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/projects/dcb/" class:list={{ selected: active === 'dcb' }} aria-current={Astro.url.pathname === '/projects/dcb/' ? 'page' : undefined}><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/" aria-current={Astro.url.pathname === '/series/dcb/' ? 'page' : undefined}>DCB articles <span aria-hidden="true">→</span></a></div>
         <div class="sidebar-foot"><a href="/rss.xml">RSS feed ↗</a></div>
       </aside>}
       <main id="main-content">{privateAuthoring && pageEditor && <PageEditor title={title ?? site.title} articles={articles} />}<slot /></main>
