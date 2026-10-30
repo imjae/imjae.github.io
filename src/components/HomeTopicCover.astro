@@ -1,0 +1,50 @@
+---
+import type { getHomeCovers } from '../data/home-covers';
+interface Props { cover: ReturnType<typeof getHomeCovers>[number]; }
+const { cover: { topic, article, count, code, quote, image } } = Astro.props;
+const titleParts = topic.id === 'tools' ? ['Tools &', 'Systems'] : topic.id === 'ai' ? ['AI', 'Collaboration'] : [topic.title];
+---
+<a class="topic-cover" data-home-topic={topic.id} data-home-cover data-cover-slug={article?.data.slug} data-count={count} href={`/topics/${topic.id}/`} aria-label={`${topic.title} 글 ${count}편 보기`}>
+  <span class="cover-top"><span>{count.toString().padStart(2, '0')} articles</span><span aria-hidden="true">↗</span></span>
+  <h2>{titleParts.map((part, index) => <>{index > 0 && <br />}{part}</>)}</h2>
+  <div class="cover-middle">
+    {image ? <div class="cover-visual"><img src={image} width="480" height="408" alt="벡터의 길이와 정규화 도식" decoding="async" /></div>
+      : quote ? <p class="cover-quote">{quote}</p>
+      : code ? <pre class="cover-code" aria-label={`본문 ${topic.id === 'gameplay' ? '실행 로그' : '코드'} 일부`}>{code}</pre>
+      : <p class="cover-description">{article?.data.description ?? topic.description}</p>}
+  </div>
+  <h3>{article?.data.title ?? '아직 공개한 글이 없습니다.'}</h3>
+</a>
+<style>
+  .topic-cover { display: flex; flex-direction: column; text-align: left; min-width: 0; padding: 20px 21px 22px; min-height: 335px; background: #e8ece4; border: 1px solid transparent; color: #3e513d; text-decoration: none; }
+  .topic-cover:hover { border-color: #71836b; text-decoration: none; }
+  .topic-cover[aria-current="true"], .topic-cover:focus-visible { outline: 2px solid #526a4a; outline-offset: 3px; }
+  .cover-top { display: flex; width: 100%; justify-content: space-between; font: 9px var(--mono); color: #69735f; margin-bottom: 19px; }
+  h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 31px; font-weight: 400; letter-spacing: -.8px; line-height: 1.06; min-height: 66px; margin: 0; overflow-wrap: anywhere; }
+  .cover-middle { flex: 1; padding: 10px 0 14px; min-height: 127px; display: flex; align-items: center; }
+  .cover-visual { width: 100%; height: 128px; text-align: center; }
+  .cover-visual img { height: 122px; width: auto; max-width: 100%; object-fit: contain; mix-blend-mode: multiply; }
+  .cover-description { font-size: 11px; line-height: 1.85; color: #626d5d; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
+  .cover-quote { font: 15px/1.85 Georgia, 'Batang', serif; color: #705f52; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin: 0; word-break: keep-all; }
+  .cover-code { font: 10px/1.9 var(--mono); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; color: #526f70; }
+  h3 { font-size: 13px; line-height: 1.8; letter-spacing: -.2px; font-weight: 500; min-height: 47px; padding-top: 16px; border-top: 1px solid #aeb8a766; margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
+  [data-home-topic="gameplay"] { background: #e5eadd; color: #3e513d; }
+  [data-home-topic="graphics"] { background: #e0e9e9; color: #36565a; }
+  [data-home-topic="tools"] { background: #e9e7de; color: #5a5646; }
+  [data-home-topic="ai"] { background: #e8e3eb; color: #64536d; }
+  [data-home-topic="notes"] { background: #eaece7; color: #4f5d4c; }
+  [data-home-topic="math"] { background: #e4e9e0; color: #42583c; }
+  [data-home-topic="reading"] { background: #f0e7dd; color: #6c5541; }
+  [data-home-topic="study"] { background: #e3e7ed; color: #425573; }
+  @media (min-width: 1450px) { .topic-cover { padding: 23px; min-height: 350px; } }
+  @media (max-width: 1120px) { .topic-cover { padding: 18px 15px; min-height: 330px; } h2 { font-size: 27px; } h3 { font-size: 12px; } .cover-code { font-size: 9px; } }
+  @media (max-width: 850px) { .topic-cover { min-height: 315px; padding: 22px; } h2 { font-size: 32px; min-height: 68px; } .cover-middle { min-height: 115px; } .cover-code { font-size: 11px; } .cover-description { font-size: 12px; } .cover-visual { height: 125px; } }
+  @media (max-width: 550px) {
+    .topic-cover { padding: 16px 13px; min-height: 300px; } .cover-top { font-size: 8px; margin-bottom: 15px; }
+    h2 { font-size: 23px; min-height: 50px; letter-spacing: -.6px; } .cover-middle { min-height: 125px; padding: 10px 0; }
+    .cover-code { font-size: 9px; } .cover-description { font-size: 10px; line-height: 1.8; -webkit-line-clamp: 5; }
+    .cover-quote { font-size: 12px; line-height: 1.8; -webkit-line-clamp: 5; } .cover-visual { height: 110px; }
+    .cover-visual img { height: 105px; width: 100%; object-fit: contain; } h3 { font-size: 11px; line-height: 1.8; min-height: 61px; padding-top: 12px; }
+  }
+  @media (max-width: 360px) { .topic-cover { padding: 14px 10px; } h2 { font-size: 20px; } .cover-top { font-size: 7px; } .cover-code { font-size: 8px; } h3 { font-size: 10px; } }
+</style>

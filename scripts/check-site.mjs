@@ -91,10 +91,29 @@ const shownBooks = [...readingPage.matchAll(/\bdata-book="([^"]+)"/g)].map(match
 if (JSON.stringify(expectedBooks) !== JSON.stringify(shownBooks)) failures.push('Reading 목록에 중복·누락된 책이나 비공개 기록이 있음');
 const settings = await readPinSettings();
 const pinnedSlugs = selectPinnedArticles(applyPinSettings(articles, settings?.pins)).map(article => article.data.slug);
-const shownSlugs = [...home.matchAll(/<article\b[^>]*data-entry="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(shownSlugs) !== JSON.stringify(pinnedSlugs)) failures.push('Home 고정 글 목록과 공개 글의 pinned·pinOrder 설정이 다름');
-if (pinnedSlugs.length > 0 && !home.includes('id="pinned-title"')) failures.push('Home Pinned 제목 누락');
-if (!home.includes('id="home-title"') || !home.includes('class="cinematic-backdrop"') || !home.includes('href="/projects/dcb/"')) failures.push('Home 시네마틱 장면 또는 프로젝트 연결 누락');
+const homeIndexJson = home.match(/<script\b[^>]*id="home-index"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+const homeIndex = homeIndexJson ? JSON.parse(homeIndexJson) : {};
+const publicArticles = articles.filter(article => !article.data.draft).sort((a, b) => b.data.date.localeCompare(a.data.date) || (a.data.order ?? 99) - (b.data.order ?? 99) || a.data.slug.localeCompare(b.data.slug));
+const homeRows = [...home.matchAll(/<article\b[^>]*data-home-entry="([^"]+)"[^>]*>/g)];
+if (JSON.stringify(homeRows.map(match => match[1])) !== JSON.stringify(publicArticles.map(article => article.data.slug))) failures.push('Home 글 목록에 공개 글 누락·중복 또는 정렬 오류');
+if (JSON.stringify(homeRows.filter(match => !/\bhidden(?:[\s=>])/.test(match[0])).map(match => match[1])) !== JSON.stringify(publicArticles.slice(0, 5).map(article => article.data.slug))) failures.push('Home 기본 목록이 최근 글 5편과 다름');
+if (JSON.stringify(homeIndex.articles?.map(article => article.slug)) !== JSON.stringify(publicArticles.map(article => article.data.slug))) failures.push('Home 검색 색인에 공개 글 누락·중복');
+if (JSON.stringify(homeIndex.pinned) !== JSON.stringify(pinnedSlugs)) failures.push('Home 고정 글 순서와 공개 설정이 다름');
+const renderedPins = homeRows.filter(match => /\bdata-home-pin="\d+"/.test(match[0])).sort((a, b) => Number(a[0].match(/data-home-pin="(\d+)"/)[1]) - Number(b[0].match(/data-home-pin="(\d+)"/)[1])).map(match => match[1]);
+if (JSON.stringify(renderedPins) !== JSON.stringify(pinnedSlugs) || (pinnedSlugs.length > 0 && !home.includes('id="home-pins"'))) failures.push('Home 고정 글 전환 또는 설정 순서 누락');
+const coverLinks = [...home.matchAll(/<a\b[^>]*\bdata-home-cover(?:\s|=)[^>]*>/g)].map(match => match[0]);
+const homeTopicIds = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study'];
+if (JSON.stringify(coverLinks.map(link => link.match(/data-home-topic="([^"]+)"/)?.[1])) !== JSON.stringify(homeTopicIds)) failures.push('Home 카테고리 표지 순서·개수 불일치');
+for (const cover of coverLinks) {
+  const topic = cover.match(/data-home-topic="([^"]+)"/)?.[1];
+  const slug = cover.match(/data-cover-slug="([^"]+)"/)?.[1];
+  const expected = publicArticles.filter(article => article.data.topic === topic);
+  if (Number(cover.match(/data-count="(\d+)"/)?.[1]) !== expected.length) failures.push(`Home ${topic} 글 수 불일치`);
+  if ((expected.length && !expected.some(article => article.data.slug === slug)) || !cover.includes(`href="/topics/${topic}/"`)) failures.push(`Home ${topic} 대표 글 또는 기본 카테고리 링크 오류`);
+}
+if (!home.includes('class="home-topics"')) failures.push('Home 주제 탐색 누락');
+if (home.includes('<home-wave') || home.includes('imjae의 노트')) failures.push('Home에 제거한 파동 또는 소개 제목이 남아 있음');
+if (home.includes('cinematic-backdrop') || home.includes('cinematic-project')) failures.push('Home에 이전 프로젝트 중심 영역이 남아 있음');
 if (home.includes('home-introduction') || home.includes('id="home-areas-title"')) failures.push('Home에 이전 소개 영역이 남아 있음');
 if (home.includes('class="system-sketch"')) failures.push('Home에 이전 시스템 도식이 남아 있음');
 for (const path of ['개발/2024/02/23/test-post.html','철학/2024/02/23/philosophy-The-Myth-Of-sisyphus.html']) {

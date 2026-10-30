@@ -23,7 +23,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} — ${site.title}` : site.title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content={active === 'home' ? '#172938' : '#fafaf7'} />
+    <meta name="theme-color" content="#fafaf7" />
     <meta name="author" content="imjae" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
@@ -52,8 +52,8 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
         <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} />
       </div>
     </header>
-    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading }]}>
-      {active !== 'home' && !reading && <aside class="sidebar" aria-label="Browse notes">
+    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' }]}>
+      {active !== 'home' && active !== 'about' && !reading && <aside class="sidebar" aria-label="Browse notes">
         <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
         <p class="nav-caption">Topics</p>
         <nav class="topic-nav" aria-label="Topics">
@@ -70,11 +70,8 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
 </html>
 <style>
   .site-header { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 32px; }
-  .site-header-home { position: absolute; inset: 0 0 auto; z-index: 2; width: calc(100% - 112px); max-width: 1200px; height: 112px; padding: 0; border-color: #91a7bd40; color: #f2f4f4; --green: #c2e0e8; --muted: #d0dae4; --line: #95a9c35e; }
+  .site-header-home { width: calc(100% - 112px); max-width: 1200px; height: 112px; padding: 0; }
   .site-header-home .brand small { display: none; }
-  .site-header-home .brand > span { color: #aac9f3; }
-  .site-header-home :global(a:focus-visible) { outline-color: #c2e0e8; }
-  .site-header-home :global(.mode-switch a[aria-current]) { color: #f2f4f4; background: #ffffff12; }
   .brand { justify-self: start; white-space: nowrap; }
   .header-nav { gap: 28px; }
   .header-nav a { display: inline-flex; align-items: center; min-height: 44px; }
@@ -83,6 +80,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
   .header-github:hover { color: var(--green); text-decoration: underline; text-underline-offset: 5px; }
   .workspace-home { display: block; max-width: none; padding: 0; }
   .workspace-reading { display: block; max-width: 1184px; padding-top: 44px; }
+  .workspace-about { display: block; max-width: 1184px; padding-top: 58px; }
   .home-page .site-footer { width: calc(100% - 112px); max-width: 1200px; padding: 26px 0 34px; }
   @media (max-width: 1150px) {
     .site-header { gap: 22px; }
@@ -101,6 +99,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
     .header-github { grid-column: 2; grid-row: 2; justify-self: end; font-size: 10px; }
     .site-header-home { height: 115px; padding: 15px 0 12px; gap: 0 20px; }
     .workspace-reading { padding-top: 29px; }
+    .workspace-about { padding-top: 36px; }
   }
   @media (max-width: 600px) {
     .site-header-home, .home-page .site-footer { width: calc(100% - 40px); }
