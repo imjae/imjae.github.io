@@ -12,7 +12,8 @@
       } else if (!response.ok) throw new Error('Session unavailable');
     } catch {
       document.querySelectorAll<HTMLElement>('[contenteditable]').forEach(node => { node.contentEditable = 'false'; });
-      document.querySelectorAll<HTMLButtonElement>('[data-portfolio-edit]').forEach(node => { node.disabled = true; });
+      document.querySelectorAll<HTMLButtonElement>('[data-portfolio-edit], [data-page-edit]').forEach(node => { node.disabled = true; });
+      dispatchEvent(new Event('author-session-unavailable'));
       if (!document.querySelector('#author-session-error')) {
         const notice = document.createElement('p'); notice.id = 'author-session-error'; notice.setAttribute('role', 'alert');
         notice.textContent = '로그인 상태를 확인할 수 없습니다. 다시 접속해 주세요.';

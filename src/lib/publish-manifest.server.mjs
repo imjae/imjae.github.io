@@ -15,7 +15,7 @@ export function publishManifest() {
       articles[path] = { url: articleUrl(article), title: article.data.title };
     }
     const paths = Object.keys(articles);
-    for (const dir of ['content/portfolio-copy', 'content/pins', 'content/project-videos']) {
+    for (const dir of ['content/portfolio-copy', 'content/about-copy', 'content/pins', 'content/project-videos']) {
       for (const file of await readdir(dir)) if (file.endsWith('.json')) paths.push(`${dir}/${file}`);
     }
     await Promise.all(paths.map(async path => {

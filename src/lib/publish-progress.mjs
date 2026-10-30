@@ -3,7 +3,7 @@ export const hashPattern = /^[a-f0-9]{64}$/;
 export const publishWorkflows = ['.github/workflows/deploy.yml', '.github/workflows/authoring.yml'];
 
 export function publishPath(value) {
-  if (typeof value !== 'string' || value.length > 240 || !/^content\/(?:articles\/(?:gameplay|graphics|tools|ai|notes|math|reading|study)\/[a-z0-9-]+\.md|(?:portfolio-copy|pins|project-videos)\/[a-zA-Z0-9_.-]+\.json)$/.test(value)) throw new Error('저장할 파일 경로를 확인해 주세요.');
+  if (typeof value !== 'string' || value.length > 240 || !/^content\/(?:articles\/(?:gameplay|graphics|tools|ai|notes|math|reading|study)\/[a-z0-9-]+\.md|(?:portfolio-copy|about-copy|pins|project-videos)\/[a-zA-Z0-9_.-]+\.json)$/.test(value)) throw new Error('저장할 파일 경로를 확인해 주세요.');
   return value;
 }
 

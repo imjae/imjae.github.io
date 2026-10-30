@@ -1,0 +1,49 @@
+---
+import { aboutFields } from '../lib/about-copy.mjs';
+interface Props { fields: Record<string, string>; }
+const { fields } = Astro.props;
+---
+<div id="about-editor" hidden>
+  <form id="about-edit-form" aria-label="About 편집" novalidate hidden>
+    {Object.entries(aboutFields).map(([key, info]) => <label class="about-edit-field">
+      <span>{info.label}</span>
+      {key === 'summary'
+        ? <textarea name={key} rows="4" maxlength={info.max}>{fields[key]}</textarea>
+        : <input name={key} type={key === 'email' ? 'email' : key === 'github' ? 'url' : 'text'} value={fields[key]} maxlength={info.max} autocomplete={key === 'email' ? 'email' : 'off'} />}
+    </label>)}
+  </form>
+  <div class="about-edit-toolbar" aria-label="About 변경 저장">
+    <p id="about-edit-status" role="status" aria-live="polite"></p>
+    <ul id="about-edit-errors" aria-label="수정이 필요한 항목" hidden></ul>
+    <div class="about-edit-actions">
+      <div id="about-edit-saves" data-publish-saves><button type="button" disabled>변경 저장 ↗</button></div>
+      <button type="button" id="about-edit-reset" disabled>변경 취소</button>
+      <button type="button" id="about-edit-restore" hidden>이전 임시 편집 복원</button>
+    </div>
+    <p class="about-save-help">GitHub에서 Commit changes로 저장하면 배포 후 반영됩니다.</p>
+  </div>
+</div>
+<script type="application/json" id="about-edit-state" set:html={JSON.stringify(fields).replaceAll('<', '\\u003c')}></script>
+<noscript><p>About을 편집하려면 JavaScript를 켜 주세요.</p></noscript>
+<script>
+  import '../scripts/about-editor';
+</script>
+<style>
+  #about-editor[hidden], #about-edit-form[hidden] { display: none; }
+  #about-edit-form { display: grid; gap: 16px; }
+  .about-edit-field { display: grid; gap: 6px; font-size: 12px; color: var(--muted); }
+  input, textarea { width: 100%; min-width: 0; border: 1px solid var(--line); border-radius: 3px; padding: 10px 12px; font: 15px/1.7 var(--sans); color: var(--ink); background: var(--paper); }
+  textarea { resize: vertical; min-height: 120px; }
+  input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: #a23d36; }
+  .about-edit-toolbar { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 24px; font-size: 12px; }
+  .about-edit-toolbar p { margin: 0 0 10px; }
+  .about-edit-actions, #about-edit-saves { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .about-edit-actions :global(button), .about-edit-actions :global(a) { display: inline-flex; align-items: center; min-height: 38px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--paper); color: var(--ink); font: inherit; }
+  .about-edit-actions :global(button:disabled) { opacity: .5; cursor: default; }
+  .about-edit-actions :global([hidden]) { display: none; }
+  #about-edit-saves :global(a) { color: var(--green); border-color: var(--green); }
+  #about-edit-errors { color: #a23d36; padding-left: 20px; }
+  .about-edit-toolbar .about-save-help { color: var(--muted); font-size: 11px; margin: 12px 0 0; }
+  @media (max-width: 650px) { input, textarea { font-size: 16px; } .about-edit-actions :global(button), .about-edit-actions :global(a) { min-height: 44px; } }
+  @media print { #about-editor { display: none; } }
+</style>

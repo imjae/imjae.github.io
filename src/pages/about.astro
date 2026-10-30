@@ -3,38 +3,45 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { about } from '../data/about';
 import { site } from '../data/site';
+import { privateAuthoring } from '../lib/authoring.server.mjs';
+import { readAboutCopy } from '../lib/about-copy.server.mjs';
+import AboutEditor from '../components/AboutEditor.astro';
 
-const { profile, portrait } = about;
+const { portrait } = about;
+const profile = await readAboutCopy({ ...about.profile, github: site.github });
 const field = (value: string, hint: string) => value.trim() || `[${hint}]`;
-const githubLabel = site.github.replace(/^https?:\/\//, '').replace(/\/$/, '');
+const githubLabel = profile.github.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
-<BaseLayout title="About" active="about" description="imjae의 짧은 소개와 하는 일, 관심 분야, 연락처입니다.">
+<BaseLayout title="About" active="about" inlineEditor description="imjae의 짧은 소개와 하는 일, 관심 분야, 연락처입니다.">
   <div class="about-profile">
     <div class="profile-copy">
+      <div id="about-profile-view">
       <header class="profile-intro">
         <p class="eyebrow">ABOUT</p>
-        <h1>{field(profile.name, '이름')}</h1>
-        <p class="profile-summary">{field(profile.summary, '짧은 소개')}</p>
+        <h1 data-about-value="name">{field(profile.name, '이름')}</h1>
+        <p class="profile-summary" data-about-value="summary">{field(profile.summary, '짧은 소개')}</p>
       </header>
       <dl class="profile-facts">
         <div class="profile-fact">
           <dt>하는 일</dt>
-          <dd>{field(profile.role, '하는 일')}</dd>
+          <dd data-about-value="role">{field(profile.role, '하는 일')}</dd>
         </div>
         <div class="profile-fact">
           <dt>관심 분야</dt>
-          <dd>{field(profile.interests, '관심 분야')}</dd>
+          <dd data-about-value="interests">{field(profile.interests, '관심 분야')}</dd>
         </div>
         <div class="profile-fact">
           <dt>연락</dt>
           <dd class="profile-links">
-            {profile.email.trim()
+            <span data-about-email>{profile.email.trim()
               ? <a href={`mailto:${profile.email.trim()}`}>{profile.email}</a>
-              : <span class="empty-link">[이메일 입력]</span>}
-            <a href={site.github} target="_blank" rel="noopener noreferrer">{githubLabel} <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a>
+              : <span class="empty-link">[이메일 입력]</span>}</span>
+            <a data-about-github href={profile.github} target="_blank" rel="noopener noreferrer">{githubLabel} <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a>
           </dd>
         </div>
       </dl>
+      </div>
+      {privateAuthoring && <AboutEditor fields={profile} />}
     </div>
     <figure class="profile-photo">
       <Image src={portrait.image} alt={portrait.alt} format="webp" widths={[360, 680, 865]} sizes="(max-width: 380px) calc(100vw - 44px), 340px" loading="eager" fetchpriority="high" />
@@ -54,9 +61,9 @@ const githubLabel = site.github.replace(/^https?:\/\//, '').replace(/\/$/, '');
   .profile-fact dt { font-size: 11px; color: var(--muted); line-height: 1.9; }
   .profile-fact dd { margin: 0; font-size: 13px; word-break: keep-all; }
   .profile-links { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
-  .profile-links a { text-decoration: underline; text-underline-offset: 5px; }
-  .profile-links a:hover { color: var(--green); }
-  .empty-link { color: var(--muted); font-size: 12px; }
+  .profile-links :global(a) { text-decoration: underline; text-underline-offset: 5px; }
+  .profile-links :global(a:hover) { color: var(--green); }
+  .profile-links :global(.empty-link) { color: var(--muted); font-size: 12px; }
   .profile-photo { width: 100%; max-width: 340px; margin: 0 0 0 auto; }
   .profile-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 100%; border-radius: 2px; }
   @media (max-width: 900px) {
@@ -69,7 +76,7 @@ const githubLabel = site.github.replace(/^https?:\/\//, '').replace(/\/$/, '');
     .profile-summary { font-size: 14px; margin-top: 18px; }
     .profile-facts { margin-top: 26px; }
     .profile-fact { padding: 16px 0; }
-    .profile-links a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; }
+    .profile-links :global(a) { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; }
     .profile-photo { margin: 0 auto; }
   }
   @media print { .about-profile { break-inside: avoid; } }

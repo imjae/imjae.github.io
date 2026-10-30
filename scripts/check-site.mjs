@@ -32,6 +32,13 @@ if (publishManifest.version !== 1 || !/^[a-f0-9]{40}$/.test(publishManifest.revi
 if (!publishManifest.articles || typeof publishManifest.articles !== 'object' || Array.isArray(publishManifest.articles)) failures.push('기존 글 이전에 필요한 공개 글 배포 정보 누락');
 if (!Array.isArray(publishManifest.managedPosts) || JSON.stringify([...publishManifest.managedPosts].sort()) !== JSON.stringify([...managed].sort())) failures.push('공개·비공개 관리 글의 배포 정보 불일치');
 const feeds = (await readFile(join(root,'rss.xml'),'utf8')) + (await readFile(join(root,'sitemap.xml'),'utf8'));
+const aboutPage = await readFile(join(root, 'about/index.html'), 'utf8');
+if (privateAuthoring) {
+  if (!aboutPage.includes('data-page-edit') || !aboutPage.includes('id="about-edit-form"') || !aboutPage.includes('id="about-edit-state"')) failures.push('About의 현재 페이지 편집 UI 누락');
+  const aboutMode = aboutPage.match(/<nav\b[^>]*class="mode-switch"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
+  if (/href="\/editor\//.test(aboutMode)) failures.push('About Edit가 다른 관리 페이지로 이동함');
+} else if (/data-page-edit|id="about-edit-(?:form|state)"|id="about-editor"/.test(aboutPage)) failures.push('공개 About에 보호된 편집 UI가 포함됨');
+for (const file of await readdir('content/about-copy')) if (file.endsWith('.json') && !publishManifest.files[`content/about-copy/${file}`]) failures.push(`About 저장의 배포 정보 누락: ${file}`);
 const gameAlbum = await readFile(join(root, 'games/index.html'), 'utf8');
 if (!feeds.includes('<loc>https://imjae.github.io/games/</loc>')) failures.push('Games 앨범 사이트맵 누락');
 for (const game of games) {

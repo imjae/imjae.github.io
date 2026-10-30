@@ -93,7 +93,7 @@ if (root) {
     starting = true;
     try {
       if (!job) {
-        const group = link.closest('#portfolio-copy-saves');
+        const group = link.closest('#portfolio-copy-saves, [data-publish-saves]');
         const saves = group ? [...group.querySelectorAll<HTMLAnchorElement>('a[href]')].map(a => githubSaveTarget(a.href)).filter(Boolean) : [target];
         const targets = await Promise.all(saves.map(async item => ({ path: item!.path, ...('content' in item! && typeof item!.content === 'string' ? { expectedHash: await sourceDigest(item!.content) } : {}) })));
         job = { id: crypto.randomUUID(), label: article?.title ?? `설정 저장 ${new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}`, createdAt: Date.now(), targets, position };
