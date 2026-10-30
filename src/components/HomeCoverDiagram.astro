@@ -1,0 +1,97 @@
+---
+import type { HomeCoverDiagram } from '../data/home-covers';
+interface Props { kind: HomeCoverDiagram; }
+const { kind } = Astro.props;
+const labels: Record<HomeCoverDiagram, string> = {
+  combat: '플레이어 주위의 적 배치와 접근 방향 개념도',
+  dissolve: '임계값이 커질수록 남은 영역이 줄어드는 Dissolve 개념도',
+  parts: '파츠 트리가 2D, 3D와 저장 데이터로 이어지는 구조',
+  worktrees: '세 작업을 분리하고 각각 검증한 뒤 통합하는 흐름',
+  array: '배열 용량을 4에서 8로 늘리고 다섯 번째 원소를 추가하는 과정',
+  trajectory: '같은 시간 간격의 위치와 최고점을 표시한 포물선',
+  pointers: '포인터 p와 q가 같은 정수 객체 hp를 가리키는 구조',
+};
+const cells = Array.from({ length: 36 }, (_, i) => ({ x: i % 6, y: Math.floor(i / 6), value: ((i % 6) * 11 + Math.floor(i / 6) * 7) % 36 / 35 }));
+---
+<!-- Static summaries of the articles, not game captures or measured results. -->
+<svg class="cover-diagram" data-cover-diagram={kind} viewBox="0 0 240 128" role="img" aria-label={labels[kind]}>
+  {kind === 'combat' && <>
+    <circle class="guide" cx="112" cy="62" r="43" stroke-dasharray="3 5" />
+    <circle cx="112" cy="62" r="7" class="solid" />
+    <circle cx="112" cy="19" r="5" />
+    <circle cx="75" cy="84" r="5" />
+    <circle cx="149" cy="84" r="5" />
+    <path d="M112 28v18m-4-5 4 5 4-5" />
+    <path class="guide" d="M124 62h39" />
+    <text x="170" y="66">player</text>
+  </>}
+  {kind === 'dissolve' && <>
+    {[0, 0.5, 0.8].map((threshold, stage) => <g transform={`translate(${20 + stage * 76} 30)`}>
+      {cells.filter(cell => cell.value >= threshold).map(cell => <rect x={cell.x * 8} y={cell.y * 8} width="7" height="7" class={threshold > 0 && cell.value < threshold + 0.15 ? 'edge' : 'cell'} />)}
+      <text x="23" y="76" text-anchor="middle">{threshold.toFixed(1)}</text>
+    </g>)}
+  </>}
+  {kind === 'parts' && <>
+    <path class="guide" d="M62 43v16m30-16v16m30-16v16M62 59h60M92 59v15m0 0h65m-1-49v78m0-78h23m-23 39h23m-23 39h23" />
+    <rect x="52" y="23" width="20" height="20" />
+    <rect x="82" y="23" width="20" height="20" />
+    <rect x="112" y="23" width="20" height="20" />
+    <text x="92" y="101" text-anchor="middle">parts</text>
+    <text x="186" y="29">2D</text>
+    <text x="186" y="68">3D</text>
+    <text x="186" y="107">save</text>
+  </>}
+  {kind === 'worktrees' && <>
+    <path class="guide" d="M25 61h24m0 0 23-34h39m-62 34h62m-62 0 23 34h39M133 27h30l28 34h24M133 61h58M133 95h30l28-34" />
+    <circle class="solid" cx="25" cy="61" r="4" />
+    {[27, 61, 95].map(y => <>
+      <circle cx="122" cy={y} r="10" />
+      <path d={`M118 ${y}l3 3 5-6`} />
+    </>)}
+    <circle class="solid" cx="215" cy="61" r="4" />
+    <text x="25" y="120" text-anchor="middle">split</text>
+    <text x="122" y="120" text-anchor="middle">check</text>
+    <text x="215" y="120" text-anchor="middle">merge</text>
+  </>}
+  {kind === 'array' && <>
+    {[10, 20, 30, 40].map((value, i) => <g transform={`translate(${20 + i * 25} 16)`}>
+      <rect width="25" height="26" class="tinted" />
+      <text x="12.5" y="17" text-anchor="middle">{value}</text>
+    </g>)}
+    <path class="guide" d="M32 48v14m-4-4 4 4 4-4" />
+    {[10, 20, 30, 40, 50, null, null, null].map((value, i) => <g transform={`translate(${20 + i * 25} 70)`}>
+      <rect width="25" height="26" class={value ? 'tinted' : 'guide'} />
+      {value && <text x="12.5" y="17" text-anchor="middle">{value}</text>}
+    </g>)}
+    <text x="20" y="119">count 5 / capacity 8</text>
+  </>}
+  {kind === 'trajectory' && <>
+    <path class="guide" d="M25 14v91h194M120 24v81" />
+    <path d="M30 100Q120-52 210 100" />
+    {[0, 0.25, 0.5, 0.75, 1].map(t => <circle class="solid" cx={30 + 180 * t} cy={100 - 304 * t * (1 - t)} r="3" />)}
+    <text x="133" y="29">vᵧ = 0</text>
+    <text x="219" y="120">x</text>
+    <text x="12" y="18">y</text>
+  </>}
+  {kind === 'pointers' && <>
+    <rect x="24" y="22" width="42" height="27" />
+    <rect x="24" y="79" width="42" height="27" />
+    <text x="45" y="40" text-anchor="middle">p</text>
+    <text x="45" y="97" text-anchor="middle">q</text>
+    <path d="M66 35h27l33 20h20m-5-4 5 4-5 4M66 92h27l33-20h20m-5-4 5 4-5 4" />
+    <rect x="153" y="42" width="62" height="43" class="tinted" />
+    <text x="184" y="29" text-anchor="middle">hp</text>
+    <text x="184" y="69" text-anchor="middle">100</text>
+  </>}
+</svg>
+<style>
+  .cover-diagram { display: block; width: 100%; max-width: 248px; height: 128px; margin-inline: auto; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .cover-diagram :is(path, circle, rect) { vector-effect: non-scaling-stroke; }
+  text { fill: currentColor; stroke: none; font: 12px var(--mono); }
+  .guide { stroke-opacity: .35; }
+  .solid { fill: currentColor; stroke: none; }
+  .tinted { fill: currentColor; fill-opacity: .07; stroke-opacity: .6; }
+  .cell { fill: currentColor; fill-opacity: .6; stroke: none; }
+  .edge { stroke-opacity: .75; stroke-width: .8; }
+  @media (max-width: 550px) { .cover-diagram { height: 110px; } }
+</style>
