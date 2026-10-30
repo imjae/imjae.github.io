@@ -11,6 +11,7 @@ import { dcbVideos, getDcbVideoMedia } from '../src/data/dcb-videos.mjs';
 import { resolvePortfolioMedia } from '../src/lib/recruitment-media.mjs';
 import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features.mjs';
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
+import { pageEditorContext } from '../src/lib/page-editor.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
 import { managedPostSlugs, managedPostUrl } from '../src/lib/managed-posts.server.mjs';
 import { games } from '../src/data/games.mjs';
@@ -50,6 +51,17 @@ for (const game of games) {
 }
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
+  const route = '/' + relative(root, file).replaceAll('\\', '/').replace(/index\.html$/, '');
+  const context = pageEditorContext(route);
+  const modes = html.match(/<nav\b[^>]*class="mode-switch"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
+  if (privateAuthoring && route !== '/editor/' && /href="\/editor\//.test(modes)) failures.push(`Edit가 현재 페이지와 무관한 관리 화면으로 이동함: ${route}`);
+  if (privateAuthoring && context) {
+    if (!html.includes('id="page-editor"') || !modes.includes('data-page-edit')) failures.push(`현재 페이지 편집 UI 누락: ${route}`);
+    for (const source of context.sources) if (!html.includes(`data-page-source="${source.path}"`)) failures.push(`현재 페이지 편집 원본 누락: ${route} ${source.path}`);
+    const slots = [...html.matchAll(/data-video-editor="([^"]+)"/g)].map(match => match[1]);
+    if (JSON.stringify([...slots].sort()) !== JSON.stringify([...(context.videoSlots ?? [])].sort())) failures.push(`현재 페이지와 영상 편집 범위가 다름: ${route}`);
+  }
+  if (!privateAuthoring && /id="page-editor"|data-page-source/.test(html)) failures.push(`공개 페이지에 편집 UI가 포함됨: ${route}`);
   for (const match of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
     const target = match[1].replaceAll('&amp;', '&');
     if (/^(?:https?:|mailto:|data:|tel:|javascript:|#)/.test(target)) continue;
@@ -142,8 +154,9 @@ const projectVideo = videoSettings.project;
 const projectPage = await readFile(join(root,'projects/dcb/index.html'),'utf8');
 const portfolioPage = await readFile(join(root,'portfolio/index.html'),'utf8');
 const portfolioMain = portfolioPage.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
-const portfolioLinks = [...portfolioMain.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(match => match[1]);
-if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/', '/portfolio/unreal-porting/']) || /<(?:section|svg)\b/.test(portfolioMain)) failures.push('포트폴리오 목록의 DCB 프로젝트·언리얼 엔진 포팅 연결이 다름');
+const portfolioList = portfolioMain.match(/<ul\b[^>]*class="portfolio-links"[^>]*>([\s\S]*?)<\/ul>/)?.[1] ?? '';
+const portfolioLinks = [...portfolioList.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].map(match => match[1]);
+if (JSON.stringify(portfolioLinks) !== JSON.stringify(['/portfolio/2027/', '/portfolio/unreal-porting/']) || /<(?:section|svg)\b/.test(portfolioList)) failures.push('포트폴리오 목록의 DCB 프로젝트·언리얼 엔진 포팅 연결이 다름');
 const unrealPortfolio = await readFile(join(root,'portfolio/unreal-porting/index.html'),'utf8');
 if (!unrealPortfolio.includes('rel="canonical" href="https://imjae.github.io/portfolio/unreal-porting/"') || !feeds.includes('<loc>https://imjae.github.io/portfolio/unreal-porting/</loc>')) failures.push('언리얼 포팅 포트폴리오의 정규 주소 또는 사이트맵 누락');
 for (const [, id] of unrealPortfolio.matchAll(/href="#([^"]+)"/g)) if (!unrealPortfolio.includes(`id="${id}"`)) failures.push(`언리얼 포팅 목차의 이동 대상 누락: ${id}`);
@@ -273,7 +286,7 @@ if (projectVideo?.videoUrl) {
   const href = videoLink?.match(/\bhref="([^"]*)"/)?.[1].replaceAll('&amp;', '&');
   if (href !== projectVideo.videoUrl || !videoLink?.includes('target="_blank"') || !videoLink?.includes('rel="noopener noreferrer"')) failures.push('DCB 소개의 게임 영상 링크와 저장 설정이 다름');
 } else if (videoLink) failures.push('영상 주소가 없는데 DCB 소개에 영상 버튼이 노출됨');
-if (privateAuthoring && (!projectPage.includes('/editor/?project=dcb#project-video') || !editor.includes('id="project-video"'))) failures.push('DCB 영상 링크의 수정 모드 연결 누락');
+if (privateAuthoring && (!projectPage.includes('id="page-video-editor"') || !editor.includes('id="project-video"'))) failures.push('DCB의 현재 페이지 영상 편집 누락');
 if (!/name="robots" content="noindex, nofollow"/.test(editor)) failures.push('수정 모드의 검색 수집 제외 설정 누락');
 if (feeds.includes('/editor/')) failures.push('수정 모드가 RSS 또는 sitemap에 포함됨');
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }

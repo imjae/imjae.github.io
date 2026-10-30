@@ -2,7 +2,7 @@ import { escapeHtml, renderPostBody } from './owner-posts.mjs';
 import { postStyles } from './owner-post-style.mjs';
 import { postEditorClient } from './owner-post-client.mjs';
 
-function page(title, content, script = '', publicView = false, editPath = '/notes/edit/', assets = '') {
+function page(title, content, script = '', publicView = false, editPath = '#form', assets = '') {
   const nonce = crypto.randomUUID();
   const guard = publicView ? '' : `async function checkOwner(){try{const response=await fetch('/auth/session',{cache:'no-store',credentials:'same-origin'});if(!response.ok){location.replace('/auth/login?return_to='+encodeURIComponent(location.pathname+location.search));return;}document.body.style.visibility='';}catch{document.body.style.visibility='hidden';}}document.addEventListener('visibilitychange',()=>{if(document.hidden)document.body.style.visibility='hidden';else void checkOwner();});window.addEventListener('pageshow',()=>void checkOwner());setInterval(()=>{if(!document.hidden)void checkOwner();},60000);`;
   script += guard;

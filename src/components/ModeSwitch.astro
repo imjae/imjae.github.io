@@ -1,13 +1,13 @@
 ---
 import { privateAuthoring, authorLoginUrl } from '../lib/authoring.server.mjs';
 import AuthorSessionGuard from './AuthorSessionGuard.astro';
-interface Props { editing?: boolean; viewerUrl: string; editorUrl: string; editorExternal?: boolean; editorTitle?: string; label?: string; inlineEditor?: boolean; }
+interface Props { editing?: boolean; viewerUrl: string; editorUrl?: string; editorExternal?: boolean; editorTitle?: string; label?: string; inlineEditor?: boolean; }
 const { editing = false, viewerUrl, editorUrl, editorExternal = false, editorTitle = 'Edit this article on GitHub (new tab)', label = 'Blog mode', inlineEditor = false } = Astro.props;
 ---
 <nav class="mode-switch" aria-label={label}>
   {privateAuthoring && inlineEditor ? <button type="button" data-page-view aria-pressed="true" disabled>View</button> : <a href={viewerUrl} data-view-mode aria-current={!editing ? 'page' : undefined}>View</a>}
   {privateAuthoring ? <>
-    {inlineEditor ? <button type="button" data-page-edit aria-pressed="false" disabled>Edit</button> : <a href={editorUrl} aria-current={editing ? 'page' : undefined} target={editorExternal ? '_blank' : undefined} rel={editorExternal ? 'noopener noreferrer' : undefined} title={editorExternal ? editorTitle : undefined}>Edit{editorExternal && <span aria-hidden="true"> ↗</span>}</a>}
+    {inlineEditor ? <button type="button" data-page-edit aria-pressed="false" disabled>Edit</button> : editorUrl && <a href={editorUrl} aria-current={editing ? 'page' : undefined} target={editorExternal ? '_blank' : undefined} rel={editorExternal ? 'noopener noreferrer' : undefined} title={editorExternal ? editorTitle : undefined}>Edit{editorExternal && <span aria-hidden="true"> ↗</span>}</a>}
     <form action="/auth/logout" method="post"><button type="submit">Sign out</button></form>
   </> : <a href={authorLoginUrl(Astro.url.pathname)} data-author-login>Sign in</a>}
 </nav>

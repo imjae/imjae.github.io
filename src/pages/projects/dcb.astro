@@ -10,7 +10,7 @@ const articles = await getArticles();
 const availableCases = cases.map(item => ({ ...item, articleCount: selectFeatureArticles(item, articles, import.meta.env.DEV).length }));
 const video = await readProjectVideoSettings();
 ---
-<BaseLayout title="DCB — 게임플레이와 그래픽스" active="dcb" editProject="dcb" description="지게 운반 액션 게임 DCB의 IK 트레버설, 몬스터 전투, 장비 파츠 조합, 물과 불 렌더링 개발 기록.">
+<BaseLayout title="DCB — 게임플레이와 그래픽스" active="dcb" description="지게 운반 액션 게임 DCB의 IK 트레버설, 몬스터 전투, 장비 파츠 조합, 물과 불 렌더링 개발 기록.">
   <section class="portfolio-hero"><div><p class="eyebrow">개발 중</p><h1>DCB</h1><h2>지게로 짐을 운반하는 액션 게임</h2><p>조선을 배경으로 한 게임입니다. 지게 적재량에 따른 이동 부담, 트레버설, 몬스터 전투와 장비 조합을 개발하고 있습니다.</p>{video?.videoUrl && <a class="button button-dark project-video-link" href={video.videoUrl} target="_blank" rel="noopener noreferrer" aria-label="DCB 게임 영상 보기 (새 탭)"><span aria-hidden="true">▶</span>게임 영상 보기<span aria-hidden="true">↗</span></a>}<div class="stack-list"><span>Unity 6</span><span>C#</span><span>HDRP</span><span>Addressables</span><span>AI 협업</span></div></div><SystemSketch /></section>
   <div class="role-box"><strong>담당한 범위</strong><p>기획, 게임플레이·데이터 시스템, UI와 조립 도구, 셰이더와 이펙트, AI 협업을 통한 구현·검증을 담당했습니다. 3D 모델과 애니메이션 원본은 기존 자산을 활용했으며, 재사용한 텍스처 등은 개별 기록에서 구분합니다.</p></div>
   <DcbVideos slots={['project']} id="project-video" title="전체 요약 영상" />

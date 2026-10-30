@@ -1,0 +1,42 @@
+---
+import type { Article } from '../lib/articles';
+import { pageEditorContext, pageEditorArticles } from '../lib/page-editor.mjs';
+import { githubFileUrl } from '../lib/github-authoring.mjs';
+import PinnedEditor from './PinnedEditor.astro';
+import ProjectVideoEditor from './ProjectVideoEditor.astro';
+interface Props { title: string; articles: Article[]; }
+const { title, articles } = Astro.props;
+const context = pageEditorContext(Astro.url.pathname);
+const entries: Article[] = pageEditorArticles(articles, context?.articles);
+---
+{context && <section id="page-editor" aria-labelledby="page-editor-title" hidden>
+  <h2 id="page-editor-title" tabindex="-1">{title} 수정</h2>
+  <p>이 페이지에 표시하는 내용을 수정합니다. 원문 수정은 GitHub에서 Commit changes로 저장합니다.</p>
+  <ul class="page-editor-sources">
+    {context.sources.map(source => <li><a href={source.href} data-page-source={source.path} target="_blank" rel="noopener noreferrer">{source.label} · 원문 수정 ↗</a></li>)}
+  </ul>
+  {entries.length > 0 && <div class="page-article-picker">
+    <label for="page-article-source">이 목록의 글 수정</label>
+    <select id="page-article-source"><option value="">글을 선택해 주세요</option>{entries.map(article => <option value={githubFileUrl('edit', article.filePath)}>{article.data.title}</option>)}</select>
+    <a id="page-article-edit" target="_blank" rel="noopener noreferrer" hidden>선택한 글 원문 수정 ↗</a>
+  </div>}
+  {context.pins && <details><summary>홈 고정 글과 순서 수정</summary><PinnedEditor articles={articles.filter(article => !article.data.draft)} selectArticles /></details>}
+  {context.videoSlots && context.videoSlots.length > 0 && <details><summary>이 페이지의 영상·GIF 수정</summary><ProjectVideoEditor slotIds={context.videoSlots} id="page-video-editor" /></details>}
+</section>}
+<script>
+  import '../scripts/page-editor';
+</script>
+<style>
+  #page-editor { border: 1px solid var(--line); border-radius: 4px; padding: 24px; margin-bottom: 32px; background: var(--paper); min-width: 0; }
+  #page-editor[hidden] { display: none; }
+  h2 { margin: 0 0 12px; font-size: 20px; }
+  p { font-size: 12px; line-height: 1.8; color: var(--muted); }
+  .page-editor-sources { display: flex; flex-wrap: wrap; gap: 12px 24px; list-style: none; padding: 0; margin: 18px 0; font-size: 13px; }
+  a { color: var(--green); text-decoration: underline; text-underline-offset: 4px; }
+  .page-article-picker { display: grid; gap: 10px; margin-top: 24px; font-size: 13px; }
+  select { width: 100%; min-width: 0; max-width: 100%; padding: 10px; font: inherit; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+  details { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 22px; }
+  summary { cursor: pointer; font-size: 14px; padding-bottom: 16px; }
+  :global(.home-page #page-editor) { width: calc(100% - 112px); max-width: 1200px; margin: 24px auto; }
+  @media (max-width: 760px) { #page-editor { padding: 18px; } :global(.home-page #page-editor) { width: calc(100% - 40px); } }
+</style>

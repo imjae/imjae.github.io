@@ -8,12 +8,15 @@ import { githubFileUrl } from '../lib/github-authoring.mjs';
 import ModeSwitch from '../components/ModeSwitch.astro';
 import PublishProgress from '../components/PublishProgress.astro';
 import { privateAuthoring } from '../lib/authoring.server.mjs';
-interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; editProject?: string; reading?: boolean; inlineEditor?: boolean; }
-const { title, description = site.description, active = '', noindex = false, editFile, editProject, reading = false, inlineEditor = false } = Astro.props;
+import { pageEditorContext } from '../lib/page-editor.mjs';
+import PageEditor from '../components/PageEditor.astro';
+interface Props { title?: string; description?: string; active?: string; noindex?: boolean; editFile?: string; reading?: boolean; inlineEditor?: boolean; }
+const { title, description = site.description, active = '', noindex = false, editFile, reading = false, inlineEditor = false } = Astro.props;
 const articles = await getArticles();
 const readingCount = (await getReadingItems(articles)).length;
 const canonical = new URL(Astro.url.pathname, site.url);
-const editorUrl = editFile ? githubFileUrl('edit', editFile) : editProject === 'dcb' ? '/editor/?project=dcb#project-video' : '/editor/';
+const pageEditor = !inlineEditor && !editFile && !!pageEditorContext(Astro.url.pathname);
+const editorUrl = editFile ? githubFileUrl('edit', editFile) : active === 'editor' ? '/editor/' : undefined;
 const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathname.split('/')[1]);
 ---
 <!doctype html>
@@ -50,7 +53,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
       </nav>
       <div class="header-utilities">
         <a class="header-github" href={site.github} target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (새 탭)</span></a>
-        <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} inlineEditor={inlineEditor} />
+        <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} inlineEditor={inlineEditor || pageEditor} />
       </div>
     </header>
     <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' || active === 'games' }]}>
@@ -63,9 +66,9 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
         <div class="sidebar-project"><p class="nav-caption">Projects</p><a href="/projects/dcb/" class:list={{ selected: active === 'dcb' }} aria-current={Astro.url.pathname === '/projects/dcb/' ? 'page' : undefined}><span class="project-icon">D</span><span><strong>DCB</strong><small>Action game · In development</small></span><span aria-hidden="true">↗</span></a><a class="sidebar-series" href="/series/dcb/" aria-current={Astro.url.pathname === '/series/dcb/' ? 'page' : undefined}>DCB articles <span aria-hidden="true">→</span></a></div>
         <div class="sidebar-foot"><a href="/rss.xml">RSS feed ↗</a></div>
       </aside>}
-      <main id="main-content"><slot /></main>
+      <main id="main-content">{privateAuthoring && pageEditor && <PageEditor title={title ?? site.title} articles={articles} />}<slot /></main>
     </div>
-    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span><a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
+    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span>{privateAuthoring && active !== 'editor' && <a href="/editor/">전체 관리</a>}<a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
     {privateAuthoring && <PublishProgress />}
   </body>
 </html>

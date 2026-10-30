@@ -1,14 +1,15 @@
 ---
 import type { Article } from '../lib/articles';
 import { selectPinnedArticles } from '../lib/pinned-articles.mjs';
-interface Props { articles: Article[]; }
-const { articles } = Astro.props;
+interface Props { articles: Article[]; selectArticles?: boolean; }
+const { articles, selectArticles = false } = Astro.props;
 const pins = selectPinnedArticles(articles).map(article => article.data.slug);
 const index = articles.map(article => ({ slug: article.data.slug, title: article.data.title }));
 ---
 <section class="editor-section pinned-editor" aria-labelledby="pin-editor-title">
   <div class="section-heading"><h2 id="pin-editor-title">홈 고정 글 <span id="pin-count">{pins.length}</span></h2></div>
-  <p class="pin-help">순서대로 홈에 표시합니다. 아래 공개 글 목록에서 고정·해제할 수 있습니다.</p>
+  <p class="pin-help">순서대로 홈에 표시합니다. {selectArticles ? '공개 글을 선택해 고정 목록에 추가할 수 있습니다.' : '아래 공개 글 목록에서 고정·해제할 수 있습니다.'}</p>
+  {selectArticles && <div class="pin-add"><label for="pin-article">고정할 글</label><select id="pin-article"><option value="">글을 선택해 주세요</option>{index.map(article => <option value={article.slug}>{article.title}</option>)}</select><button id="pin-add" type="button" disabled>추가</button></div>}
   <ol id="pin-list"></ol>
   <p id="pin-empty" hidden>고정한 글이 없습니다.</p>
   <div class="pin-submit"><a id="pin-save" class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 고정 설정 저장 ↗</a><button id="pin-reset" type="button" disabled>변경 취소</button></div>
@@ -36,6 +37,11 @@ const index = articles.map(article => ({ slug: article.data.slug, title: article
   const save = document.querySelector<HTMLAnchorElement>('#pin-save')!;
   const reset = document.querySelector<HTMLButtonElement>('#pin-reset')!;
   const toggles = [...document.querySelectorAll<HTMLButtonElement>('[data-pin-toggle]')];
+  const picker = document.querySelector<HTMLSelectElement>('#pin-article');
+  const add = document.querySelector<HTMLButtonElement>('#pin-add');
+  function updatePicker() { if (add && picker) add.disabled = !titles.has(picker.value) || pins.includes(picker.value); }
+  picker?.addEventListener('change', updatePicker);
+  add?.addEventListener('click', () => { if (picker && titles.has(picker.value) && !pins.includes(picker.value)) { pins.push(picker.value); render(); } });
   function toggle(slug: string) {
     pins = pins.includes(slug) ? pins.filter(value => value !== slug) : [...pins, slug];
     render();
@@ -72,6 +78,7 @@ const index = articles.map(article => ({ slug: article.data.slug, title: article
       if (badge) badge.hidden = !pinned;
     }
     count.textContent = String(pins.length); empty.hidden = pins.length > 0;
+    updatePicker();
     const dirty = JSON.stringify(pins) !== JSON.stringify(initial);
     reset.disabled = !dirty; save.setAttribute('aria-disabled', String(!dirty)); save.removeAttribute('href');
     status.textContent = dirty ? `저장 전 변경 · 고정 글 ${pins.length}편` : '게시된 설정과 같습니다.';
@@ -88,6 +95,7 @@ const index = articles.map(article => ({ slug: article.data.slug, title: article
   }
 </script>
 <style is:global>
+  .pin-add{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;margin:18px 0}.pin-add select{min-width:0;max-width:100%;flex:1 1 180px;padding:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}.pin-add button{padding:10px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
   .pinned-editor{margin-bottom:38px}.pin-help{font-size:12px;color:var(--muted);line-height:1.9;max-width:740px}
   #pin-list{padding:0;list-style:none;border-top:1px solid var(--line)}#pin-list li{display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:13px 0;font-size:13px;min-width:0}#pin-list li>span{overflow-wrap:anywhere}
   .pin-actions{display:flex;gap:6px;flex-shrink:0}.pin-actions button,.pin-submit>button,.manage-actions .pin-toggle{font:inherit;font-size:11px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:8px 10px;cursor:pointer}.pin-actions button:hover,.manage-actions .pin-toggle:hover{background:var(--soft)}.pin-actions button:disabled,.pin-submit>button:disabled{opacity:.4;cursor:default}.pin-submit{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:20px}.pin-submit a[aria-disabled="true"]{opacity:.45;cursor:default}#pin-status{font-size:12px;color:var(--green);line-height:1.8}.manage-actions{flex-wrap:wrap}

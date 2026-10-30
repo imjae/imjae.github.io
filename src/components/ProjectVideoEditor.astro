@@ -2,32 +2,34 @@
 import { readProjectVideoSettingsBySlot } from '../lib/project-video.server.mjs';
 import { projectVideoSlots } from '../lib/project-video.mjs';
 import { project, clientCases, graphicsCases } from '../data/krafton-2027';
+interface Props { slotIds?: string[]; id?: string; }
+const { slotIds, id = 'project-video' } = Astro.props;
 const settings = await readProjectVideoSettingsBySlot();
 const existingMedia = Object.fromEntries([
   ['project', project.media],
   ...[...clientCases, ...graphicsCases].map(item => [item.id, item.media]),
 ]);
-const slots = projectVideoSlots.map(slot => ({
+const slots = projectVideoSlots.filter(slot => !slotIds || slotIds.includes(slot.id)).map(slot => ({
   ...slot,
   prefix: slot.id === 'project' ? 'project-video' : `feature-video-${slot.id}`,
   url: settings[slot.id]?.videoUrl ?? existingMedia[slot.id]?.url ?? '',
 }));
 ---
-<section class="editor-section project-video-editor" id="project-video" aria-labelledby="project-video-title">
-  <div class="section-heading"><h2 id="project-video-title">DCB 영상·GIF</h2></div>
+<section class="editor-section project-video-editor" id={id} aria-labelledby={`${id}-title`}>
+  <div class="section-heading"><h2 id={`${id}-title`}>DCB 영상·GIF</h2></div>
   <p class="video-help">전체 플레이와 각 기능의 주소를 따로 등록합니다. 각 항목의 저장 버튼으로 해당 주소만 반영합니다.</p>
-  <p class="video-help" id="project-video-help">YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 해당 영상의 등록을 해제합니다.</p>
+  <p class="video-help" id={`${id}-help`}>YouTube·HTTPS MP4·WebM은 화면 안에서 재생합니다. GIF는 HTTPS 파일 주소나 /assets/demo.gif 같은 저장소 경로를 연결합니다. ‘무한 반복’으로 내보낸 GIF는 자동으로 반복 재생됩니다. 다른 HTTPS 주소는 원본 링크로 연결하며, 비우고 저장하면 해당 영상의 등록을 해제합니다.</p>
   <div class="video-slot-grid">
     {slots.map(slot => <fieldset class="video-slot" data-video-editor={slot.id}>
       <legend>{slot.label}</legend>
       <label for={`${slot.prefix}-url`}>영상·GIF 주소</label>
-      <input id={`${slot.prefix}-url`} data-video-url type="text" inputmode="url" value={slot.url} maxlength="2048" placeholder="https://… 또는 /assets/demo.gif" aria-describedby="project-video-help" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      <input id={`${slot.prefix}-url`} data-video-url type="text" inputmode="url" value={slot.url} maxlength="2048" placeholder="https://… 또는 /assets/demo.gif" aria-describedby={`${id}-help`} autocomplete="off" autocapitalize="off" spellcheck="false" />
       <a id={`${slot.prefix}-preview`} data-video-preview class="video-preview" href={slot.url || undefined} hidden={!slot.url} target="_blank" rel="noopener noreferrer">입력한 영상·GIF 열기 ↗</a>
       <div class="video-submit"><a id={`${slot.prefix}-save`} data-video-save class="button button-dark" aria-disabled="true" target="_blank" rel="noopener noreferrer">GitHub에서 저장 ↗</a><button id={`${slot.prefix}-reset`} data-video-reset type="button" disabled>변경 취소</button></div>
       <p id={`${slot.prefix}-status`} data-video-status class="video-status" role="status" aria-live="polite">{slot.url ? '게시된 설정과 같습니다.' : '등록된 주소가 없습니다.'}</p>
     </fieldset>)}
   </div>
-  <p class="video-help">GitHub에서 <strong>Commit changes</strong>로 저장하면 배포 후 반영됩니다. <a href="/portfolio/2027/">포트폴리오 보기 →</a> · <a href="/projects/dcb/">DCB 프로젝트 소개 보기 →</a></p>
+  <p class="video-help">GitHub에서 <strong>Commit changes</strong>로 저장하면 배포 후 반영됩니다. {!slotIds && <><a href="/portfolio/2027/">포트폴리오 보기 →</a> · <a href="/projects/dcb/">DCB 프로젝트 소개 보기 →</a></>}</p>
   <noscript><p>영상 주소 편집에는 JavaScript가 필요합니다.</p></noscript>
 </section>
 <script>
@@ -37,11 +39,14 @@ const slots = projectVideoSlots.map(slot => ({
     const slot = editor.dataset.videoEditor!;
     const input = editor.querySelector<HTMLInputElement>('[data-video-url]')!;
     const initial = input.value;
+    const storageKey = `imjae:video-editor:${slot}:${initial}`;
+    try { input.value = sessionStorage.getItem(storageKey) ?? initial; } catch { /* 편집은 계속 사용할 수 있다. */ }
     const save = editor.querySelector<HTMLAnchorElement>('[data-video-save]')!;
     const preview = editor.querySelector<HTMLAnchorElement>('[data-video-preview]')!;
     const reset = editor.querySelector<HTMLButtonElement>('[data-video-reset]')!;
     const status = editor.querySelector('[data-video-status]')!;
     function render() {
+      try { if (input.value === initial) sessionStorage.removeItem(storageKey); else sessionStorage.setItem(storageKey, input.value); } catch { /* 편집은 계속 사용할 수 있다. */ }
       save.removeAttribute('href');
       save.setAttribute('aria-disabled', 'true');
       preview.removeAttribute('href');

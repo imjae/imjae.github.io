@@ -83,11 +83,12 @@ const index = articles.map((article) => ({ slug: article.data.slug, topic: artic
     });
     staticCount = visible; liveCount = 0; livePosts?.replaceChildren(); updateCount();
     ++requestNumber; clearTimeout(liveTimer); liveTimer = setTimeout(loadLivePosts, 200);
-    const next = new URLSearchParams();
+    const next = new URLSearchParams(location.search);
+    for (const key of ['q', 'tag', 'topic']) next.delete(key);
     if (search.value.trim()) next.set('q', search.value.trim());
     if (tag) next.set('tag', tag);
     if (topic.value !== (library?.dataset.initialTopic ?? '')) next.set('topic', topic.value);
-    history.replaceState(null, '', location.pathname + (next.size ? `?${next}` : ''));
+    history.replaceState(null, '', location.pathname + (next.size ? `?${next}` : '') + location.hash);
   }
   search?.addEventListener('input', update);
   topic?.addEventListener('change', update);
