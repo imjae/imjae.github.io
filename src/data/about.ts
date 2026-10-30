@@ -10,7 +10,7 @@ interface AboutContent {
 export const about: AboutContent = {
   profile: {
     name: 'imjae',
-    role: '게임 개발자 · Unity, C#',
+    role: '게임 개발자 · Unity, C# · Unreal Engine, C++',
     interests: '게임플레이 · 그래픽스 · 개발 도구',
     summary: '게임을 만들고, 구현한 기능과\n문제를 해결한 과정을 기록합니다.',
     email: '',
