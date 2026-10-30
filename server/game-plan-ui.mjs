@@ -3,7 +3,7 @@ import { findProjectDocument } from '../src/data/projects.mjs';
 import { renderProjectNavigation, projectNavigationStyles } from '../src/lib/project-navigation.mjs';
 import { postStyles } from './owner-post-style.mjs';
 import { projectDocumentStyles } from './project-document-style.mjs';
-import { projectDocumentClient } from './project-document-client.mjs';
+import { projectDocumentClientSource } from './project-document-client.mjs';
 
 const documentUrl = (path, id, editing = false) => path + (id && id !== 'main' ? '?doc=' + encodeURIComponent(id) + (editing ? '&edit=1' : '') : editing ? '?edit=1' : '');
 function treeMarkup(documents, selected, path) {
@@ -46,7 +46,7 @@ export async function gamePlanPage(game, document, editing = false, section = fi
   const article = documents.length ? (resource ? cover + title : title + body) : `<p class="empty-plan">아직 ${resource ? '등록한 리소스' : '작성한 기획서'}가 없습니다.</p><a href="${path}?new=1&edit=1">${resource ? '리소스' : '기획서'} 추가 →</a>`;
   const content = `<div class="document-content" id="document">${editing ? editorMarkup(game, section, document, path, options.saved) : article}</div>`;
   const layout = resource ? `<div class="resource-layout">${content}${resourceNavigation(documents, document, path, options.page)}${body}</div>` : `<div class="plans-layout">${treeMarkup(documents, document, path)}${content}</div>`;
-  const script = `(${projectDocumentClient.toString()})();`;
+  const script = projectDocumentClientSource;
   const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${escape(game.title)} · ${escape(section.title)} — imjae</title><style>${postStyles}\n${projectNavigationStyles}\n${projectDocumentStyles}</style></head><body><header class="top"><a href="https://imjae.github.io/">imjae.</a><nav aria-label="Main navigation"><a href="https://imjae.github.io/writing/">Writing</a><a href="https://imjae.github.io/portfolio/">Portfolio</a><a href="/projects/" aria-current="location">Projects</a><a href="https://imjae.github.io/about/">About</a><form action="/auth/logout" method="post"><button>Sign out</button></form></nav></header><main class="reader project-reader" id="document-shell">${renderProjectNavigation(game, section.id)}<header class="document-heading"><div><h1>${escape(section.title)}</h1><p class="private-label">비공개 · 나만 보기</p></div><nav class="document-modes" aria-label="문서 모드"><a data-document-view href="${escape(view)}"${editing ? '' : ' aria-current="page"'}>View</a><a href="${escape(edit)}"${editing ? ' aria-current="page"' : ''}>Edit</a><a class="document-create" href="${path}?new=1&edit=1">+ ${resource ? '리소스' : '기획서'} 추가</a></nav></header>${layout}</main><script nonce="${nonce}">${script}</script></body></html>`;
   return new Response(html, { headers: {
     'Content-Type': 'text/html; charset=utf-8',

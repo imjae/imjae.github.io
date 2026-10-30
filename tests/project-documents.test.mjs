@@ -1,8 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 import { gamePlansFixture } from './helpers/game-plans-fixture.mjs';
 const base = '/api/project-documents/dcb/plans/items';
 const record = (extra = {}) => ({ title: '공격 규칙', folder: '게임플레이/전투', body: '## 판정\n\nPRIVATE_DOCUMENT', version: 0, ...extra });
+
+test('Worker 번들 후에도 기획서와 리소스 화면을 초기화하고 세션 만료 시 숨긴다', async () => {
+  const { build } = createRequire(import.meta.resolve('wrangler'))('esbuild');
+  const bundle = await build({ entryPoints: [fileURLToPath(new URL('../server/game-plan-ui.mjs', import.meta.url))], bundle: true, keepNames: true, write: false, format: 'cjs', platform: 'node' });
+  const bundledModule = { exports: {} };
+  runInNewContext(bundle.outputFiles[0].text, { module: bundledModule, exports: bundledModule.exports, require: createRequire(import.meta.url), crypto, Response, URL, TextEncoder, TextDecoder }, { timeout: 1000 });
+  const { gamePlanPage } = bundledModule.exports;
+  for (const section of ['plans', 'resources']) {
+    const html = await (await gamePlanPage({ id: 'dcb', title: 'DCB' }, { id: 'main', title: '', folder: '', body: '', imageUrl: '', caption: '' }, false, { id: section, title: section }, [])).text();
+    const script = html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)?.[1];
+    assert.ok(script);
+    const events = {}, body = { style: { visibility: 'hidden' } }; let valid = true, redirected = '';
+    const document = { body, hidden: false, getElementById: () => null, addEventListener: (name, callback) => { events[name] = callback; } };
+    runInNewContext(script, { document, window: { addEventListener: (name, callback) => { events[name] = callback; } }, location: { pathname: `/projects/dcb/${section}/`, search: '?doc=main', replace: url => { redirected = url; } }, fetch: async () => ({ ok: valid }), setInterval: () => {} }, { timeout: 1000 });
+    events.pageshow(); await new Promise(resolve => setImmediate(resolve));
+    assert.equal(body.style.visibility, 'visible');
+    events.pagehide(); assert.equal(body.style.visibility, 'hidden');
+    valid = false; events.pageshow(); await new Promise(resolve => setImmediate(resolve));
+    assert.equal(body.style.visibility, 'hidden');
+    assert.equal(redirected, '/auth/login?return_to=' + encodeURIComponent(`/projects/dcb/${section}/?doc=main`));
+  }
+});
 
 test('기존 기획은 main 문서로 읽고 양쪽 API 수정과 버전 충돌을 동일하게 보존한다', async () => {
   const f = gamePlansFixture();

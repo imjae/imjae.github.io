@@ -1,5 +1,6 @@
-// Serialized only into the identity-protected document response. No private browser storage.
-export function projectDocumentClient() {
+// Keep browser source literal: Wrangler keepNames adds server-only helpers to function.toString().
+// Embedded only in the identity-protected response. No private browser storage.
+export const projectDocumentClientSource = String.raw`(() => {
   let authenticated = false;
   async function checkOwner() {
     try {
@@ -34,7 +35,7 @@ export function projectDocumentClient() {
           else if (previous.has(folder)) { folder.open = previous.get(folder); previous.delete(folder); }
         }
         const count = rows.filter(row => !row.hidden).length;
-        document.getElementById('search-result').textContent = words.length ? `${count}편` : '';
+        document.getElementById('search-result').textContent = words.length ? count + '편' : '';
         document.getElementById('empty-search').hidden = count > 0;
       });
     }
@@ -78,4 +79,4 @@ export function projectDocumentClient() {
     } catch (error) { status.textContent = error.message || '저장하지 못했습니다. 연결을 확인해 주세요.'; }
     finally { saving = false; button.disabled = false; }
   });
-}
+})();`;
