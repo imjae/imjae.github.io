@@ -45,6 +45,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
       <nav class="header-nav" aria-label="Main navigation">
         <a href="/writing/" aria-current={writingSection ? Astro.url.pathname === '/writing/' ? 'page' : 'location' : undefined}>Writing</a>
         <a href="/portfolio/" aria-current={active === 'portfolio' ? 'page' : undefined}>Portfolio</a>
+        <a href="/games/" aria-current={active === 'games' ? Astro.url.pathname === '/games/' ? 'page' : 'location' : undefined}>Games</a>
         <a href="/about/" aria-current={active === 'about' ? 'page' : undefined}>About</a>
       </nav>
       <div class="header-utilities">
@@ -52,8 +53,8 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
         <ModeSwitch editing={active === 'editor'} viewerUrl={active === 'editor' ? '/writing/' : '#main-content'} editorUrl={editorUrl} editorExternal={!!editFile} />
       </div>
     </header>
-    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' }]}>
-      {active !== 'home' && active !== 'about' && !reading && <aside class="sidebar" aria-label="Browse notes">
+    <div class:list={['workspace', { 'workspace-home': active === 'home', 'workspace-reading': reading, 'workspace-about': active === 'about' || active === 'games' }]}>
+      {active !== 'home' && active !== 'about' && active !== 'games' && !reading && <aside class="sidebar" aria-label="Browse notes">
         <a class:list={['sidebar-home', { selected: active === 'home' }]} href="/"><span aria-hidden="true">⌂</span> Home</a>
         <p class="nav-caption">Topics</p>
         <nav class="topic-nav" aria-label="Topics">
@@ -93,7 +94,7 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
   @media (max-width: 760px) {
     .site-header { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 20px; padding-bottom: 12px; }
     .brand { grid-column: 1; grid-row: 1; }
-    .header-nav { grid-column: 1; grid-row: 2; order: 0; width: auto; justify-content: flex-start; gap: 22px; font-size: 12px; }
+    .header-nav { grid-column: 1; grid-row: 2; order: 0; width: auto; justify-content: flex-start; gap: 16px; font-size: 12px; }
     .header-utilities { display: contents; }
     .header-utilities :global(.mode-switch) { grid-column: 2; grid-row: 1; justify-self: end; }
     .header-github { grid-column: 2; grid-row: 2; justify-self: end; font-size: 10px; }
@@ -105,4 +106,5 @@ const writingSection = ['writing', 'topics', 'series'].includes(Astro.url.pathna
     .site-header-home, .home-page .site-footer { width: calc(100% - 40px); }
   }
   @media print { .site-header { display: none; } }
+  @media (max-width: 420px) { .site-header { column-gap: 12px; } .header-nav { gap: 12px; } }
 </style>

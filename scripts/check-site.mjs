@@ -13,6 +13,7 @@ import { featureUrl, selectFeatureArticles } from '../src/lib/portfolio-features
 import { githubFileUrl } from '../src/lib/github-authoring.mjs';
 import { mergeReadingItems } from '../src/lib/reading-shelf.mjs';
 import { managedPostSlugs, managedPostUrl } from '../src/lib/managed-posts.server.mjs';
+import { games } from '../src/data/games.mjs';
 
 const privateAuthoring = process.env.AUTHORING_MODE === 'private';
 const root = resolve(privateAuthoring ? '.authoring-dist' : 'dist');
@@ -31,6 +32,15 @@ if (publishManifest.version !== 1 || !/^[a-f0-9]{40}$/.test(publishManifest.revi
 if (!publishManifest.articles || typeof publishManifest.articles !== 'object' || Array.isArray(publishManifest.articles)) failures.push('기존 글 이전에 필요한 공개 글 배포 정보 누락');
 if (!Array.isArray(publishManifest.managedPosts) || JSON.stringify([...publishManifest.managedPosts].sort()) !== JSON.stringify([...managed].sort())) failures.push('공개·비공개 관리 글의 배포 정보 불일치');
 const feeds = (await readFile(join(root,'rss.xml'),'utf8')) + (await readFile(join(root,'sitemap.xml'),'utf8'));
+const gameAlbum = await readFile(join(root, 'games/index.html'), 'utf8');
+if (!feeds.includes('<loc>https://imjae.github.io/games/</loc>')) failures.push('Games 앨범 사이트맵 누락');
+for (const game of games) {
+  if (!gameAlbum.includes(`href="/games/${game.id}/"`) || !gameAlbum.includes(game.cover)) failures.push(`게임 표지 또는 링크 누락: ${game.id}`);
+  const gate = await readFile(join(root, 'games', game.id, 'index.html'), 'utf8');
+  if (!gate.includes('비공개 기획서') || !gate.includes('소유자만 열람할 수 있습니다.') || !gate.includes('content="noindex, nofollow"')) failures.push(`비공개 기획서 안내 누락: ${game.id}`);
+  if (/id="plan-form"|id="plan-body"|\/api\/game-plans|game-plan-save/.test(gate)) failures.push(`정적 페이지에 기획서 편집 기능 노출: ${game.id}`);
+  if (feeds.includes(`/games/${game.id}/`)) failures.push(`비공개 기획서 주소가 피드에 포함됨: ${game.id}`);
+}
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   for (const match of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {

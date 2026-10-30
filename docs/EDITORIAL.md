@@ -8,7 +8,7 @@
 
 ## 메뉴와 주제 표기
 
-사용자 요청에 따라 블로그와 지원용 포트폴리오의 상단 메뉴, 주제 이름은 영어로 표시한다. 블로그의 주요 메뉴는 Writing, Portfolio, About 순서로 배치한다. 홈 이동은 로고가 맡고 상단에는 별도의 Home 메뉴를 두지 않는다. GitHub는 오른쪽 보조 영역에 두며, 모드 전환은 View와 Edit를 사용한다. 주제는 Gameplay, Graphics, Tools & Systems, AI Collaboration, Notes, Mathematics, Reading, Study로 표기한다. 글의 제목·설명·본문과 작성 양식의 안내는 한국어를 유지한다.
+사용자 요청에 따라 블로그와 지원용 포트폴리오의 상단 메뉴, 주제 이름은 영어로 표시한다. 블로그의 주요 메뉴는 Writing, Portfolio, Games, About 순서로 배치한다. Games는 기획·개발 중인 게임의 대표 이미지와 이름을 앨범으로 보여 주며, 세부 기획은 소유자만 열람한다. 홈 이동은 로고가 맡고 상단에는 별도의 Home 메뉴를 두지 않는다. GitHub는 오른쪽 보조 영역에 두며, 모드 전환은 View와 Edit를 사용한다. 주제는 Gameplay, Graphics, Tools & Systems, AI Collaboration, Notes, Mathematics, Reading, Study로 표기한다. 글의 제목·설명·본문과 작성 양식의 안내는 한국어를 유지한다.
 
 Reading에는 책 제목·저자와 독서 메모를 모은다. 완독일은 확인된 경우에만 입력하고, 글 작성일을 완독일로 대신하지 않는다. 짧은 감상은 사용자가 실제로 남긴 생각을 적으며 기존 요약을 개인 감상으로 바꾸어 쓰지 않는다.
 

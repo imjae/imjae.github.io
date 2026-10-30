@@ -1,4 +1,5 @@
 import { parseDocument } from 'yaml';
+import { gamePlanStorage } from './game-plans.mjs';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -84,7 +85,9 @@ export class OwnerPosts {
   constructor(state) { this.storage = state.storage; }
   async fetch(request) {
     try {
-      const { operation, slug, source, version, visibility, migration, query = '', topic = '', tag = '' } = await request.json();
+      const input = await request.json();
+      if (typeof input?.operation === 'string' && input.operation.startsWith('game-plan-')) return gamePlanStorage(this.storage, input);
+      const { operation, slug, source, version, visibility, migration, query = '', topic = '', tag = '' } = input;
       if (operation === 'list' || operation === 'public-list') {
         const words = String(query).toLocaleLowerCase().split(/\s+/).filter(Boolean);
         const posts = [...(await this.storage.list({ prefix: 'post:' })).values()]

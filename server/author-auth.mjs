@@ -2,6 +2,7 @@ import { handleSketchRequest } from './sketch-review.mjs';
 import { handlePublishProgress } from './publish-progress.mjs';
 import { handleQuestionRequest } from './sketch-question.mjs';
 import { handleOwnerPosts, publicPostRequest } from './owner-post-api.mjs';
+import { handleGamePlans } from './game-plan-api.mjs';
 export { OwnerPosts } from './owner-posts.mjs';
 export { SketchQuestions } from './sketch-question.mjs';
 export { SketchReviews } from './sketch-review.mjs';
@@ -137,6 +138,8 @@ export async function handleAuthorRequest(request, env, { fetcher = fetch, now =
         response = redirect('https://imjae.github.io/', [cookie(SESSION_COOKIE, '', 0)]);
       } else if (url.pathname === '/auth/session' && request.method === 'GET') {
         response = Response.json({ login: session.login });
+      } else if ((url.pathname.startsWith('/games/') && url.pathname !== '/games/') || url.pathname === '/api/game-plans' || url.pathname.startsWith('/api/game-plans/')) {
+        response = await handleGamePlans(request, env);
       } else if (url.pathname.startsWith('/notes/') || url.pathname === '/api/notes' || url.pathname.startsWith('/api/notes/')) {
         response = await handleOwnerPosts(request, env, { fetcher });
       } else if (url.pathname === '/sketch/ask/' || url.pathname === '/api/sketch/ask' || url.pathname.startsWith('/api/sketch/ask/')) {
