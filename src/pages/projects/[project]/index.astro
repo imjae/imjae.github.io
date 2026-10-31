@@ -9,8 +9,9 @@ const { project } = Astro.props;
 <BaseLayout title={project.title} description={project.description} active="projects">
   <ProjectNav id={project.id} />
   <article class="project-intro-article">
-    <header><h1>프로젝트 소개</h1><p>{project.description}</p></header>
+    <header><h1>{project.introduction?.title ?? '프로젝트 소개'}</h1><p>{project.description}</p></header>
     <figure class="project-intro-cover"><img src={project.cover} alt={project.alt} width="960" height="720" /><figcaption>{project.credit}</figcaption></figure>
+    {project.introduction?.sections.map(section => <Fragment><h2>{section.title}</h2>{section.paragraphs.map(paragraph => <p>{paragraph}</p>)}</Fragment>)}
     <div class="project-intro-links"><p>기획서와 리소스는 소유자만 열람할 수 있습니다.</p><a href={`/projects/${project.id}/plans/`}>기획서 보기 →</a><a href={`/projects/${project.id}/resources/`}>리소스 보기 →</a></div>
   </article>
 </BaseLayout>
