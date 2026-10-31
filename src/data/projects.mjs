@@ -4,7 +4,7 @@ export const projects = [
   { id: 'shape-workshop', title: '도형 공방', cover: '/media/games/shape-workshop.webp', alt: '여러 다각형 조각을 맞춘 도형 공방 콘셉트 표지', credit: 'AI로 제작한 콘셉트 표지 · 실제 게임 화면 아님', description: '도형 만들기를 소재로 한 게임 프로젝트.', status: '', records: '/projects/shape-workshop/records/' },
   {
     id: 'dungeon-exploration', title: '던전 탐사', cover: '/media/games/dungeon-exploration-pixel.webp', alt: '돌계단 너머 작은 불빛으로 이어지는 던전 통로의 픽셀 아트', credit: 'AI로 제작한 픽셀 아트 콘셉트 표지 · 실제 게임 화면 아님',
-    description: '어둠 속에 남겨진 흔적을 따라, 오래된 던전의 비밀을 찾아가는 탐험 게임입니다.',
+    description: '서로 다른 능력을 지닌 캐릭터를 바꿔 가며, 하나의 던전을 탐험하는 게임입니다.',
     status: '기획 중', records: '/projects/dungeon-exploration/records/',
     introduction: {
       title: '같은 던전, 다른 발견',
@@ -12,7 +12,7 @@ export const projects = [
         {
           title: '',
           paragraphs: [
-            '한 번 지나온 길에도 아직 발견하지 못한 것이 남아 있습니다. 서로 다른 시선으로 던전을 살피고, 작은 발견을 이어 더 깊은 곳으로 나아갑니다. 익숙한 장소에서 뜻밖의 길을 찾는 즐거움을 담고 있습니다.',
+            '누군가는 숨은 길을 찾아내고, 누군가는 오래된 글자를 읽어 장치를 움직입니다. 같은 장소에서도 캐릭터에 따라 발견하는 단서와 해결 방법이 달라집니다. 앞선 탐험에서 열어 둔 길과 모은 기록을 이어받아, 어둠과 위험이 남은 던전을 조금씩 밝혀 나갑니다.',
           ],
         },
       ],
