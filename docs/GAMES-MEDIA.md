@@ -6,9 +6,17 @@
 | --- | --- | --- |
 | DCB | `public/media/games/dcb.webp` | 기존 공개 이미지 `src/assets/home/dcb-shrine.png`의 4:3 크롭. 실제 개발 화면이며 외부·재사용 자산이 포함된 프로젝트의 장면이다. |
 | 도형 공방 | `public/media/games/shape-workshop.webp` | 내장 imagegen으로 만든 콘셉트 표지. 실제 게임 화면이 아니다. |
-| 던전 탐사 | `public/media/games/dungeon-exploration.webp` | 내장 imagegen으로 만든 콘셉트 표지. 실제 게임 화면이 아니다. |
+| 던전 탐사 | `public/media/games/dungeon-exploration-pixel.webp` | 기존 콘셉트 표지를 내장 imagegen으로 다시 그린 픽셀 아트. 실제 게임 화면이 아니다. |
 
 생성일: 2026-10-30. CLI나 외부 이미지 검색 없이 내장 imagegen을 사용했다. 생성한 두 이미지는 960×720 WebP로 변환했다. 상세 진입 화면의 캡션과 이미지 대체 텍스트에도 출처를 구분한다. 기획 본문·캐릭터·플레이 결과를 새로 만들지 않았다.
+
+2026-10-31 사용자의 요청으로 던전 탐사 표지를 픽셀 아트로 교체했다. 기존 `dungeon-exploration.webp`를 입력으로 내장 imagegen 편집을 사용했고, 생성 결과를 1448×1086 무손실 WebP로 저장했다. 앨범과 소개는 새 파일을 함께 사용한다. 이전 표지는 보존했다.
+
+## 던전 탐사 픽셀 아트 편집 프롬프트
+
+```text
+Use case: style-transfer. Asset type: 4:3 landscape website cover for a dungeon exploration game concept. Input image 1 is the edit target. Redraw this stone archway and descending steps as carefully crafted 2D pixel art. Keep the recognizable doorway, short worn stairs, layered passages leading inward, and a small warm light deep inside. Preserve the quiet mysterious invitation to explore. Use a coherent coarse pixel grid equivalent to a 320x240 canvas, clearly visible crisp square pixel clusters, restrained dithering, limited slate gray, cool dark blue and muted amber palette. Simplify stone textures into deliberate readable pixel shapes; authentic hand-placed pixel-art aesthetics, not a photograph with a pixelation filter. Maintain strong depth and a clear silhouette at thumbnail size. Keep enough midtone detail to read on a light website background. No characters, monsters, loot, invented story symbols, text, lettering, logo, UI, HUD, frame or watermark. No smooth gradients, painterly brushwork, blur, glossy 3D rendering or photorealism. This is a concept illustration, not an actual gameplay screenshot. Opaque background.
+```
 
 ## 도형 공방 생성 프롬프트
 
