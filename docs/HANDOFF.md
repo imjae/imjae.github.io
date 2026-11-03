@@ -1,5 +1,21 @@
 # 블로그 관리 인수인계
 
+## 2026-11-03 AnimatorSMB 정리 글 공개·배포
+
+사용자가 수정된 정리 글의 배포를 승인했다. `animator-smb-state-control`을 `draft: false`로 전환하며, 이 대화의 글·문체 기준(`EDITORIAL.md`)·작업 기록만 main에 반영한다. 공개 주소는 `/writing/animator-smb-state-control/`이다. 아래의 초안·미배포 표기는 작성 단계의 기록이다.
+
+`npm run verify`: 테스트 166개 통과, Astro 99파일 오류·경고·힌트 0, 공개 155경로·161 HTML 검사 통과. 소유자 빌드 161 HTML 검사도 통과했으며 양쪽 manifest의 글 원문 해시가 같다. 새 글의 본문·Writing·DCB 시리즈·RSS·사이트맵 포함을 확인했다. 배포용 브라우저에서 홈·긴 C++ 글·390px AnimatorSMB 검색 2건(새 글 포함)과 새 본문을 확인했다. 초안 안내가 없고 모바일 본문의 문서 폭과 스크롤 폭은 모두 375px다. 실제 기기 검사는 하지 않았다. main push에 연결된 공개 Pages·소유자 Worker의 자동 배포와 운영 확인 결과, 정확한 커밋·Actions 주소는 `.verification/animator-smb-release-20261103/`에 보관한다.
+
+## 2026-11-03 AnimatorSMB 소개 초안
+
+문체 후속 수정: 사용자가 이 글은 누군가에게 작업을 소개하는 글이 아니라 내용을 정리하는 글이라고 명확히 했다. 제목·요약·소제목·본문에서 `제가`·`저는`과 작업 수행을 알리는 서술을 제거하고, 구성·동작을 주어로 설명한다. 제작 목적은 유지하고 기여·AI·자산 표기는 간결한 항목으로 바꿨다. 같은 기술 정리 글의 문체 기준을 `EDITORIAL.md`에 반영했으며 다른 기존 글은 일괄 수정하지 않았다. `verify-neutral-tone.log`의 npm run verify와 변경 문구 검색을 통과했다. 브라우저에서 홈·긴 글·390px dev IK 검색 12건과 새 제목·도입부·소제목을 확인했으며, 모바일 본문의 clientWidth와 scrollWidth는 모두 375px였다. 미배포 초안 상태다.
+
+후속 요청으로 도입부에 사용자가 밝힌 제작 이유를 추가했다. 원하는 정확한 애니메이션 상태에서 원하는 동작을 실행하고, 상태의 시작·종료·전환을 애니메이션 이벤트 키에 의존해 연결하는 방식을 지양하려는 목적이다. 현재 남아 있는 클립 내부 타이밍 이벤트와 구분해 설명하며 초안 상태를 유지한다. `verify-introduction.log`에 npm run verify 재통과를 기록했다. 수정된 도입부와 홈·긴 C++ 글을 브라우저에서 확인했고, 390px dev 검색 IK는 초안을 포함해 12개 기록·가로 넘침 없음이었다.
+
+사용자가 AnimatorSMB의 동작 방식과 Animator를 다룬 범위가 드러나는 글을 요청했다. `content/articles/gameplay/animator-smb-state-control.md`를 Gameplay·DCB 시리즈 order 31·`draft: true`로 추가했다. 대표 작업은 공통 기반을 추출한 DCB `bb9fc4ede`의 AuthorDate이므로 date 2025-09-01/commit, updated 2026-11-03을 사용한다. 상태·태그 판별, 상태와 전환 콜백의 차이, CanCombo와 ComboTiming, 입력 예약·소비 대기·무기별 타수·스태미너, 블렌드 중 Trigger 잔존, Base·Guard 레이어의 상태 정리를 설명한다. IsInTransition의 bool 변화만으로 전환 중단을 모두 구분할 수 없는 범위도 해당 설명 옆에 적었다. 표 4개와 개념 흐름도 1개를 포함하며, 직접 구성한 구조·AI 후속 보완·설명 작성 보조·기존 모션 자산을 구분했다. 전체 비공개 소스·로그·로컬 경로·새 미디어는 본문에 넣지 않았다.
+
+`npm run verify`: 테스트 166개 통과, Astro 99파일 오류·경고·힌트 0, 공개 154경로·160 HTML 검사 통과. 새 slug가 공개 HTML·JSON·XML과 개별 경로에 없는 것을 추가 확인했다. 브라우저에서 공개 홈·긴 C++ 본문·390px Writing의 IK 검색 9개 정적 기록을 확인했다. 새 글의 초안 안내·표 4개·Mermaid SVG 1개를 확인하고, 데스크톱 1265px와 모바일 본문 375px에서 문서 폭과 스크롤 폭이 같음을 확인했다. 실제 기기와 Unity 게임 실행은 수행하지 않았다. 로컬 서버 글 API의 기존 불러오기 제한은 유지된다. 근거와 검증 로그는 `.verification/animator-smb-20261103/`에 두고, 4343에서 초안 미리보기를 유지한다. DCB 파일은 변경하지 않았으며 커밋·push·배포하지 않았다.
+
 ## 2026-11-03 소유자 전용 지원서 분류
 
 사용자가 첨부한 지원 내용을 글로 보관하고 비공개 지원서 분류를 만들도록 요청했다. 기존 소유자 글 저장소에 `applications` Topic을 추가했으며, 보호된 화면의 하단·전체 관리·내 글에서 **Applications · 지원서 (비공개)**로 연다. `/notes/edit/?topic=applications`는 지원서만 표시하고 새 글의 Topic을 미리 선택한다. 공개 사이트의 여덟 주제에는 추가하지 않는다.
