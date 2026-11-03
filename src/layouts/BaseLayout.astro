@@ -68,7 +68,7 @@ const writingSection = !projectSection && ['writing', 'topics', 'series'].includ
       </aside>}
       <main id="main-content">{privateAuthoring && pageEditor && <PageEditor title={title ?? site.title} articles={articles} />}<slot /></main>
     </div>
-    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span>{privateAuthoring && active !== 'editor' && <a href="/editor/">전체 관리</a>}<a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
+    <footer class="site-footer"><span>© {new Date().getUTCFullYear()} imjae</span><span>게임 개발 블로그</span>{privateAuthoring && <a href="/notes/edit/?topic=applications">Applications · 비공개</a>}{privateAuthoring && active !== 'editor' && <a href="/editor/">전체 관리</a>}<a href="https://github.com/imjae/imjae.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a></footer>
     {privateAuthoring && <PublishProgress />}
   </body>
 </html>

@@ -41,6 +41,44 @@ test('새 글은 원문의 draft 값이나 요청 visibility와 무관하게 비
   assert.match(list.headers.get('Cache-Control'), /no-store/);
 });
 
+test('지원서는 비공개로 저장되고 공개 요청과 익명 목록·검색·본문 접근을 차단한다', async () => {
+  const f = fixture();
+  const response = await f.call('/api/notes/private-test', { body: { action: 'save', version: 0, fields: { ...fields(), topic: 'applications' }, visibility: 'public' } });
+  assert.equal(response.status, 201);
+  const post = await response.json();
+  assert.equal(post.topic, 'applications'); assert.equal(post.visibility, 'private');
+  const publish = await f.call('/api/notes/private-test', { body: { action: 'visibility', version: post.version, visibility: 'public' } });
+  assert.equal(publish.status, 403);
+  assert.equal((await (await f.call('/api/notes/private-test')).json()).version, post.version);
+  // Even an inconsistent visibility flag in storage must not expose this category.
+  await f.storage.put('post:private-test', { ...post, visibility: 'public' });
+  for (const path of ['/api/notes/public', '/api/notes/public?topic=applications&q=OWNER_ONLY_SENTINEL']) {
+    assert.deepEqual((await (await f.call(path, { owner: false })).json()).posts, []);
+  }
+  for (const owner of [false, 'other']) for (const method of ['GET', 'HEAD']) {
+    const result = await f.call('/notes/private-test/', { owner, method });
+    assert.equal(result.status, 401); assert.doesNotMatch(await result.text(), /OWNER_ONLY_SENTINEL|비공개 시험 제목/);
+  }
+  const editor = await (await f.call('/notes/edit/?topic=applications')).text();
+  assert.match(editor, /Applications · 지원서 \(비공개\)/);
+  assert.match(editor, /id="category"/);
+});
+
+test('공개 글을 지원서로 변경해 저장하면 즉시 비공개로 전환하며 다른 글은 유지한다', async () => {
+  const f = fixture();
+  await f.create();
+  const published = await (await f.call('/api/notes/private-test', { body: { action: 'visibility', version: 1, visibility: 'public' } })).json();
+  await f.create('another-note');
+  await f.call('/api/notes/another-note', { body: { action: 'visibility', version: 1, visibility: 'public' } });
+  const saved = await f.call('/api/notes/private-test', { body: { action: 'save', version: published.version, fields: { ...fields(), topic: 'applications' } } });
+  assert.equal(saved.status, 200); assert.equal((await saved.json()).visibility, 'private');
+  assert.equal((await f.call('/notes/private-test/', { owner: false })).status, 401);
+  const publicPosts = (await (await f.call('/api/notes/public', { owner: false })).json()).posts;
+  assert.deepEqual(publicPosts.map(post => post.slug), ['another-note']);
+  const stored = (await (await f.call('/api/notes')).json()).posts;
+  assert.equal(stored.length, 2);
+});
+
 test('로그인 없음·다른 계정·직접 API·HEAD·직접 글 주소에서 비공개 제목과 본문을 내보내지 않는다', async () => {
   const f = fixture(); await f.create();
   for (const owner of [false, 'other']) for (const path of ['/api/notes', '/api/notes/private-test', '/notes/private-test/', '/notes/edit/']) {

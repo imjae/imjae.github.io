@@ -10,7 +10,9 @@ import rehypeKatex from 'rehype-katex';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 
-export const postTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study'];
+export const postTopics = ['gameplay', 'graphics', 'tools', 'ai', 'notes', 'math', 'reading', 'study', 'applications'];
+export const isPrivateTopic = topic => topic === 'applications';
+const isPublicPost = post => post.visibility === 'public' && !post.migration?.pending && !isPrivateTopic(post.topic);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const sourceLimit = 200000;
 const encoder = new TextEncoder();
@@ -91,7 +93,7 @@ export class OwnerPosts {
       if (operation === 'list' || operation === 'public-list') {
         const words = String(query).toLocaleLowerCase().split(/\s+/).filter(Boolean);
         const posts = [...(await this.storage.list({ prefix: 'post:' })).values()]
-          .filter(post => operation !== 'public-list' || (post.visibility === 'public' && !post.migration?.pending))
+          .filter(post => operation !== 'public-list' || isPublicPost(post))
           .filter(post => (!topic || post.topic === topic) && (!tag || post.tags.includes(tag)) && words.every(word => [post.title, post.description, post.body, ...post.tags].join(' ').toLocaleLowerCase().includes(word)))
           .sort((a, b) => b.date.localeCompare(a.date) || b.updatedAt.localeCompare(a.updatedAt));
         return Response.json({ posts: posts.map(postSummary) });
@@ -99,7 +101,7 @@ export class OwnerPosts {
       if (!slugPattern.test(slug ?? '') || slug.length > 80) throw new PostError('글 주소를 확인해 주세요.');
       if (operation === 'get' || operation === 'public-get') {
         const post = await this.storage.get(`post:${slug}`);
-        if (!post || (operation === 'public-get' && (post.visibility !== 'public' || post.migration?.pending))) return Response.json(null, { status: 404 });
+        if (!post || (operation === 'public-get' && !isPublicPost(post))) return Response.json(null, { status: 404 });
         return Response.json(post);
       }
       if (!['save', 'import', 'migrated', 'visibility', 'delete'].includes(operation)) throw new PostError('요청을 찾을 수 없습니다.', 404);
@@ -113,7 +115,8 @@ export class OwnerPosts {
         if (operation === 'visibility' && !['public', 'private'].includes(visibility)) throw new PostError('공개 범위를 확인해 주세요.');
         const data = ['save', 'import'].includes(operation) ? parsePost(source) : previous;
         if (data.slug !== slug) throw new PostError('저장한 글의 주소는 바꿀 수 없습니다. 새 글로 저장해 주세요.');
-        const post = { ...data, ...(previous?.migration ? { migration: previous.migration } : {}), visibility: operation === 'visibility' ? visibility : previous?.visibility ?? 'private', version: version + 1, updatedAt: new Date().toISOString() };
+        if (operation === 'visibility' && visibility === 'public' && isPrivateTopic(data.topic)) throw new PostError('지원서는 본인만 볼 수 있는 분류입니다. 공개할 수 없습니다.', 403);
+        const post = { ...data, ...(previous?.migration ? { migration: previous.migration } : {}), visibility: isPrivateTopic(data.topic) ? 'private' : operation === 'visibility' ? visibility : previous?.visibility ?? 'private', version: version + 1, updatedAt: new Date().toISOString() };
         if (operation === 'import') post.migration = migration;
         if (operation === 'migrated') post.migration = { ...previous.migration, pending: false };
         await this.storage.put(key, post);

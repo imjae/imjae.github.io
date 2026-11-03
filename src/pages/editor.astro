@@ -16,6 +16,7 @@ const listedBooks = (await getReadingItems(articles)).filter(item => !item.artic
   <header class="page-intro"><h1>수정 모드</h1><p>내 글에서 글을 작성하고 공개·비공개를 전환합니다.<br/>기존 공개 글은 처음 한 번 GitHub에서 이전을 확정합니다.</p></header>
   <div class="editor-shortcuts">
     <a href="/notes/edit/" class="button button-dark">내 글 · 공개 / 비공개</a>
+    <a href="/notes/edit/?topic=applications" class="button">Applications · 지원서 (비공개)</a>
     <a href="#new-post">GitHub에 새 글 작성</a>
     <a href="/editor/?topic=reading#new-post">독서 기록 추가</a>
     <a href="#portfolio-copy">포트폴리오 문구</a>

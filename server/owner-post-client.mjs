@@ -2,6 +2,7 @@
 export const postEditorClient = String.raw`async function () {
   const $ = id => document.getElementById(id), form = $('form');
   const initialParams = new URLSearchParams(location.search);
+  let category = initialParams.get('topic') === 'applications' ? 'applications' : '';
   let current = null, posts = [], dirty = false, busy = false, importSource = '', generation = 0;
   const field = name => form.elements.namedItem(name);
   const status = (message, error = false) => { $('status').textContent = message; $('status').classList.toggle('error', error); };
@@ -30,11 +31,12 @@ export const postEditorClient = String.raw`async function () {
   }
   function controls() {
     const published = current?.visibility === 'public', pending = current?.migration?.pending;
-    $('visibility-label').textContent = pending ? '이전 대기 · 기존 페이지는 공개' : current ? (published ? '공개' : '비공개 · 나만 보기') : '새 글 · 비공개';
+    const privateCategory = field('topic').value === 'applications' || current?.topic === 'applications';
+    $('visibility-label').textContent = pending ? '이전 대기 · 기존 페이지는 공개' : privateCategory ? (published ? '저장하면 비공개로 전환됩니다.' : '지원서 · 본인만 보기') : current ? (published ? '공개' : '비공개 · 나만 보기') : '새 글 · 비공개';
     $('visibility').textContent = published ? '공개' : '비공개';
     $('visibility').setAttribute('aria-checked', String(published));
-    $('visibility').disabled = busy || !current || pending || dirty;
-    $('visibility').title = dirty ? '글을 먼저 저장해 주세요.' : '';
+    $('visibility').disabled = busy || !current || pending || dirty || privateCategory;
+    $('visibility').title = privateCategory ? '지원서는 공개할 수 없습니다.' : dirty ? '글을 먼저 저장해 주세요.' : '';
     $('view').hidden = !current; $('download').hidden = !current; $('delete').hidden = !current || pending;
     if (current) $('view').href = '/notes/' + current.slug + '/';
     $('migration').hidden = !pending;
@@ -42,21 +44,25 @@ export const postEditorClient = String.raw`async function () {
   }
   function show(post) {
     current = post?.version ? post : null; importSource = post?.source || ''; dirty = Boolean(post && !post.version);
-    for (const name of ['title', 'description', 'slug', 'date', 'topic', 'body']) field(name).value = post?.[name] || (name === 'date' ? today() : name === 'topic' ? 'notes' : '');
+    for (const name of ['title', 'description', 'slug', 'date', 'topic', 'body']) field(name).value = post?.[name] || (name === 'date' ? today() : name === 'topic' ? category || 'notes' : '');
     field('tags').value = (post?.tags || []).join(', ');
     $('preview').hidden = true; controls(); list();
-    const url = new URL(location.href); url.search = current ? '?post=' + encodeURIComponent(current.slug) : ''; history.replaceState(null, '', url);
+    const url = new URL(location.href); url.search = ''; if (category) url.searchParams.set('topic', category); if (current) url.searchParams.set('post', current.slug); history.replaceState(null, '', url);
   }
   function list() {
     $('posts').replaceChildren(); const query = $('filter').value.toLocaleLowerCase();
-    for (const post of posts.filter(post => post.title.toLocaleLowerCase().includes(query))) {
+    $('category').value = category;
+    $('category-title').textContent = category ? '지원서' : '내 글';
+    $('category-description').textContent = category ? '지원 내용과 답변을 보관합니다. 로그인한 본인만 볼 수 있으며 공개할 수 없습니다.' : '새 글은 비공개로 저장됩니다. 공개한 글은 Writing 목록에 표시됩니다.';
+    const matches = posts.filter(post => (!category || post.topic === category) && post.title.toLocaleLowerCase().includes(query));
+    for (const post of matches) {
       const li = document.createElement('li'), button = document.createElement('button'), title = document.createElement('span'), meta = document.createElement('small');
-      title.textContent = post.title; meta.textContent = (post.migration?.pending ? '이전 대기' : post.visibility === 'public' ? '공개' : '비공개') + ' · ' + post.date;
+      title.textContent = post.title; meta.textContent = (post.topic === 'applications' ? '지원서 · 비공개' : post.migration?.pending ? '이전 대기' : post.visibility === 'public' ? '공개' : '비공개') + ' · ' + post.date;
       button.append(title, meta); button.setAttribute('aria-current', String(post.slug === current?.slug));
       button.onclick = () => run(async () => { if (dirty && !(await confirmAction('다른 글로 이동', '저장하지 않은 내용을 버리고 이동할까요?'))) return; await load(post.slug); });
       li.append(button); $('posts').append(li);
     }
-    $('empty').hidden = posts.length > 0;
+    $('empty').hidden = matches.length > 0;
   }
   async function refresh() { posts = (await api()).posts; list(); }
   async function load(slug) {
@@ -88,6 +94,10 @@ export const postEditorClient = String.raw`async function () {
   $('new').onclick = () => run(async () => { if (dirty && !(await confirmAction('새 글 작성', '저장하지 않은 내용을 버릴까요?'))) return; show(null); status('새 글은 비공개로 저장됩니다.'); });
   $('reload').onclick = () => run(async () => { await refresh(); status('목록을 새로 불러왔습니다.'); });
   $('filter').oninput = list;
+  $('category').onchange = () => { const next = $('category').value; run(async () => {
+    if (dirty && !(await confirmAction('분류 변경', '저장하지 않은 내용을 버리고 이동할까요?'))) { $('category').value = category; return; }
+    category = next; show(null); status(category ? '새 지원서는 비공개로 저장됩니다.' : '전체 글을 표시합니다.');
+  }); };
   $('preview-button').onclick = () => run(async () => { if (!form.reportValidity()) return; const result = await api('/preview', { fields: fields() }); $('preview').innerHTML = result.html; $('preview').hidden = false; });
   $('delete').onclick = () => run(async () => {
     if (!(await confirmAction('글 삭제', '이 저장소에서 글을 삭제합니다. 필요하면 먼저 저장본을 내려받아 주세요.'))) return;
