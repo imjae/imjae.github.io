@@ -64,11 +64,11 @@ const noteCount = books.filter(item => item.article).length;
   filterBooks();
 </script>
 <style>
-  .shelf-heading{align-items:center;gap:20px;flex-wrap:wrap}.shelf-count{font-size:11px;color:var(--muted);margin:22px 0 14px}
+  .shelf-heading{align-items:center;gap:20px;flex-wrap:wrap}.shelf-count{font-size:13px;color:var(--muted);margin:22px 0 14px}
   .book-list{border-top:1px solid var(--line)}.book-entry{display:grid;grid-template-columns:42px minmax(0,1fr);gap:22px;padding:30px 0;border-bottom:1px solid var(--line)}
-  .book-number{font:13px var(--mono);color:#997c6f;padding-top:5px}.book-content{min-width:0}.book-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);line-height:1.8}.book-meta>span:last-child{margin-left:auto}.book-meta time{font:10px var(--mono)}
+  .book-number{font:13px var(--mono);color:#997c6f;padding-top:5px}.book-content{min-width:0}.book-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);line-height:1.8}.book-meta>span:last-child{margin-left:auto}.book-meta time{font:12px var(--mono)}
   .book-content h3{font-size:24px;line-height:1.6;letter-spacing:-.6px;margin:12px 0 18px;overflow-wrap:anywhere}.book-content h3 a:hover{color:var(--green)}
-  .book-note{border-left:2px solid #c7b3a4;padding-left:18px;max-width:720px}.book-note-label{font-size:10px;color:#8a685e;margin:0 0 7px}.book-note>p:last-child{font-size:13px;line-height:2;white-space:pre-line;overflow-wrap:anywhere;margin:0}
-  .book-more{display:inline-block;font-size:11px;color:var(--green);margin-top:20px}.book-more:hover{text-decoration:underline;text-underline-offset:4px}
-  @media(max-width:760px){.book-entry{grid-template-columns:24px minmax(0,1fr);gap:12px;padding:25px 0}.book-content h3{font-size:21px}.book-meta>span:last-child{margin-left:0}.book-note{padding-left:13px}.book-note>p:last-child{font-size:12px}.shelf-heading .text-link{font-size:11px}}
+  .book-note{border-left:2px solid #c7b3a4;padding-left:18px;max-width:720px}.book-note-label{font-size:12px;color:#8a685e;margin:0 0 7px}.book-note>p:last-child{font-size:16px;line-height:2;white-space:pre-line;overflow-wrap:anywhere;margin:0}
+  .book-more{display:inline-block;font-size:14px;color:var(--green);margin-top:20px}.book-more:hover{text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:760px){.book-entry{grid-template-columns:24px minmax(0,1fr);gap:12px;padding:25px 0}.book-content h3{font-size:21px}.book-meta>span:last-child{margin-left:0}.book-note{padding-left:13px}.book-note>p:last-child{font-size:15px}.shelf-heading .text-link{font-size:13px}}
 </style>
