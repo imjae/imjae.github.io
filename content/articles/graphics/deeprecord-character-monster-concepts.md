@@ -12,7 +12,7 @@ draft: false
 
 ## 다섯 탐험자
 
-[![높이가 다른 두 점눈이 있는 베이지색 얼굴과 각자의 옷차림으로 나란히 선 다섯 탐험자](/media/deeprecord-character-monster-concepts/cast-dot-faces.webp)](/media/deeprecord-character-monster-concepts/cast-dot-faces.webp)
+[![높이가 다른 두 점눈이 있는 베이지색 얼굴과 각자의 옷차림으로 나란히 선 다섯 탐험자](/media/deeprecord-character-monster-concepts/cast-dot-faces-2x.webp)](/media/deeprecord-character-monster-concepts/cast-dot-faces-2x.webp)
 
 다섯 탐험자는 어렴풋이 사람을 닮은 존재들입니다. 최신 게임 스프라이트처럼 평평한 베이지색 얼굴에 높이가 다른 두 점눈만 그렸습니다.
 
