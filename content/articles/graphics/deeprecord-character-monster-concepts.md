@@ -1,6 +1,6 @@
 ---
 title: "DeepRecord 캐릭터와 몬스터 콘셉트 아트"
-description: "최신 픽셀 캐릭터 다섯 명의 의상과 실루엣을 다시 그렸습니다. 채석장에서 만나는 동굴쥐와 몬스터 후보 네 종의 콘셉트 아트를 함께 담았습니다."
+description: "비대칭 점눈과 서로 다른 체형을 가진 다섯 탐험자의 콘셉트 아트입니다. 채석장에서 만나는 동굴쥐와 몬스터 후보 네 종의 그림을 함께 담았습니다."
 slug: "deeprecord-character-monster-concepts"
 date: "2026-11-08"
 topic: "graphics"
@@ -12,9 +12,11 @@ draft: false
 
 ## 다섯 탐험자
 
-[![차가운 석조 통로에 나란히 서서 왼손에 작은 랜턴을 든 다섯 탐험자](/media/deeprecord-character-monster-concepts/cast.webp)](/media/deeprecord-character-monster-concepts/cast.webp)
+[![높이가 다른 두 점눈이 있는 베이지색 얼굴과 각자의 옷차림으로 나란히 선 다섯 탐험자](/media/deeprecord-character-monster-concepts/cast-dot-faces.webp)](/media/deeprecord-character-monster-concepts/cast-dot-faces.webp)
 
-왼쪽부터 지도사 사하르, 약초꾼 나클, 사냥꾼 아르준, 공병 비마르, 학자 유디르입니다. 최신 게임 스프라이트의 체형과 의상 색을 바탕으로 한 장에 그렸습니다. 사하르의 한쪽으로 흐르는 스카프, 나클의 다부진 체형, 아르준의 짧은 적갈색 코트, 비마르의 넓은 어깨, 유디르의 긴 자줏빛 코트가 각각의 윤곽을 만듭니다.
+다섯 탐험자는 어렴풋이 사람을 닮은 존재들입니다. 최신 게임 스프라이트처럼 평평한 베이지색 얼굴에 높이가 다른 두 점눈만 그렸습니다.
+
+왼쪽부터 지도사 사하르, 약초꾼 나클, 사냥꾼 아르준, 공병 비마르, 학자 유디르입니다. 사하르의 한쪽으로 흐르는 스카프, 나클의 다부진 체형, 아르준의 짧은 적갈색 코트, 비마르의 넓은 어깨, 유디르의 긴 자줏빛 코트가 각각의 윤곽을 만듭니다.
 
 이 글의 일러스트는 게임의 캐릭터 스프라이트와 던전 화면을 참고해 AI로 제작한 콘셉트 아트입니다.
 
