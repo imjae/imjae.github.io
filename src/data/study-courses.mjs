@@ -46,7 +46,7 @@ export const studyCourses = [{
   planSlug: 'direct3d12-renderer-12-week-plan',
   weeks: [
     { number: 1, title: 'Hello, window!와 한 프레임', description: '공식 샘플을 빌드하고 배경색을 바꿉니다. Win32 창, GPU 명령 기록·제출, DXGI 화면 표시를 구분합니다.', articleSlug: 'direct3d12-hello-window' },
-    { number: 2, title: 'HLSL 삼각형과 파이프라인 상태', description: '정점 버퍼와 HLSL 셰이더를 연결하고 PIX에서 드로우 호출과 파이프라인 상태를 확인합니다.' },
+    { number: 2, title: 'HLSL 삼각형과 파이프라인 상태', description: '정점 버퍼와 HLSL 셰이더를 연결하고 PIX에서 드로우 호출과 파이프라인 상태를 확인합니다.', articleSlug: 'direct3d12-hlsl-triangle-pix' },
     { number: 3, title: '펜스와 커맨드 할당자', description: 'GPU 완료 지점을 추적하고 명령 기록에 쓴 메모리를 다시 사용할 수 있는 시점을 확인합니다.' },
     { number: 4, title: '프레임 리소스와 업로드 수명', description: '프레임별 할당자와 상수 버퍼 영역을 두고 CPU 기록과 GPU 실행을 겹칩니다.' },
     { number: 5, title: '카메라와 좌표 변환', description: '월드·뷰·투영 행렬을 연결하고 카메라를 움직여 좌표와 행렬 전달을 확인합니다.' },

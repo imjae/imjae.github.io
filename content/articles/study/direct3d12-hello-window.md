@@ -70,4 +70,4 @@ const float clearColor[] = { 0.65f, 0.12f, 0.20f, 1.0f };
 - 같은 파일에서 명령을 기록하는 `ClearRenderTargetView()`와 제출하는 `ExecuteCommandLists()`를 각각 찾습니다.
 - 코드를 덮고 **Win32 창 → Direct3D 12 명령 기록·제출 → DXGI 화면 표시**를 자기 말로 설명합니다.
 
-다음 실습에서는 이 흐름에 정점 버퍼와 HLSL 셰이더, 드로우 호출을 추가해 삼각형을 그립니다. [주차별 목록](/series/direct3d12-renderer/)
+[2주차 실습](/writing/direct3d12-hlsl-triangle-pix/)에서는 이 흐름에 정점 버퍼와 HLSL 셰이더, 드로우 호출을 추가해 삼각형을 그리고 PIX로 확인합니다. [주차별 목록](/series/direct3d12-renderer/)
