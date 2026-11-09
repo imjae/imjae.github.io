@@ -15,7 +15,7 @@ export const topics = [
   { id: 'notes', title: 'Notes', english: 'NOTES', description: '자료구조와 웹 기술에 관한 메모.', number: '05', color: '#716d63' },
   { id: 'math', title: 'Mathematics', english: 'MATHEMATICS', description: '수와 함수, 벡터·행렬·회전의 원리와 계산.', number: '06', color: '#427872' },
   { id: 'reading', title: 'Books', english: 'BOOKS', description: '책 목록과 짧은 감상, 독서 메모.', number: '07', color: '#8a685e' },
-  { id: 'study', title: 'Learning', english: 'LEARNING', description: 'DCB의 언리얼 전환, 엔진 기능별 실습과 C++ 구조.', number: '08', color: '#526c8a' },
+  { id: 'study', title: 'Learning', english: 'LEARNING', description: '언리얼 전환과 C++ 엔진 구조, Direct3D 12 렌더러 구현.', number: '08', color: '#526c8a' },
 ] as const;
 
 export const kinds = { 'case-study': '구조 노트', devlog: '개발 기록', note: '기술 노트', reading: '읽기 노트' } as const;
