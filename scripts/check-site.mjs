@@ -69,6 +69,7 @@ for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   const route = '/' + relative(root, file).replaceAll('\\', '/').replace(/index\.html$/, '');
   const context = pageEditorContext(route);
+  if (route === '/writing/' && html.includes('href="/editor/#new-post"') !== privateAuthoring) failures.push(`새 글 작성 링크의 노출 범위가 다름: ${route}`);
   const modes = html.match(/<nav\b[^>]*class="mode-switch"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
   if (privateAuthoring && route !== '/editor/' && /href="\/editor\//.test(modes)) failures.push(`Edit가 현재 페이지와 무관한 관리 화면으로 이동함: ${route}`);
   if (privateAuthoring && context) {
