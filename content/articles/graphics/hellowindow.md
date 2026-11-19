@@ -1,5 +1,5 @@
 ---
-title: "HelloWindow"
+title: "D3D12HelloWorld_01_HelloWindow"
 description: "DXSample과 D3D12HelloWindow의 초기화, GPU 명령 기록·제출, 화면 표시와 펜스 동기화 과정을 살펴봅니다."
 slug: "hellowindow"
 date: "2026-11-17"
