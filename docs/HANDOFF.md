@@ -1,5 +1,13 @@
 # 블로그 관리 인수인계
 
+## 2026-11-19 Notion HelloWindow 원문 이관·공개
+
+사용자가 [Notion HelloWindow](https://app.notion.com/p/imjae/HelloWindow-41b3b61361d1806a8756f607df0e54f2)의 원문 그대로 게시·배포하고 고정 글 최상단에 놓도록 요청했다. `content/articles/graphics/hellowindow.md`를 Graphics·`Direct3D 12` 태그·`/writing/hellowindow/`로 추가했다. 생성 시 초안으로 두었다가 명시적 게시 요청에 따라 공개로 전환했다. Notion 생성일 검색에서 2026-11-17에 해당 페이지가 포함되고 11-18에는 제외되어 `date: 2026-11-17`, `dateBasis: notion`을 사용한다. 기존 Learning의 `direct3d12-hello-window`와는 별도의 원문이며 그 글과 주소는 유지한다.
+
+사용자의 원문 보존 요청을 우선하여 문체·오탈자·기술 설명·코드 20개를 고치지 않았다. 제목 단계만 블로그 제목 아래로 한 단계 내리고, HTML 소제목을 같은 단계의 Markdown으로 바꿨다. Notion의 빈 링크 미리보기는 원래 주소를 빈 앵커로 보존한다. 해당 참조 블록은 Notion 조회에서 삭제된 빈 블록이며 원문 웹 화면에도 링크 문구가 없다. 원본 순서도 PNG를 `public/media/hellowindow/program-flow.png`에 그대로 보관하고 본문 이미지를 이 경로로 연결한다. 새 그림이나 기술 설명을 AI로 작성하지 않았으며 AI 보조는 이관·메타데이터·검증에 한정한다. `content/pins/2026-11-19T04-22-03-000Z-hellowindow.json`은 기존 12개 고정 순서를 보존하고 새 글을 첫 번째에 넣는다.
+
+`npm run verify`: 테스트 166개·Astro 99파일 오류/경고/힌트 0·161경로 빌드·167개 HTML 검사를 통과했다. 별도 소유자 빌드의 167개 HTML 검사도 통과했다. 원문 변환 대조와 코드 20개 일치를 확인했고, 브라우저에서 Home 고정 13편의 첫 번째 HelloWindow·긴 본문과 원본 이미지 로드·390px Graphics/Direct3D 12/HelloWindow 검색 1건을 확인했다. 본문과 검색의 모바일 문서 폭·스크롤 폭은 모두 375px다. 실제 기기나 D3D12 샘플 실행은 새로 하지 않았다. 검증 원문·대조 자료·로그·배포 기록은 `.verification/hellowindow-20261119/`에 둔다. 기존 로컬 `ai-resource-catalog-review.md` 초안은 이번 게시에 포함하지 않는다. 아래 과거 작업의 실행·측정 기록은 이번 D3D12 코드 실행 결과가 아니다. 사용자가 승인한 main push로 공개 Pages와 소유자 Worker를 함께 배포한다.
+
 ## 2026-11-09 로컬 검증 기록·캡처 원본 정리
 
 사용자 요청으로 디스크를 정리하면서 Git이 무시하는 `.verification/` 폴더 전체(작업 폴더 155개, 31,100파일, 14,901,578,103B)를 지웠다. 가장 큰 것은 C++·DCB Unreal 스터디 글 검증 폴더(`cpp-week3-20261028` 약 6.3GiB, `dcb-unreal-week1·2-cpp-20261029` 약 5.3GiB)였다.
