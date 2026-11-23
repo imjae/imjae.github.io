@@ -1,5 +1,13 @@
 # 블로그 관리 인수인계
 
+## 2026-11-23 Notion HelloTriangle 재검수·공개
+
+사용자가 오탈자와 기술 설명을 수정한 [Notion 원문](https://app.notion.com/p/41d3b61361d180e6beebef23d3975e93)을 다시 검수하고 블로그에 배포하도록 요청했다. 이전에 지적한 입력 슬롯과 시맨틱 번호, 픽셀 셰이더 출력 연결과 번호, Unmap 수정 범위, CPU 읽기 예시, 배열 전체 크기, 명령 리스트 재기록, 초기 펜스 대기의 설명이 수정된 것을 공식 문서·샘플과 대조했다. 추가로 명확한 기술 오류는 찾지 못했으며 실행 결과를 새로 만들지 않았다. 원문 생성일 검색에서 2026-11-19에 해당 페이지가 포함되어 dateBasis notion·date 2026-11-19, 원문 수정일에 맞춰 updated 2026-11-23을 사용한다.
+
+`content/articles/graphics/hellotriangle.md`를 원문 제목 `D3D12HelloWorld_01_HelloTriangle`, Graphics·Direct3D 12 태그, `/writing/hellotriangle/`로 추가했다. 초안으로 생성한 뒤 사용자의 게시 승인에 따라 공개 전환했다. 원문 문체·본문과 코드 블록 16개를 보존하며 제목 단계, 표 3개와 순서 목록을 블로그 Markdown으로 변환했다. 태그·구조를 제외한 본문 정규화 대조와 코드 일치를 확인했다. 원본 정점 배치 PNG는 `public/media/hellotriangle/vertex-positions.png`에 보관한다. 새 설명·도식을 AI로 생성하지 않았고 AI 보조는 검수·이관·메타데이터·검증에 한정한다. 기존 Learning 글·HelloWindow 주소와 고정 순서는 유지한다. 원격 main의 HelloWindow 제목 수정 5d88606을 fast-forward로 먼저 받았다.
+
+`npm run verify`: 테스트 166개·Astro 99파일 오류/경고/힌트 0·162경로 빌드·168개 HTML 검사 통과. 별도 소유자 빌드 168개 HTML 검사도 통과했다. 브라우저에서 홈의 새 글, 긴 본문의 코드·표·이미지 로드, 390px Graphics/Direct3D 12/HelloTriangle 검색 1건을 확인했다. 데스크톱 본문 폭·스크롤 폭은 1265px, 모바일 본문·검색은 모두 375px다. 실제 기기와 D3D12 샘플 실행은 새로 하지 않았다. 원문·대조·로그·정확한 커밋·두 Actions 배포와 운영 반영 결과는 `.verification/hellotriangle-release-20261123/`에 보관한다. 기존 로컬 AI 리소스 카탈로그 초안은 이번 커밋에 포함하지 않는다. 사용자가 승인한 main push로 공개 Pages와 소유자 Worker를 함께 배포한다.
+
 ## 2026-11-19 Notion HelloWindow 원문 이관·공개
 
 사용자가 [Notion HelloWindow](https://app.notion.com/p/imjae/HelloWindow-41b3b61361d1806a8756f607df0e54f2)의 원문 그대로 게시·배포하고 고정 글 최상단에 놓도록 요청했다. `content/articles/graphics/hellowindow.md`를 Graphics·`Direct3D 12` 태그·`/writing/hellowindow/`로 추가했다. 생성 시 초안으로 두었다가 명시적 게시 요청에 따라 공개로 전환했다. Notion 생성일 검색에서 2026-11-17에 해당 페이지가 포함되고 11-18에는 제외되어 `date: 2026-11-17`, `dateBasis: notion`을 사용한다. 기존 Learning의 `direct3d12-hello-window`와는 별도의 원문이며 그 글과 주소는 유지한다.
