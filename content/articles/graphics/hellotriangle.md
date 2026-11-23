@@ -1,5 +1,5 @@
 ---
-title: "D3D12HelloWorld_01_HelloTriangle"
+title: "D3D12HelloWorld_02_HelloTriangle"
 description: "HelloTriangle 샘플의 루트 시그니처, 셰이더, 입력 레이아웃, PSO와 정점 버퍼를 살펴보고 삼각형을 그리는 명령의 연결을 정리합니다."
 slug: "hellotriangle"
 date: "2026-11-19"

@@ -1,5 +1,9 @@
 # 블로그 관리 인수인계
 
+## 2026-11-23 HelloTriangle 제목 번호와 고정 순서
+
+사용자가 HelloTriangle도 고정 글 최상단에 배치하고 블로그 제목의 번호를 01에서 02로 바꾸도록 요청했다. `content/articles/graphics/hellotriangle.md`의 제목을 `D3D12HelloWorld_02_HelloTriangle`로 바꾸고 `/writing/hellotriangle/` 주소·본문·날짜·분류는 유지한다. `content/pins/2026-11-23T06-30-05-000Z-hellotriangle.json`은 기존 13개 고정 순서를 유지하며 HelloTriangle을 첫 번째에 추가한다. HelloWindow는 두 번째다. 원문 Notion 제목은 이번 블로그 변경에 포함하지 않는다. 기존 로컬 AI 리소스 카탈로그 초안은 커밋에 포함하지 않는다. 제목 수정 후 `npm run verify`의 테스트 166개·Astro 99파일 진단 0개·162경로 빌드·168개 HTML 검사와 별도 소유자 빌드의 168개 HTML 검사를 통과했다. 브라우저에서 홈 고정 14편의 순서와 새 제목, 긴 본문의 코드 16개, 390px Graphics/Direct3D 12/HelloTriangle 검색 1건을 확인했다. 데스크톱·모바일의 문서 폭과 스크롤 폭은 각각 1265px·375px로 일치했다. 검증·두 배포·운영 확인 결과와 정확한 커밋은 `.verification/hellotriangle-pin-20261123/`에 보관한다.
+
 ## 2026-11-23 Notion HelloTriangle 재검수·공개
 
 사용자가 오탈자와 기술 설명을 수정한 [Notion 원문](https://app.notion.com/p/41d3b61361d180e6beebef23d3975e93)을 다시 검수하고 블로그에 배포하도록 요청했다. 이전에 지적한 입력 슬롯과 시맨틱 번호, 픽셀 셰이더 출력 연결과 번호, Unmap 수정 범위, CPU 읽기 예시, 배열 전체 크기, 명령 리스트 재기록, 초기 펜스 대기의 설명이 수정된 것을 공식 문서·샘플과 대조했다. 추가로 명확한 기술 오류는 찾지 못했으며 실행 결과를 새로 만들지 않았다. 원문 생성일 검색에서 2026-11-19에 해당 페이지가 포함되어 dateBasis notion·date 2026-11-19, 원문 수정일에 맞춰 updated 2026-11-23을 사용한다.
