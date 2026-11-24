@@ -11,6 +11,10 @@ export function pageEditorContext(pathname) {
   if (pathname === '/') return { sources: [source('주제별 표지와 대표 글', 'src/data/home-covers.ts'), source('주제 이름과 설명', 'src/data/site.ts')], pins: true };
   if (pathname === '/writing/') return { sources: [source('글 목록의 소개', 'src/pages/writing/index.astro')], articles: {} };
   if (pathname === '/portfolio/') return { sources: [source('포트폴리오 목록과 소개', 'src/pages/portfolio/index.astro')] };
+  if (pathname === '/portfolio/d3d12-renderer/') return {
+    sources: [source('D3D12 Renderer 소개', 'src/pages/portfolio/d3d12-renderer/index.astro')],
+    articles: { project: 'd3d12-renderer' },
+  };
   if (pathname === '/projects/' || projects.some(project => project.id !== 'dcb' && pathname === `/projects/${project.id}/`)) return { sources: [source('프로젝트 소개와 대표 이미지', 'src/data/projects.mjs')] };
   if (pathname === '/projects/dcb/') return {
     sources: [source('DCB 소개', 'src/pages/projects/dcb.astro'), source('기능 목록', 'src/data/dcb-features.mjs')],
